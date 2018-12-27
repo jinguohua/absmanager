@@ -1,0 +1,33 @@
+@import '../../styles/theme/default.less';
+
+.abs-download-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: @abs-page-title-bg;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 26px;
+  height: 48px;
+  border-bottom: 1px solid @abs-page-title-bottom-border-color;
+  &-content {
+    border-left: 8px solid @abs-page-title-border-color;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    height: 20px;
+    line-height: 18px;
+    &-title {
+      color: @abs-page-title-content-title-color;
+      font-size: @font-m;
+      font-weight: bold;
+    }
+    &-subtitle {
+      color: @abs-page-title-content-subtitle-color;
+      font-size: @font-s;
+    }
+  }
+  &-buttons { 
+    display: flex;
+    align-items: center;
+  }
+}

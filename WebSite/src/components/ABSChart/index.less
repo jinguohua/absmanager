@@ -1,0 +1,33 @@
+@import "../../styles/theme/default.less";
+
+@chart-prefix-cls: ~"@{abs-prefix}-chart";
+
+.@{chart-prefix-cls} {
+    // 图表基础样式
+    height: 400px;
+}
+
+.abs-chart-title {
+    font-family: 'Microsoft YaHei-Bold';
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    color: #FFE2B2;
+    letter-spacing: 0.61px;
+    padding: 20px 0;
+}
+
+.highcharts-title {
+    top: 0 !important;
+    tspan {
+    font-family: 'Microsoft YaHei-Bold';
+    }
+}
+
+.abs-loading {
+    left: calc(50%)
+}
+
+.abs-no-content {
+    padding: 100px  0 !important;
+}

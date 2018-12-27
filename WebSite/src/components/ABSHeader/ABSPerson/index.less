@@ -1,0 +1,95 @@
+@import "../../../styles/theme/default.less";
+@import '../ABSMenu/index.less';
+
+.abs-person {
+	display: flex;
+	padding-right: 10px;
+	&-avatar{
+		display: inline-block;
+		vertical-align: middle;
+		padding: 10px 12px;
+		.ant-avatar{
+			display: block;
+			width: 40px;
+			height: 40px;
+			border-radius: 20px;
+		}
+	}
+	.abs-menu {
+		margin-left: 0 !important;
+		display: inline-block;
+		&-submenu {
+			&-title {
+				padding: 0;
+			}
+			&-arrow {
+				left: 48px;
+			}
+		}
+	}
+	&-name{
+		display: inline-block;
+		font-size: @abs-person-name-fong-size;
+	}
+	i {
+		display: inline-block;
+		margin-left: 6px;
+		font-size: @abs-person-i-fong-size;
+	}
+}
+
+.abs-person-popup {
+	.ant-menu {
+		padding: 28px 0 0 0;
+		min-width: 122px;
+	}
+	.ant-menu-item {
+		padding: 0 20px !important;
+		margin-bottom: 20px  !important;
+		line-height: @abs-header-ant-menu-item-group-item-font-size !important;
+		height: 14px !important;
+		font-size: @abs-header-ant-menu-item-group-item-font-size;
+		background: inherit !important;
+		a {
+			color: @abs-header-menu-item-color;
+			background: inherit;
+			&:hover {
+				color: @abs-header-menu-item-hover-color;
+				background: inherit;
+			}
+		}
+		&:hover {
+			color: @abs-header-menu-item-hover-color;
+			background: inherit;
+		}
+		&:visited {
+			color: @abs-header-menu-item-hover-color;
+			background: inherit;
+		}
+		&-selected {
+			color: @abs-header-menu-item-hover-color;
+			background: inherit !important;
+			a {
+				color: @abs-header-menu-item-hover-color;
+				background: inherit !important;
+			}
+		}
+		&-active {
+			color: @abs-header-menu-item-hover-color !important;
+			a {
+				color: @abs-header-menu-item-hover-color;
+			}
+		}
+	}
+	.abs-menu-item-danger {
+		margin: 0 !important;
+		height: 34px !important;
+		line-height: 34px !important;
+		border-top: 1px solid @abs-person-menu-item-danger-border-color;
+		color: @abs-person-menu-item-danger-color !important;
+		padding-left: 31px !important;
+		:hover {
+			color: @abs-person-menu-item-danger-color !important;
+		}
+	}
+}

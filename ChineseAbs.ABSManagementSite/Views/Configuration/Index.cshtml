@@ -1,0 +1,91 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.ConfigurationViewModel
+@{
+    ViewBag.Num = -1;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/configuration.js?version=20171107"></script>
+}
+<style>
+    select {
+        min-width: 50px;
+    }
+
+    .selector {
+        margin: 10px 20px;       
+    }
+</style>
+@using (Html.BeginForm("Index", "Configuration", FormMethod.Post,
+        new { @class = "form-horizontal", role = "form", id = "formConfiguration", enctype = "multipart/form-data" }))
+{
+    <div class="tablecloth">
+        <header class="am_site_map_panel">
+            <span class="am_site_map_arrow">当前位置：</span>
+            <a class="am_site_map_label" href="/">解决方案</a>
+            <span class="am_site_map_arrow">></span>
+            <a class="am_site_map_label" href="/">存续期管理平台</a>
+            <span class="am_site_map_arrow">></span>
+            <span class="am_site_map_arrow">存续期设置</span>
+        </header>
+
+        <div>            
+            <section class="selector">
+                <span class="fixedColor" style="font-size:13px;">选择产品：</span>
+                <select id="ProjectList" name="ProejctList">
+                    @if (string.IsNullOrEmpty(Request.QueryString["projectGuid"]))
+                    {
+                        <option value="" selected="selected">-请选择-</option>
+                    }
+                    else
+                    {
+                        <option value="">-请选择-</option>
+                    }
+                    @for (int i = 0; i < Model.ProjectList.Count; i++)
+                    {
+                        var name = Model.ProjectList[i].Name;
+                        var guid = Model.ProjectList[i].ProjectGuid;
+                        var id = Model.ProjectList[i].ProjectId;
+                        if (!string.IsNullOrEmpty(Request.QueryString["projectGuid"]) && guid == Request.QueryString["projectGuid"])
+                        {
+                            <option value="@id" selected="selected">@name</option>
+                        }
+                        else
+                        {
+                            <option value="@id">@name</option>
+                        }
+                    }
+                </select>
+            </section>
+        </div>
+        <div>
+            <span class="cnabs_label">产品信息</span>
+        </div>
+        <div class="cnabs_panel">            
+            <div>
+                产品名称：
+                @if (!string.IsNullOrEmpty(Request.QueryString["projectGuid"]))
+                {
+                    for (int i =0; i < Model.ProjectList.Count; i++)
+                    {
+                        var name = Model.ProjectList[i].Name;
+                        var guid = Model.ProjectList[i].ProjectGuid;
+                        if (guid == Request.QueryString["projectGuid"])
+                        {
+                            <label id="lbName">@name</label>
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    <label id="lbName"></label>
+                }
+            </div>
+        </div>
+
+        <div id="divPartial3" class="content-monitor" style="display:block">
+            @Html.Partial("_MonitorConfig")
+        </div>
+        <br />
+    </div>
+}

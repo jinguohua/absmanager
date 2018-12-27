@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var helloText = "Hello," + User.Identity.Name;
+                    <h1>@helloText</h1>
+                }
+            </hgroup>
+        </div>
+    </section>
+}

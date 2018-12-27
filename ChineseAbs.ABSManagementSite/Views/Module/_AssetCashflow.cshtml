@@ -1,0 +1,1301 @@
+﻿<style type="text/css">
+    .balance_highlight {
+        color: #FFC;
+    }
+
+    .totalElement {
+        line-height: 24px;
+        text-align: left;
+    }
+
+    .divGetAssetCashflowFile .white {
+        color: #fff !important;
+    }
+
+    .divGetAssetCashflowFile {
+        text-align: left;
+        font-size: 14px;
+        word-wrap: break-word;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+        .divGetAssetCashflowFile .divTip, .partAssetCashflowlabels .divTip {
+            height: 29px;
+            line-height: 29px;
+            margin-left: 10px;
+            color: #b7afa5;
+        }
+
+    .result {
+        border-collapse: collapse;
+    }
+
+    .handson .handsontable tr td:nth-of-type(1) {
+        background-color: #4F4A43 !important;
+        vertical-align: middle;
+    }
+
+    .handson .handsontable td {
+        border-bottom: 1px solid #666 !important;
+    }
+
+    .handsontable thead th .relative {
+        padding: 5px 10px;
+    }
+
+    .handsontable th {
+        text-align: right;
+    }
+
+        .handsontable th:nth-of-type(1), .handsontable th:nth-of-type(2) {
+            text-align: center;
+        }
+
+    #currentAssetCashflowTable th:nth-of-type(2) {
+        text-align: right;
+    }
+
+    .handson .ht_master tr:nth-child(1) th,
+    .handson .ht_master tr:nth-child(1) th div,
+    .handson .ht_master tr:nth-child(1) th span {
+        background-color: #625C53 !important;
+    }
+
+    .div_labels {
+        height: 40px;
+        border-bottom: 1px solid #68625b;
+        margin-left: -20px;
+        margin-top: 10px;
+        width:1050px;
+    }
+
+    .partAssetCashflowlabels .cnabs_btn_tab_v2 {
+        min-width: 65px;
+    }
+
+    .partAssetCashflowlabels .cnabs_btn_tab_selected {
+        min-width: 65px;
+    }
+
+    .divPartACFTable {
+        margin-top: 20px;
+        width:1010px;
+    }
+
+    .divInfoTable {
+        float: left;
+        max-width: 1010px;
+        overflow: auto;
+        max-height: 593px;
+    }
+
+    .divPartACFTable .divInfoTable .infoTable {
+        width: auto;
+        margin-top: 0px;
+    }
+
+    .divPartACFTable .infoTable td {
+        border-color: #736C62;
+        width: 123px;
+        min-width: 123px;
+    }
+
+    .divPartACFTable .infoTable tr:nth-of-type(1) td {
+        text-align: right;
+    }
+
+        .divPartACFTable .infoTable td:nth-of-type(1), .divPartACFTable .infoTable tr:nth-of-type(1) td:nth-of-type(1), .divPartACFTable .eachAssetCashflowList .infoTable tr:nth-of-type(1) td:nth-of-type(2) {
+            text-align: center;
+        }
+
+    .divPartACFTable .currPeriodAssetCashflowInfoList td, .divPartACFTable .currPeriodAssetCashflowInfoList td:nth-of-type(2) {
+        width: 128px;
+        min-width: 128px;
+        text-align: right;
+    }
+
+        .divPartACFTable .currPeriodAssetCashflowInfoList td:nth-of-type(1) {
+            text-align: center;
+        }
+
+    .currentDate, .divIconTip {
+        height: 24px;
+        line-height: 24px;
+        margin-bottom: 18px;
+        overflow: hidden;
+    }
+    .eachAssetCashflowList table.infoTable td:first-child {
+        padding-left: 0px;
+    }
+
+    .divCurrPeriodAssetCashflowInfoList table.infoTable td:first-child {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .divAssetCashflowView {
+        margin-top: 10px;
+    }
+
+    .divAutoCalculateDataDlg, .divEditPrincipalAndInterest {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+        .divAutoCalculateDataDlg .actionTitle {
+            height: 28px;
+            width: 588px;
+            font-size: 16px;
+        }
+
+    .divAutoSyncDataTip {
+        padding: 12px 20px;
+        background: #333333;
+        font-size: 14px;
+        right: -500px;
+        bottom: 0px;
+        z-index: 100;
+    }
+
+    #currentAssetCashflowTable .ht_clone_left {
+        z-index: 100;
+    }
+
+    #currentAssetCashflowTable .ht_clone_top_left_corner, #currentAssetCashflowTable .ht_clone_bottom_left_corner {
+        z-index: 100;
+    }
+
+    #currentAssetCashflowTable .ht_clone_top {
+        z-index: 100;
+    }
+
+    .signTr {
+        color: #FFC446;
+    }
+
+    .removeSignTr {
+        color: white;
+    }
+
+
+    .divOverrideLast {
+        height: 30px;
+        background-color: #59534c;
+        padding: 0 10px;
+        border-radius: 2px;
+        margin-bottom: 20px;
+    }
+
+        .divOverrideLast img {
+            vertical-align: middle;
+            margin-top: -3px;
+            margin-right: 5px;
+        }
+
+        .divOverrideLast div {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .divOverrideLast a {
+            margin-left: 10px;
+        }
+
+    #currentAssetCashflowTable .htCommentCell:after {
+        content: '';
+        position: absolute;
+        top: 12px;
+        right: 5px;
+        border-radius: 50%;
+    }
+
+    #currentAssetCashflowTable .htRight {
+        padding-right: 17px !important;
+    }
+
+    #currentAssetCashflowTable .handsontable th {
+        padding-right: 7px;
+    }
+
+    #currentAssetCashflowTable .add:after {
+        border: 4px solid #ff4a4a;
+    }
+
+    #currentAssetCashflowTable .reduce:after {
+        border: 4px solid #34a753;
+    }
+
+    .htCommentTextArea {
+        border: none;
+        border-top: 3px solid #847c71;
+        background-color: #3d3833;
+        color: #fff;
+        padding: 4px 18px 4px 10px;
+        width: auto;
+        resize: none;
+        font-size:13px;
+    }
+
+        .htCommentTextArea:focus {
+            border-left: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+    .topLine {
+        overflow: hidden;
+        height: 12px;
+        line-height: 12px;
+    }
+
+    .topText {
+        display: inline-block;
+        font-size: 12px;
+        margin-right: 30px;
+    }
+
+    #currentAssetCashflowTable table td {
+        min-width: 100px !important;
+    }
+    .divGetAssetCashflowFile {
+        width: 1010px;
+    }
+    table.currentPrincipalAndInterest td{
+        font-size:16px!important;
+        text-align:left;
+    }
+    .currentPrincipalAndInterest td:nth-of-type(2n+1){
+        padding-right:20px;
+    }
+    .currentPrincipalAndInterest td:nth-of-type(2n){
+        width:200px;
+        text-align:right;
+    }
+    .currentPrincipalAndInterest td:nth-of-type(3) {
+        padding-left: 150px;
+    }
+    .currentPrincipalAndInterestTitle {
+        border-bottom: 1px solid #58534c;
+    }
+    .coverPrincipalInput, .coverInterestInput {
+        width: 180px;
+        padding-right: 10px;
+        height: 26px;
+        border: none;
+        color: #000;
+        border-radius: 2px;
+    }
+    table.font16Table td{
+        font-size:16px!important;
+    }
+</style>
+<div  id="divAssetCashflowView" ng-controller="assetCashFlow">
+    <div id="divACFErrorMessage" class="cnabs_panel_v2 cnabs_div_v2 cnabs_error_message" ng-show="assetCashFlowRequest=='error'"></div>
+    <div class="divAssetCashflowView" ng-show="assetCashFlowRequest=='success'">
+        <table class="result">
+            <tbody>
+                <tr ng-show="assetCashFlowView=='all'">
+                    <td>
+                        <div class="divGetAssetCashflowFile">
+                            <div class="cnabs_btn right" style="margin-top:3px;" ng-click="changeAssetCashFlowView('part')">
+                                切换到分类显示
+                            </div>
+                            <div id="btnExportAssetCashflowTable" ng-click="exportAssetCashflowTable()" class="cnabs_btn right" style="margin-right:10px;margin-top:3px;">
+                                导出现金流表
+                            </div>
+                            <div class="right divTip" style="margin-right:10px;">
+                                单位：元
+                            </div>
+                            <div id="assetCountTip" class="left divTip" style="margin:0px;">
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-show="assetCashFlowView=='part'">
+                    <td style="padding-bottom:1px;">
+                        <div class="div_labels partAssetCashflowlabels">
+                            <div class="cnabs_btn_tab_v2 cnabs_btn_tab_selected" style="margin-left:20px;" ng-click="switchACFLabels($event,'AssetCashflow')">
+                                资产现金流
+                            </div>
+                            <div class="cnabs_btn_tab_v2" style="margin-left:10px;" ng-click="switchACFLabels($event,'Details')">
+                                明细
+                            </div>
+                            <div class="cnabs_btn right" style="margin-right:20px;margin-top:3px;" ng-click="changeAssetCashFlowView('all')">
+                                切换到全部显示
+                            </div>
+                            <div class="right divTip" style="margin-right:10px;">
+                                单位：元
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div ng-show="assetCashFlowView=='all'" id="assetCashflowTable" class="handson" style="margin-top:10px;"></div>
+                        <div ng-show="assetCashFlowView=='part'" ng-cloak>
+
+                            <div class="divPartACFTable cnabs_relative" id="currentPeriodAssetCashflow" ng-show="selectedACFLabel=='AssetCashflow'">
+
+                                <div class="divOverrideLast text-left" ng-if="assetCashFlowInfo_partView.overrideSingleAssetDataLast.length>0">
+                                    <div class="left">
+                                        <img src="~/Images/yellowAlert.png" />上期模型中,  {{assetCashFlowInfo_partView.overrideSingleAssetDataLast.length}}笔资产的测算结果已被手动修改<a href="javascript:void" ng-click="detailOverrideLast()">查看详情</a><a href="javascript:void(0)" ng-click="signChange($event)">关闭表格颜色提示</a>
+                                    </div>
+                                </div>
+                                <div class="text-left currentDate cnabs_font16">
+                                    <span>偿付期：</span>
+                                    <span>{{assetCashFlowInfo_partView.paymentDate}}</span>
+                                </div>
+                                <div class="cnabs_panel_v2 divCurrentPrincipalAndInterest">
+                                    <div class="cnabs_padding20 cnabs_font16 text-left currentPrincipalAndInterestTitle cnabs_overhide">
+                                        <span class="left">本金和利息</span>
+                                        <span class="right cnabs_btn" ng-click="editPrincipalAndInterest()">编辑</span>
+                                    </div>
+                                    <div class="cnabs_padding20">
+                                        <table class="currentPrincipalAndInterest">
+                                            <tr>
+                                                <td>资产池当期本金</td>
+                                                <td ng-if="!forceCoverInputHasSave">{{tablePrincipal}}</td>
+                                                <td ng-if="forceCoverInputHasSave">{{coverPrincipalHasSave}}</td>
+                                                <td>资产池当期利息</td>
+                                                <td ng-if="!forceCoverInputHasSave">{{tableInterest}}</td>
+                                                <td ng-if="forceCoverInputHasSave">{{coverInterestHasSave}}</td>
+                                            </tr>
+                                            <tr class="cnabs_brown_v2" ng-if="!forceCoverInputHasSave">
+                                                <td>系统预测当期本金</td>
+                                                <td>{{systemPrincipal}}</td>
+                                                <td>系统预测当期利息</td>
+                                                <td>{{systemInterest}}</td>
+                                            </tr>
+                                            <tr class="cnabs_brown_v2" ng-if="forceCoverInputHasSave">
+                                                <td>当前表中本金</td>
+                                                <td>{{tablePrincipal}}</td>
+                                                <td>当前表中利息</td>
+                                                <td>{{tableInterest}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="cnabs_panel_v2 cnabs_padding20 cnabs_marginTop10">
+                                    <div class="text-left divIconTip">
+                                        <div class="topLine" style="display:inline-block;" ng-show="currentAssetCashflowCellsComment.length>0">
+                                            <span class="cnabs_circle_red left" style="margin-top:2px;"></span>
+                                            <span class="topText left">增加</span>
+                                            <span class="cnabs_circle_green left" style="margin-top:2px;"></span>
+                                            <span class="topText left">减少</span>
+                                        </div>
+                                        <span class="cnabs_btn right" style="margin-left:10px;" ng-click="setAutoCalculateData()">设置</span>
+                                        <span ng-if="currentAssetCashflowCellsComment.length>0" class="cnabs_btn right" style="margin-left:10px;" ng-click="resetCurrPeriodAssetCashflowTable()">重置</span>
+                                        <span ng-if="currentAssetCashflowCellsComment.length==0" class="cnabs_btn_disabled right" style="margin-left:10px;">重置</span>
+                                        <span class="right">共 {{assetCashFlowInfo_partView.assetIdNameMap.length}} 笔资产</span>
+                                    </div>
+                                    <div id="divCurrentAssetCashflowTable">
+                                        <div id="currentAssetCashflowTable" class="handson"></div>
+                                    </div>
+                                    <div class="divAutoSyncDataTipGroup">
+                                        <div class="divAutoSyncDataTip cnabs_overhide cnabs_absolute" ng-repeat="x in autoSyncDataTips" ng-style="x.controlTipStyle" ng-mouseover="x.clearTimeOut()" ng-mouseleave="setTimeOut($index,$event)">
+                                            <span class="left cnabs_marginRight20">{{x.availableSyncData}}</span>
+                                            <img class="right cnabs_marginLeft10 cnabs_marginTop2" ng-click="cancelAutoSyncData($index,$event)" src="~/Images/Common/cross_white.png" />
+                                            <img class="right cnabs_marginLeft10 cnabs_marginTop2" ng-click="x.showCalculationFormula(x.principalBalance,x.principalSum,x.principal,$index,$event)" src="~/Images/Common/setting_white.png" />
+                                            <img class="right cnabs_marginTop2 saveAutoSyncDataBtn" ng-click="x.saveAutoSyncData()" src="~/Images/Common/hook_white.png" />
+                                        </div>
+                                    </div>
+                                    <div class="cnabs_brown cnabs_font12" style="line-height:30px;" ng-if="userCustomCashflow">注：当前产品模型中已勾选[覆盖现金流]选项，上表不支持手动更改。</div>
+                                </div>
+                            </div>
+                            <div class="divPartACFTable" id="divAssetCashflowDetails" ng-show="selectedACFLabel=='Details'">
+                                <div class="cnabs_overhide controlMarginLeft" style="margin-bottom:20px;">
+                                    <span class="left" style="line-height:24px;">选择资产：</span>
+                                    <select class="left" style="margin-left:10px;padding-left:5px;width:250px;height:22px;" ng-model="assetKey" ng-change="changeAssetTable(assetKey)">
+                                        <option ng-repeat="x in detailsData.assetIdCNName" value="{{x.tableKey}}">{{x.tableValues}}</option>
+                                    </select>
+                                </div>
+                                <div class="divInfoTable cnabs_scrollbar eachAssetCashflowList">
+                                    <table class="infoTable">
+                                        <tr>
+                                            <td ng-repeat=" columnName in detailsData.tableHeader">
+                                                {{columnName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="x in assetCashflowList">
+                                            <td ng-if="x.Rowspan!=0" rowspan="{{x.Rowspan}}" style="background-color:#514C44;">{{x.RowName}}</td>
+                                            <td ng-repeat="y in x.Values" class="{{$index==0?'text-center':'text-right'}}">
+                                                <span class="{{x.Values[0].Value=='总计'?'cnabs_bolder':''}}">{{y.Value}}</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--编辑本金和利息dialog-->
+    <div id="divEditPrincipalAndInterest" class="divEditPrincipalAndInterest cnabs_none">
+        <div class="cnabs_overhide">
+            <input id="forceCoverInput" class="cnabs_marginLeft0 cnabs_pointer" type="checkbox" ng-model="forceCoverInput" />
+            <label class="cnabs_pointer" for="forceCoverInput">强制覆盖当期本金和利息，本金和利息不再随资产池现金流表更新。</label>
+        </div>
+        <div class="cnabs_marginTop20 cnabs_panelInDialog cnabs_paddingBottom20">
+            <table class="font16Table">
+                <tr class="text-left">
+                    <td class="cnabs_borderBottomInDialog cnabs_padding20">资产池当期本金</td>
+                    <td class="cnabs_borderBottomInDialog cnabs_padding20" colspan="2">
+                        <input ng-disabled="!forceCoverInput" class="coverPrincipalInput text-right" type="text" ng-model="coverPrincipal" />
+                        <span ng-show="isShowErrorMsgPrincipal" class="cnabs_red text-left cnabs_marginLeft10" style="font-size:14px;">
+                            {{'* '+errorMsgPrincipal}}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cnabs_padding20">当期表中本金</td>
+                    <td class="cnabs_paddingLeft20" style="width:315px;"><span class="tablePrincipal cnabs_marginRight10 left cnabs_width166 text-right">{{tablePrincipal}}</span></td>
+                    <td ng-if="forceCoverInput&&tablePrincipal!=coverPrincipal" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn" ng-click="useTablePrincipal()">使用</span></td>
+                    <td ng-if="!(forceCoverInput&&tablePrincipal!=coverPrincipal)" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn_disabled">使用</span></td>
+                </tr>
+                <tr>
+                    <td class="cnabs_paddingLeft20">系统预测当期本金</td>
+                    <td class="cnabs_paddingLeft20" style="width:315px;"><span class="systemPrincipal cnabs_marginRight10 left cnabs_width166 text-right">{{systemPrincipal}}</span></td>
+                    <td ng-if="forceCoverInput&&systemPrincipal!=coverPrincipal" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn" ng-click="useSystemPrincipal()">使用</span></td>
+                    <td ng-if="!(forceCoverInput&&systemPrincipal!=coverPrincipal)" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn_disabled">使用</span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="cnabs_marginTop10 cnabs_panelInDialog cnabs_paddingBottom20">
+            <table class="font16Table">
+                <tr class="text-left">
+                    <td class="cnabs_borderBottomInDialog cnabs_padding20">资产池当期利息</td>
+                    <td class="cnabs_borderBottomInDialog cnabs_padding20" colspan="2">
+                        <input ng-disabled="!forceCoverInput" class="coverInterestInput text-right" type="text" ng-model="coverInterest" />
+                        <span ng-show="isShowErrorMsgInterest" class="cnabs_red text-left cnabs_marginLeft10" style="font-size:14px;">{{'* '+errorMsgInterest}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cnabs_padding20">当期表中利息</td>
+                    <td class="cnabs_paddingLeft20" style="width:315px;"><span class="cnabs_marginRight10 left cnabs_width166 text-right">{{tableInterest}}</span></td>
+                    <td ng-if="forceCoverInput&&tableInterest!=coverInterest" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn" ng-click="useTableInterest()">使用</span></td>
+                    <td ng-if="!(forceCoverInput&&tableInterest!=coverInterest)" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn_disabled">使用</span></td>
+                </tr>
+                <tr>
+                    <td class="cnabs_paddingLeft20">系统预测当期利息</td>
+                    <td class="cnabs_paddingLeft20" style="width:315px;"><span class="cnabs_marginRight10 left cnabs_width166 text-right">{{systemInterest}}</span></td>
+                    <td ng-if="forceCoverInput&&systemInterest!=coverInterest" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn" ng-click="useSystemInterest()">使用</span></td>
+                    <td ng-if="!(forceCoverInput&&systemInterest!=coverInterest)" class="cnabs_paddingLeft20 cnabs_paddingRight20"><span class="right cnabs_btn_disabled">使用</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--设置dialog-->
+    <div id="divAutoCalculateDataDlg" class="cnabs_none divAutoCalculateDataDlg">
+        <header class="actionTitle">编辑本金</header>
+        <div class="cnabs_dialog_panel">
+            <div class="cnabs_overhide">
+                <input id="remainingPrincipalInput" class="cnabs_marginLeft0 cnabs_pointer" type="checkbox" ng-model="remainingPrincipalInput" />
+                <label class="cnabs_pointer" for="remainingPrincipalInput">自动同步剩余本金（剩余本金=初始本金-本金）</label>
+            </div>
+         </div>
+        <header class="actionTitle cnabs_marginTop30">编辑剩余本金</header>
+        <div class="cnabs_dialog_panel">
+                <input id="principalInput" class="fl cnabs_marginLeft0 cnabs_pointer" type="checkbox" ng-model="principalInput" />
+                <label class="fl cnabs_pointer" for="principalInput">自动同步本金（本金=初始本金-剩余本金）</label>
+        </div>
+    </div>
+    <div id="divCalculationFormula" class="cnabs_none divCalculationFormula">
+        <table>
+            <tr>
+                <td class="cnabs_font16">{{principalResult}}</td>
+                <td class="cnabs_font16">=</td>
+                <td class="cnabs_font16">{{principalSum}}</td>
+                <td class="cnabs_font16">-</td>
+                <td class="cnabs_font16">{{principalMinus}}</td>
+            </tr>
+            <tr>
+                <td class="cnabs_brown cnabs_font14" colspan="2">({{resultName}})</td>
+                <td class="cnabs_brown cnabs_font14" colspan="2">({{sumName}})</td>
+                <td class="cnabs_brown cnabs_font14">({{minusName}})</td>
+            </tr>
+        </table>
+        <div class="cnabs_marginTop30">
+            <div ng-show="resultName=='剩余本金'">
+                <input class="left cnabs_marginLeft0 cnabs_marginRight0 cnabs_pointer" id="autoSyncDataInput" type="checkbox" ng-model="remainingPrincipalInput" />
+                <div class="left cnabs_font14 cnabs_marginLeft5">
+                    <label for="autoSyncDataInput" class="cnabs_pointer">修改本金的时候，自动同步剩余本金，以后不再提示。</label>
+                    <div class="cnabs_brown cnabs_marginTop2">您可以在表格右上角【设置】中，取消同步剩余本金。</div>
+                </div>
+            </div>
+            <div ng-show="resultName=='本金'">
+                <input class="left cnabs_marginLeft0 cnabs_marginRight0 cnabs_pointer" id="autoSyncInput" type="checkbox" ng-model="principalInput" />
+                <div class="left cnabs_font14 cnabs_marginLeft5">
+                    <label for="autoSyncInput" class="cnabs_pointer">修改剩余本金的时候，自动同步本金，以后不再提示。</label>
+                    <div class="cnabs_brown cnabs_marginTop2">您可以在表格右上角【设置】中，取消同步本金。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var maxDisplayAssetCount = 100;
+    var showChange = true;
+    function assetCashflowDeclareHandson(chart, data) {
+        resetHandsonColumnSetting(data);
+        var container = document.querySelector("#" + chart);
+        var handsontable = new Handsontable(container, {
+            width: 1010,
+            height: data.dataResult.length * 33 > 780 ? 780 : data.dataResult.length * 33 + 57,
+            colHeaders: data.colHeader,
+            data: data.dataResult,
+            columns: data.columns,
+            filters: false,
+            columnSorting: false,
+            sortIndicator: true,
+            autoColumnSize: true,
+            manualColumnResize: true,
+            readOnly: true,
+            wordWrap: false,
+            copyable: false,
+            manualColumnMove: true,
+            renderAllRows: false,
+            fixedColumnsLeft: 2,
+            fixedRowsBottom: 1,
+            multiSelect: false,
+            fillHandle: false,
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                var visualRowIndex = this.instance.toVisualRow(row);
+                var visualColIndex = this.instance.toVisualColumn(col);
+                if (visualColIndex != 0 && visualColIndex != 1) {
+                    cellProperties.className = 'htRight';
+                } else {
+                    cellProperties.className = 'htCenter';
+                }
+                cellProperties.width = 128;
+                if (visualColIndex == 1) {
+                    cellProperties.width = 80;
+                }
+                if (visualColIndex == 0) {
+                    cellProperties.width = 100;
+                    cellProperties.className = 'htCenter cnabs_whiteSpace';
+                }
+                return cellProperties;
+            },
+            mergeCells: data.mergeCellsInfo,
+            viewportColumnRenderingOffset: 100,
+            maxRows: data.dataResult.length,
+            beforeKeyDown: function (e) {
+                if (e.keyCode === 8 || e.keyCode === 46) {
+                    Handsontable.Dom.stopImmediatePropagation(e);
+                }
+            }
+        });
+        return handsontable;
+    }
+    signDiffRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+        $(td).removeClass("htDimmed");
+        $(td).addClass("signTr");
+    };
+
+    RemoveSignDiffRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        $(td).removeClass("signTr");
+        $(td).addClass("htDimmed");
+    };
+    var currentAssetCashflowCellsComment = [];
+    function currentAssetCashflowDeclareHandson(chart, data, overrideSingleAssetDataLast, userCustomCashflow) {
+        resetHandsonColumnSetting(data);
+        var container = document.querySelector("#" + chart);
+        var handsontable = new Handsontable(container, {
+            width: 969,
+            height: data.dataResult.length * 33 > 780 ? 780 : data.dataResult.length * 33 + 57,
+            colHeaders: data.colHeader,
+            data: data.dataResult,
+            filters: true,
+            columnSorting: false,
+            sortIndicator: true,
+            autoColumnSize: true,
+            manualColumnResize: true,
+            wordWrap: false,
+            copyable: false,
+            manualColumnMove: true,
+            renderAllRows: false,
+            fixedColumnsLeft: 1,
+            fixedRowsBottom: 1,
+            multiSelect: false,
+            fillHandle: false,
+            comments: true,
+            cell: currentAssetCashflowCellsComment,
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                var visualRowIndex = this.instance.toVisualRow(row);
+                var visualColIndex = this.instance.toVisualColumn(col);
+                if (visualColIndex != 0) {
+                    cellProperties.className = 'htRight';
+                    cellProperties.type = 'numeric';
+                    cellProperties.format = '0,0.00';
+                    if (this.comment) {
+                        cellProperties.className = 'htRight ' + this.comment.className;
+                    }
+                    // cellProperties.width = 128;
+                } else {
+                    cellProperties.className = 'htCenter';
+                }
+                if (visualRowIndex != data.dataResult.length - 1 && (visualColIndex == 1 || visualColIndex == 2 || visualColIndex == 3)) {
+                    cellProperties.readOnly = userCustomCashflow;
+                } else {
+                    cellProperties.readOnly = true;
+                }
+                if (overrideSingleAssetDataLast.indexOf(row + 1) >= 0 && showChange) {
+                    cellProperties.renderer = signDiffRenderer;
+                }
+                return cellProperties;
+            },
+            viewportColumnRenderingOffset: 100,
+        });
+        return handsontable;
+    }
+    var assetCashflowHandson;
+    var currentAssetCashflowHandson;
+    app.controller('assetCashFlow', function ($rootScope, $scope, projectHelper) {
+        if ($scope.projectInfo == undefined) {
+            $scope.projectInfo = projectHelper.reload($scope.projectGuid);
+            $scope.paymentDays = $scope.projectInfo.paymentDays;
+        }
+        $scope.assetCashFlowRequest = 'success';
+        $scope.assetCashFlowView = 'part';
+        $scope.selectedACFLabel = 'AssetCashflow';
+        $scope.switchACFLabels = function (event, label) {
+            var event = event || window.event;
+            $scope.selectedACFLabel = label;
+            if ($scope.selectedACFLabel == 'Details') {
+                $scope.getDetailsData();
+            }
+            if ($scope.selectedACFLabel == 'AssetCashflow' && $scope.isFirstLoadCurrPeriodAssetCashflowTable ==true){
+                $scope.getCurrPeriodAssetCashflowTable();
+                $scope.isFirstLoadCurrPeriodAssetCashflowTable = false;
+            }
+            for (var i = 0; i < $('.partAssetCashflowlabels .cnabs_btn_tab_v2').length; i++) {
+                if ($('.partAssetCashflowlabels .cnabs_btn_tab_v2')[i] == event.target) {
+                    $($('.partAssetCashflowlabels .cnabs_btn_tab_v2')[i]).prop('class', 'cnabs_btn_tab_v2 cnabs_btn_tab_selected')
+                } else {
+                    $($('.partAssetCashflowlabels .cnabs_btn_tab_v2')[i]).prop('class', 'cnabs_btn_tab_v2')
+                }
+            }
+        }
+
+        $scope.getAssetCashflow = function () {
+            $('#assetCashflowTable').html('');
+            $("#divACFErrorMessage").html('');
+            $('#assetCountTip').html('');
+
+            cnabsAjax('获取资产池现金流表', '/ProductDashboard/GetAssetCashflowDataTable', {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay
+            }, function (data) {
+                clearHandson(assetCashflowHandson);
+                if (!data.isError) {
+                    var msg = '';
+                    var Data = data;
+                    var assetCount = data.mergeCellsInfo.length - 1;
+                    if (data.mergeCellsInfo.length <= maxDisplayAssetCount) {
+                        $('#assetCountTip').html('该产品共包含<span style="color:#fff;"> ' + assetCount + ' </span>笔资产');
+                    }
+                    if (data.mergeCellsInfo.length > maxDisplayAssetCount) {
+                        $('#assetCountTip').html('该产品共包含<span style="color:#fff;"> ' + assetCount + ' </span>笔资产，显示前<span style="color:#fff;"> ' + maxDisplayAssetCount + ' </span>笔资产，请导出现金流表以查看全部数据')
+                        Data.mergeCellsInfo = _.take(data.mergeCellsInfo, [n = maxDisplayAssetCount])
+                        var displayRownumber = parseInt(data.mergeCellsInfo[maxDisplayAssetCount - 1].row) + parseInt(data.mergeCellsInfo[maxDisplayAssetCount - 1].rowspan);
+                        Data.dataResult = _.take(data.dataResult, [n = displayRownumber]);
+                    }
+                    assetCashflowHandson = assetCashflowDeclareHandson("assetCashflowTable", Data);
+                    $scope.assetCashFlowRequest = 'success';
+                    $scope.$apply();
+                } else {
+                    $scope.assetCashFlowRequest = 'error';
+                    $scope.$apply();
+                    $("#divACFErrorMessage").html(data.errorMessage);
+                }
+            })
+        }
+
+        $scope.GetCellInfoByOverrideSingleAssetData = function (handsonData, overrideSingleAssetData) {
+            //remove originValue==overrideValue comment
+            var changeAsset = [];
+            $.each(overrideSingleAssetData, function (i, ele) {
+                if (ele.originValue != ele.overrideValue) {
+                    changeAsset.push(ele);
+                }
+            })
+            var cellInfo = new Array();
+            $.each(changeAsset, function () {
+                var osaRecord = this;
+                var findIndex = false;
+                for (var iCol = 0; iCol < handsonData.colHeader.length && !findIndex; iCol++) {
+                    if (handsonData.colHeader[iCol] == osaRecord.columnName) {
+                        for (var iRow = 0; iRow < handsonData.dataResult.length && !findIndex; ++iRow) {
+                            var row = handsonData.dataResult[iRow];
+                            if (row[0] == osaRecord.assetName) {
+                                findIndex = true;
+                                cellInfo[cellInfo.length] = {
+                                    row: iRow,
+                                    col: iCol,
+                                    comment: { value: osaRecord.originValue, className: cnabsParseFloat(osaRecord.originValue) > cnabsParseFloat(osaRecord.overrideValue) ? 'reduce' : 'add', readOnly: true },
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            return cellInfo;
+        }
+        $scope.useTablePrincipal = function () {
+            $scope.coverPrincipal = $scope.tablePrincipal;
+        };
+        $scope.useSystemPrincipal = function () {
+            $scope.coverPrincipal = $scope.systemPrincipal;
+        };
+        $scope.useTableInterest = function () {
+            $scope.coverInterest = $scope.tableInterest;
+        };
+        $scope.useSystemInterest = function () {
+            $scope.coverInterest = $scope.systemInterest;
+        };
+        $scope.clearPrincipalAndInterest = function () {
+            $scope.forceCoverInput = false;
+            $scope.forceCoverInputHasSave = false;
+            $scope.coverPrincipal = '';
+            $scope.coverInterest = '';
+            $scope.coverPrincipalHasSave = '';
+            $scope.coverInterestHasSave = '';
+            $scope.systemPrincipal = '-';
+            $scope.systemInterest = '-';
+            $scope.tablePrincipal = '-';
+            $scope.tableInterest = '-';
+        }
+        $scope.setPrincipalAndInterest = function (data) {
+            if (data.assetCashflowVariable != null) {
+                $scope.forceCoverInputHasSave = data.assetCashflowVariable.enableOverride;
+                $scope.forceCoverInput = data.assetCashflowVariable.enableOverride;
+                $scope.coverPrincipalHasSave = cnabsAddCommasToNumber(data.assetCashflowVariable.principal.toFixed(2));
+                $scope.coverInterestHasSave = cnabsAddCommasToNumber(data.assetCashflowVariable.interest.toFixed(2));
+                $scope.coverPrincipal = cnabsAddCommasToNumber(data.assetCashflowVariable.principal.toFixed(2));
+                $scope.coverInterest = cnabsAddCommasToNumber(data.assetCashflowVariable.interest.toFixed(2));
+            }
+            $scope.systemPrincipal = cnabsAddCommasToNumber(data.predictInterePrincipal.CurrPerdictPrincipal.toFixed(2));
+            $scope.systemInterest = cnabsAddCommasToNumber(data.predictInterePrincipal.CurrPerdictInterest.toFixed(2));
+            $scope.tablePrincipal = cnabsAddCommasToNumber(data.currInterePrincipal.CurrPerdictPrincipal.toFixed(2));
+            $scope.tableInterest = cnabsAddCommasToNumber(data.currInterePrincipal.CurrPerdictInterest.toFixed(2));
+        }
+
+
+        $scope.updateCurrPeriodAssetCashflowTable = function (rowName, colName, onlyUpdatePrincipalAndInterest) {
+            $scope.clearPrincipalAndInterest();
+            cnabsAjax('更新当期资产池现金流表', '/Deal/GetCurrPeriodAssetCashflowTable', {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay
+            }, function (data) {
+                if (!data.isError) {
+                    $scope.setPrincipalAndInterest(data);
+                    if (onlyUpdatePrincipalAndInterest) {
+                        $scope.$apply();
+                        return;
+                    }
+                    $.each(data.handsonData.dataResult, function (i, asset) {
+                        if (asset[0] == rowName) {
+                            currentAssetCashflowHandson.setDataAtCell(i, 6, asset[6]);
+                        }
+                    })
+                    $.each(data.handsonData.colHeader, function (i, type) {
+                        if (type == colName) {
+                            currentAssetCashflowHandson.setDataAtCell(data.handsonData.dataResult.length - 1, i, data.handsonData.dataResult[data.handsonData.dataResult.length - 1][i]);
+                        }
+                    })
+                    currentAssetCashflowHandson.setDataAtCell(data.handsonData.dataResult.length - 1, 6, data.handsonData.dataResult[data.handsonData.dataResult.length - 1][6]);
+                    currentAssetCashflowCellsComment = $scope.GetCellInfoByOverrideSingleAssetData(data.handsonData, data.overrideSingleAssetData);
+                    $scope.currentAssetCashflowCellsComment = currentAssetCashflowCellsComment;
+                    $scope.$apply();
+                    currentAssetCashflowHandson.updateSettings({
+                        cell: currentAssetCashflowCellsComment
+                    });
+                };
+            });
+        }
+        $scope.assetIdNameMap = [];
+        $scope.getAssetId = function (assetName) {
+            var assetId;
+            $.each($scope.assetIdNameMap, function (index, item) {
+                if (item.assetName == assetName) {
+                    assetId = item.assetId;
+                    return false;
+                }
+            })
+            return assetId;
+        }
+
+        $scope.changeInterest = function (assetName, newValue) {
+            var param = {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay,
+                assetId: $scope.getAssetId(assetName),
+                interest: cnabsParseFloat(newValue)
+            }
+            cnabsAjax("更改单笔资产利息", "/OverrideSingleAsset/OverrideInterest", param, function (data) {
+                $scope.updateCurrPeriodAssetCashflowTable(assetName, '利息');
+            });
+        }
+        $scope.changePrincipal = function (assetName, newValue) {
+            var param = {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay,
+                assetId: $scope.getAssetId(assetName),
+                principal: cnabsParseFloat(newValue)
+            }
+            cnabsAjax("更改单笔资产本金", "/OverrideSingleAsset/OverridePrincipal", param, function (data) {
+                $scope.updateCurrPeriodAssetCashflowTable(assetName, '本金');
+            });
+        }
+        $scope.changePrincipalBalance = function (assetName, newValue) {
+            var param = {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay,
+                assetId: $scope.getAssetId(assetName),
+                principalBalance: cnabsParseFloat(newValue)
+            }
+            cnabsAjax("更改单笔资产剩余本金", "/OverrideSingleAsset/OverridePrincipalBalance", param, function (data) {
+                $scope.updateCurrPeriodAssetCashflowTable(assetName, '剩余本金');
+            });
+        }
+        $scope.resetCurrPeriodAssetCashflowTable = function () {
+            var msg = '确定清除资产池现金流表所有更改？';
+            cnabsAutoDlgYesNo(null, '重置', function () {
+                var param = {
+                    projectGuid: $scope.projectGuid,
+                    paymentDay: $scope.selectedPaymentDay,
+                }
+                cnabsAjax("重置当期资产池现金流表", "/OverrideSingleAsset/ClearAllOverrideHistory", param, function () {
+                    $scope.getCurrPeriodAssetCashflowTable();
+                });
+            }, msg);
+        }
+        $scope.autoSyncDataTips = [];
+        $scope.autoSyncDataTipsMaxLength = 3;
+        $scope.cancelAutoSyncData = function (index, event) {
+            var e = window.event || event;
+            $(e.target.offsetParent).animate({ right: -500 + 'px' }, function () {
+                $scope.autoSyncDataTips.splice(index, 1);
+            });
+
+        }
+        $scope.setTimeOut = function (index, event) {
+            var e = window.event || event;
+            var self = $(e.target);
+            setTimeout(function () {
+                self.animate({ right: -500 + 'px' }, function () {
+                    $scope.autoSyncDataTips.splice(index, 1);
+                });
+            }, 5000)
+        }
+
+        $scope.getCurrPeriodAssetCashflowTable = function () {
+            var ctrlPrincipalBalanceTip = true;
+            var ctrlPrincipalTip = true; 
+            $scope.remainingPrincipalInput = false;
+            $scope.principalInput = false;
+            cnabsInitObject($scope.assetCashFlowInfo_partView);
+            $("#divACFErrorMessage").html('');
+            $scope.clearPrincipalAndInterest();
+            //fix bug:comment show double when change paymentDate
+            $("#currentAssetCashflowTable").remove();
+            $('#divCurrentAssetCashflowTable').append('<div id="currentAssetCashflowTable" class="handson"></div>');
+
+            cnabsAjax('获取当期资产池现金流表', '/Deal/GetCurrPeriodAssetCashflowTable', {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay
+            }, function (data) {
+                clearHandson(currentAssetCashflowHandson);
+                if (!data.isError) {
+                    $scope.setPrincipalAndInterest(data);
+                    $scope.assetCashFlowInfo_partView = data;
+                    $scope.assetIdNameMap = data.assetIdNameMap;
+                    currentAssetCashflowCellsComment = $scope.GetCellInfoByOverrideSingleAssetData(data.handsonData, data.overrideSingleAssetData);
+                    $scope.currentAssetCashflowCellsComment = currentAssetCashflowCellsComment;
+                    $scope.assetCashFlowRequest = 'success';
+                    $scope.userCustomCashflow = data.userCustomCashflow;
+                    $scope.$apply();
+                    currentAssetCashflowHandson = currentAssetCashflowDeclareHandson("currentAssetCashflowTable", data.handsonData, data.overrideSingleAssetDataLast, data.userCustomCashflow);
+                    currentAssetCashflowHandson.addHook('afterChange', function (cellInfo, prop) {
+                        if (cellInfo == null) {
+                            return;
+                        }
+                        if (cellInfo[0][3] == cellInfo[0][2] || cnabsAddCommasToNumber(cellInfo[0][3].toFixed(2)) == cnabsAddCommasToNumber(cellInfo[0][2])) {
+                            return;
+                        }
+                        if (!cnabsIsFloat(cellInfo[0][3])) {
+                            alertify.error('请填写数字！');
+                            currentAssetCashflowHandson.undo();
+                            return;
+                        }
+                        var assetName = currentAssetCashflowHandson.getDataAtCell(cellInfo[0][0], 0);
+                        if (assetName == '总计') {
+                            return;
+                        }
+                        if (cellInfo[0][1] == 1) {
+                            $scope.changeInterest(assetName, cellInfo[0][3]);
+                        }
+                        if (cellInfo[0][1] == 2) {
+                            $scope.changePrincipal(assetName, cellInfo[0][3]);
+                            var principalSum = cnabsParseFloat(cellInfo[0][2]) + cnabsParseFloat(currentAssetCashflowHandson.getDataAtCell(cellInfo[0][0], cellInfo[0][1] + 1));
+                            var principal = cnabsParseFloat(cellInfo[0][3]);
+                            var calculatePrincipalBalance = principalSum - principal;
+                            if (isNaN(calculatePrincipalBalance)) {
+                                return;
+                            }
+                            calculatePrincipalBalance = cnabsAddCommasToNumber(calculatePrincipalBalance.toFixed(2));
+                            if ($scope.remainingPrincipalInput && ctrlPrincipalBalanceTip) {
+                                currentAssetCashflowHandson.setDataAtCell(cellInfo[0][0], cellInfo[0][1] + 1, calculatePrincipalBalance);
+                                ctrlPrincipalTip = false;
+                                return;
+                            }
+                            if (!$scope.remainingPrincipalInput) {
+                                if ($scope.autoSyncDataTips.length >= $scope.autoSyncDataTipsMaxLength) {
+                                    $(".divAutoSyncDataTip:eq(0)").animate({ right: -500 + 'px' }, function () {
+                                        $scope.autoSyncDataTips.splice(0, 1);
+                                    });
+                                }
+                                $scope.autoSyncDataTips.push({
+                                    principalSum: principalSum,
+                                    principal: principal,
+                                    principalBalance: calculatePrincipalBalance,
+                                    position: { row: cellInfo[0][0], col: cellInfo[0][1] },
+                                    availableSyncData: '是否设置剩余本金：' + calculatePrincipalBalance,
+                                    controlTipStyle: { bottom: $scope.autoSyncDataTips.length * 48 + 'px' },
+                                    timeOut: null,
+                                    clearTimeOut: function () {
+                                        clearTimeout(this.timeOut);
+                                    },
+                                    saveAutoSyncData: function () {
+                                        var self = this;
+                                        currentAssetCashflowHandson.setDataAtCell(self.position.row, self.position.col + 1, self.principalBalance);
+                                        ctrlPrincipalTip = false;                                        
+                                    },
+                                    showCalculationFormula: function (principalBalance, principalSum, principal, index, event) {
+                                        var self = this;
+                                        $scope.setTimeOut(index, event);
+                                        $scope.principalResult = principalBalance;
+                                        $scope.principalSum = principalSum;
+                                        $scope.principalMinus = principal;
+                                        $scope.resultName = "剩余本金";
+                                        $scope.sumName = "初始本金";
+                                        $scope.minusName = "本金";
+                                        cnabsDlgYesNo('divCalculationFormula', '自动同步剩余本金', function () {
+                                            self.saveAutoSyncData();
+                                            var params = {
+                                                autoSyncPrincipal: $scope.principalInput,
+                                                autoSyncPrincipalBalance: $scope.remainingPrincipalInput,
+                                            };
+                                            cnabsAjax("保存设置", "/UserActionHabits/SaveEditAssetCashflowSetting", params, function () { });
+                                        }, 'auto', 'auto');
+                                    }
+                                })
+                                $scope.$apply();
+                                var thisIndex = $scope.autoSyncDataTips.length - 1;
+                                if (ctrlPrincipalBalanceTip) {                                    
+                                    $(".divAutoSyncDataTip:eq(" + thisIndex + ")").animate({ right: 0 + 'px' });
+                                }
+                                $scope.autoSyncDataTips[thisIndex].timeOut = setTimeout(function () {
+                                    if ($scope.autoSyncDataTips.length > 0) {
+                                        var thisIndex = 0;
+                                        $(".divAutoSyncDataTip:eq(" + thisIndex + ")").animate({ right: -500 + 'px' }, function () {
+                                            $scope.autoSyncDataTips.splice(thisIndex, 1);
+                                        });
+                                    }
+
+                                }, 5000);
+                            }
+                        }
+                        if (cellInfo[0][1] == 3) {
+                            $scope.changePrincipalBalance(assetName, cellInfo[0][3]);
+                            var principalSum = cnabsParseFloat(cellInfo[0][2]) + cnabsParseFloat(currentAssetCashflowHandson.getDataAtCell(cellInfo[0][0], cellInfo[0][1] - 1));
+                            var remainingPrincipal = cnabsParseFloat(cellInfo[0][3]);
+                            var calculatePrincipal = principalSum - remainingPrincipal;
+                            if (isNaN(calculatePrincipal)) {
+                                return;
+                            }
+                            calculatePrincipal = cnabsAddCommasToNumber(calculatePrincipal.toFixed(2));
+                            if ($scope.principalInput && ctrlPrincipalTip) {
+                                currentAssetCashflowHandson.setDataAtCell(cellInfo[0][0], cellInfo[0][1] - 1, calculatePrincipal);
+                                ctrlPrincipalBalanceTip = false;
+                                return;
+                            }
+                            if (!$scope.principalInput) {
+                                if ($scope.autoSyncDataTips.length >= $scope.autoSyncDataTipsMaxLength) {
+                                    $(".divAutoSyncDataTip:eq(0)").animate({ right: -500 + 'px' }, function () {
+                                        $scope.autoSyncDataTips.splice(0, 1);
+                                    });
+                                }
+                                $scope.autoSyncDataTips.push({
+                                    principalSum: principalSum,
+                                    principal: calculatePrincipal,
+                                    principalBalance: remainingPrincipal,
+                                    position: { row: cellInfo[0][0], col: cellInfo[0][1] },
+                                    availableSyncData: '是否设置本金：' + calculatePrincipal,
+                                    controlTipStyle: { bottom: $scope.autoSyncDataTips.length * 48 + 'px' },
+                                    timeOut: null,
+                                    clearTimeOut: function () {
+                                        clearTimeout(this.timeOut);
+                                    },
+                                    saveAutoSyncData: function () {
+                                        var self = this;
+                                        currentAssetCashflowHandson.setDataAtCell(self.position.row, self.position.col - 1, self.principal);
+                                        ctrlPrincipalBalanceTip = false;
+                                    },
+                                    showCalculationFormula: function (principalBalance, principalSum, principal, index, event) {
+                                        var self = this;
+                                        $scope.setTimeOut(index, event);
+                                        $scope.principalResult = principal;
+                                        $scope.principalSum = principalSum;
+                                        $scope.principalMinus = principalBalance;
+                                        $scope.resultName = "本金";
+                                        $scope.sumName = "初始本金";
+                                        $scope.minusName = "剩余本金";
+                                        cnabsDlgYesNo('divCalculationFormula', '自动同步本金', function () {
+                                            self.saveAutoSyncData();
+                                            var params = {
+                                                autoSyncPrincipal: $scope.principalInput,
+                                                autoSyncPrincipalBalance: $scope.remainingPrincipalInput,
+                                            };
+                                            cnabsAjax("保存设置", "/UserActionHabits/SaveEditAssetCashflowSetting", params, function () { });
+                                        }, 'auto', 'auto');
+                                    }
+                                })
+                                $scope.$apply();
+                                var thisIndex = $scope.autoSyncDataTips.length - 1;
+                                if (ctrlPrincipalTip) {                                    
+                                    $(".divAutoSyncDataTip:eq(" + thisIndex + ")").animate({ right: 0 + 'px' });
+                                }
+                                $scope.autoSyncDataTips[thisIndex].timeOut = setTimeout(function () {
+                                    if ($scope.autoSyncDataTips.length > 0) {
+                                        var thisIndex = 0;
+                                        $(".divAutoSyncDataTip:eq(" + thisIndex + ")").animate({ right: -500 + 'px' }, function () {
+                                            $scope.autoSyncDataTips.splice(thisIndex, 1);
+                                        });
+                                    }
+                                }, 5000);
+                            }
+                        }
+                    });
+                    currentAssetCashflowHandson.addHook('afterSelectionEndByProp', function (cellInfo, prop) {
+                       ctrlPrincipalBalanceTip = true;
+                       ctrlPrincipalTip = true;
+                    })
+                    $scope.$apply();
+                } else {
+                    $scope.assetCashFlowRequest = 'error';
+                    $scope.$apply();
+                    $("#divACFErrorMessage").html(data.errorMessage);
+                }
+                })
+        };
+
+        $scope.signChange = function (event) {
+            if (showChange) {
+                $('#divCurrentAssetCashflowTable .handsontable').each(function () {
+                    $(this).find("tr").each(function () {
+                        $(this).children().addClass("removeSignTr");
+                    })
+                });
+                event.target.innerHTML = "打开表格颜色提示";
+                showChange = false;
+            } else {
+                $('#divCurrentAssetCashflowTable .handsontable').each(function () {
+                    $(this).find("tr").each(function () {
+                        $(this).children().removeClass("removeSignTr");
+                    })
+                });
+                event.target.innerHTML = "关闭表格颜色提示";
+                showChange = true;
+            }
+        }
+        $scope.detailOverrideLast = function () {
+            var lastPaymentDayIndex;
+            $.each($scope.paymentDays, function (index, item) {
+                if (this.PaymentDay == $scope.selectedPaymentDay) {
+                    lastPaymentDayIndex = index - 1;
+                    return;
+                }
+            });
+            if (lastPaymentDayIndex >= 0) {
+                var lastPaymentDay = $scope.paymentDays[lastPaymentDayIndex];
+                if ($scope.paymentDayChange != undefined) {
+                    //ProductDashboard
+                    $scope.paymentDayChange(lastPaymentDay.PaymentDay);
+                } else {
+                    //Task
+                    window.open('/ProductDashboard#/AssetCashflow?paymentDay=' + lastPaymentDay.PaymentDay + '&projectGuid=' + $scope.projectGuid);
+                }
+                
+            }
+        }
+
+        $scope.getDetailsData = function () {
+            cnabsInitObject($scope.detailsData);
+            $("#divACFErrorMessage").html('');
+            $scope.assetCashflowList = []
+
+            cnabsAjax('获取资产明细', '/Deal/GetAssetCashFlowDataDetail', {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay
+            }, function (data) {
+                if (!data.isError) {
+                    $scope.detailsData = data;
+                    $scope.assetKey = data.assetIdCNName[0].tableKey.toString();
+                    $scope.changeAssetTable();
+                    $scope.assetCashFlowRequest = 'success';
+                    $scope.$apply();
+                } else {
+                    $scope.assetCashFlowRequest = 'error';
+                    $scope.$apply();
+                    $("#divACFErrorMessage").html(data.errorMessage);
+                }
+            });
+        }
+        $scope.changeAssetCashFlowView = function (viewType) {
+            $scope.assetCashFlowView = viewType;
+            $rootScope.ReloadAssetflowBoard();
+        }
+        $scope.changeAssetTable = function (assetKey) {
+            if (assetKey != undefined) {
+                $scope.assetKey = assetKey;
+            }
+            $.each($scope.detailsData.dataSets, function (index, item) {
+                if (item.tableKey == $scope.assetKey) {
+                    $scope.assetCashflowList = item.tableValues;
+                    $scope.assetCashflowListRowspan = item.rowSpanList;
+                    var nextStart = 0; var rowspanIndex = 0;
+                    for (var i = 0; i < $scope.assetCashflowList.length; i++) {
+                        if (i == nextStart) {
+                            $scope.assetCashflowList[i].Rowspan = $scope.assetCashflowListRowspan[rowspanIndex];
+                            nextStart = i + $scope.assetCashflowListRowspan[rowspanIndex];
+                            ++rowspanIndex;
+                        } else {
+                            $scope.assetCashflowList[i].Rowspan = 0;
+                        }
+                    };
+
+                }
+            })
+        }
+        $scope.exportAssetCashflowTable = function () {
+            cnabsAjaxDownloadFile("导出现金流表", '/ProductDashboard/GetAssetCashflowFile/', {
+                projectGuid: $scope.projectGuid,
+                paymentDay: $scope.selectedPaymentDay
+            });
+        }
+        $scope.setAutoCalculateData = function () {
+            cnabsAjax("获取设置初始值", "/UserActionHabits/Load", null, function (data) {
+                $scope.remainingPrincipalInput = data.EditAssetCashflow.EditPrincipal.AutoSyncPrincipalBalance;
+                $scope.principalInput = data.EditAssetCashflow.EditPrincipalBalance.AutoSyncPrincipal;
+                cnabsDlgYesNo('divAutoCalculateDataDlg', '设置', function () {
+                    var params = {
+                        autoSyncPrincipalBalance: $scope.remainingPrincipalInput,
+                        autoSyncPrincipal: $scope.principalInput,
+                    };
+                    cnabsAjax("保存设置", "/UserActionHabits/SaveEditAssetCashflowSetting", params, function () { })
+                }, 'auto', 'auto');
+            })
+        }
+        $scope.editPrincipalAndInterest = function () {
+            $scope.updateCurrPeriodAssetCashflowTable(null, null, true);
+            $scope.isShowErrorMsgPrincipal = false;
+            $scope.isShowErrorMsgInterest = false;
+            cnabsDlgYesNo('divEditPrincipalAndInterest', '编辑', function () {
+                $scope.isShowErrorMsgPrincipal = false;
+                $scope.isShowErrorMsgInterest = false;
+                if (!cnabsIsFloat($scope.coverPrincipal)) {
+                    $scope.isShowErrorMsgPrincipal = true;
+                    $scope.errorMsgPrincipal = '请输入数字！';
+                }
+                if (!cnabsIsFloat($scope.coverInterest)) {
+                    $scope.isShowErrorMsgInterest = true;
+                    $scope.errorMsgInterest = '请输入数字！';
+                }
+                $scope.$apply();
+                if ($scope.isShowErrorMsgPrincipal || $scope.isShowErrorMsgInterest) {
+                    return false;
+                }
+                var params = {
+                    projectGuid: $scope.projectGuid,
+                    paymentDay: $scope.selectedPaymentDay,
+                    principal: $scope.coverPrincipal,
+                    interest: $scope.coverInterest,
+                    enableOverride: $scope.forceCoverInput,
+                };
+                cnabsAjax("保存本金和利息", "/ProductDashboard/SaveInterestPricipal", params, function () {
+                    $scope.updateCurrPeriodAssetCashflowTable(null, null, true);
+                })
+            }, 'auto', 'auto');
+        }
+
+        $rootScope.ReloadAssetflowBoard = function (projectGuid, paymentDay) {
+            $scope.userCustomCashflow = false;
+            $scope.isFirstLoadCurrPeriodAssetCashflowTable = true;
+            if ($scope.assetCashFlowView == 'part') {
+                showChange = true;
+                if ($scope.selectedACFLabel == 'Details') {
+                    $scope.getDetailsData();
+                }else {
+                    $scope.getCurrPeriodAssetCashflowTable();
+                    $scope.isFirstLoadCurrPeriodAssetCashflowTable = false;
+                }
+            } else {
+                $scope.getAssetCashflow();
+            }
+        }
+
+        $rootScope.ReloadAssetflowBoard();
+
+    })
+    app.service('projectHelper', function () {
+
+        this.reload = function (projectGuid) {
+            var projectInfo = null;
+            cnabsAjaxSync("GetProjectsNameAndGuid", "/MyProjects/GetProjects", { projectType: '存续期' }, function (data) {
+                var selectedItem = null;
+                var paymentDays = null;
+                $.each(data, function () {
+                    if (this.guid == projectGuid) {
+                        selectedItem = this;
+                    }
+                })
+
+                if (selectedItem == null) {
+                    if (data.length) {
+                        selectedItem = data[0];
+                    }
+                }
+                cnabsAjaxSync("获取产品偿付期信息", "/Schedule/GetPaymentDays", { projectGuid: selectedItem.guid }, function (data) {
+                    paymentDays = data.paymentDays;
+                }, function (errorInfo) {
+                    console.log(errorInfo)
+                });
+
+                projectInfo = { items: data, selectedItem: selectedItem, paymentDays: paymentDays };
+            });
+            return projectInfo;
+        }
+
+        this.GetPaymentDays = function (projectGuid) {
+            var paymentDays = null;
+            cnabsAjaxSync("获取产品偿付期信息", "/Schedule/GetPaymentDays", { projectGuid: projectGuid }, function (data) {
+                paymentDays = data.paymentDays;
+            }, function (errorInfo) {
+                console.log(errorInfo)
+            });
+            return paymentDays;
+        }
+    });
+</script>

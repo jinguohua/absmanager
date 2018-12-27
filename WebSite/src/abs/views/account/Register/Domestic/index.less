@@ -1,0 +1,57 @@
+@import "../../../../../styles/theme/default.less";
+
+.abs-domestic {
+  .ant-form {
+    &-item {
+      &-label {
+        line-height: 14px;
+        height: 14px;
+        margin-bottom: 8px;
+      }
+      &-required, label {
+        color: @abs-domestic-ant-form-label-color;
+      }
+    }
+
+    &-explain {
+      position:absolute;
+      top:-20px;
+      right: 0;
+    }
+  }
+  &-steps {
+    .ant-steps {
+      margin-bottom: 20px;
+    }
+  }
+  .abs-input {
+    margin: 0;
+    i {
+      color: @abs-domestic-input-i-color;
+    }
+  }
+  &-input {
+    input {
+      width: 420px;
+      height: 48px;
+    }
+  }
+  &-select {
+    .ant-select-selection {
+      width: 420px !important;
+      height: 48px !important;
+    }
+    .ant-select-selection__rendered {
+      line-height: 48px;
+    }
+  }
+
+  &-form {
+		.ant-form-item {
+			margin-bottom: 14px;
+		}
+		.form-item-submit {
+			margin-top: 28px;
+		}
+	}
+}

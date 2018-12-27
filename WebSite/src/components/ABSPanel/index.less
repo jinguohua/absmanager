@@ -1,0 +1,49 @@
+@import '../../styles/theme/default.less';
+
+.abs-panel {
+  margin-bottom: 6px;
+  &-header {
+    .abs-panel-title {
+      position: relative;
+      display: inline-block;
+      height: 24px;
+      line-height: 24px;
+      padding-left: 20px;
+      padding-right: 8px;
+      background-color: @abs-panel-bg;
+      &:after {
+        position: absolute;
+        right: -17px;
+        top: 0;
+        content: '';
+        width: 0;
+        height: 0;
+        border-bottom: 24px solid @abs-panel-bg;
+        border-right: 17px solid transparent;
+      }
+    }
+    .abs-comment{
+      float: right;
+      margin-right:20px;
+    }
+  }
+  &-content {
+    position: relative;
+    padding: 20px;
+    border: 1px solid @abs-panel-border-color;
+    overflow: hidden;
+  }
+  &.abs-panel-no-padding {
+    .abs-panel-content {
+      padding: 0;
+    }
+  }
+  &.abs-panel-loading {
+    .abs-panel-content {
+      display: flex;
+      justify-content: center;
+      height: 200px;
+      align-items: center;
+    }
+  }
+}

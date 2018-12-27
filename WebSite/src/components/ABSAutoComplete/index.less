@@ -1,0 +1,58 @@
+@import "../../styles/theme/default.less";
+
+.abs-auto-complete {
+  .ant-select-auto-complete.ant-select-lg .ant-input {
+    background-color: @grey-9;
+    height: 40px;
+    border: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: @white-1;
+    transition: all .3s ease;
+    border: 1px solid transparent;
+    box-shadow: none;
+    &:hover {
+      border: 1px solid @grey-4;
+    }
+    &:focus {
+      border: 1px solid @orange-1;
+    }
+  }
+
+  .ant-input-affix-wrapper .ant-input-prefix, .ant-input-affix-wrapper .ant-input-suffix {
+    color: @grey-2;
+  }
+
+  .ant-select-auto-complete.ant-select-lg .ant-select-selection__rendered {
+    line-height: 36px;
+  }
+}
+.abs-auto-complete-dropdown {
+  background-color: transparent;
+  border: 1px solid @grey-7;
+  .ant-select-dropdown-menu-item {
+    background-color: @black-6;
+    color: @white-1;
+    font-size: 14px;
+    border-bottom: 1px solid @grey-7;
+    &:hover {
+      background: @grey-7;
+    }
+    .ant-row {
+      &:last-child {
+        color: @grey-2;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .ant-select-dropdown-menu-item-selected {
+    background-color: @black-6;
+    color: @white-1;
+    font-size: 14px;
+    &:hover {
+      background: @grey-7;
+      color: @white-1;
+    }
+  }
+}

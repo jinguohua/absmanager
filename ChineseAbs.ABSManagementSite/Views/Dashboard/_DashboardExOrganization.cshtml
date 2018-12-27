@@ -1,0 +1,377 @@
+﻿<style>
+    .DashboardExOrganization{
+        padding:10px 20px 10px 20px;
+    }
+    .DashboardExOrganization .projectSeries{
+        height:60px;line-height:50px; overflow:hidden;
+    }
+    .DashboardExOrganization .projectSeriesTitle{
+        float:left;color:#b7afa5;font-size:14px;
+    }
+    .DashboardExOrganization .organizationName,.DashboardExOrganization .contactName,.DashboardExOrganization .contactNote{
+        overflow:hidden;
+    }
+    .DashboardExOrganization .organizationName div{
+        width:170px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;float:left;margin-right:10px;
+    }
+    .DashboardExOrganization .contactName div{
+        width:90px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;float:left;margin-right:10px;
+    }
+    .DashboardExOrganization .email div{
+        width:150px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;float:left;margin-right:10px;
+    }
+    .DashboardExOrganization .cellPhone div{
+        width:150px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;float:left;margin-right:10px;
+    }
+    .DashboardExOrganization .contactNote div{
+        width:150px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;float:left;margin-right:10px;
+    }
+    .editContactBtn {
+        cursor:pointer;
+    }
+    .deleteContactBtn{
+        margin-left:10px;cursor:pointer;
+    }
+    .btn_float_style {
+        float: left;
+        margin-right: 10px;
+    }
+    #importOrganizationDialogId {
+        display:none;
+    }
+    #uploadNewOrganizationFile {
+        margin-top: 15px;
+    }
+        #uploadNewOrganizationFile .cnabs_file_picker_preview {
+            width:479px;
+        } 
+    .importOrganDiv {
+        font-size: 12px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+    .importOrganization {
+        color:#999999;
+        height:30px;
+        line-height:24px;
+    }
+    .organizationModel {
+        background-image:url(../../Images/Common/excel.png);
+        background-size:16px 16px;
+        background-repeat:no-repeat;
+        padding-left:19px;
+        margin-left:3px;
+        cursor:pointer;
+    }
+</style>
+<div ng-controller="DashboardExOrganization" class="DashboardExOrganization">
+    <div class="projectSeries">
+        <span class="projectSeriesTitle">选择项目：</span>
+        <select style="width:213px;height:28px;border-radius:2px;margin-left:3px;" ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid)" ng-model="projectSeriesInfo.selectedItem" ng-options="x.Name for x in projectSeriesInfo.items"></select>
+        <span class="cnabs_btn_add left" style="margin-top:13px;" ng-click="createContact()">增加机构</span>
+        <div class='right' style="margin-top:13px;">
+            <div class="cnabs_btn left btn_float_style" ng-click="importTable()">导入</div>
+            <div class="cnabs_btn left btn_float_style" ng-click="exportTable()">导出</div>
+        </div>
+    </div>
+    <div style="min-height:621px;">
+        <table class="table_v2 alone hover" style="width:100%;margin:0px;">
+            <tr>
+                <td>相关方</td>
+                <td>职责</td>
+                <td>联系人</td>
+                <td>邮箱</td>
+                <td>电话</td>
+                <td>备注</td>
+                <td>操作</td>
+            </tr>
+            <tr ng-cloak ng-repeat="contact in contacts">
+                <td class="organizationName" title="{{contact.organizationName}}"><div>{{contact.organizationName}}</div></td>
+                <td style="width:105px;">{{contact.dutyType}}</td>
+                <td class="contactName" title="{{contact.name}}"><div>{{contact.name}}</div></td>
+                <td class="email" title="{{contact.email}}"><div>{{contact.email}}</div></td>
+                <td class="cellPhone" title="{{contact.cellPhone}}"><div>{{contact.cellPhone}}</div></td>
+                <td class="contactNote" title="{{contact.note}}"><div>{{contact.note}}</div></td>
+                <td style="width:100px;">
+                    <span ng-click="editContact(contact.guid)" class="editContactBtn cnabs_green">编辑</span>
+                    <span ng-click="removeContact(contact.guid, contact.organizationName, contact.name)" class="deleteContactBtn cnabs_red">删除</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="importOrganizationDialogId" class="cnabs_dialogCloth">
+        <div id="uploadNewOrganizationFile"></div>
+        <div class="importOrganDiv">
+            <span class="importOrganization">您可以上传Excel文件，实现批量导入机构到系统，Excel文件格式参考:</span>
+            <span class="organizationModel cnabs_yellow" ng-click="downloadOrganizationModel()">参与机构模板</span>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript">
+        var newContactInDialog = [{
+            title: "相关方",
+            type: "text",
+            elementId: "organizationName",
+            value: "",
+            placeHolder: "请填写相关方",
+            limit: {
+                type: "rangelength",
+                min: "1",
+                max: "50"
+            }
+        }, {
+            title: "职责",
+            type: "select",
+            elementId: "dutyType",
+            OptionArray: [["原始权益人", "原始权益人"], ["底层资产", "底层资产"], ["托管行", "托管行"],
+                ["登记托管机构", "登记托管机构"], ["交易场所", "交易场所"], ["计划管理人", "计划管理人"],
+                ["投资人", "投资人"], ["评级机构", "评级机构"], ["担保人", "担保人"],
+                ["律师事务所", "律师事务所"], ["会计师事务所", "会计师事务所"],
+                ["财务顾问", "财务顾问"], ["差额支付承诺人", "差额支付承诺人"], ["承销商", "承销商"],
+                ["发起机构", "发起机构"], ["发行人", "发行人"], ["监管银行", "监管银行"],
+                ["评估机构", "评估机构"], ["受托机构", "受托机构"], ["税务顾问", "税务顾问"],
+                ["委托机构", "委托机构"], ["项目安排人", "项目安排人"], ["证券化服务商", "证券化服务商"],
+                ["资产服务机构", "资产服务机构"], ["资金保管机构", "资金保管机构"], ["其它", "其它"]]
+        }, {
+            title: "联系人",
+            type: "text",
+            elementId: "name",
+            placeHolder: "请填写联系人",
+            limit: {
+                type: "rangelength",
+                min: "1",
+                max: "30"
+            }
+        }, {
+            title: "邮箱",
+            type: "text",
+            elementId: "email",
+            limit: {
+                type: 'email',
+                required:false
+            }
+        }, {
+            title: "电话",
+            type: "text",
+            elementId: "cellPhone",
+            limit: {
+                type: "rangelength",
+                max: "30"
+            }
+        }, {
+            title: "备注",
+            type: "textarea",
+            elementId: "note",
+            limit: {
+                type: "rangelength",
+                max: "400"
+            }
+        }]
+
+        angular.module('DashBoard').controller('DashboardExOrganization', function ($scope, $rootScope, projectSeriesHelper,locationURL) {
+            $rootScope.$on("UpdateDashboardExOrganization", function (event, projectSeriesGuid) {
+                $scope.ReloadPage(projectSeriesGuid);
+            });
+
+            $scope.ReloadPage = function (projectSeriesGuid) {
+                if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                    projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+                }
+                $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+
+                cnabsAjax("获取机构列表", "/Contact/GetContacts", { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid }, function (data) {
+                    $scope.contacts = eval(data);
+                    $scope.$apply();
+                })
+            }
+
+            $scope.projectSeriesChange = function (projectSeriesGuid) {
+                $scope.ReloadPage(projectSeriesGuid);
+                $rootScope.$emit("UpdateCurrentProjectSeriesGuid", projectSeriesGuid);
+            }
+
+            $scope.removeContact = function (contactGuid, orgName, contactName) {
+                cnabsAutoDlgYesNo(null, "删除联系人", function (data) {
+                    var param = {
+                        contactGuid: contactGuid
+                    };
+
+                    cnabsAjax("删除联系人", "/Contact/RemoveContact", param, function (data) {
+                        $scope.ReloadPage();
+                    })
+                }, "确认删除相关方[" + orgName + "]中的联系人[" + contactName + "]");
+            }
+
+            $scope.importTable = function () {
+                $scope.selectedFiles = [];
+                $(".importOrganDiv").css("margin-top", "-10px");
+                $("#importOrganizationDialogId").css("display", "block");
+                var filePicker = new CnabsFilePicker();
+                filePicker.init("uploadNewOrganizationFile", {
+                    buttonText: '选择文件',
+                    maxFileCount: 1,
+                    limitFileTypes: ['xlsx'],
+                    onChange: function (files) {
+                        $scope.selectedFiles = files[0];
+                        if (files.length==1) {
+                            $(".importOrganDiv").css("margin-top", "10px");
+                        }
+                        if (files.length == 0) {
+                            $(".importOrganDiv").css("margin-top", "-10px");
+                        }
+                    }
+                })
+                cnabsDlgYesNo('importOrganizationDialogId', "导入", function () {
+                    var formDataImportDocument = new FormData();
+                    formDataImportDocument.append("files", $scope.selectedFiles);
+                    formDataImportDocument.append("projectGuid", $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+                    cnabsAjaxUploadFile("导入机构", "/Contact/ImportTable", formDataImportDocument, function (count) {
+                        var msg = '文件导入成功, 共添加了' + count + '条工作';
+                        cnabsMsgSuccess(msg);
+                        $scope.ReloadPage();
+                    });
+                },'auto','auto')
+            }
+
+            $scope.exportTable = function () {
+                var table = $scope.getContactTable($scope.contacts);
+                var tableBodyJson = JSON.stringify(table);
+                var param = {
+                    tableBodyJson: tableBodyJson,
+                };
+                cnabsAjax("导出工作列表", "/Contact/ExportTable", param, function (guid) {
+                    cnabsDownloadURL('/Download/Index?guid=' + guid);
+                });
+            }
+
+            $scope.getContactTable = function (contactTable) {
+                var newTable = [];
+                $.each(contactTable, function (index, item) {
+                    var row = {
+                        相关方: item.organizationName,
+                        职责: item.dutyType,
+                        联系人: item.name,
+                        邮箱: item.email,
+                        电话: item.cellPhone,
+                        备注: item.note
+                    };
+                    newTable.push(row);
+                });
+                return newTable;
+            }
+            $scope.createContact = function () {
+                if ($scope.projectSeriesInfo.selectedItem.Guid == '') {
+                    cnabsMsgError("请先创建项目");
+                    return;
+                }
+
+                cnabsAutoDlgYesNo(newContactInDialog, "增加新机构", function (data) {
+                    var param = {
+                        projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                        organizationName: data.organizationName,
+                        email: data.email,
+                        dutyType: data.dutyType,
+                        name: data.name,
+                        cellPhone: data.cellPhone,
+                        note: data.note
+                    };
+
+                    cnabsAjax("增加新机构", "/Contact/CreateContact", param, function (data) {
+                        $scope.ReloadPage();
+                    })
+                });
+            }
+
+            $scope.editContact = function (contactGuid) {
+                cnabsAjax("获取机构信息", "/Contact/GetContact", { contactGuid: contactGuid }, function (data) {
+                    var editContactInDialog = [{
+                        title: "相关方",
+                        type: "text",
+                        elementId: "organizationName",
+                        value: data.organizationName,
+                        placeHolder: "请填写相关方",
+                        limit: {
+                            type: "rangelength",
+                            min: "1",
+                            max: "50"
+                        }
+                    }, {
+                        title: "职责",
+                        type: "select",
+                        elementId: "dutyType",
+                        value:data.dutyType,
+                        OptionArray: [["原始权益人", "原始权益人"], ["底层资产", "底层资产"], ["托管行", "托管行"],
+                            ["登记托管机构", "登记托管机构"], ["交易场所", "交易场所"], ["计划管理人", "计划管理人"],
+                            ["投资人", "投资人"], ["评级机构", "评级机构"], ["担保人", "担保人"],
+                            ["律师事务所", "律师事务所"], ["会计师事务所", "会计师事务所"],
+                            ["财务顾问", "财务顾问"], ["差额支付承诺人", "差额支付承诺人"], ["承销商", "承销商"],
+                            ["发起机构", "发起机构"], ["发行人", "发行人"], ["监管银行", "监管银行"],
+                            ["评估机构", "评估机构"], ["受托机构", "受托机构"], ["税务顾问", "税务顾问"],
+                            ["委托机构", "委托机构"], ["项目安排人", "项目安排人"], ["证券化服务商", "证券化服务商"],
+                            ["资产服务机构", "资产服务机构"], ["资金保管机构", "资金保管机构"], ["其它", "其它"]]
+                    }, {
+                        title: "联系人",
+                        type: "text",
+                        elementId: "name",
+                        value: data.name,
+                        placeHolder: "请填写联系人",
+                        limit: {
+                            type: "rangelength",
+                            min: "1",
+                            max: "30"
+                        }
+                    }, {
+                        title: "邮箱",
+                        type: "text",
+                        elementId: "email",
+                        value:data.email,
+                        limit: {
+                            type: 'email',
+                            required:false
+                        }
+                    }, {
+                        title: "电话",
+                        type: "text",
+                        elementId: "cellPhone",
+                        value:data.cellPhone
+                    }, {
+                        title: "备注",
+                        type: "textarea",
+                        elementId: "note",
+                        value: data.note,
+                        limit: {
+                            type: "rangelength",
+                            max: "400"
+                        }
+                    }]
+                    cnabsAutoDlgYesNo(editContactInDialog, '修改机构信息', function (data) {
+                        var param = {
+                            contactGuid: contactGuid,
+                            organizationName: data.organizationName,
+                            email: data.email,
+                            dutyType: data.dutyType,
+                            name: data.name,
+                            cellPhone: data.cellPhone,
+                            note: data.note
+                        };
+                        cnabsAjax("修改机构信息", "/Contact/EditContact", param, function (data) {
+                            $scope.ReloadPage();
+                        })
+                    });
+                })
+            }
+
+            $scope.downloadOrganizationModel = function () {
+                var param = { exampleFileName: "参与机构模板" };
+                cnabsAjax("导出参与机构列表", "/Download/ExampleFile", param, function (guid) {
+                    cnabsDownloadURL('Download/Index?guid=' + guid);
+                })
+            }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Organization") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+        })
+    </script>

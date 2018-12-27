@@ -1,0 +1,60 @@
+﻿{
+	"name": "default",
+	"columnConfig": "default",
+	"configes": [{
+			"label": "利率分布",
+			"rules": [{
+					"name": "14%以下",
+					"condition": 'col1<0.14'
+				}, {
+					"name": "14%到50%",
+					"condition": "col1>=0.14 and col2<0.5"
+				}, {
+					"name": "其他",
+					"condition": 'col1>=0.14 and col2<0.5'
+				}
+			],
+			"outputs": [{
+					"label": "总本金",
+					"column": 'Value1',
+					"formula": 'sum(col2)'
+				}, {
+					"label": "总个数",
+					"column": 'Value2',
+					"formula": 'total'
+				}, {
+					"label": "加权期限",
+					"column": 'Value3',
+					"formula": 'sum(col2)'
+				}
+			]
+		}, {
+			"label": "地区分布",
+			"rules": [{
+					"name": "上海",
+					"condition": 'col10  = "上海"'
+				}, {
+					"name": "北京",
+					"condition": "col10  = '北京'"
+				}, {
+					"name": "其他",
+					"condition": 'col10 <> "上海" and col10 <> "北京"'
+				}
+			],
+			"outputs": [{
+					"label": "总本金",
+					"column": 'Value1',
+					"formula": 'sum(col2)'
+				}, {
+					"label": "总个数",
+					"column": 'Value2',
+					"formula": 'total'
+				}, {
+					"label": "加权期限",
+					"column": 'Value3',
+					"formula": 'sum(col2)'
+				}
+			]
+		}
+	]
+}

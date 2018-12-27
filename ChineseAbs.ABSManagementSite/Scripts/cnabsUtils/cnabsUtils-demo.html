@@ -1,0 +1,248 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="shortcut icon" href="https://www.cn-abs.com/fav/favicon.ico" type="image/x-icon">
+	<link href="../../Content/cnabsUtils/layout.css" rel="stylesheet">
+	<!-- <link href="../../Content/cnabsUtils/bootstrap-datepicker.css" rel="stylesheet" /> -->
+	<link href="../../Content/cnabsUtils/jquery-ui.css" rel="stylesheet">
+	<link href="../../Content/cnabsUtils/jquery-ui.icon-font.css" rel="stylesheet" >
+	<link href="../../Content/cnabsUtils/cnabsUtils.css" rel="stylesheet"><!--含dialog内容自动生成时的样式-->
+	<script src="../../Scripts/jquery-1.12.1.js"></script>
+	<script src="../../Scripts/jquery-ui-1.12.1.js"></script><!-- 识别dialog -->
+	<script src="../../Scripts/cnabsUtils/cnabsUtils.js"></script><!--含dialog内容自动生成函数 -->
+	<script src="../../Scripts/cnabsUtils/cnabsUtils.core.js"></script><!--含dialog内容自动生成函数 -->
+	<!-- <script src="../../Scripts/cnabsUtils/bootstrap-datepicker.min.js"></script>
+    <script src="../../Scripts/cnabsUtils/bootstrap-datepicker.zh-CN.min.js"></script>-->
+    
+	
+	<script src="../../Scripts/lodash/lodash.js"></script>
+	
+	<script src="../../Scripts/jquery.timeago.js"></script>
+	<script src="../../Scripts/jquery.timeago.zh-CN.js"></script>
+
+    <link rel="stylesheet" href="../../Content/paulkinzett-toolbar/jquery.toolbar.css">
+    <script src="../paulkinzett-toolbar/jquery.toolbar.js"></script>
+    <link rel="stylesheet" href="../../Content/cnabsUtils/cnabs-jquery-ui-datepick.css">
+    <script src="../../Scripts/cnabsUtils/cnabs-jquery-ui-datepick.js"></script>
+    <!--选择时间-->
+    <link href="../../Scripts/jquery-ui-timepicker-addon.min.css" rel="stylesheet">
+    <script src='../../Scripts/jquery-ui-timepicker-addon.min.js'></script>
+    <script src='../../Scripts/jquery-ui-timepicker-zh-CN.js'></script>
+
+</head>
+<body>
+<div class="label">dialog内容自动填充示例</div>
+<div class="panel">
+	<input id="dialog" class="button" type="button" value="触发dialog">
+    <input id="dialogNoDiv" class="button" type="button" value="触发dialogNoDiv">
+	<!-- dialog begin -->
+	<div id="dialogContent" class="cnabs_dialogCloth" style="display:none;">
+		<div>自定义内容</div>
+		<div id="divCreateContentAuto"></div>
+	</div>
+	<!-- dialog end -->
+</div>
+<div class="label">cnabsToolbar(悬浮icon效果)</div>
+<div class="panel">
+	<h3>需要引用：</h3>
+	1. jquery-ui.css<br>
+	2. jquery-ui.icon-font.css<br>
+	3. jquery-1.12.1.js<br>
+	4. jquery-ui-1.12.1.js<br>
+	5. cnabsUtils.css<br>
+	6. cnabsUtils.js<br>
+	<h3>demo如下：</h3>
+	<table class="fixedTable">
+		<tr>
+			<td>name</td>
+			<td>sex</td>
+		</tr>
+		<tr>
+			<td class="userName">
+				Lily
+			</td>
+			<td>女</td>
+		</tr>
+		<tr>
+			<td class="userName">
+				Joy
+			</td>
+			<td>男</td>
+		</tr>
+	</table>
+<!-- 	<div id="user-toolbar-options" class="hidden">
+	    <a href="javascript:void(0)"><i class="ui-icon ui-icon-star cnabs_smallImageSize"></i></a>
+	    <a href="javascript:void(0)"><i class="ui-icon ui-icon-edit cnabs_smallImageSize"></i></a>
+	    <a href="javascript:void(0)"><i class="ui-icon ui-icon-delete cnabs_smallImageSize"></i></a>
+	</div> -->
+</div>
+
+<abbr class="timeago" title="2008-07-17T09:24:17Z">2008-07-17T09:24:17Z</abbr>
+<abbr class="timeago" title="2017-07-17T09:24:17Z">2017-07-17T09:24:17Z</abbr>
+<abbr class="timeago" title="2016-07-17T09:24:17Z">2016-07-17T09:24:17Z</abbr>
+<abbr class="timeago" title="2017-3-6T09:24:17Z">2017-3-6T09:24:17Z</abbr>
+<abbr class="timeago" title="2017-3-5T09:24:17Z">2017-3-5T09:24:17Z</abbr>
+<abbr class="timeago" title="2017-3-7T09:24:17Z">2017-3-7T09:24:17Z</abbr>
+<abbr class="timeago" title="2017-3-6 14:20:17">2017-3-6 15:50:17</abbr>
+<abbr class="timeago" title="2017-3-6T15:59:17Z">2017-3-7</abbr>
+<abbr class="timeago" title="2017-3-8 13:26:00">2017-3-8 13:26:00</abbr>
+<abbr class="timeago" title="2017-3-8 12:26:00">2017-3-8 12:26:00</abbr>
+</body>
+
+<script>
+var autoDiv = new CnabsAutoDiv("divCreateContentAuto");
+// dialog内容初始化，若无初始值，value字段可以不存在;
+$(document).ready(function () {
+    
+	
+	console.log(cnabsParseDateArray('2017-05-6,2016-9/2,1990z0809,2015/1/6，2013/8/8\r2013/8/9\n2013/8/10,\n2013/8/11.2013/8/11\t2013/8/11'));
+
+
+	jQuery("abbr.timeago").timeago();
+
+	var controls = [
+			{
+				title: "账户金额",
+				type: "text", //input type="text"
+				elementId: "ab",
+				value:"123456",//input框初始值
+				placeHolder:"请填写正整数",//输入框内提示内容，当存在value时,则不显示；
+				limit:{
+				//判断是否为数字,支持负数以及浮点型数据;
+					type:"number",
+					isDigit:true,//判断是否为整数;
+					max:10,
+					min:1
+				}
+			}, {
+				title: "请您选择",
+				type: "select",
+				elementId: "ac",
+				value:"b", //初始状态默认选中的option的value值
+				OptionArray: [["a","1111"], ["b","2222"], ["c","3333"]],//所有option值
+				//也支持下述数据格式：
+				// value:"2222", //初始状态默认选中的option的值
+				// OptionArray: ["1111","2222","3333"],//所有option值
+			}, {
+				title: "自动生成",
+				type: "checkbox",
+				elementId: "ad",
+				value: false,//初始状态未选中为false，选中为true
+				limit:{
+					"type":"check"//判断是否勾选，不勾选会出警告！
+				}
+			},{
+				title: "开始日期",
+				type: "datetime", //选择日期input框；input class="date" type="text"
+				elementId: "am",
+				value: "",//初始值
+				placeHolder:"请填写正确日期",
+				limit:{
+					//"type":"dateISO"//判断日期格式必须为YYYY-MM-DD
+				}
+			},{
+				title: "截止日期",
+				type: "date",
+				elementId: "mm",
+				value: "2016-09-07",
+				placeHolder:"请填写正确日期"
+			},{
+				title: "您的性别",
+				type: "radio",
+				elementId: "as",
+				value:"女",
+				OptionArray: ["男", "女"],
+				// limit:{
+				//  	type:"custom",//自定义验证函数
+				// 	callback:DefineValidate
+				// }
+			}, {
+				title: "请您评论",
+				type: "textarea",
+				elementId: "aq",
+				value:"我有一个梦想~~~",
+				placeHolder:"说点什么吧",
+				limit:{
+					type:"rangelength",//判断输入框字符数，可设置最大最小值;
+					min:"2",//不可为空时，min值设置为1，max不设置;
+					max:"5"
+				}
+			}, {
+                title: "新组名称",
+                type: "label",
+                elementId: "id",
+                value: "新组名称新组名称新组名称新组名称新组名称新组名称新组名称新组名称新组名称新组名称新组名称",
+                ellipsis:false//单行省略号形式呈现
+
+            }
+		];
+	autoDiv.init(controls);//填充dialog
+ 	function DefineValidate(val,title){
+ 		//val为用户输入值；
+ 		//自定义验证函数，返回值必须是个对象{verdict:true/false,msg:"此活动只限男性参与！"};
+ 	}
+
+	$("#dialog").click(function () {
+		cnabsDlgYesNo('dialogContent', '创建产品', function () {
+			//autoDiv.validate(controls,true)为检验函数，设置为true时，可出现警告！
+			if(!autoDiv.validate(controls,true)){
+				return false;
+			};
+			var returnValue = autoDiv.getUIValue();//点确定后返回用户输入值
+			console.log(returnValue);
+
+		}, "auto", "auto");
+	})
+	
+	$("#dialogNoDiv").click(function () {
+	    var controls = [
+        {
+            title: "文档名称",
+            type: "text",
+            elementId: "documentName",
+            value: "",
+            placeHolder: "例如: 收益分配报告",
+        },
+        {
+            title: "文件类型",
+            type: "select",
+            elementId: "fileType",
+            value: "Forward",
+            OptionArray: [["Word", "Word"], ["Excel", "Excel"], ["PDF", "PDF"],
+                ["Others", "其它"]]
+        }
+	    ]
+
+	    cnabsAutoDlgYesNo(controls, 'Test', function (data) {
+	        alert(data.documentName + data.fileType);
+	    }, "是否确认修改XXX?");
+	})
+})
+// cnabsToolbar（悬浮icon）demo开始
+
+    $(function () {
+        $('.userName').toolbar({
+            //content: '#user-toolbar-options',
+            position: 'top',
+           	icon:[{name:'edit',callback:test},
+           		  {name:'close',callback:test3},
+           		  {name:'check',callback:test2}
+           		 ]
+        });
+    });
+    function test(currentElement,currentIcon) {
+        alert("编辑")
+    }
+    function test2(currentElement,currentIcon) {
+        alert("确定")
+    }
+    function test3(currentElement,currentIcon) {
+        alert("关闭")
+    }
+
+// cnabsToolbar（悬浮icon）demo结束
+
+</script>
+</html>

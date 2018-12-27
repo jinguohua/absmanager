@@ -1,0 +1,24 @@
+@import '../../styles/theme/default.less';
+
+.abs-product-page-title {
+  display: flex;
+  justify-content: space-between;
+  background-color: @abs-page-title-bg;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  height: 80px;
+  border-bottom: 1px solid @abs-page-title-bottom-border-color;
+  .abs-product-page-content {
+    border-left: 8px solid @abs-page-title-border-color;
+    padding-left: 12px;
+    &-title {
+      color: @abs-page-title-content-title-color;
+      font-size: @font-l;
+    }
+    &-subtitle {
+      color: @abs-page-title-content-subtitle-color;
+      font-size: @font-s;
+    }
+  }
+}

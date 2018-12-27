@@ -1,0 +1,28 @@
+@import "../../styles/theme/default.less";
+
+.abs-countdown {
+  width: 105px;
+  height: 48px;
+  background-color: @blue-1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: @blue-2;
+  }
+
+  &-wait {
+    background-color: @grey-3;
+    cursor: default;
+
+    &:hover {
+      background-color: @grey-3;
+    }
+  }
+
+  &-text {
+    font-size: @font-m;
+  }
+}

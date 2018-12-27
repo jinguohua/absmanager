@@ -1,0 +1,211 @@
+@import "../../../styles/theme/default.less";
+
+// 一级菜单
+.abs-menu {
+  .ant-menu {
+  	width: 100%;
+  	height: 60px;
+  	line-height: 60px;
+  	background: @abs-header-menu-bg-color;
+  	color: @abs-header-menu-item-color;
+  	display: flex;
+  	font-size: @abs-header-menu-item-font-size;
+  	&-item {
+  	  border:none !important;
+  	  margin-bottom: 20px;
+  	  &:hover {
+  	  	color: @abs-header-menu-item-hover-color;
+  	  }
+  	  &:visited {
+  	  	color: @abs-header-menu-item-hover-color;
+			}
+			&-selected {
+				color: @abs-header-menu-item-hover-color;
+			}
+			&-active {
+					color: @abs-header-menu-item-hover-color !important;
+			}
+  	}
+		
+		&-submenu {
+			border:none !important;
+			&:hover {
+					color: @abs-header-menu-item-hover-color;
+			}
+			&:visited {
+					color: @abs-header-menu-item-hover-color;
+			}
+			&-title {
+					padding: 0 12px;
+					height: 100%;
+					overflow: hidden;
+					&:hover {
+							color: @abs-header-menu-item-hover-color;
+					}
+			}
+			&-selected {
+					color: @abs-header-menu-item-hover-color;
+			}
+			&-active {
+					color: @abs-header-menu-item-hover-color !important;
+			}
+			&-open {
+					color: @abs-header-menu-item-hover-color;
+			}
+		}
+		&-horizontal {
+			border-bottom:1px solid @abs-header-menu-horizontal-border-color;
+			.ant-menu-item {
+				color: @abs-header-menu-item-color;
+				position: relative;
+				height: 60px;
+				a {
+					color: inherit;
+				}
+				:hover {
+					color: @abs-header-menu-item-hover-color;
+				}
+				&-selected {
+					color: @abs-header-menu-item-hover-color;
+				}
+			}
+			&-active {
+					border-bottom:1px solid @abs-header-menu-horizontal-border-color;
+			}
+	
+		}
+	}
+	&-submenu {
+		text-align: center;
+		.abs-reddot {
+			margin-right: 3px;
+			margin-bottom: 2px;
+		}
+		&-title{
+			height: 60px;
+			display: inline-block;
+			position: relative;
+		}
+		&-arrow {
+			background: #121821 ;
+			width: 16px;
+			height: 16px;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+			position: absolute;
+			display: none;
+			border-color: transparent;
+			border-style: solid;
+			bottom:-8px;
+			border-left:1px solid @abs-header-menu-horizontal-border-color;
+			border-top:1px solid @abs-header-menu-horizontal-border-color;
+			margin-left: auto;
+			margin-right: auto;
+			left: 0;
+			right: 0;
+		}
+		&-arrow-active {
+			display: block;
+		}
+		&-arrow-page {
+			background: @abs-header-menu-arrow-page-bg-color;	
+		}
+		&-arrow-home {
+			background: @abs-header-menu-arrow-home-bg-color;
+			width: 15px;
+			height: 15px;
+		}
+		&-arrow-menu {
+			background: @abs-header-menu-submenu-popup-bg-color;
+		}
+	}
+}
+
+// 二级菜单
+.abs-menu-submenu-popup{
+  .ant-menu {
+  	z-index: 999;
+  	background-color: @abs-header-menu-submenu-popup-bg-color;
+  	border-radius: 2px;
+  	color: @abs-header-menu-item-color;
+  	border: 1px solid @abs-header-menu-horizontal-border-color;
+  	border-top: none;
+		padding: 28px 0 8px 0;
+  	&-item-group {
+  	  float: left;
+  	  min-width: 140px;
+  	  border-right: 1px solid @abs-header-ant-menu-item-group-border-color;
+  	  padding: 0;
+  	  &:last-child {
+  	  	border-right: none;
+  	  }
+  	  &-title {
+  	  	font-size: @abs-header-ant-menu-item-group-item-font-size;
+  	  	color: @abs-header-ant-menu-item-group-title-color;
+  	  	padding: 0 20px;
+  	  	margin-bottom: 28px;
+  	  	font-weight: bold;
+  	  }
+  	  &-list {
+  	  	.ant-menu-item {
+					padding: 0 20px;
+					margin-bottom: 20px;
+					line-height:15px;
+					height: 15px;
+					font-size: @abs-header-ant-menu-item-group-item-font-size;
+					background: inherit;
+					a {
+						color: @abs-header-menu-item-color;
+						&:hover {
+							color: @abs-header-menu-item-hover-color;
+						}
+					}
+					&:hover {
+						color: @abs-header-menu-item-hover-color;
+						background: inherit;
+					}
+					&:visited {
+						color: @abs-header-menu-item-hover-color;
+						background: inherit;
+					}
+					&-selected {
+						color: @abs-header-menu-item-hover-color;
+						a {
+							color: @abs-header-menu-item-hover-color;
+						}
+					}
+					&-active {
+						color: @abs-header-menu-item-hover-color !important;
+						a {
+							color: @abs-header-menu-item-hover-color;
+						}
+					}
+  	  	}
+  	  }
+  	}
+  }
+  .abs-menu-item {
+  	i {
+  	  margin-left: 3px;
+  	}
+  }
+  .abs-menu-item-group-title-name {
+  	display: inline;
+  }
+}
+.ant-menu-submenu-popup {
+	background-color: @abs-header-menu-submenu-popup-bg-color;
+}
+// 小红点
+.abs-reddot {
+  width: 6px;
+  height: 6px;
+  background-color: @abs-reddot-color;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 3px;
+}
+.visibility-hidden {
+	visibility: hidden;
+}

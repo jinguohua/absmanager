@@ -1,0 +1,602 @@
+﻿@model List<object>
+
+    @{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    @section styles{
+        <style type="text/css">
+            .selectProduct {
+                margin: 10px 20px;
+            }
+
+            a {
+                color: #ffc446;
+                text-decoration: none;
+                outline: none;
+            }
+
+            .font-weight {
+                font-weight: bold;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .emptySecurityTip {
+                margin: auto;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+            }
+
+            .emptySecurityTip:hover {
+                background: #666;
+            }
+
+            .productAccountTable td:nth-of-type(1), .productAccountTable th:nth-of-type(1) {
+                width: 170px;
+                min-width: 170px;
+                max-width: 170px;
+            }
+
+            .productAccountTable td:nth-of-type(2), .productAccountTable th:nth-of-type(2) {
+                width: 180px;
+                min-width: 180px;
+                max-width: 180px;
+                padding-left: 10px;
+            }
+
+            .productAccountTable td:nth-of-type(3) {
+                width: 140px;
+                min-width: 140px;
+                max-width: 140px;
+                padding-right: 32px;
+            }
+
+            .productAccountTable th:nth-of-type(3) {
+                width: 170px;
+                min-width: 170px;
+                max-width: 170px;
+                padding-right: 64px;
+            }
+
+            .productAccountTable td:nth-of-type(4), .productAccountTable th:nth-of-type(4) {
+                width: 178px;
+                min-width: 178px;
+                max-width: 178px;
+                padding-left: 63px;
+            }
+
+            .productAccountTable td:nth-of-type(5), .productAccountTable th:nth-of-type(5) {
+                width: 140px;
+                min-width: 140px;
+                max-width: 140px;
+            }
+
+            .accountTollalTable td:nth-of-type(1) {
+                width: 125px;
+                min-width: 125px;
+                max-width: 125px;
+            }
+
+            .accountTollalTable td:nth-of-type(2) {
+                width: 125px;
+                min-width: 125px;
+                max-width: 125px;
+            }
+
+            .accountTollalTable td:nth-of-type(3) {
+                width: 125px;
+                min-width: 125px;
+                max-width: 125px;
+            }
+
+            .tradeDetailTable td:nth-of-type(1) {
+                width: 140px;
+                min-width: 140px;
+                max-width: 140px;
+            }
+
+            .tradeDetailTable td:nth-of-type(2) {
+                width: 240px;
+                min-width: 240px;
+                max-width: 240px;
+                padding-left: 60px;
+            }
+
+            .tradeDetailTable td:nth-of-type(3) {
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
+            }
+        </style>
+    }
+
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/jqueryForm")
+    @Styles.Render("~/Content/cnabsDatepick")
+    @Scripts.Render("~/bundles/cnabsDatepick")
+
+    <script>
+        BindingElementActive(4, 2, 4);
+    </script>
+
+    <div class="tablecloth">
+        <header class="am_site_map_panel">
+            <span class="am_site_map_arrow">当前位置：</span>
+            <a class="am_site_map_label" href="/">解决方案</a>
+            <span class="am_site_map_arrow">></span>
+            <a class="am_site_map_label" href="/">存续期管理平台</a>
+            <span class="am_site_map_arrow">></span>
+            <span class="am_site_map_arrow" href="/BankAccount/">产品账户</span>
+        </header>
+        <div class="cnabs_div_v2">
+            <div ng-app="bankAccountManage" ng-controller="bankAccountManageCtrl" ng-cloak>
+                <div ng-show="projects.length <= 0" style="margin:auto;text-align:center;height:30px;line-height:30px;font-size: large">
+                    暂无相关产品，请联系管理员创建产品！
+                </div>
+                <div ng-show="projects.length > 0">
+                    <div style="float:left;margin-bottom:15px;margin-top:2px;">
+                        <span class="fixedColor">选择产品：</span>
+                        <select ng-options="project.ProjectName for project in projects track by project.ProjectGuid" ng-model="project" ng-change="projectChange()"></select>
+                    </div>
+
+                    <div class="cnabs_btn_add" ng-click="createBankAccount()">创建账户</div>
+
+                    <table ng-cloak class="table_v2 alone hover cnabs_v2_margin productAccountTable" style="width: 100%; margin-top:5px;">
+                        <tbody>
+                            <tr>
+                                <th class="text-left">账户名</th>
+                                <th class="text-right">账户号</th>
+                                <th class="text-right">当前余额(元)</th>
+                                <th class="text-left">最近更新时间</th>
+                                <th class="text-left">操作</th>
+                            </tr>
+                            <tr ng-repeat="account in bankAccounts">
+                                <td class="text-left cnabs_ellipsis" title="{{account.AccountName}}">{{account.AccountName}}</td>
+                                <td class="text-right" style="word-break: break-all;">{{account.BankAccount}}</td>
+                                <td class="text-right">
+                                    <span style="word-break: break-all;">{{account.AccountBalanceFormat}}</span>
+                                    <a ng-click="showUpdateAccountBalanceDialog(account)">更新</a>
+                                </td>
+                                <td class="text-left">{{account.Timestamp}}</td>
+                                <td class="text-left">
+                                    <a ng-click="showTransactionHistoryDialog(account)">查看明细</a>
+                                    <span ng-click="editBankAccount(account.AccountGuid, account.AccountType, account.AccountName, account.IssuerBank, account.BankAccount)"
+                                          class="cnabs_green cnabs_pointer" style="margin-left: 10px;">
+                                        编辑
+                                    </span>
+                                    <span ng-click="deleteBankAccount(account.AccountGuid, account.AccountName)" class="cnabs_red cnabs_pointer" style="margin-left: 10px;">
+                                        删除
+                                    </span>
+                                </td>
+                            </tr>
+
+                            @*<tr ng-show="bankAccounts.length == 0"><td colspan="5" class="text-center">当前产品没有账户信息，请联系机构管理员创建账户</td></tr>*@
+                        </tbody>
+                    </table>
+                    <div ng-if="project.ProjectGuid !== 'default'">
+                        <div class="emptySecurityTip" ng-show="bankAccounts.length == 0">
+                            <span>当前产品没有账户信息，请先创建账户</span>
+                        </div>
+                    </div>
+                    <!--Dialog begin-->
+                    <div id="updateAccountBalance" style="font-size: 13px;" class="hidden">
+                        <p>
+                            <span class="fixedColor">账户名：</span>
+                            <span>{{accountName}}</span>
+                        </p>
+                        <p>
+                            <span class="fixedColor">当前余额：</span>
+                            <span>{{accountBalance}}</span>&nbsp;元
+                        </p>
+                        <p>
+                            <span class="fixedColor">更新余额：</span>
+                            <input ng-model="newAccountBalance" type="text" name="updateAccountBalance" />
+                        </p>
+                        <p>
+                            <span class="fixedColor">查询时间：</span>
+                            <input class="date" id="date" type="text" name="asOfDate" ng-model="asOfDate" />
+                        </p>
+                        <span ng-show="!isValid" id="updateBalanceTip" class="cnabs_red">{{updateBalanceTip}}</span>
+                    </div>
+                    <div id="transactionHistory" class="hidden" style="font-size: 13px; margin: auto">
+                        <div style="margin-bottom: 10px">
+                            <span class="fixedColor">账户名：</span>
+                            <span>{{accountName}}</span>
+                        </div>
+                        <div>
+                            <fieldset style="width: 400px; margin-bottom: 15px;">
+                                <legend style="color: white">账户总览</legend>
+                                <table ng-cloak class="table_v2 hover cnabs_v2_margin accountTollalTable">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right font-weight">交易历史余额</td>
+                                            <td class="text-right font-weight">账户余额</td>
+                                            <td class="text-right font-weight">差额</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">{{accountStats.transactionBalance}}</td>
+                                            <td class="text-right">{{accountStats.accountBalance}}</td>
+                                            <td class="text-right cnabs_red">{{accountStats.differential}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <div style="margin-bottom: 10px">
+                                <fieldset style="color: white; width: 550px">
+                                    <legend style="color: white">交易明细</legend>
+                                    <span class="fixedColor" style="font-size: smaller">*交易金额中的"-"表示支出金额, "+"表示存入金额</span>
+                                    <div style="float: right; margin-bottom: 10px;">
+                                        <span class="fixedColor">显示：</span>
+                                        <select ng-options="item.value for item in filterConditions track by item.key" ng-model="filterCondition" ng-change="filterConditionChange()"></select>
+                                    </div>
+                                    <div style="width: 100%; height: 500px; overflow: auto">
+                                        <table ng-cloak class="table_v2 hover cnabs_v2_margin tradeDetailTable" style="width: 100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-right font-weight">交易金额</td>
+                                                    <td class="text-left font-weight">交易摘要</td>
+                                                    <td class="text-left font-weight">交易日期</td>
+                                                </tr>
+                                                <tr ng-repeat="transaction in accountTransactions">
+                                                    <td class="text-right">{{transaction.AmountFormat}}</td>
+                                                    <td class="text-left" style="word-break: break-all">{{transaction.Description}}</td>
+                                                    <td class="text-left">{{transaction.TransactionTime}}</td>
+                                                </tr>
+                                                <tr ng-show="accountTransactions.length == 0"><td colspan="4" class="text-center">无交易明细!</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                            <fieldset style="width: 350px">
+                                <legend style="color: white">增加交易明细</legend>
+                                <div>
+                                    <span class="fixedColor">交易金额：</span>
+                                    <input type="text" id="transactionAmount" ng-model="transactionAmount" name="transactionAmount" />
+                                    <input type="radio" name="operation" id="into" ng-model="operation" value="into" /><label for="into" class="fixedColor">存入</label>
+                                    <input type="radio" name="operation" id="tansferOut" ng-model="operation" value="tansferOut" /><label for="tansferOut" class="fixedColor">支出</label>
+                                </div>
+                                <div style="margin-top: 13px;">
+                                    <span class="fixedColor">交易日期：</span>
+                                    <input type="text" class="date" ng-model="transactionTime" name="transactionTime" />
+                                </div>
+                                <div style="margin-top: 13px;">
+                                    <span class="fixedColor" style="float: left">交易摘要：</span>
+                                    <textarea name="transactionDescription" ng-model="transactionDescription" style="width: 250px; height: 64px; resize: none; margin-left: 4px" maxlength="100"></textarea>
+                                    <div style="overflow: hidden">
+                                        <span ng-show="!isTransactionValid" class="cnabs_red" style="margin-top: 10px; float: left;">{{transactionTip}}</span>
+                                        <div class="cnabs_btn" style="margin-top: 10px; float: right" ng-click="addAccountTransaction()">增加记录</div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!--Dialog end-->
+                </div>
+            </div>
+        </div>
+        <script src="~/Scripts/cnabsUtils/addModDelUtil.js"></script>
+        <script>
+        var userapp = angular.module('bankAccountManage', []);
+        userapp.controller('bankAccountManageCtrl', function($scope, $http) {
+            $scope.projects = @Html.Raw(Json.Encode(Model));
+            if ($scope.projects.length <= 0) {
+                return;
+            }
+
+            $scope.filterConditions = [
+                { key : 'all', value : '所有'},
+                { key : 'lastWeek', value : '最近一周' },
+                { key : 'lastMonth', value : '最近一月'},
+                { key : 'lastHalfYear', value : '最近半年'},
+                { key : 'lastYear', value : '最近一年'}
+            ];
+
+            $scope.projectChange = function() {
+                $scope.reloadPage();
+                updateMenuLinkByProject($scope.project.ProjectGuid);
+            };
+
+            $scope.reloadPage = function () {
+                $.ajax({
+                    url: "/BankAccount/GetBankAccounts",
+                    data: { "projectGuid" : $scope.project.ProjectGuid },
+                    cache: false,
+                    success: function (res) {
+                        angular.forEach(res, function (item) {
+                            item.AccountBalanceFormat = $scope.formatCurrency(item.AccountBalance);
+                        });
+                        $scope.bankAccounts = res;
+                        $scope.$apply();
+                    }
+                });
+            }
+
+            $scope.showUpdateAccountBalanceDialog = function (account) {
+                $scope.isValid = true;
+                $scope.accountId = account.AccountId;
+                $scope.accountBalanceId = account.AccountBalanceId;
+                $scope.accountName = account.AccountName;
+                $scope.accountBalance = $scope.formatCurrency(account.AccountBalance);
+                $scope.newAccountBalance = "";
+                $scope.asOfDate = "";
+
+                cnabsDlgYesNo("updateAccountBalance", "余额更新", function() {
+                    var isValid = false;
+                    var errorTip = "";
+                    var updateBalance = $scope.newAccountBalance;
+                    var asOfDate = $scope.asOfDate;
+                    var parnt1 = /^[1-9]\d*(\.\d+)?$/;
+                    var parnt2 = /^[0](\.\d+)?$/;
+
+                    if (!updateBalance) {
+                        errorTip = "请填写更新余额!";
+                    } else if (isNaN(updateBalance)) {
+                        errorTip = "余额必须为合法数字!";
+                    } else if (!(parnt1.exec(updateBalance) || parnt2.exec(updateBalance))) {
+                        errorTip = "余额须为非负合法数字(例:1500、80.65)!"
+                    } else if (updateBalance > 100000000000) {
+                        errorTip = "更新余额过大，应不超过1000亿!";
+                    } else if (!asOfDate) {
+                        errorTip = "请填写银行账户余额查询时间!";
+                    } else if (!$scope.isValidDate(asOfDate)) {
+                        errorTip = "日期非法或格式错误(例2002-02-21)!";
+                    } else {
+                        isValid = true;
+                        $.ajax({
+                            url: "/BankAccount/UpdateAccountBalance",
+                            data: {
+                                'accountId': $scope.accountId,
+                                'accountBalanceId': $scope.accountBalanceId,
+                                'updateAccountBalance': $scope.newAccountBalance,
+                                'asOfDate': $scope.asOfDate
+                            },
+                            async: false,
+                            cache: false,
+                            success: function(res) {
+                                alertify.success("更新余额成功");
+                                $scope.reloadPage();
+                            },
+                            error: function() {
+                                $('#updateAccountBalance').dialog("close");
+                                alertify.error("服务器异常，更新余额失败！");
+                            }
+                        });
+                    }
+                    $scope.isValid = isValid;
+                    $scope.updateBalanceTip = errorTip;
+                    $scope.$apply();
+                    return isValid;
+                }, 'auto', 300);
+            };
+
+            $scope.filterConditionChange = function () {
+                $scope.getAccountTransactions($scope.accountId);
+            };
+
+            $scope.showTransactionHistoryDialog = function (account) {
+                $scope.transactionAmount = "";
+                $scope.transactionTime = "";
+                $scope.transactionDescription = "";
+                $scope.transactionTip = "";
+                $scope.operation = "into";
+                $scope.filterCondition = $scope.filterConditions[0];
+                $scope.accountName = account.AccountName;
+                $scope.accountId = account.AccountId;
+                $scope.accountBalance = account.AccountBalance;
+                $scope.getAccountTransactions(account.AccountId);
+                $scope.isTransactionValid = true;
+                cnabsDlg("transactionHistory","交易明細历史", "auto", 703, {my:"center",at:"top"});
+            };
+
+            $scope.getAccountTransactions = function (accountId) {
+                $.ajax({
+                    url: "/BankAccount/GetAccountTransactions",
+                    data: { 'accountId' : accountId, 'filterCondition' : $scope.filterCondition.key},
+                    async: false,
+                    cache: false,
+                    success: function (res) {
+                        var transactionBalance = 0;
+                        angular.forEach(res, function(item) {
+                            item.AmountFormat = item.Amount >= 0 ? "+ " + $scope.formatCurrency(item.Amount) : "- " + $scope.formatCurrency(Math.abs(item.Amount));
+                            item.Description = item.Description === "" ? "-" : item.Description;
+                            transactionBalance += item.Amount;
+                        });
+                        $scope.accountTransactions = eval(res);
+                        $scope.accountStats = {
+                            transactionBalance : $scope.formatCurrency(transactionBalance),
+                            accountBalance : $scope.formatCurrency($scope.accountBalance),
+                            differential : $scope.formatCurrency(Math.abs($scope.accountBalance - transactionBalance).toFixed(2))
+                        };
+                    }
+                });
+            };
+
+            $scope.addAccountTransaction = function () {
+                var transactionAmount = $scope.transactionAmount;
+                var transactionTime = $scope.transactionTime;
+                var parnt1 = /^[1-9]\d*(\.\d+)?$/;
+                var parnt2 = /^[0](\.\d+)?$/;
+                var datePattern = /^([1-2][0-9]{3})-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
+                var isValid = false;
+
+                if (!transactionAmount)
+                {
+                    $scope.transactionTip = "请填写交易金额!";
+                }
+                else if (isNaN(transactionAmount))
+                {
+                    $scope.transactionTip = "交易金额须为合法数字!";
+                }
+                else if (!(parnt1.exec(transactionAmount) || parnt2.exec(transactionAmount))) {
+                    $scope.transactionTip = "交易金额须为合法数字!";
+                }
+                else if (transactionAmount <= 0)
+                {
+                    $scope.transactionTip = "交易金额不能为0或负数!";
+                }
+                else if (transactionAmount > 100000000000)
+                {
+                    $scope.transactionTip = "交易金额不超过1000亿!";
+                }
+                else if (!transactionTime) {
+                    $scope.transactionTip = "请填写交易日期";
+                }
+                else if (!datePattern.test(transactionTime))
+                {
+                    $scope.transactionTip = "日期格式错误(例:2012-02-02)";
+                }
+                else if (!$scope.isValidDate(transactionTime))
+                {
+                    $scope.transactionTip = "日期非法, 请选择正确交易日期!"
+                }
+                else if (new Date(transactionTime) > new Date())
+                {
+                    $scope.transactionTip = "交易日期应不大于当前实际日期";
+                }
+                else if (new Date(transactionTime) < new Date(g_cnabsValidYearMin))
+                {
+                    $scope.transactionTip = "交易日期应不小于" +  g_cnabsValidYearMin + "-01-01";
+                }
+                else {
+                    isValid = true;
+                    $.ajax({
+                        url: "/BankAccount/AddAccountTransaction",
+                        data: {
+                            'accountId' : $scope.accountId,
+                            'transactionAmount' : $scope.transactionAmount,
+                            'operation' : $scope.operation,
+                            'transactionTime' : $scope.transactionTime,
+                            'transactionDescription' : $scope.transactionDescription
+                        },
+                        async: false,
+                        cache: false,
+                        success: function(res) {
+                            alertify.success("添加交易明细成功!");
+                            $scope.getAccountTransactions($scope.accountId);
+                            $scope.transactionAmount = "";
+                            $scope.transactionTime = "";
+                            $scope.transactionDescription = "";
+                            $scope.transactionTip = "";
+                            $scope.operation = "into";
+                            $scope.$apply();
+                        },
+                        error: function() {
+                            alertify.error("服务器异常，更新余额失败！");
+                        }
+                    });
+                }
+                $scope.isTransactionValid = isValid;
+                return isValid;
+            };
+
+            $scope.isValidDate = function (date) {
+                var valid = true;
+                var dateParten = /^([1-2][0-9]{3})-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
+                if (dateParten.test(date))
+                {
+                    var arr = date.split('-');
+                    var year = parseInt(arr[0]);
+                    var month = parseInt(arr[1]);
+                    var day = parseInt(arr[2]);
+
+                    if (month === 2 && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0))
+                    {
+                        valid = day > 29 ? false : true;
+                    }
+                    else if (month === 2 && !((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0))
+                    {
+                        valid = day > 28 ? false : true;
+                    }
+                }
+                else
+                {
+                    valid = false;
+                }
+                return valid;
+            };
+
+            $scope.formatCurrency = function(num) {
+                num = num.toString().replace(/\$|\,/g, '');
+                if(isNaN(num))
+                    num = "0";
+                sign = (num == (num = Math.abs(num)));
+                num = Math.floor(num * 100 + 0.50000000001);
+                cents = num % 100;
+                num = Math.floor(num/100).toString();
+                if(cents<10)
+                    cents = "0" + cents;
+                for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+                    num = num.substring(0,num.length-(4*i+3))+','+
+                    num.substring(num.length-(4*i+3));
+                var numCents = num + '.' + cents;
+                if(numCents == "0.00"){
+                    sign = true;
+                }
+                return (((sign)?'':'-') + numCents);
+            }
+
+            $scope.project = $scope.projects[0];
+            $scope.projectChange();
+
+            angular.forEach($scope.projects, function(project) {
+                if (project.Selected)
+                {
+                    $scope.project = project;
+                    if (project.ProjectGuid !== "default")
+                    {
+                        $scope.projectChange();
+                    }
+                }
+            });
+
+
+
+/*************这里是新的增删demo**********start***************** **********************************************/
+            var entity = new Entity("账户","bankAccountGuid");
+             entity.append(new select("账户种类", "bankAccountType",["募集账户", "回款账户", "监管账户", "专项计划账户", "登记机构账户", "投资者账户", "托管机构账户", "原始权益人账户"]));
+            entity.append(new textBox("开户银行", "issuerBank"));
+            entity.append(new textBox("账户名称", "bankAccountName").setLimitRangeLength(1, 30));
+            entity.append(new textBox("开户卡号", "bankAccountNumber"));
+            entity.refreshData = function () { $scope.reloadPage(); }//定义刷新function
+
+            $scope.createBankAccount = function () {
+                entity.paramsAddKeyVal("projectGuid", $scope.project.ProjectGuid);
+                entity.create('/BankAccount/CreateBankAccount');
+            }
+
+            $scope.editBankAccount = function (bankAccountGuid, bankAccountType, bankAccountName, issuerBank, bankAccountNumber) {
+
+                //方法一
+                //entity.bankAccountType.value=bankAccountType;
+                //entity.bankAccountName.value=bankAccountName;
+                //entity.issuerBank.value=issuerBank;
+                //entity.bankAccountNumber.value = bankAccountNumber;
+                //entity.paramsAddKeyVal("bankAccountGuid", bankAccountGuid);
+
+                //方法二
+                entity.paramsAddKeyVal("projectGuid", $scope.project.ProjectGuid);
+                entity.bindAllArgsToCtrl(arguments);//需要editBankAccount参数名称和接口参数变量名一直
+                entity.modify('/BankAccount/EditBankAccount');
+            };
+                
+            $scope.deleteBankAccount = function (bankAccountGuid, bankAccountName) {
+                entity.deleteMsgAppend(bankAccountName);
+                entity.id = bankAccountGuid;
+                entity.deleteAppendKeyVal("projectGuid", $scope.project.ProjectGuid);
+                entity.ValidateNotNull($scope.project.ProjectGuid, "请选择产品");
+                entity.delete('/BankAccount/DeleteBankAccount');
+            };
+            });
+    /*************这里是新的增删demo*********end**********************************************************************/
+
+
+        </script>
+
+
+    </div>

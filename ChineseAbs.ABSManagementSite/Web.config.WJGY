@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=169433
+  -->
+<configuration>
+  <configSections>
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    <section name="emailSection" type="ChineseAbs.ABSManagementSite.Helpers.EmailConfigHandler, ChineseAbs.ABSManagementSite" />
+  </configSections>
+  <connectionStrings>
+    <add name="ABSMgrConn" connectionString="server=10.1.1.23;Database=ABSManagement;User ID=wjlogin;Password=wjD@taBa3e;Trusted_Connection=False" providerName="System.Data.SqlClient" />
+    <add name="Conn" connectionString="server=10.1.1.23;Database=ChineseAbs;User ID=wjlogin;Password=wjD@taBa3e;Trusted_Connection=False" providerName="System.Data.SqlClient" />
+
+  </connectionStrings>
+  <appSettings>
+    <add key="webpages:Version" value="2.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="PreserveLoginUrl" value="true" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <add key="DealModelingRootFolder" value="" />
+    <add key="NancyServer" value="http://10.1.1.35:7778" />
+    <add key="RsaPublicKey" value="&lt;RSAKeyValue&gt;&lt;Modulus&gt;887KtQ/rBvPI/As8HByk5jlLXgsRlSqR+VkiS3YNd34CZ8TSiwZD2SMI87TZOcUbr1e8z82QHy9Y9xGsYWm3RBQ+NhrVyNnSZFVkiPqqj+CBtZcZ0n8p36g32CFYOi97SD3YPWR+0dh7/dAgQyeU4rwYyuKcEsXhId0dxgT/2kU=&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;/RSAKeyValue&gt;" />
+    <add key="RsaPrivateKey" value="&lt;RSAKeyValue&gt;&lt;Modulus&gt;887KtQ/rBvPI/As8HByk5jlLXgsRlSqR+VkiS3YNd34CZ8TSiwZD2SMI87TZOcUbr1e8z82QHy9Y9xGsYWm3RBQ+NhrVyNnSZFVkiPqqj+CBtZcZ0n8p36g32CFYOi97SD3YPWR+0dh7/dAgQyeU4rwYyuKcEsXhId0dxgT/2kU=&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;P&gt;/coW5QugzNZGc+yHluxRvfuL+O0NTUvjDwMLhBeKWi0lb47XorQEB/eJSUI23775YfbMT43SJnS5TLae/WQP8Q==&lt;/P&gt;&lt;Q&gt;9e5x5lv497vlt6fflITIqRTOJIdJ5oE+65bjyNO0LnDa8UXyfXLBsZFMbqfNcNtlpfP3j9IyV3DThK0KCX7DlQ==&lt;/Q&gt;&lt;DP&gt;4xLEdV94Go7GLsa9cq4zXTcKwEjpk/WITVA+J4wggBrQ2gYGrk8/JBm5PlD+ZCetXpfBqpSMKVhay2bCzpmPIQ==&lt;/DP&gt;&lt;DQ&gt;3aI0N7wvVWOalLbPgZNhGy/Kz5S0/uz/fWWQhs5zlV7TkZjN/kxLTvF5BkhnlwvCQZrqQkzWXYMqvGkNoJ0DOQ==&lt;/DQ&gt;&lt;InverseQ&gt;yFYQGErYTMaXFBByuCZF5TdPXcVq2TPhtJIEBeaLpe0KWq5+81Z8nsrjYSQrUv/L92FefCTSumQoDa/ivKvCFg==&lt;/InverseQ&gt;&lt;D&gt;XcgIjxcdZ6I0iEbmC0Y1Y91cEUOesssaNVjE6VPyoCkXUcUS26lARfDFC8Ff4WnhWVQda619p5E13mus7BeXB1etM9oe3vuEpVXoGmk0h+x73xzuu3tkpA15dUro1O/9pBvurNL4L0lkbOLLUuasnCadodLrse6cZluJboeMsME=&lt;/D&gt;&lt;/RSAKeyValue&gt;" />
+    <add key="sfl_default_conn_str" value="Conn" />
+    <add key="PatternFileFolder" value="\\10.1.1.26\Shared\cgzhou\FilePattern\" />
+    <add key="Root_Folder" value="\\10.1.1.26\Public\Projects\Chinese ABS\Deal Modeling\ABSManagement\" />
+    <add key="login_url" value="https://www.cn-abs.com/Account/Login.aspx?ReturnUrl=Login.aspx?from=manager" />
+    <add key="logout_url" value="http://www.cn-abs.com/Account/Login.aspx?mode=logout" />
+    <add key="DocumentFolderPath" value="E:\Documents" />
+    <add key="ABSManagementFunctionId" value="25" />
+    <add key="LocalDeployed" value="true" />
+  </appSettings>
+  <system.web>
+    <compilation debug="true" targetFramework="4.0" />
+    <authentication mode="Forms">
+      <forms loginUrl="~/Account/Login" timeout="2880" />
+    </authentication>
+    <roleManager enabled="true" defaultProvider="AspNetSqlRoleProvider">
+      <providers>
+        <clear />
+        <add connectionStringName="ABSMgrConn" applicationName="/" name="AspNetSqlRoleProvider" type="System.Web.Security.SqlRoleProvider" />
+      </providers>
+    </roleManager>
+    <membership>
+      <providers>
+        <clear />
+        <add name="AspNetSqlMembershipProvider" type="System.Web.Security.SqlMembershipProvider" connectionStringName="ABSMgrConn" enablePasswordRetrieval="false" enablePasswordReset="true" requiresQuestionAndAnswer="false" requiresUniqueEmail="false" maxInvalidPasswordAttempts="5" minRequiredPasswordLength="6" minRequiredNonalphanumericCharacters="0" passwordAttemptWindow="10" applicationName="/" />
+      </providers>
+    </membership>
+    <machineKey decryption="3DES" validation="SHA1" decryptionKey="280450BB36319B474C996B506A95AEDF9B51211B1D2B7A77" validationKey="3FF1E929BC0534950B0920A7B59FA698BD02DFE8" />
+    <pages>
+      <namespaces>
+        <add namespace="System.Web.Helpers" />
+        <add namespace="System.Web.Mvc" />
+        <add namespace="System.Web.Mvc.Ajax" />
+        <add namespace="System.Web.Mvc.Html" />
+        <add namespace="System.Web.Optimization" />
+        <add namespace="System.Web.Routing" />
+        <add namespace="System.Web.WebPages" />
+      </namespaces>
+    </pages>
+    <customErrors mode="Off" />
+    <httpRuntime maxRequestLength="10240" />
+  </system.web>
+  <system.webServer>
+    <validation validateIntegratedModeConfiguration="false" />
+    <modules runAllManagedModulesForAllRequests="true" />
+    <handlers>
+      <remove name="ExtensionlessUrlHandler-ISAPI-4.0_32bit" />
+      <remove name="ExtensionlessUrlHandler-ISAPI-4.0_64bit" />
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <add name="ExtensionlessUrlHandler-ISAPI-4.0_32bit" path="*." verb="GET,HEAD,POST,DEBUG,PUT,DELETE,PATCH,OPTIONS" modules="IsapiModule" scriptProcessor="%windir%\Microsoft.NET\Framework\v4.0.30319\aspnet_isapi.dll" preCondition="classicMode,runtimeVersionv4.0,bitness32" responseBufferLimit="0" />
+      <add name="ExtensionlessUrlHandler-ISAPI-4.0_64bit" path="*." verb="GET,HEAD,POST,DEBUG,PUT,DELETE,PATCH,OPTIONS" modules="IsapiModule" scriptProcessor="%windir%\Microsoft.NET\Framework64\v4.0.30319\aspnet_isapi.dll" preCondition="classicMode,runtimeVersionv4.0,bitness64" responseBufferLimit="0" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="GET,HEAD,POST,DEBUG,PUT,DELETE,PATCH,OPTIONS" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="10485760" />
+      </requestFiltering>
+    </security>
+  </system.webServer>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="DotNetOpenAuth.Core" publicKeyToken="2780ccd10d57b246" />
+        <bindingRedirect oldVersion="0.0.0.0-4.1.0.0" newVersion="4.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="DotNetOpenAuth.AspNet" publicKeyToken="2780ccd10d57b246" />
+        <bindingRedirect oldVersion="0.0.0.0-4.1.0.0" newVersion="4.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="WebGrease" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-1.6.5135.21930" newVersion="1.6.5135.21930" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Net.Http" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.2.29.0" newVersion="2.2.29.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-9.0.0.0" newVersion="9.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Runtime" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.6.10.0" newVersion="2.6.10.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Threading.Tasks" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.6.10.0" newVersion="2.6.10.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+  <emailSection>
+    <mailDev host="smtp.263xmail.com" account="developers@sail-fs.com" password="Freda11" fromAddress="developers@sail-fs.com" fromUser="ABS Manager" to="cnabs@sail-fs.com">
+    </mailDev>
+  </emailSection>
+  <entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">
+      <parameters>
+        <parameter value="v12.0" />
+      </parameters>
+    </defaultConnectionFactory>
+  </entityFramework>
+</configuration>

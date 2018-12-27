@@ -1,0 +1,388 @@
+﻿@using ChineseAbs.ABSManagement.Utils;
+@using ChineseAbs.ABSManagement.Models;
+@using ChineseAbs.ABSManagement;
+@using ChineseAbs.ABSManagementSite
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title id="layoutTitle"></title>
+	@Scripts.Render("~/bundles/jquery")
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+	<link rel="shortcut icon" href="https://www.cn-abs.com/fav/favicon.ico" type="image/x-icon">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+	<link rel="stylesheet" href="~/Content/iconfont/iconfont.css" />
+
+	@Styles.Render("~/Content/cnabsUtils/jqueryfont")
+	@Styles.Render("~/Content/layout")
+	@Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/alertify")
+	@*@Scripts.Render("~/bundles/cnabsMenu")*@
+	@Scripts.Render("~/bundles/cnabsUtils")
+	@Scripts.Render("~/bundles/highchart-dark")
+	@Scripts.Render("~/bundles/jqueryui")
+	@Scripts.Render("~/bundles/jqueryTimeAgo")
+	@RenderSection("styles", required: false)
+	<style type="text/css">
+		#body {
+			/*FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#35312c,endColorStr=#655e56);*/ /*IE 6 7 8*/
+			/*background: -ms-linear-gradient(top,#35312c, #655e56);*/ /* IE 10 */
+			/*background: -moz-linear-gradient(top,#35312c,#655e56);*/ /*火狐*/
+			/*background: -webkit-gradient(linear, 0% 0%, 0% 100%,from(#35312c), to(#655e56));*/ /*谷歌*/
+			/*background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#35312c), to(#655e56));*/ /* Safari 4-5, Chrome 1-9*/
+			/*background: -webkit-linear-gradient(top, #35312c, #655e56);*/ /*Safari5.1 Chrome 10+*/
+			/*background: -o-linear-gradient(top, #35312c, #655e56);*/ /*Opera 11.10+*/
+			background: #6A6562;
+		}
+
+		.am_site_map_panel {
+			display: none !important;
+		}
+
+		html, body {
+			height: 100%;
+		}
+
+		#navigator {
+			background-color: #6a6562;
+		}
+
+
+		.alertify .ajs-header, .alertify .ajs-body, .alertify .ajs-footer {
+			font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+		}
+
+		.alertify a {
+			color: #FFB114;
+		}
+
+		.alertify button {
+			font-family: 'Microsoft YaHei';
+			letter-spacing: 5px;
+		}
+
+		#cnabsMenu .menu > ul > li:first-child {
+			margin-left: 50px;
+		}
+	</style>
+	<script type="text/javascript">
+        var isLogin ="@ViewBag.IsLogin";
+        var fancytreeFlag = 0;
+        var loginParam = 1;
+
+        function BindingElementActive($navIndex, $subIndex, $menu) {
+            return false;
+        }
+
+        function ABSManagementPageTitle(title) {
+            if (title == undefined || title == null || title == '') {
+                var curTitle = $("#thirdMenu").html();
+
+                if (curTitle == undefined || curTitle == null || curTitle == '') {
+                    $("#layoutTitle").html('CNABS存续期管理');
+                } else {
+                    $("#layoutTitle").html(curTitle + ' - CNABS存续期管理');
+                }
+            } else {
+                $("#layoutTitle").html(title + ' - CNABS存续期管理');
+            }
+        }
+
+        $(document).ready(function () {
+            cnabsInitTimeAgo();
+            ABSManagementPageTitle();
+
+            window.onscroll = function () {
+                 if (!$("#navigator").is(":hidden")) {
+                     var scrollTop = document.body.scrollTop + document.documentElement.scrollTop;
+                    if (scrollTop >= 65) {
+                        $("#navigator").addClass("cnabsNavigatorFixed");
+                        $("#navigator").css("background", "transparent");
+                        $("#mid").css("padding-top", "36px");
+                    }
+                    else {
+                        $("#navigator").removeClass("cnabsNavigatorFixed");
+                        $("#navigator").css("background", "#6A6562");
+                        $("#mid").css("padding-top", "0");
+                    }
+                 }
+            }
+        });
+
+        function addFilterToLink(id, key, filter) {
+            var link = $('#' + id).attr('href');
+            if (!!link) {
+                var prefix = link.substring(0, link.indexOf(key) + key.length);
+                $('#' + id).attr('href', prefix + "/" + filter);
+            }
+        }
+
+        function resetMenuLink() {
+            addFilterToLink('menuLinkSchedule', '/Schedule', '');
+            addFilterToLink('menuLinkMonitor', '/Monitor', '');
+            addFilterToLink('menuLinkDocument', '/Document', '');
+            addFilterToLink('menuLinkBankAccount', '/BankAccount', '');
+            addFilterToLink('menuLinkPaymentHistory', '/PaymentHistory', '');
+            addFilterToLink('menuLinkInvestment', '/Investment', '');
+            if ($('#menuLinkConfiguration') != undefined && $('#menuLinkConfiguration').length != 0) {
+                addFilterToLink('menuLinkConfiguration', '/Configuration', '');
+            }
+        }
+
+        function updateMenuLinkByProject(projectGuid) {
+
+            if (projectGuid == undefined || projectGuid == null || projectGuid.length != 36) {
+                resetMenuLink();
+                return;
+            }
+            var filter = '?projectGuid=' + projectGuid;
+            addFilterToLink('menuLinkSchedule', '/Schedule', filter + '&taskStatus=-1');
+            addFilterToLink('menuLinkProductDashboard', '/ProductDashboard', filter);
+            addFilterToLink('menuLinkMonitor', '/Monitor', filter);
+            addFilterToLink('menuLinkDocument', '/Document', 'ShowSpecifiedProjectDocuments' + filter);
+            addFilterToLink('menuLinkBankAccount', '/BankAccount', 'ShowProjectAccounts' + filter);
+            addFilterToLink('menuLinkPaymentHistory', '/PaymentHistory', filter);
+            addFilterToLink('menuLinkInvestment', '/Investment', filter);
+            addFilterToLink('menuLinkSimulation', '/Simulation', filter);
+            if ($('#menuLinkConfiguration') != undefined && $('#menuLinkConfiguration').length != 0) {
+                addFilterToLink('menuLinkConfiguration', '/Configuration', filter);
+            }
+        }
+
+	</script>
+</head>
+<body>
+    <header>
+        <link href="~/Content/cnabs/menu/css/menu.css?versionno=" rel="stylesheet" />
+        <script src="~/Content/cnabs/menu/js/menu.js?versionno=" type="text/javascript"></script>
+        <div id="cnabsheader">
+            <div id="cnabsMenu">
+                <div class="menu" style="float:left; width:1050px;">
+                    <a href="#" class="menu-mobile">Navigation</a><ul>
+                        <li class="menu-dropdown-icon">
+                            <a href="#" class="">
+                                工作台
+                                <i class="down-icon "></i>
+                            </a>
+                            <ul class="normal-sub">
+                                <li>
+
+                                    <a id="menuLinkSchedule" href="/Schedule/" class="thirdMenu ">
+                                        工作日历
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-dropdown-icon">
+                            <a href="#" class="">
+                                产品在线设计
+                                <i class="down-icon "></i>
+                            </a>
+                            <ul class="normal-sub">
+                                <li>
+
+                                    <a id="MyCollaterals" href="/MyCollaterals" class="thirdMenu ">
+                                        资产包管理
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="MyModels" href="/MyModels" class="thirdMenu ">
+                                        模型管理
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="MyScenarios" href="/MyScenarios" class="thirdMenu ">
+                                        情景管理
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="MyProjects" href="/MyProjects" class="thirdMenu ">
+                                        待发行产品
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-dropdown-icon">
+                            <a href="#" class="">
+                                发行协作平台
+                                <i class="down-icon "></i>
+                            </a>
+                            <ul class="normal-sub">
+                                <li>
+
+                                    <a id="ProjectSeries" href="/ProjectSeries" class="thirdMenu ">
+                                        项目列表
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="Dashboard" href="/Dashboard" class="thirdMenu ">
+                                        项目面板
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="StaffProgress" href="/StaffProgress" class="thirdMenu ">
+                                        人员进度
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="UserGroup" href="/UserGroup" class="thirdMenu ">
+                                        人员分组
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-dropdown-icon">
+                            <a href="#" class="">
+                                存续期管理
+                                <i class="down-icon "></i>
+                            </a>
+                            <ul class="normal-sub">
+                                <li>
+
+                                    <a id="menuLinkMyProjects" href="/MyProjects" class="thirdMenu ">
+                                        存续期产品列表
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkProductDashboard" href="/ProductDashboard" class="thirdMenu ">
+                                        产品面板
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkDocument" href="/Document/" class="thirdMenu ">
+                                        文档管理
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkBankAccount" href="/BankAccount/" class="thirdMenu ">
+                                        产品账户
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkPaymentHistory" href="/PaymentHistory/" class="thirdMenu ">
+                                        偿付历史
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkInvestment" href="/Investment/" class="thirdMenu ">
+                                        合格投资
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkSimulation" href="/Simulation" class="thirdMenu ">
+                                        现金流测算
+
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a id="menuLinkDurationSetting1" href="/Configuration" class="thirdMenu ">
+                                        存续期设置
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @if (ViewBag.CurrentUser != null)
+                        {
+						<li id="personal" class="menu-dropdown-icon">
+							<a id="user" href="#" style="position: relative; margin-right: 20px;">
+								<span id="lbLogin" class="truncate " title="qiujialong" style="width: 40px; position: relative; left: 17px; top: 0px; font-size: 13px; text-align: center;">
+									@ViewBag.CurrentUser.NickName
+								</span>
+								<i class="down-icon "></i>
+								<img id="avatar" src="data:image/jpeg;base64,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">
+								<span id="allMsgCount" class="inline message-informer"></span>
+							</a>
+							<ul style="right: 0">
+								<li>
+									<ul>
+										<li>
+											<div>账户管理</div>
+											<ul>
+
+												<li>
+													<a id="menus" class="" href="../Menus/Index">菜单管理</a>
+												</li>
+												<li>
+													<a id="companys" class="thirdMenu" href="../Company/Index">公司管理</a>
+												</li>
+												<li>
+													<a id="users" class="thirdMenu" href="../Manage/Index">用户管理</a>
+												</li>
+												<li>
+													<a id="organization" class="thirdMenu" href="../organization/Index">组织管理</a>
+												</li>
+												<li>
+													<a id="LoginOut" class="thirdMenu" href="../Account/Logout">退出登录</a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							
+						</li>
+                        }
+                        else
+                        {
+
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @Html.Raw(ViewBag.MenuHtml)
+        <div id="navigator">
+            <div id="map">
+                @Html.Raw(ViewBag.SiteMapHtml)
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <div id="mid">
+            <div class="center">
+                @RenderBody()
+            </div>
+            @Html.Raw(ViewBag.FooterHtml)
+            <div id="div_Version" style="display:none">Version:@MvcApplication.SystemVersion</div>
+        </div>
+    </div>
+    @Html.Raw(ViewBag.NavigatorHtml)
+    <div class="scrollBottom"></div>
+    <script type="text/javascript">
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

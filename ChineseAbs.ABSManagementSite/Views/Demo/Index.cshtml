@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "Demo";
+    Layout = "~/Views/Shared/_DemoLayout.cshtml";
+}
+
+<style type="text/css">
+    .panelTitleIcon {
+        width: 6px;
+        height: 6px;
+        background-color: #fff;
+        margin-top: 6px;
+        margin-right: 10px;
+    }
+
+    .uploadDownStep {
+        float: left;
+        min-width: 80px;
+        text-align: center;
+        color: #847C71;
+    }
+
+    .uploadDownStepLine {
+        float: left;
+        width: 250px;
+        height: 4px;
+        background-color: #534D46;
+        margin-top: 6px;
+        border-radius: 2px;
+    }
+
+    .currentStep {
+        color: #fff;
+    }
+
+    .statusDescription {
+        margin-top: 3px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 12px;
+        color: #fff;
+        padding-left: 26px;
+        background-position: 7px 5px;
+        background-repeat: no-repeat;
+        margin-left: 22px;
+        width: 283px;
+        word-wrap: break-word;
+        display: none;
+    }
+
+    .btnWidth {
+        width : 98px;
+    }
+
+</style>
+
+@section scripts{
+    
+}
+<div class="tablecloth" style="padding-bottom:1px;" ng-app="uploadDown" ng-controller="uploadDownCtrl" ng-cloak>
+    <div class="label" style="margin-top: 10px">建信信托受托机构报告</div>
+    <div class="panel" style="height:100%;min-height:150px">
+        <div style="min-height:22px;overflow:hidden;padding:5px;">
+            <div style="overflow:hidden;margin-bottom:30px;">
+                <span class="left panelTitleIcon"></span>
+                <span class="left">文件模板</span>
+            </div>
+
+            <div id="" style="overflow:hidden;margin-left:132px; margin-top:30px;margin-bottom:30px;">
+                <span class="cnabs_btn_purple uploadbtn btnWidth" style="margin:0px;" ng-click="triggerUploadTemplateFile()">上传文件模板</span>
+                <span class="cnabs_btn_purple uploadbtn btnWidth" style="margin:0px;margin-left:20px" onclick="downloadTemplateFile()">下载文件模板</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel" style="height:100%;min-height:150px">
+        <div style="min-height:22px;overflow:hidden;padding:5px;">
+            <div style="overflow:hidden;margin-bottom:30px;">
+                <span class="left panelTitleIcon"></span>
+                <span class="left">产品模型</span>
+            </div>
+
+            <div id="" style="overflow:hidden;margin-left:132px; margin-top:30px;margin-bottom:30px;">
+                <span class="cnabs_btn_purple uploadbtn btnWidth" style="margin:0px;" ng-click="triggerUploadModel()">上传产品模型</span>
+                <span class="cnabs_btn_purple uploadbtn btnWidth" style="margin:0px;margin-left:20px" onclick="downloadModel()">下载产品模型</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel" style="height:100%">
+        <div style="min-height:22px;overflow:hidden;padding:5px;margin-top:5px;" id="uploadDown">
+            <div style="overflow:hidden;margin-bottom:30px;">
+                <span class="left panelTitleIcon"></span>
+                <span class="left">受托机构报告</span>
+            </div>
+            <div style="overflow:hidden;margin-left:130px;margin-bottom:30px;">
+                <div class="uploadDownStep currentStep">1.导入服务商报告</div>
+                <div class="uploadDownStepLine"></div>
+                <div class="uploadDownStep">2.数据导入与提取</div>
+                <div class="uploadDownStepLine"></div>
+                <div class="uploadDownStep">3.生成受托机构报告</div>
+            </div>
+            <div style="overflow:hidden;margin-left:100px;">
+                <div class="statusDescription left cnabs_ellipsis" style="background-image:url(../../Images/Common/correct.png);width:290px;"></div>
+                <div class="statusDescription left cnabs_ellipsis"></div>
+                <div class="statusDescription left cnabs_ellipsis" style="background-image:url(../../Images/Common/correct.png);width:188px;">服务商报告</div>
+            </div>
+            <div id="cnabs_btn_div" style="overflow:hidden;margin-left:132px; margin-top:30px;margin-bottom:30px;">
+                <div class="cnabs_btn_purple uploadbtn" style="margin:0px;" ng-click="triggerUploadInput()">上传服务商报告</div>
+            </div>
+            <input id="uploadInput" type="file" name="name" value=" " ng-hide="true" onchange="uploadFile()" />
+
+            <input id="uploadTemplateFile" type="file" name="name" value=" " ng-hide="true" onchange="uploadTemplateFile()" />
+
+            <input id="uploadModel" type="file" name="name" value=" " ng-hide="true" onchange="uploadModel()" />
+        </div>
+    </div>
+</div>
+    <script type="text/javascript">
+        function documentConversion(name) {
+            $("#cnabs_btn_div").css('visibility', 'hidden');
+            $($(".statusDescription")[0]).text(name)
+            $($(".statusDescription")[0]).css('display', 'block');
+            $($('.uploadDownStepLine')[0]).css('backgroundColor', '#fff')
+            $($(".uploadDownStep")[1]).css('color', '#fff');
+            $($(".statusDescription")[1]).html('<img style="margin-left:-10px;" src="../../Images/Common/running.gif">')
+            $($(".statusDescription")[1]).css('backgroundImage', 'url()');
+            $($(".statusDescription")[1]).css('display', 'block');
+        }
+        function documentConversionSuccess() {
+            $($(".statusDescription")[1]).html('转换成功')
+            $($(".statusDescription")[1]).css('backgroundImage', 'url(../../Images/Common/correct.png)');
+            $($(".statusDescription")[1]).css('display', 'block');
+            $($('.uploadDownStepLine')[1]).css('backgroundColor', '#fff')
+        }
+        function downLoadSuccess() {
+            $("#cnabs_btn_div").css('visibility', 'visible');
+            $($(".statusDescription")[2]).text('下载成功')
+            $($(".statusDescription")[2]).css('backgroundImage', 'url(../../Images/Common/correct.png)');
+            $($(".statusDescription")[2]).css('display', 'block');
+            $($(".uploadDownStep")[2]).css('color', '#fff');
+        }
+        function clearUpload() {
+            $('.uploadDownStepLine').css('backgroundColor', '#534D46')
+            $(".uploadDownStep").css('color', '#847C71');
+            $($(".uploadDownStep")[0]).css('color', '#fff');
+            $(".statusDescription").css('display', 'none');
+        }
+        function documentConversionError() {
+            $("#cnabs_btn_div").css('visibility', 'visible');
+            $($(".statusDescription")[1]).html('转换失败')
+            $($(".statusDescription")[1]).css('backgroundImage', 'url(../../Images/Common/incorrect.png)');
+            $($(".statusDescription")[1]).css('display', 'block');
+        }
+
+        function uploadModel() {
+
+            var formData = new FormData();
+            var inputUpload = document.getElementById("uploadModel");
+            var totalFiles = inputUpload.files.length;
+            if (totalFiles > 0) {
+                for (var i = 0; i < totalFiles; ++i) {
+                    var file = inputUpload.files[i];
+                    var fileSizeMB = file.size / 1024 / 1024;
+                    if (fileSizeMB > 10) {
+                        cnabsMsgError("上传文件不能超过10MB, 所选文件" + file.name + "(" + fileSizeMB.toFixed(2) + "MB)");
+                        return false;
+                    }
+
+                    formData.append("file", file);
+                }
+                cnabsAjaxUploadFile('上传模型', '/Demo/UploadModel', formData, function () {
+                    cnabsMsgSuccess('上传模型成功')
+                }, function (data) {
+                    cnabsAlertMore('上传模型失败：' + data.Value.Message, data.Value.StackTrace);
+                });
+            }
+        }
+
+        function uploadTemplateFile() {
+
+            var formData = new FormData();
+            var inputUpload = document.getElementById("uploadTemplateFile");
+            var totalFiles = inputUpload.files.length;
+            if (totalFiles > 0) {
+                for (var i = 0; i < totalFiles; ++i) {
+                    var file = inputUpload.files[i];
+                    var fileSizeMB = file.size / 1024 / 1024;
+                    if (fileSizeMB > 10) {
+                        cnabsMsgError("上传文件不能超过10MB, 所选文件" + file.name + "(" + fileSizeMB.toFixed(2) + "MB)");
+                        return false;
+                    }
+
+                    formData.append("file", file);
+                }
+                cnabsAjaxUploadFile('上传文件模板', '/Demo/UploadTemplateFile', formData, function () {
+                    cnabsMsgSuccess('上传文件模板成功')
+                }, function (data) {
+                    cnabsAlertMore('上传文件模板失败：' + data.Value.Message, data.Value.StackTrace);
+                });
+            }
+        }
+
+        function downloadTemplateFile() {
+            cnabsAjax('下载文件模板', '/Demo/DownloadTemplateFile', {}, function (fileGuid) {
+                window.location.href = '/Download?guid=' + fileGuid;
+            });
+        }
+
+        function uploadModel() {
+            var formData = new FormData();
+            var inputUpload = document.getElementById("uploadModel");
+            var totalFiles = inputUpload.files.length;
+            if (totalFiles > 0) {
+                for (var i = 0; i < totalFiles; ++i) {
+                    var file = inputUpload.files[i];
+                    var fileSizeMB = file.size / 1024 / 1024;
+                    if (fileSizeMB > 10) {
+                        cnabsMsgError("上传文件不能超过10MB, 所选文件" + file.name + "(" + fileSizeMB.toFixed(2) + "MB)");
+                        return false;
+                    }
+
+                    formData.append("file", file);
+                    formData.append("asOfDate", "20170228");
+                }
+                cnabsAjaxUploadFile('上传模型', '/Demo/UploadModel', formData, function () {
+                    cnabsMsgSuccess('上传模型成功')
+                }, function (data) {
+                    cnabsAlertMore('上传模型失败：' + data.Value.Message, data.Value.StackTrace);
+                });
+            }
+        }
+
+        function downloadModel() {
+            cnabsAjax('下载模型', '/Demo/DownloadModel', {asOfDate: "20170228"}, function (fileGuid) {
+                window.location.href = '/Download?guid=' + fileGuid;
+            });
+        }
+
+        function uploadFile() {
+            clearUpload();
+            var formData = new FormData();
+            var inputUpload = document.getElementById("uploadInput");
+            var totalFiles = inputUpload.files.length;
+            if (totalFiles > 0) {
+                documentConversion(inputUpload.files[0].name);
+                for (var i = 0; i < totalFiles; ++i) {
+                    var file = inputUpload.files[i];
+                    var fileSizeMB = file.size / 1024 / 1024;
+                    if (fileSizeMB > 10) {
+                        cnabsMsgError("上传文件不能超过10MB, 所选文件" + file.name + "(" + fileSizeMB.toFixed(2) + "MB)");
+                        return false;
+                    }
+
+                    formData.append("file", file);
+
+                    formData.append("paymentDate", "2017-03-27");
+                    formData.append("asOfDate", "20170228");
+                }
+                cnabsAjaxUploadFile('上传服务商报告', '/Demo/Generate', formData, function (fileGuid) {
+                    documentConversionSuccess();
+                    //下载文件
+                    window.location.href = '/Download?guid=' + fileGuid;
+                    downLoadSuccess();
+                }, function (data) {
+                    documentConversionError();
+                    cnabsAlertMore('上传失败：' + data.Value.Message, data.Value.StackTrace);
+                });
+            }
+
+        }
+        var app = angular.module('uploadDown', []);
+        app.controller('uploadDownCtrl', function ($scope) {
+            $scope.triggerUploadInput = function () {
+                $("#uploadInput").val('');
+                $("#uploadInput").click();
+            }
+
+            $scope.triggerUploadTemplateFile = function () {
+                $("#uploadTemplateFile").val('');
+                $("#uploadTemplateFile").click();
+            }
+
+
+            $scope.triggerUploadModel = function () {
+                $("#uploadModel").val('');
+                $("#uploadModel").click();
+            }
+
+        });
+    </script>

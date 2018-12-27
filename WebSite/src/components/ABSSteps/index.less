@@ -1,0 +1,83 @@
+@import "../../styles/theme/default.less";
+
+.ant-steps-item-process > .ant-steps-item-tail:after {
+  border-color: @grey-2;
+  background-color: transparent;
+}
+
+.ant-steps-item-tail {
+  top: 16px;
+}
+
+.ant-steps-item-tail:after {
+  height: 0;
+  border-radius: 0;
+  background: transparent;
+  border-width: 4px 0 0 0;
+  border-style: dotted;
+}
+
+.ant-steps-item-wait > .ant-steps-item-tail:after {
+  background-color: transparent;
+  border-color: @grey-2;
+}
+
+.ant-steps-item-finish > .ant-steps-item-tail:after {
+  border-color: @orange-1;
+  background-color: transparent;
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+  background-color: @orange-1;
+}
+
+.ant-steps-item-icon {
+  border: none;
+}
+
+.ant-steps-item-wait .ant-steps-item-icon {
+  background-color: @grey-7;
+}
+
+.ant-steps-item-icon {
+  font-size: @font-m;
+  font-weight: bold;
+}
+
+.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon {
+  color: @white-1;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  background-color: @orange-1;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: @white-1;
+}
+
+.ant-steps-item-content {
+  font-size: @font-m;
+}
+
+.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
+  color: @orange-1;
+}
+
+.ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title {
+  color: @orange-1;
+}
+
+.ant-steps-item-wait > .ant-steps-item-content > .ant-steps-item-title {
+  color: @grey-2;
+}
+
+.ant-steps-label-vertical .ant-steps-item-content {
+  margin-top: 7px;
+}
+
+.ant-steps-item-title {
+  line-height: normal;
+  font-size: @font-m;
+  font-weight: normal;
+}

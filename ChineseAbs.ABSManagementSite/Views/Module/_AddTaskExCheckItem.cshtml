@@ -1,0 +1,193 @@
+﻿
+<script type="text/javascript">
+    var autoDivModifyCheckList = new CnabsAutoDiv("divAddCheckItem");
+    function AddTaskExCheckItem() {
+    }
+
+    AddTaskExCheckItem.prototype = {
+        onSuccess: undefined,
+
+        defineValidate: function (value, title) {
+            var jsonResult = {
+                verdict: false,
+                msg: ""
+            }
+            value = value.replace(/(^[\s\n\t]+|[\s\n\t]+$)/g, "");
+            if (value.length == 0) {
+                jsonResult.msg = title + "不能为空。";
+                return jsonResult;
+            }
+            if (title == "Check Item") {
+                if (value.length >= 5000) {
+                    jsonResult.msg = title + "的长度不能超过500个字符。";
+                    return jsonResult;
+                }
+            }
+            else if (value.length >= 500) {
+                jsonResult.msg = title + "的长度不能超过5000个字符。";
+                return jsonResult;
+            }
+            var invalidCharList = "/\\:*?\"<>|";
+            for (var i = 0; i < value.length; i++) {
+                if (invalidCharList.indexOf(value[i]) >= 0) {
+                    jsonResult.msg = title + "不能包含特殊字符/\\:*?\"<>|";
+                    return jsonResult;
+                }
+            }
+            jsonResult.verdict = true;
+            return jsonResult;
+        },
+
+        trigger: function () {
+            var instance = this;
+            
+            $("#btnChangeCheckItemTypeView").change(function () {
+                var btnValue = $("#btnChangeCheckItemTypeView")[0].value;
+                btnChangeCheckItemView(btnValue)
+            })
+            
+            var btnValue = $("#btnChangeCheckItemTypeView")[0].value;
+            btnChangeCheckItemView(btnValue);
+
+            cnabsDlgYesNo('addCheckItem', '增加工作要点', function () {
+                var params = {
+                    shortCode: '@Model.ShortCode',
+                    groupName: "",
+                    checkItemName: ""
+                };
+                if ($("#btnChangeCheckItemTypeView")[0].value == "oldGroup") {
+                    if (!autoDivModifyCheckList.validate(controlsAddTaskExCheckListOldGroup, true)) {
+                        return false;
+                    }
+                    params.groupName = autoDivModifyCheckList.getUIValue().oldGroupName;
+                    params.checkItemName = autoDivModifyCheckList.getUIValue().oldCheckItemName;
+                } else {
+                    if (!autoDivModifyCheckList.validate(controlsAddTaskExCheckListNewGroup, true)) {
+                        return false;
+                    }
+                    params.groupName = autoDivModifyCheckList.getUIValue().newGroupName;
+                    params.checkItemName = autoDivModifyCheckList.getUIValue().newCheckItemName;
+                }
+                cnabsAjaxSync('增加工作要点', '/TaskEx/AddTaskExtensionCheckList', params, function (data) {
+                    if (instance.onSuccess != undefined && instance.onSuccess != null) {
+                        instance.onSuccess(data);
+                    }
+                });
+            }, 'auto');
+        }
+    }
+    var controlsAddTaskExCheckListOldGroup = [
+    {
+        title: "分组名称",
+        type: "select",
+        elementId: "oldGroupName",
+        value: "",
+        OptionArray: null
+    },
+    {
+        title: "工作要点",
+        type: "textarea",
+        elementId: "oldCheckItemName",
+        value: "",
+        limit: {
+            type: "custom",
+            callback: DefineValidate
+        }
+    }];
+
+    var controlsAddTaskExCheckListNewGroup = [
+    {
+        title: "分组名称",
+        type: "text",
+        elementId: "newGroupName",
+        value: "",
+        limit: {
+            type: "custom",
+            callback: DefineValidate
+        }
+    },
+    {
+        title: "工作要点",
+        type: "textarea",
+        elementId: "newCheckItemName",
+        value: "",
+        limit: {
+            type: "custom",
+            callback: DefineValidate
+        }
+    }];
+
+    function btnChangeCheckItemView(btnValue) {
+        $("#divAddCheckItem").empty();
+        if (btnValue == "oldGroup") {
+            var groupNames = GetCheckListGroupNames();
+            if (groupNames.length == 0) {
+                controlsAddTaskExCheckListOldGroup[0].OptionArray = [["", "无"]];
+            } else {
+                controlsAddTaskExCheckListOldGroup[0].OptionArray = groupNames;
+            }
+            autoDivModifyCheckList.init(controlsAddTaskExCheckListOldGroup);
+        }
+        if (btnValue == "newGroup") {
+            autoDivModifyCheckList.init(controlsAddTaskExCheckListNewGroup);
+        }
+    }
+
+    function GetCheckListGroupNames() {
+        var groupNames = [];
+        cnabsAjaxSync("获取检查项", "/TaskEx/GetTaskExCheckList", { shortCode: '@Model.ShortCode' }, function (data) {
+            if (data != null && data.CheckGroups.length > 0) {
+                for (var i = 0; i < data.CheckGroups.length; i++) {
+                    var groupName = data.CheckGroups[i].GroupName;
+                    groupNames.push(groupName);
+                }
+            }
+        })
+        return groupNames;
+    }
+    //对文档名称的验证 字符串长度和特殊字符的判断
+    function DefineValidate(value, title) {
+        var jsonResult = {
+            verdict: false,
+            msg: ""
+        }
+        value = value.replace(/(^[\s\n\t]+|[\s\n\t]+$)/g, "");
+        if (value.length == 0) {
+            jsonResult.msg = title + "不能为空。";
+            return jsonResult;
+        }
+        if (title == "Check Item") {
+            if (value.length >= 500) {
+                jsonResult.msg = title + "的长度不能超过50个字符。";
+                return jsonResult;
+            }
+        }
+        else if (value.length >= 50) {
+            jsonResult.msg = title + "的长度不能超过50个字符。";
+            return jsonResult;
+        }
+        var invalidCharList = "/\\:*?\"<>|";
+        for (var i = 0; i < value.length; i++) {
+            if (invalidCharList.indexOf(value[i]) >= 0) {
+                jsonResult.msg = title + "不能包含特殊字符/\\:*?\"<>|";
+                return jsonResult;
+            }
+        }
+        jsonResult.verdict = true;
+        return jsonResult;
+    }
+</script>
+<div style="display:none;">
+    <div id="addCheckItem">
+        <div style="margin-left:50px;">
+            <span class="cnabs_dialog_content_title">修改方式</span>
+            <select id="btnChangeCheckItemTypeView" class="cnabs_dialog_input_wid">
+                <option value="oldGroup">向现有分组添加工作要点</option>
+                <option value="newGroup">新建分组并添加工作要点</option>
+            </select>
+        </div>
+        <div style="margin-left:50px;">
+            <div id="divAddCheckItem" style="display:block;"></div>
+        </div>
+    </div>
+</div>

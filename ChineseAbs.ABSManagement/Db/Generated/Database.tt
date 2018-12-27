@@ -1,0 +1,189 @@
+<#@ include file="PetaPoco.Core.ttinclude" #>
+<#
+	// Settings
+    ConnectionStringName = "ABSMgrConn";			// Uses last connection string in config if not specified
+    Namespace = "";
+    RepoName = "";
+    GenerateOperations = true;
+    GeneratePocos = true;
+    GenerateCommon = true;
+    ClassPrefix = "";
+    ClassSuffix = "";
+    TrackModifiedColumns = false;
+    ExplicitColumns = true;
+    ExcludePrefix = new string[] {}; // Exclude tables by prefix.
+
+    //Model folder name:
+    GenereateTableModelFolderName = "";
+    GenereateTableModelFolderPath = "../../Models";
+
+    //Model manager folder name:
+    GenereateTableModelManagerFolderName = "";
+    GenereateTableModelManagerFolderPath = "../../DBAdapter/Manager";
+
+    GenereateAllTable = false;
+    //Model array:
+    GenereateTableModelNames = new string [] {
+     };
+
+    GenereateTableModelBuildInFieldNames = new string [] {
+        "Id",
+        "Guid",
+        "CreateTime",
+        "CreateUserName",
+        "LastModifyTime",
+        "LastModifyUserName",
+        "RecordStatusId"};
+
+    GenereateTableModelEnumMaps = new string[] [] {
+        //FieldName, EnumType, NewFieldName
+        //new [] {"RecordStatusId", "RecordStatus", "RecordStatus"}
+    };
+
+    // Read schema
+	var tables = LoadTables();
+
+
+/*
+	// Tweak Schema
+	tables["tablename"].Ignore = true;							// To ignore a table
+	tables["tablename"].ClassName = "newname";					// To change the class name of a table
+	tables["tablename"]["columnname"].Ignore = true;			// To ignore a column
+	tables["tablename"]["columnname"].PropertyName="newname";	// To change the property name of a column
+	tables["tablename"]["columnname"].PropertyType="bool";		// To change the property type of a column
+*/
+
+	tables["AccountBalances"].ClassName = "TableAccountBalances";
+	tables["Accounts"].ClassName = "TableAccounts";
+	tables["AccountTransactions"].ClassName = "TableAccountTransactions";
+	tables["Agenda"].ClassName = "TableAgenda";
+	tables["AgendaStatus"].ClassName = "TableAgendaStatus";
+	tables["AssetPrepaymentHistory"].ClassName = "TableAssetPrepaymentHistory";
+	tables["AssetCashflowHistory"].ClassName = "TableAssetCashflowHistory";
+	tables["AssetCashflowVariable"].ClassName = "TableAssetCashflowVariable";
+	tables["CashflowVariable"].ClassName = "TableCashflowVariable";
+
+	tables["Collateral"].ClassName = "TableCollateral";
+	tables["Dataset"].ClassName = "TableDataset";
+	tables["DownloadFileAuthority"].ClassName = "TableDownloadFileAuthority";
+	tables["DownloadFileAuthorityType"].ClassName = "TableDownloadFileAuthorityType";
+	tables["Models"].ClassName = "TableModels";
+	tables["Note"].ClassName = "TableNote";
+	tables["NoteData"].ClassName = "TableNoteData";
+	tables["NoteResults"].ClassName = "TableNoteResults";
+	tables["EditProductLogs"].ClassName = "TableEditProductLogs";
+	tables["EditProductAuthority"].ClassName = "TableEditProductAuthority";
+	tables["Investment"].ClassName = "TableInvestment";
+	tables["LocalDeployedUserProfile"].ClassName = "TableLocalDeployedUserProfile";
+	tables["Permission"].ClassName = "TablePermission";
+	tables["PermissionType"].ClassName = "TablePermissionType";
+	tables["PermissionObjectType"].ClassName = "TablePermissionObjectType";
+
+	tables["PrepaymentSet"].ClassName = "TablePrepaymentSet";
+	tables["Prepayment"].ClassName = "TablePrepayment";
+	tables["InterestRateAdjustmentSet"].ClassName = "TableInterestRateAdjustmentSet";
+	tables["InterestRateAdjustment"].ClassName = "TableInterestRateAdjustment";
+	tables["InterestRateType"].ClassName = "TableInterestRateType";
+	tables["AssetDefaultSet"].ClassName = "TableAssetDefaultSet";
+	tables["AssetDefault"].ClassName = "TableAssetDefault";
+
+	tables["Project"].ClassName = "TableProject";
+	tables["ProjectActivity"].ClassName = "TableProjectActivity";
+	tables["ProjectAuthority"].ClassName = "TableProjectAuthority";
+	tables["ProjectSeries"].ClassName = "TableProjectSeries";
+	tables["ProjectSeriesType"].ClassName = "TableProjectSeriesType";
+	tables["ProjectTypes"].ClassName = "TableProjectTypes";
+
+	tables["SuperUser"].ClassName = "TableSuperUser";
+	tables["TaskComments"].ClassName = "TableTaskComments";
+	tables["TaskGroup"].ClassName = "TableTaskGroup";
+	tables["TaskModules"].ClassName = "TableTaskModules";
+	tables["TaskExtensions"].ClassName = "TableTaskExtensions";
+	tables["Tasks"].ClassName = "TableTasks";
+	tables["TaskPeriod"].ClassName = "TableTaskPeriod";
+	tables["TaskStatus"].ClassName = "TableTaskStatus";
+	tables["TaskStatusHistory"].ClassName = "TableTaskStatusHistory";
+	tables["TeamMember"].ClassName = "TableTeamMember";
+	tables["Template"].ClassName = "TableTemplate";
+	tables["TemplateTask"].ClassName = "TableTemplateTask";
+	tables["TemplateTime"].ClassName = "TableTemplateTime";
+	tables["TemplateWork"].ClassName = "TableTemplateWork";
+	tables["TemplateWorkTime"].ClassName = "TableTemplateWorkTime";
+	tables["TemplateWorkTimeRule"].ClassName = "TableTemplateWorkTimeRule";
+	tables["UsersInProject"].ClassName = "TableUsersInProject";
+	tables["UserVisitLog"].ClassName = "TableUserVisitLog";
+	tables["UserLogs"].ClassName = "TableUserLogs";
+	tables["Objects"].ClassName = "TableObjects";
+	tables["Document"].ClassName = "TableDocument";
+	tables["DocumentType"].ClassName = "TableDocumentType";
+	tables["Contacts"].ClassName = "TableContacts";
+	tables["Reminders"].ClassName = "TableReminders";
+	tables["RemindSettings"].ClassName = "TableRemindSettings";
+	tables["TeamAdmin"].ClassName = "TableTeamAdmin";
+
+
+	tables["MetaTask"].ClassName = "TableMetaTask";
+	tables["TimeSeries"].ClassName = "TableTimeSeries";
+	tables["TimeRule"].ClassName = "TableTimeRule";
+	tables["TimeRulePeriodSequence"].ClassName = "TableTimeRulePeriodSequence";
+	tables["TimeRuleConditionShift"].ClassName = "TableTimeRuleConditionShift";
+	tables["TimeRuleShift"].ClassName = "TableTimeRuleShift";
+	tables["TimeOrigin"].ClassName = "TableTimeOrigin";
+	tables["TimeOriginCustomInput"].ClassName = "TableTimeOriginCustomInput";
+	tables["TimeOriginLoop"].ClassName = "TableTimeOriginLoop";
+	tables["TimeOriginMetaTask"].ClassName = "TableTimeOriginMetaTask";
+	tables["TimeOriginTaskSelfTime"].ClassName = "TableTimeOriginTaskSelfTime";
+
+
+
+	tables["DMS"].ClassName = "TableDMS";
+	tables["DMSFile"].ClassName = "TableDMSFile";
+	tables["DMSFileSeries"].ClassName = "TableDMSFileSeries";
+	tables["DMSFolder"].ClassName = "TableDMSFolder";
+	tables["DMSFolderType"].ClassName = "TableDMSFolderType";
+	tables["DMSTask"].ClassName = "TableDMSTask";
+
+	tables["DMSFileSeriesTemplate"].ClassName = "TableDMSFileSeriesTemplate";
+
+	tables["Issue"].ClassName = "TableIssue";
+	tables["IssueStatus"].ClassName = "TableIssueStatus";
+	tables["IssueActivity"].ClassName = "TableIssueActivity";
+	tables["IssueActivityType"].ClassName = "TableIssueActivityType";
+	tables["IssueActivityFile"].ClassName = "TableIssueActivityFile";
+	tables["IssueActivityImage"].ClassName = "TableIssueActivityImage";
+	tables["IssueEmergencyLevel"].ClassName = "TableIssueEmergencyLevel";
+	tables["File"].ClassName = "TableFile";
+	tables["Image"].ClassName = "TableImage";
+	tables["IssueConnectionTasks"].ClassName = "TableIssueConnectionTasks";
+
+	tables["MessageReminding"].ClassName = "TableMessageReminding";
+	tables["NegativeNews"].ClassName = "TableNegativeNews";
+	tables["UserGroup"].ClassName = "TableUserGroup";
+	tables["UserGroupMap"].ClassName = "TableUserGroupMap";
+	tables["EmailContext"].ClassName = "TableEmailContext";
+	tables["EmailFromTo"].ClassName = "TableEmailFromTo";
+	tables["DMSDurationManagementPlatform"].ClassName="TableDMSDurationManagementPlatform";
+	tables["DMSProjectLog"].ClassName="TableDMSProjectLog";
+	tables["EditModelCSV"].ClassName="TableEditModelCSV";
+
+
+	tables["UserActionHabits"].ClassName="TableUserActionHabits";
+	tables["OverrideSingleAssetInterest"].ClassName="TableOverrideSingleAssetInterest";
+	tables["OverrideSingleAssetPrincipal"].ClassName="TableOverrideSingleAssetPrincipal";
+	tables["OverrideSingleAssetPrincipalBalance"].ClassName="TableOverrideSingleAssetPrincipalBalance";
+
+	tables["CacheAcfReceive"].ClassName="TableCacheAcfReceive";
+	tables["CacheAcfAssetReceive"].ClassName="TableCacheAcfAssetReceive";
+
+	tables["DealModelSetting"].ClassName="TableDealModelSetting";
+
+	// Generate output
+	if (tables.Count>0)
+	{
+#>
+<#@ include file="PetaPoco.Generator.ttinclude" #>
+<# PushEnvironment();#>
+<#@ include file="ABSMgr.Model.ttinclude" #>
+<#@ include file="ABSMgr.ModelManager.ttinclude" #>
+<# PopEnvironment();#>
+<# } #>

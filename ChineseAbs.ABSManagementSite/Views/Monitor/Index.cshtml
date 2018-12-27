@@ -1,0 +1,376 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.MonitorViewModel
+@using ChineseAbs.ABSManagementSite.Common
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+@section styles{
+    <style type="text/css">
+        .selector{
+            margin:10px 20px;
+        }
+        .productName_tr, .date_tr {
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+    .circulationPlace_tr {
+        overflow: hidden;
+    }
+
+    .font-weight {
+        font-weight: bold;
+    }
+
+    .newsListTable td:nth-of-type(1), .newsListTable th:nth-of-type(1) {
+        width: 448px;
+        min-width: 448px;
+        max-width: 448px;
+    }
+
+    .newsListTable td:nth-of-type(2), .newsListTable th:nth-of-type(2) {
+        padding-left: 10px;
+    }
+
+    .newsListTable td:nth-of-type(3), .newsListTable th:nth-of-type(3) {
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .newsListTable td:nth-of-type(4), .newsListTable th:nth-of-type(4) {
+        width: 155px;
+        min-width: 155px;
+        max-width: 155px;
+    }
+</style>   
+}
+@Scripts.Render("~/bundles/angular")
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+<script>
+    var userapp = angular.module('Monitor', []);
+</script>
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">产品监控</span>
+    </header>
+    <div ng-app="Monitor" ng-controller="monitorManageCtrl" class="cnabs_div_v2" ng-cloak>
+        <div>
+            <span class="fixedColor">选择产品：</span>
+            <select ng-change="projectChange()" ng-model="selectedProject" ng-options="x.name for x in projects" style="width:159px;"></select>
+        </div>
+        <div class="cnabs_label_v2 cnabs_v2_margin cnabs_overhide">
+            <span class="left">负面新闻</span>
+            <span id="subscriptionBtn" class="right cnabs_btn" style="margin-top:3px;" ng-click="Subscription()"></span>
+        </div>
+        <div>
+            <table class="table_v2 alone hover cnabs_v2_margin" style="width:100%;">
+                <thead>
+                    <tr style="background:#4F4A43!important;">
+                        <td class="text-left font-weight" style="width:52px;">新闻统计</td>
+                        <td class="text-left font-weight" style="width:237px;color:white;padding-left:10px;">未读<b id="unreadcount">{{NewsDetail.StatisticInfo.UnreadCount}}</b>条 已读<b id="readcount">{{NewsDetail.StatisticInfo.ReadCount}}</b>条</td>
+                        <td class="text-left font-weight" style="width:52px;padding-bottom:3px;">时间筛选</td>
+                        <td class="text-left font-weight" style="width:151px;padding-left:10px;">起始时间: <input id="start" class="date" style="width:85px;" /></td>
+                        <td class="text-left font-weight" style="width:151px;padding-left:10px;">结束时间: <input id="end" class="date" style="width:85px;" /></td>
+                        <td class="text-left font-weight"><div class="left cnabs_btn" style="max-width:80px;color:#fff;margin-left:10px;" ng-click="QueryNews()">查询</div></td>
+                        <td class="text-left font-weight"><div class="right cnabs_btn" style="max-width:120px;color:#fff;" ng-click="MarkAllRead()">全部标记已读</div></td>
+                    </tr>
+                </thead>
+            </table>
+            <table class="table_v2 alone hover newsListTable" id="unread-table" style="width:100%; margin:0px;">
+                <tbody id="all-news">
+                    <tr>
+                        <th class="text-left" style="width:320px;">标题</th>
+                        <th class="text-left" style="max-width:80px;min-width:80px;">来源</th>
+                        <th class="text-left" style="width:120px;">时间</th>
+                        <th class="text-left">操作</th>
+                    </tr>
+                    <tr ng-if="!NewsDetail.News.length">
+                            <td colspan="4" align="center">暂无相关负面新闻.</td>
+                    </tr>
+                    <tr id="hasNews" ng-repeat="new in NewsDetail.News" ng-cloak>
+                        <td style="overflow:hidden;"><a class="cnabs_yellow cnabs_ellipsis left" style="width:320px;" ng-click="GotoNews(new.ID, new.URL);">{{new.Title}}</a></td>
+                        <td style="white-space:normal;">{{new.Source}}</td>
+                        <td style="width:120px;">{{new.OriginDate}}</td>
+                        <td>
+                            <div class="left cnabs_btn" ng-if="new.Status == 0" ng-click="Markread(new.ID);" id='unRead-{{new.ID}}'>标记已读</div>
+                            <div class="tb-status" ng-if="new.Status == 1" id='read-{{new.ID}}'>已读</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="convenientPaging" style="height:24px;padding:4px;text-align:center;margin-bottom:10px;margin-top:10px;" ng-cloak>
+                <span>第</span>&nbsp;&nbsp;<span id="currentPage" ng-model="currentPage">{{currentPage}}</span><span>/</span><span id="totalPage">{{totalPages}}&nbsp;&nbsp;页</span>&nbsp;&nbsp;
+                <a ng-click="filterTaskByPage(1)" class="a-state">首页</a>
+                <a ng-click="filterTaskByPage(currentPage,'previous')" class=" a-state">上一页</a>
+                <a ng-click="filterTaskByPage(currentPage,'next')" class="a-state">下一页</a>
+                <a ng-click="filterTaskByPage(totalPages)" class="a-state">尾页</a>&nbsp;&nbsp;
+                <span>单页显示数目</span>
+                <select id="pageSize" name="pageSize" style="width:52px;" ng-change="setPageSize(selectedPageSize)" ng-model="selectedPageSize">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>&nbsp;&nbsp;
+                <span>跳转到：</span><input type="text" name="page" ng-model="pagingNumber" id="paging-number">&nbsp;&nbsp;<a ng-click="JumpFilterTaskByPage()" class="a-state">跳转</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        BindingElementActive(4, 2, 6);
+    });
+    userapp.controller('monitorManageCtrl', function ($scope, $http) {
+        cnabsAjax("获取产品", "/MyProjects/GetProjects", { projectType: '存续期' }, function (data) {
+            $scope.projects = data;
+            var projectGuid = cnabsGetUrlParam('projectGuid');
+            if (projectGuid != null) {
+                $.each(data, function (index, item) {
+                    if (item.guid == projectGuid) {
+                        $scope.selectedProject = data[index]
+                    }
+                })
+            } else {
+                $scope.selectedProject = $scope.projects.length ? data[0] : '';
+            }
+            updateMenuLinkByProject($scope.selectedProject.guid);
+            $scope.GetProjectInfoAndContacts();
+            $scope.GetNewsDetail();
+            $scope.GetSubscriptionStatus();
+            $scope.$apply();
+        })
+
+        $scope.GetSubscriptionStatus = function ()
+        {
+            cnabsAjax('获取订阅状态', '/Monitor/GetSubscribeStatus', { projectGuid: $scope.selectedProject.guid }, function (data) {
+                if (!data.isExist) {
+                    $('#subscriptionBtn').html('订阅');
+                    return
+                }
+                if (data.isExist) {
+                    $('#subscriptionBtn').html('取消订阅');
+                }
+            })
+        }
+
+        $scope.Subscription = function () 
+        {
+            var msg = ''
+            if ($('#subscriptionBtn').text() == '订阅') {
+                msg = '确认订阅后，我们将发送负面新闻至您的邮箱'
+            }
+            if ($('#subscriptionBtn').text() == '取消订阅') {
+                msg = '取消订阅后，我们将不再发送负面新闻至您的邮箱'
+            }
+
+            var control = [{
+                type: 'checkbox',
+                title: $('#subscriptionBtn').text() + '所有产品负面新闻',
+                value: false,
+                checkboxStyle: 'checkboxText',
+                elementId: "subscriptAllProjectNews"
+            }]
+
+            cnabsAutoDlgYesNo(control, $('#subscriptionBtn').text(), function (data) {
+                var projectGuids = $scope.selectedProject.guid;
+                if (data.subscriptAllProjectNews) {
+                    projectGuids = "";
+                    $.each($scope.projects, function (index, item) {
+                        if (index < $scope.projects.length) {
+                            projectGuids += item.guid + "|";
+                        }
+                        else
+                        {
+                            projectGuids += item.guid;
+                        }
+                    });
+                }
+
+                var param = {
+                    projectGuids: projectGuids
+                };
+                var url = '';
+                if ($('#subscriptionBtn').text() == '订阅') {
+                    url = '/Monitor/SubscribeNews';
+                }
+                if ($('#subscriptionBtn').text() == '取消订阅') {
+                    url = '/Monitor/CancelSubscribe';
+                }
+                cnabsAjax($('#subscriptionBtn').text(), url, param, function (data) {
+                    var msg = $('#subscriptionBtn').text() + '成功'
+                    alertify.alert(g_cnabsMsgTitle, msg + "，页面将在3秒后自动跳转...");
+                    setTimeout(function () {
+                       window.location.href = '/Monitor/?projectGuid=' + $scope.selectedProject.guid;
+                    }, 3000);
+                })
+            }, msg);
+
+        }
+
+        $scope.GetProjectInfoAndContacts = function ()
+        {
+            var param = {
+                projectGuid: $scope.selectedProject.guid
+            };
+            cnabsAjax("获取产品要素和相关机构", "/Monitor/GetProjectInfoAndContacts", param, function (data) {
+                $scope.ProjectInfo = data.ProjectInfo;
+                $scope.Contacts = data.Contacts;
+                $scope.$apply();
+            });
+        }
+
+        $scope.GetNewsDetail = function ()
+        {
+            var currentPage = ($scope.currentPage == undefined || $scope.currentPage == 0) ? 1 : $scope.currentPage
+            $scope.selectedPageSize = $scope.selectedPageSize == undefined ? "10" : $scope.selectedPageSize
+            var param = {
+                projectGuid: $scope.selectedProject.guid,
+                page: currentPage,
+                pageSize: $scope.selectedPageSize,
+                start: $("#start").val(),
+                end: $("#end").val()
+            };
+            cnabsAjax("获取负面新闻", "/Monitor/GetNewsDetail", param, function (data) {
+                $scope.NewsDetail = data;
+                if ($scope.NewsDetail.News.length == 0)
+                {
+                    $scope.currentPage = 0;
+                    $scope.totalPages = 0;
+                }
+                else
+                {
+                    $scope.currentPage = currentPage;
+                    $scope.totalPages = $scope.NewsDetail.StatisticInfo.TotalPage;
+                }
+                $scope.$apply();
+            });
+
+        }
+
+        $scope.projectChange = function () {
+            $scope.GetProjectInfoAndContacts();
+            $("#start").val("");
+            $("#end").val("");
+            $scope.GetNewsDetail();
+            $scope.GetSubscriptionStatus();
+            updateMenuLinkByProject($scope.selectedProject.guid);
+        }
+
+        $scope.setPageSize = function (pageSize) {
+            $scope.selectedPageSize = pageSize;
+            $scope.currentPage = $scope.currentPage * parseInt(pageSize) > $scope.NewsDetail.StatisticInfo.TotalCount ? 1 : $scope.currentPage;
+            $scope.GetNewsDetail();
+        };
+
+        $scope.filterTaskByPage = function (page, flag) {
+            page = parseInt(page);
+
+            if (flag == 'previous') {
+                page = page - 1;
+                
+                if (page <= 0) {
+                    return
+                }
+            }
+            if (flag == 'next') {
+                page = page + 1;
+                if (page > $scope.totalPages) {
+                    return
+                }
+            }
+            $scope.currentPage = page;
+            $scope.GetNewsDetail();
+        }
+        $scope.JumpFilterTaskByPage = function () {
+            var pagenum = parseInt($scope.pagingNumber);
+            var totalPage = parseInt($scope.totalPages);
+            if (!isNaN(pagenum)) {
+                if (pagenum <= totalPage && pagenum >= 1) {
+                    $scope.filterTaskByPage(pagenum);
+                } else if (pagenum > totalPage) {
+                    $scope.filterTaskByPage(totalPage);
+                } else {
+                    $scope.filterTaskByPage(1);
+                }
+            } else {
+                $scope.filterTaskByPage(1);
+            }
+        }
+
+        $scope.QueryNews = function () {
+            var start = $('#start').val();
+            var end = $('#end').val();
+            var startDate = Date.parse(start);
+            var endDate = Date.parse(end);
+            if (startDate > endDate) {
+                cnabsAlert('起始时间不能大于结束时间');
+                return;
+            }
+            $scope.GetNewsDetail();
+        }
+
+        $scope.Markread = function (id) {
+            var param = {
+                projectGuid: $scope.selectedProject.guid,
+                nid: id
+            };
+            cnabsAjax("标记单条新闻", "/Monitor/SetRead", param, function (data) {
+                if (data) {
+                    $scope.GetNewsDetail();
+                    cnabsAlert("成功标记该信息为已读.");
+                } else {
+                    cnabsAlert("标记信息已读失败.");
+                }
+            });
+        }
+
+        $scope.SilentlyMarkRead = function (id) {
+            $.each($scope.NewsDetail.News, function (index, item) {
+                if (item.ID == id) {
+                    if (item.Status != 1)
+                    {
+                        var param = {
+                            projectGuid: $scope.selectedProject.guid,
+                            nid: id
+                        };
+                        cnabsAjax("点击进入新闻浏览之后标记", "/Monitor/SetRead", param, function (data) {
+                            if (data) {
+                                $scope.GetNewsDetail();
+                            }
+                            else {
+                                cnabsAlert("标记信息已读失败.");
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+
+        $scope.MarkAllRead = function () {
+            var param = {
+                projectGuid: $scope.selectedProject.guid,
+                nid: 0
+            };
+            cnabsAjax("标记所有新闻", "/Monitor/SetRead", param, function (data) {
+                if (data) {
+                    $scope.GetNewsDetail();
+                    cnabsAlert("成功标记所有信息为已读.");
+                } else {
+                    cnabsAlert("标记信息已读失败.");
+                }
+            });
+        }
+
+        $scope.GotoNews = function (id, trgt) {
+            $scope.SilentlyMarkRead(id);
+            window.open(trgt);
+        }
+    })
+
+</script>

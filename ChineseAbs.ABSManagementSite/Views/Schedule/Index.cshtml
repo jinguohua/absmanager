@@ -1,0 +1,1460 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.ScheduleViewModel
+@using ChineseAbs.ABSManagementSite.Common
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/pagewalkthrough/jquery.pagewalkthrough.css">
+    <style type="text/css">
+        .schedule_table_style tr {
+            text-align: center;
+        }
+
+        #walkthrough-content {
+            display: none;
+        }
+
+        .divOperations {
+            position: relative;
+        }
+
+        #calendar {
+            margin: 0 auto;
+        }
+
+        .fc-event:hover {
+            border-color: #ffc446;
+            cursor: pointer;
+        }
+
+        #TaskToolTip {
+            z-index: 3;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 200px;
+            background: rgba(61,56,51,1);
+            /*border: 1px solid #ccc;*/
+            display: none;
+        }
+
+            #TaskToolTip header {
+                background-color: rgba(131,124,113,1);
+                height:30px;
+                vertical-align:middle;
+                line-height:30px;
+                padding:0 5px;
+                text-overflow:ellipsis;
+                overflow:hidden;
+                white-space:normal;
+                width: 190px;                
+            }
+
+            #TaskToolTip h5 {
+                padding-top:5px;
+                color: #979797;
+                font-size: 12px;                                
+                margin: 0px;                
+            }
+            
+            #TaskToolTip div{
+                padding: 0 0 5px 0;
+                color: #f1f1f1;
+                text-indent: 0;
+            }        
+
+        #fc_taskDetail, #fc_taskTarget,#fc_projectName{
+            text-indent: 2em;
+            color: #fff;
+            padding: 2px 4px;
+        }
+        .colorSpecification {
+            overflow: hidden;
+            position: absolute;
+            left: 0px;
+            top: 35px;
+        }
+
+            .colorSpecification span {
+                float: left;
+                margin-left: 5px;
+                font-size: 12px;
+                color: #B7AFA5;
+            }
+
+                .colorSpecification span:nth-of-type(2n+1) {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 2px;
+                    margin-left: 10px;
+                    margin-top: 5px;
+                }
+
+                .colorSpecification span:nth-of-type(1) {
+                    margin-left: 0px;
+                }
+
+        .project-operations {
+            position: absolute;
+            z-index: 10;
+            border: 1px solid grey;
+            background: #47423C;
+            padding: 4px 2px;
+        }
+
+        .ImageSize {
+            width: 15px;
+            height: 15px;
+            font-size: 15px;
+        }
+        .btn_style{
+            margin-right:5px;
+            width:110px;
+            text-align:center;
+        }	
+        .btn_float_style {
+            float:left;
+            margin-left:10px;
+        }
+        .divUploadFile{
+            display:none;
+        }
+        .eachUploadFile{
+            margin-bottom:2px;
+            padding:10px 10px 10px 38px;
+            overflow:hidden;
+            background-color:#4f4a43;
+            background-size:18px 18px;
+            background-position:10px 9px;
+            background-repeat:no-repeat;
+        }
+        .previewFiles{
+            margin-top:20px;
+        }
+        .workListsTable td:nth-of-type(1),.workListsTable th:nth-of-type(1) {
+            width: 189px;
+            min-width: 189px;
+            max-width: 189px;            
+        }
+
+        .workListsTable td:nth-of-type(2),.workListsTable th:nth-of-type(2) {
+            width: 320px;
+            min-width: 320px;
+            max-width: 320px;
+            padding-left:10px;      
+        }
+
+        .workListsTable td:nth-of-type(3),.workListsTable th:nth-of-type(3) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+            padding-left:10px;
+        }
+
+        .workListsTable td:nth-of-type(4),.workListsTable th:nth-of-type(4) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+
+        .workListsTable td:nth-of-type(5),.workListsTable th:nth-of-type(5) {
+            width: 85px;
+            min-width: 85px;
+            max-width: 85px;
+        }
+
+        .workListsTable td:nth-of-type(6),.workListsTable th:nth-of-type(6) {
+            width: 76px;
+            min-width: 76px;
+            max-width: 76px;
+        }
+
+        .workListsTable td:nth-of-type(7),.workListsTable th:nth-of-type(7) {
+            width: 66px;
+            min-width: 66px;
+            max-width: 66px;
+        }
+           
+    </style>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/pagewalkthrough")
+    <script type="text/javascript" src="~/Scripts/glDatePicker.min.js"></script>
+    @*/////////////////////////////////////////*@
+    @*calendar library begin*@
+    <link href='~/Scripts/fullcalendar/fullcalendar.css' rel='stylesheet' />
+    <link href='~/Scripts/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <script src='~/Scripts/fullcalendar/lib/moment.min.js'></script>
+    <script src='~/Scripts/fullcalendar/fullcalendar.min.js'></script>
+    <script src='~/Scripts/fullcalendar/locale/zh-cn.js'></script>
+    @*calendar library end*@
+    @*/////////////////////////////////////////*@
+    <style>
+        .calendar_title {
+            font-size: 18px;
+        }
+
+        .fc-center {
+            position: relative;
+            top: 32px;
+            margin-left: 121px;
+        }
+
+            .fc-center h2 {
+                font-size: 16px;
+                font-weight: 100;
+                color: #D8D8D8;
+            }
+
+        .fc-prev-button, .fc-next-button {
+            width: 30px;
+            padding: 0px !important;
+            background-color: #534D46;
+        }
+
+        .fc-button {
+            height: 24px;
+            padding: 0.6px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            cursor: pointer;
+            color: white;
+        }
+
+        .fc button:hover {
+            background-color: #847C71;
+        }
+
+        .fc-state-default {
+            background-image: none;
+            background-color: #534D46;           
+            border-radius: 2px;            
+            text-shadow: none;
+            box-shadow: none;
+            color:white;
+        }
+        .fc-prev-button {
+            background: url('../../Images/DashBoard/left.png') no-repeat center center;
+            background-color: #534D46;
+            margin-right: 2px !important;
+        }
+        .fc-next-button {
+            background: url('../../Images/DashBoard/right.png') no-repeat center center;
+            background-color: #534D46;
+        }      
+        .fc-icon-left-single-arrow:after,.fc-icon-right-single-arrow:after {
+            content:none;
+        }
+        .fc-today-button{
+            width: 48px;
+            padding: 0px !important;
+            font-family:'Microsoft YaHei';
+            background-color: #534D46;
+            font-size: 14px;
+        }
+        .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover, .fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td{
+            border-color: #3b3831;
+        }
+        .fc-day-header{
+            height: 28px;      
+            background-color: rgba(83,77,70,1);
+            color: rgb(241,240,240);
+            line-height:28px;            
+        }
+        .fc-today .fc-day-number{
+            color:#ffc446;
+        }
+        .fc-toolbar{
+            margin-bottom: 7px;
+        }
+        .fc button:hover{
+            background-color: #847C71;
+        }
+        .fc-day-grid-event:first-child{
+            margin-top:0px !important;
+        }
+        .fc-event{
+            border: none;
+            padding: 2.5px 5px;
+            font-size: 12px;                       
+        }
+        .fc-red {
+            background-color: #e3353a;
+        }
+
+        .fc-blue {
+            background-color: #3995cd;
+        }
+
+        .fc-green {
+            background-color: #26bd58;
+        }
+
+        .fc_event_state {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        .fc-event-container {
+            padding-bottom: 3px !important;
+        }
+
+        .fc-day-grid-event:hover {
+            opacity: 0.9;
+        }
+        .fc-popover{
+            width:200px;
+        }
+        .fc-day-header, .fc-widget-header{
+           font-weight: lighter !important;
+        }
+        .fc-header{
+            background-color: rgba(131,124,113,1) !important;
+            height:26px;
+            line-height:26px;
+        }
+        .fc-close{
+            margin-top:4px !important;
+            font-size: 1.0em !important;
+            line-height:16px !important;
+        }
+        .fc-more-popover .fc-event-container{
+            background: #3d3833;
+        }   
+        .fc-more-popover .fc-day-grid-event{
+            margin:8px 0px;
+        }    
+       .fc .fc-toolbar > * > :first-child  {
+           color:#e0dedb;
+       }       
+        .fc-week{
+            height:111px !important;
+        }
+        .fc-scroller{
+            height:667px !important;
+        }
+        .fc-day-grid-container {
+            overflow:hidden !important;
+        }
+    </style>
+    <script>
+
+        BindingElementActive(4, 2, 1);
+        function filterTaskByPage(page) {
+            var time = cnabsGetUrlParam('timeRange');
+            time = time == null ? 'All' : time;
+            var projectGuid = cnabsGetUrlParam('projectGuid');
+            projectGuid = projectGuid == null ? "" : projectGuid;
+            var paymentDay = cnabsGetUrlParam('paymentDay');
+            paymentDay = paymentDay == null ? '' : paymentDay;
+            var status = cnabsGetUrlParam('taskStatusList');
+            status = status == null ? ['Waitting', 'Running', "Finished", "Overdue", "Error"] : status.split('|');
+
+            var url = location.protocol + "//" + location.host + location.pathname;
+            url += "?page=" + page + "&pageSize=" + $("#pageSize").val()
+                + "&timeRange=" + time + "&taskStatusList=" + status.join('|');
+            if(paymentDay != ""){
+                url+= '&paymentDay=' + paymentDay;
+            }
+            if (projectGuid != "") {
+                url += "&projectGuid=" + projectGuid
+            }
+            url += '&viewType=list';
+
+            cnabsRedirect(url);
+        }
+        function JumpFilterTaskByPage() {
+            var pagenum = parseInt($("#paging-number").val());
+            var totalPage = parseInt($("#totalPage").html());
+            if (isNaN(pagenum) == false) {
+                if (pagenum <= totalPage && pagenum >= 1) {
+                    filterTaskByPage(pagenum);
+                } else if (pagenum > totalPage) {
+                    filterTaskByPage(totalPage);
+                } else {
+                    filterTaskByPage(1);
+                }
+            } else {
+                filterTaskByPage(1);
+            }
+        }
+
+    function initCalendar() {
+        var time = getTimeStr();
+        var projectGuid = $("#selectProject").val();
+        var status = getStatusStr();
+        var data = (projectGuid != ""
+            ? { timeRange: time, taskStatusList: status, projectGuid: projectGuid}
+            : { timeRange: time, taskStatusList: status});
+        var paymentDay = '@Model.PaymentDay';
+        if (paymentDay != '') {
+                data.paymentDay = paymentDay;
+        }
+
+        function renderCalendar(taskList) {
+            console.log(taskList)
+            function GetDefaultDate() {
+                var myDate = new Date();
+                var moment = myDate.toISOString("yyyy-MM-dd").split("T")[0];
+                return moment;
+            }
+            var CurrentYearMonthDate = GetDefaultDate();
+            var displayItems = new Array();
+            dictShortCodeIndex = new Array();
+            for (var i = 0; i < taskList.length; ++i) {
+                dictShortCodeIndex[taskList[i].ShortCode] = i;
+                displayItems[i] = new Object();
+                displayItems[i].title = taskList[i].TaskName;
+                if (taskList[i].StartTime == null) {
+                    displayItems[i].start = taskList[i].EndTime;
+                }
+                if (taskList[i].StartTime != null) {
+                    displayItems[i].start = taskList[i].StartTime;
+                }
+                displayItems[i].end = taskList[i].EndTime.substr(0, 10) + "T23:59:59";
+                displayItems[i].shortCode = taskList[i].ShortCode;
+                displayItems[i].status = taskList[i].Status;
+                displayItems[i].detail = taskList[i].Detail;
+                displayItems[i].target = taskList[i].Target;
+                displayItems[i].projectName = taskList[i].ProjectName;
+                if (taskList[i].Status == "Finished") {
+                    displayItems[i].className = "fc-green";
+                } else {
+                    if (taskList[i].Status == "Error" || taskList[i].Status == "Overdue") {
+                        displayItems[i].className = "fc-red";
+                    } else {
+                        displayItems[i].className = "fc-blue";
+                    }
+                }
+            }
+            allItems = displayItems;
+            var DelayTimer = null;
+            $('#calendar').fullCalendar({
+                header: {
+                    right: 'prev,next today',
+                    center: 'title',
+                    left: ''
+                },
+                views: {
+                    month: {
+                        eventLimit: 4,
+                        titleFormat: 'YYYY年M月'
+                    }
+                },
+                eventLimitText: function (e, allSegsNum) {
+                    return "展开全部(" + allSegsNum + "个)"
+                },
+                defaultDate: CurrentYearMonthDate,
+                navLinks: false, // can click day/week names to navigate views
+                businessHours: false, // display business hours
+                editable: false,
+                events: allItems,
+                eventLimit: true,
+                eventClick: function (calEvent, jsEvent, view) {
+                    var url = location.protocol + "//" + location.host + "/Task";
+                    url += "?shortCode=" + calEvent.shortCode;
+                    window.open(url);
+                },
+                eventOrder: function (left, right) {
+                    return dictShortCodeIndex[left.shortCode] - dictShortCodeIndex[right.shortCode];
+                },
+                eventMouseover: function (calEvent, jsEvent, view) {
+                    $("#TaskToolTip header").html(calEvent.title);
+                    $("#fc_projectName").html(calEvent.projectName);
+                    if (calEvent.detail == "") {
+                        $("#fc_taskDetail").html("无");
+                    } else {
+                        $("#fc_taskDetail").html(calEvent.detail);
+                    }
+                    if (calEvent.target == "") {
+                        $("#fc_taskTarget").html("无");
+                    } else {
+                        $("#fc_taskTarget").html(calEvent.target);
+                    }
+                    $("#TaskToolTip").width(200);
+                    $("#TaskToolTip header").width(190);
+                    if ($("#TaskToolTip").height() / $("#TaskToolTip").width() >= 2 && $("#TaskToolTip").height() >= 440) {
+                        var area = $("#TaskToolTip").width() * $("#TaskToolTip").height();
+                        $("#TaskToolTip").width(Math.sqrt(area * 0.618));
+                        $("#TaskToolTip header").width(Math.sqrt(area * 0.618) - 8);
+                    }
+                    if ($("#TaskToolTip").width() >= 400) {
+                        $("#TaskToolTip").width(400);
+                        $("#TaskToolTip header").width(392);
+                    }
+
+                    var TaskToolTipTop = $(this).offset().top;
+                    var windowHeight = document.documentElement.clientHeight;
+                    var windowWidth = document.documentElement.clientWidth;
+                    var pageScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                    if (TaskToolTipTop + $("#TaskToolTip").height() >= pageScrollTop + windowHeight - 12) {
+                        TaskToolTipTop = pageScrollTop + windowHeight - $("#TaskToolTip").height() - 12;
+                    }
+                    //日历事件悬浮框
+                    mouseX = jsEvent.pageX;
+                    mouseY = jsEvent.pageY;
+                    mouseClientY = jsEvent.clientY;
+                    var taskToolTipWidth = mouseX + $("#TaskToolTip").width();
+                    var taskToolTipHeight = mouseClientY + $("#TaskToolTip").height();
+                    if (windowWidth < taskToolTipWidth) {
+                        mouseX = mouseX - 90;
+                    }
+                    if (windowHeight < taskToolTipHeight) {
+                        mouseY = mouseY - $("#TaskToolTip").height() - 10;
+                    }
+                    $("#TaskToolTip").css({
+                        'top': mouseY,
+                        'left': mouseX
+                    });
+                    DelayTimer = setTimeout(function () {
+                        $("#TaskToolTip").fadeIn(300);
+                    }, 500);
+                },
+                eventMouseout: function (calEvent, jsEvent, view) {
+                    clearTimeout(DelayTimer);
+                    $('#TaskToolTip').css('display', 'none');
+                },
+                eventRender: function (calEvent, element, view) {
+                    if (view.name == "month") {
+                        var eventBackground = "";
+                        if (calEvent.className == 'fc-blue') {
+                            eventBackground = 'rgba(57,149,205,0.5)';
+                        } else if (calEvent.className == 'fc-green') {
+                            eventBackground = 'rgba(38,189,88,0.5)';
+                        } else {
+                            eventBackground = 'rgba(227,53,58,0.5)';
+                        }
+                        element.css("background-color", eventBackground);
+                        element.find("div").prepend("<span class='fc_event_state " + calEvent.className + "'></span>");
+                    }
+                }
+            });
+        }
+
+        cnabsAjax("获取任务列表", "/Schedule/GetTasks", data, function (data) {
+            renderCalendar(data);
+        })
+        }
+        function isCalendarView() {
+            return (calendar.style.display == "block");
+        }
+        function GetDefaultDate() {
+            var myDate = new Date();
+            var moment = myDate.toISOString("yyyy-MM-dd").split("T")[0];
+            return moment;
+        }
+        var CurrentYearMonthDate = GetDefaultDate();
+        function updateTaskView(isCalendar) {
+            var btnChangeTaskView = document.getElementById("btnChangeTaskView");
+            var calendar = document.getElementById("calendar");
+            var colorSpecification = document.getElementById("colorSpecification");
+            var divTaskTable = document.getElementById("divTaskTable");
+            var taskBlockTitle = document.getElementById("taskBlockTitle");
+
+            $("td[EndTime=" + CurrentYearMonthDate + "]").addClass("EndTimeistoday");
+            $("td[EndTime=" + CurrentYearMonthDate + "]").next().next().next().addClass("EndTimeistoday");
+            if (isCalendar) {
+                calendar.style.display = "block";
+                divTaskTable.style.display = "none";
+                //btnChangeTaskView.value = "切换列表";
+                btnChangeTaskView.textContent = "切换列表";
+                taskBlockTitle.textContent = "工作日历";
+                initCalendar();
+
+                colorSpecification.style.display = "block";
+            }
+            else {
+                calendar.style.display = "none";
+                colorSpecification.style.display = "none";
+                divTaskTable.style.display = "block";
+                //btnChangeTaskView.value = "切换日历";
+                btnChangeTaskView.textContent = "切换日历";
+                taskBlockTitle.textContent = "工作列表";
+            }
+        }
+
+        var allItems;
+        var dictShortCodeIndex;
+        function filterTask() {
+            var time = getTimeStr();
+            var projectGuid = $("#selectProject").val();
+            var status = getStatusStr();
+            var viewType = isCalendarView() ? "calendar" : "list";
+            var paymentDay = $('#selectPaymentDay').val()==null?'':$('#selectPaymentDay').val();
+            var url = location.protocol + "//" + location.host + location.pathname;
+            url += "?page=1" + "&pageSize=" + $("#pageSize").val()
+                + "&timeRange=" + time + "&taskStatusList=" + status + "&viewType=" + viewType ;
+            if(paymentDay != ""){
+                url+= '&paymentDay=' + paymentDay;
+            }
+            if (projectGuid != "") {
+                url += "&projectGuid=" + projectGuid;
+            }
+            location.href = url;
+        }
+        $(document).ready(function () {
+            updateMenuLinkByProject(cnabsGetUrlParam('projectGuid'));
+
+            //////////////////////////////////////////////////////////
+            //calendar code begin
+            $("#btnChangeTaskView").click(function () {
+                var showCalendar = !isCalendarView();
+                var time = getTimeStr();
+                var projectGuid = $("#selectProject").val();
+                var status = getStatusStr();
+                var paymentDay = $('#selectPaymentDay').val()==null?'':$('#selectPaymentDay').val();
+                var viewType = showCalendar ? "calendar" : "list";
+                var url = location.protocol + "//" + location.host + location.pathname;
+                url += "?page=1" + "&pageSize=" + $("#pageSize").val()
+                    + "&timeRange=" + time + "&taskStatusList=" + status + "&viewType=" + viewType;
+                if(paymentDay != ""){
+                    url+= '&paymentDay=' + paymentDay;
+                }
+                if (projectGuid != "") {
+                    url += "&projectGuid=" + projectGuid
+                }
+                location.href = url;
+            });
+            //calendar code end
+            //////////////////////////////////////////////////////////
+
+            $(".nav-item").removeClass('active');
+            $("#nav_3").addClass('active');
+
+            BindingElementActive(4, 2, 1);
+
+            var timeRange = cnabsGetUrlParam('timeRange');
+            timeRange = timeRange == null ? 'All' : timeRange;
+            $.each($('.filterTimeOption input[type=checkbox]'), function (index, item) {
+                if ($(item).val() == timeRange) {
+                    selectTimeToFilter($(item)[0].id);
+                }
+            })
+
+            var taskStatusList = cnabsGetUrlParam('taskStatusList');
+            taskStatusList = taskStatusList == null ? ['Waitting', 'Running', "Finished", "Overdue", "Error"] : taskStatusList.split('|');
+            $.each($('.filterStatusOption input[type=checkbox]'), function (index, item) {
+                $(item).prop('checked', false);
+                $.each(taskStatusList, function (i,ele) {
+                    if ($(item).val() == ele) {
+                        $(item).prop('checked', true);
+                    }
+                })
+            })
+
+
+            var paymentDay = cnabsGetUrlParam('paymentDay');
+            paymentDay = paymentDay == null ? '' : paymentDay;
+            changeProject(paymentDay);
+
+            var pageSize = cnabsGetUrlParam('pageSize');
+            pageSize = pageSize == null ? 10 : pageSize;
+            $("#pageSize").val(pageSize);
+
+           // var showCalendar = cnabsGetUrlParam('viewType') == "calendar";
+
+            var showCalendar = false;
+            var viewType = cnabsGetUrlParam('viewType');
+            if (viewType == null || viewType == "calendar") {
+                showCalendar = true;
+            }
+
+            updateTaskView(showCalendar);
+
+            filterCondition.time = timeRange;
+            filterCondition.status = taskStatusList.join('|');
+            filterCondition.paymentDay = paymentDay;
+            filterCondition.projectGuid = $("#selectProject").val();
+
+            $("#btnFilter").click(function () {
+                filterTask();
+            });
+
+
+
+            $("#pageSize").change(function () {
+                filterTask();
+            });
+
+            $(".np-button").click(function () {
+                var self = $(this);
+                if (!self.hasClass("np-button-current") && !self.hasClass("np-button-disabled")) {
+                    self.siblings(".np-button-current").removeClass("np-button-current");
+                    self.addClass("np-button-current");
+                }
+            });
+            $(".dl-icon-help").hover(
+                function () {
+                    var lnk = $(this).parent("a");
+                    var explanation = lnk.siblings(".np-options-explanation");
+                    explanation.css("left", lnk.offset().left + "px");
+                    explanation.css("top", parseFloat(lnk.offset().top) + 20 + "px");
+                    explanation.show();
+                }
+                , function () {
+                    $(this).parent("a").siblings(".np-options-explanation").hide();
+                }
+            );
+            $(".divOperations").hover(
+                function () {
+                    var div = $(this).find("div.project-operations");
+                    div.css("top", $(this).height() - 7);
+                    div.css("left", ($(this).width() - div.width()) / 2);
+                    div.show();
+                },
+                function () {
+                    $(this).find("div.project-operations").hide();
+                }
+            );
+            $("#txtSearchTask").blur(
+                function () {
+                    if ($(this).val().trim() == "") {
+                        $(this).attr('placeholder', '输入工作代码');
+                    }
+
+                    if (!autoComplete.isFocused()) {
+                        autoComplete.hide();
+                    }
+                }
+            );
+            $("#txtSearchTask").focus(
+                function () {
+                    $(this).attr('placeholder', '');
+                }
+            );
+
+            $("#auto").click(function () {
+                SearchForTask();
+            });
+
+            UpdateTaskStatusView();
+        });
+
+        function ConvertTaskStatusToNum(taskStatus) {
+            switch (taskStatus) {
+                case "等待":
+                    return 2;
+                case "进行中":
+                    return 3;
+                case "完成":
+                    return 4;
+                case "逾期":
+                    return 6;
+                case "错误":
+                    return 7;
+                default:
+            }
+        }
+
+        function ConvertTaskStatusToChinese(taskStatus) {
+            switch (taskStatus) {
+                case "Waitting":
+                    return "等待";
+                case "Running":
+                    return "进行中";
+                case "Finished":
+                    return "完成";
+                case "Overdue":
+                    return "逾期";
+                case "Error":
+                    return "错误";
+                default:
+            }
+        }
+
+        function GetShortCodesAndTaskStatus() {
+            var result = {
+                shortCodes: [],
+                taskStatus: []
+            }
+
+            var tableObject = document.getElementById("taskTable");
+
+            for (var i = 1; i < tableObject.rows.length; i++) {
+
+                if(tableObject.rows[i]!=undefined&&tableObject.rows[i].children[5]!=undefined){
+                    result.shortCodes.push(tableObject.rows[i].id);
+                    result.taskStatus.push(ConvertTaskStatusToNum(tableObject.rows[i].children[5].innerText));
+                }
+
+            }
+
+            return result;
+        }
+
+        function UpdateTaskStatusView() {
+            var shortCodesAndTaskStatus = GetShortCodesAndTaskStatus();
+            cnabsAjaxSync('更新工作列表', '/Schedule/GetNewestTaskStatus', {
+                shortCodeList: shortCodesAndTaskStatus.shortCodes.join(','),
+                taskStatusList: shortCodesAndTaskStatus.taskStatus.join(',')
+            }, function (data) {
+                if (data.length != 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        UpdateTaskStatus(data[i]);
+                    }
+                }
+                setTimeout(UpdateTaskStatusView, 3000);
+            }, function(){
+                setTimeout(UpdateTaskStatusView, 300000);
+            })
+        }
+
+        function UpdateTaskStatus(shortCodeAndStatus) {
+            var tableObject = document.getElementById("taskTable");
+
+            for (var i = 1; i < tableObject.rows.length; i++) {
+                var row = tableObject.rows[i];
+                var shortCode = row.id;
+
+                if (shortCode == shortCodeAndStatus.ShortCode) {
+                    var element = row.children[5];
+                    $(element).css("color", cnabsGetColorByTaskStatus(shortCodeAndStatus.TaskStatus));
+                    shortCodeAndStatus.TaskStatus = ConvertTaskStatusToChinese(shortCodeAndStatus.TaskStatus);
+                    element.innerText = shortCodeAndStatus.TaskStatus;
+                    break;
+                }
+            }
+        }
+        function getAllShortCode() {
+            cnabsAjax('获取工作列表', '/Schedule/GetAllShortCode', {}, function (data){
+                var values = new Array();
+                $.each(data, function (i, item) {
+                    var obj = new Object();
+                    obj.id = item;
+                    obj.keys = [item];
+                    obj.text = item;
+                    values.push(obj);
+                });
+
+                autoComplete.value_arr = values;
+            });
+        }
+
+        function SearchForTask() {
+            var shortCode = $("#txtSearchTask")[0].value;
+            $.ajax({
+                url: '/Schedule/IsValidTaskShortCode',
+                type: 'Post',
+                data: { shortCode: shortCode },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Key == 0) {
+                        var url = location.protocol + "//" + location.host + "/Task";
+                        location.href = url + "?shortCode=" + shortCode;
+                    }
+                    else {
+                        cnabsAlert('跳转工作失败，工作代码不存在或没有权限访问：' + shortCode);
+                    }
+                },
+                error: function (e) {
+                    if (e.responseText.indexOf("未授权的访问") >= 0) {
+                        cnabsAlert('跳转工作失败，工作代码不存在或没有权限访问：' + shortCode);
+                    }
+                    else {
+                        alert("未识别的错误：" + e.responseText);
+                    }
+                }
+            });
+        }
+          
+        var searchbar = '<div class="customSearchBar" style="float:right;margin-top:10px;margin-right:10px;"><input  class="am_search_task_input" id="txtSearchTask" type="text" style="height: 21px; margin:1px 0; width:200px;margin-top:-5px;" placeholder="输入工作代码"></div><div id="auto"><!--自动完成 DIV--></div>';
+        $("#navigator #map").append(searchbar);
+        $(".customSearchBar").keyup(function (event) {
+             autoComplete.start(event);
+        });
+
+        var autoComplete = new CnabsAutoComplete('txtSearchTask', 'auto', [], SearchForTask);
+        getAllShortCode();//刷新页面时，加载当前权限内的所有shortCode
+
+        function triggerUpload (inputId) {
+            $("#" + inputId).val('');
+            $("#" + inputId).click();
+        }
+
+        function UploadFileToCreateTask() {
+            if ($('#selectProject').val() == '') {
+                cnabsMsgError('导入失败：请选择产品')
+                return;
+            }
+
+            var param = { projectGuid: $('#selectProject').val() };
+            cnabsDlgAjaxUploadExcel2007('导入', '/Schedule/ImportTasks', param, function (count) {
+                var msg = '文件导入成功, 共添加了' + count + '条工作，页面将在3秒后自动跳转...';
+                cnabsMsgSuccess(msg);
+                setTimeout(function () {
+                    filterTask();
+                }, 3000)
+            });
+        }
+
+        var filterCondition = {
+            projectGuid: $('#selectProject').val(),
+            time: getTimeStr(),
+            status: getStatusStr(),
+            paymentDay: $('#selectPaymentDay').val() == null ? '' : $('#selectPaymentDay').val()
+        }
+
+        $("#btnExport").click(function () {
+            var param = {
+                timeRange: filterCondition.time,
+                taskStatusList: filterCondition.status,
+                paymentDay: filterCondition.paymentDay
+            };
+
+            if (filterCondition.projectGuid != '') {
+                param.projectGuid = filterCondition.projectGuid;
+            }
+
+            cnabsAjax("导出工作列表", "/Schedule/ExportTasks", param, function (guid) {
+                window.location = "/Download?guid=" + guid;
+            });
+        });
+        var fullMessage=''
+        function viewError (){
+            if(fullMessage!=''){
+                cnabsMsgError(fullMessage)
+            }
+        }
+        function changeProject(val) {
+            $('#selectPaymentDay').html('');
+            $('#selectPaymentDay').prop('disabled',true);
+            $('.paymentDayTip').remove();
+            $('.paymentDayTipBtn').remove();
+            fullMessage='';
+            $('#selectPaymentDay').css('color', '#a5a5a5');
+            if ($('#selectProject').val() == '') {
+                $('#selectPaymentDay').html('<option value="">请选择产品</option>');
+            } else {
+                cnabsAjax('获取产品偿付期信息', '/Schedule/GetPaymentDays', { projectGuid: $('#selectProject').val() }, function (data) {
+                    if (data.fullMessage!='') {
+                        $('.paymentDayTip').remove();
+                        $('.paymentDayTipBtn').remove();
+                        var errorMsg = data.briefMessage;
+                        fullMessage=data.fullMessage;
+                        $('#selectPaymentDay').after('<span class="paymentDayTip">' + errorMsg + '</span>');
+                        if(data.fullMessage.length>20){
+                            $('.paymentDayTip').after('<span class="paymentDayTipBtn cnabs_pointer" onclick=viewError()>详情信息</span>')
+                        }
+                        return;
+                    }
+                    var html='<option value="">所有</option>';
+                    $.each(data.paymentDays, function (index, item) {
+                        var str = '';
+                        if (item.IsCurrentPaymentDay) {
+                            str += '<option value=' + item.PaymentDay + '>当期 ' + item.PaymentDay + '</option>';
+                        }
+                        else {
+                            str += '<option value=' + item.PaymentDay + '>第' + item.Sequence + '期 ' + item.PaymentDay + '</option>';
+                        }
+                        html += str;
+                    })
+                    $('#selectPaymentDay').css('color', '#000');
+                    $('#selectPaymentDay').prop('disabled',false);
+                    $('#selectPaymentDay').html(html);
+                    if (val != undefined) {
+                        $('#selectPaymentDay').val(val);
+                    }
+                }, function (errorInfo) {
+                    console.log(errorInfo)
+                })
+            }
+        }
+        changeProject();
+
+        function getStatusStr() {
+            var statusArray = [];
+            $.each($('.filterStatusOption input[type=checkbox]'), function (index, item) {
+                if ($(item).is(':checked')) {
+                    statusArray.push($(item).val());
+                }
+            })
+            return statusArray.join('|');
+        }
+        function getTimeStr() {
+            var timeStr = '';
+            $.each($('.filterTimeOption input[type=checkbox]'), function (index, item) {
+                if ($(item).is(':checked')) {
+                    timeStr = $(item).val();
+                }
+            })
+            return timeStr;
+        }
+        function selectTimeToFilter(id) {
+            $.each($('.filterTimeOption input[type=checkbox]'), function (index, item) {
+                $(item).prop('checked',false)
+            })
+            $('#'+id).prop('checked',true)
+        }
+
+    </script>
+}
+<style type="text/css">
+    .schedule_table_style tr {
+        text-align: center;
+    }
+
+    #walkthrough-content {
+        display: none;
+    }
+
+    .divOperations {
+        position: relative;
+    }
+
+    #calendar {
+        margin: 0 auto;
+    }
+
+    .fc-event:hover {
+        border-color: #ffc446;
+        cursor: pointer;
+    }
+
+    #fc_taskDetail, #fc_taskTarget, #fc_projectName {
+        text-indent: 2em;
+        color: #fff;
+        padding: 2px 4px;
+    }
+
+    .colorSpecification {
+        overflow: hidden;
+        position: absolute;
+        left: 0px;
+        top: 35px;
+    }
+
+    .colorSpecification span {
+        float: left;
+        margin-left: 5px;
+    }
+
+    .project-operations {
+        position: absolute;
+        z-index: 10;
+        border: 1px solid grey;
+        background: #47423C;
+        padding: 4px 2px;
+    }
+
+    .ImageSize {
+        width: 15px;
+        height: 15px;
+        font-size: 15px;
+    }
+
+    .btn_style {
+        margin-right: 5px;
+        width: 110px;
+        text-align: center;
+    }
+
+    .btn_float_style {
+        float: left;
+        margin-left: 10px;
+    }
+
+    .workListsTable td:nth-of-type(1), .workListsTable th:nth-of-type(1) {
+        width: 189px;
+        min-width: 189px;
+        max-width: 189px;
+    }
+
+    .workListsTable td:nth-of-type(2), .workListsTable th:nth-of-type(2) {
+        width: 320px;
+        min-width: 320px;
+        max-width: 320px;
+        padding-left: 10px;
+    }
+
+    .workListsTable td:nth-of-type(3), .workListsTable th:nth-of-type(3) {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        padding-left: 10px;
+    }
+
+    .workListsTable td:nth-of-type(4), .workListsTable th:nth-of-type(4) {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+    }
+
+    .workListsTable td:nth-of-type(5), .workListsTable th:nth-of-type(5) {
+        width: 85px;
+        min-width: 85px;
+        max-width: 85px;
+    }
+
+    .workListsTable td:nth-of-type(6), .workListsTable th:nth-of-type(6) {
+        width: 76px;
+        min-width: 76px;
+        max-width: 76px;
+    }
+
+    .workListsTable td:nth-of-type(7), .workListsTable th:nth-of-type(7) {
+        width: 66px;
+        min-width: 66px;
+        max-width: 66px;
+    }
+
+    .filterTitle {
+        text-align: right;
+        margin-right: 10px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+    }
+
+    select.filterSelect {
+        width: 205px;
+        padding: 0px 4px;
+        border: none;
+        height: 28px;
+    }
+
+    .paymentDayTip {
+        color: #b5ada4;
+        margin-left: 20px;
+    }
+
+    .paymentDayTipBtn {
+        color: #4a90e2;
+        margin-left: 5px;
+    }
+
+    .filterStatusOption, .filterTimeOption {
+        margin-right: 10px;
+        width: 86px;
+        height: 28px;
+        line-height: 28px;
+        cursor: pointer;
+    }
+
+    .filterStatusOption span, .filterTimeOption span {
+        margin-left: 10px;
+    }
+
+    .filterStatusOption input, .filterTimeOption input {
+        margin-left: 0px;
+        margin-top: 8px;
+     }
+</style>
+
+
+
+<div class="tablecloth" style="padding-bottom:1px;">
+     @*<header class="am_site_map_panel">
+         <span class="am_site_map_arrow">当前位置：</span>
+         <a class="am_site_map_label" href="/">解决方案</a>
+         <span class="am_site_map_arrow">></span>
+         <a class="am_site_map_label" href="/">存续期管理平台</a>
+         <span class="am_site_map_arrow">></span>
+         <span class="am_site_map_arrow">工作列表</span>
+         <div style="float:right;margin-top:-1px;margin-right:10px;">
+             <input class="am_search_task_input" onkeyup="autoComplete.start(event)" id="txtSearchTask" type="text" style="height: 21px; margin:1px 0; width:200px;margin-top:-5px;" placeholder="输入工作代码">
+         </div>
+         <div id="auto"></div>
+     </header>*@
+    <div class="filterConditions">
+        <div class="cnabs_panel" style="padding:20px;margin:0px;">
+            <div class="cnabs_overhide" style="margin-bottom:10px;">
+                <span class="left filterTitle">产品</span>
+                <select id="selectProject" class="cnabs_radius filterSelect left" name="selectProject" onchange="changeProject()">
+                    @if (string.IsNullOrEmpty(Request.QueryString["projectGuid"]))
+                    {
+                        <option value="" selected="selected">所有</option>
+                    }
+                    else
+                    {
+                        <option value="">所有</option>
+                    }
+                    @for (int i = 0; i < Model.Projects.Count; ++i)
+                    {
+                        var name = Model.Projects[i].ProjectName;
+                        var guid = Model.Projects[i].Guid;
+
+                        if (!string.IsNullOrEmpty(Request.QueryString["projectGuid"]) && guid == Request.QueryString["projectGuid"])
+                        {
+                            <option value="@guid" selected="selected">@name</option>
+                        }
+                        else
+                        {
+                            <option value="@guid">@name</option>
+                        }
+                    }
+                </select>
+                <span class="cnabs_overhide left" style="margin-left:20px;">
+                    <span class="left filterTitle">偿付期</span>
+                    <select id="selectPaymentDay" class="cnabs_radius filterSelect" name="selectPaymentDay"></select>
+                </span>
+            </div>
+            <div class="cnabs_overhide">
+                <span class="left filterTitle">时间</span>
+                <label class="left filterTimeOption cnabs_overhide" for="allTime">
+                    <input id="allTime" class="left" type="checkbox" checked name="name" value="All" onchange="selectTimeToFilter('allTime')" />
+                    <span class="left">全部</span>
+                </label>
+                <label class="left filterTimeOption cnabs_overhide" for="todayTime">
+                    <input id="todayTime" class="left" type="checkbox" name="name" value="Today" onchange="selectTimeToFilter('todayTime')" />
+                    <span class="left">今天</span>
+                </label>
+                <label class="left filterTimeOption cnabs_overhide" for="futureTime">
+                    <input id="futureTime" class="left" type="checkbox" name="name" value="Future" onchange="selectTimeToFilter('futureTime')" />
+                    <span class="left">今后</span>
+                </label>
+                <label class="left filterTimeOption cnabs_overhide" for="weekAheadTime">
+                    <input id="weekAheadTime" class="left" type="checkbox" name="name" value="WeekAhead" onchange="selectTimeToFilter('weekAheadTime')" />
+                    <span class="left">未来一周</span>
+                </label>
+                <label class="left filterTimeOption cnabs_overhide" for="monthAheadTime">
+                    <input id="monthAheadTime" class="left" type="checkbox" name="name" value="MonthAhead" onchange="selectTimeToFilter('monthAheadTime')" />
+                    <span class="left">未来一月</span>
+                </label>
+            </div>
+            <div class="cnabs_overhide" style="margin-bottom:10px;">
+                <span class="left filterTitle">状态</span>
+                <label class="left filterStatusOption cnabs_overhide" for="waittingStatus">
+                    <input id="waittingStatus" class="left" type="checkbox" checked name="name" value="Waitting" />
+                    <span class="left">等待</span>
+                </label>
+                <label class="left filterStatusOption cnabs_overhide" for="runningStatus">
+                    <input id="runningStatus" class="left" type="checkbox" checked name="name" value="Running" />
+                    <span class="left">进行中</span>
+                </label>
+                <label class="left filterStatusOption cnabs_overhide" for="finishedStatus">
+                    <input id="finishedStatus" class="left" type="checkbox" checked name="name" value="Finished" />
+                    <span class="left">完成</span>
+                </label>
+                <label class="left filterStatusOption cnabs_overhide" for="overdueStatus">
+                    <input id="overdueStatus" class="left" type="checkbox" checked name="name" value="Overdue" />
+                    <span class="left">逾期</span>
+                </label>
+                <label class="left filterStatusOption cnabs_overhide" for="errorStatus">
+                    <input id="errorStatus" class="left" type="checkbox" checked name="name" value="Error" />
+                    <span class="left">错误</span>
+                </label>
+            </div>
+            <div class="cnabs_overhide">
+                <div class="cnabs_btn left" id="btnFilter" style="margin-left:38px;">筛选</div>
+            </div>
+        </div>
+        <div class="cnabs_div_v2">
+            <div style="overflow:hidden;margin:0px;">
+                <div class="left" style="padding-top:5px;">
+                    <span class="cnabs_label_v2 calendar_title" id="taskBlockTitle">工作列表</span>
+                </div>
+                <div class='right' style="padding-top:10px;">
+                    <div class="cnabs_btn left btn_float_style" onclick="UploadFileToCreateTask()">导入</div>
+                    <div class="cnabs_btn left btn_float_style" id="btnExport">导出</div>
+                    <div class="cnabs_btn left btn_float_style" id="btnChangeTaskView">切换日历</div>
+                </div>
+            </div>
+
+
+            <div id="divTaskTable" class="schedule_table_style" style="display:none;">
+                <table class="table_v2 alone hover cnabs_v2_margin workListsTable" id="taskTable" style="width:100%;">
+                    <tbody id="taskTablebody">
+                        <tr>
+                            <th class="text-left">产品名称</th>
+                            <th class="text-left">工作安排</th>
+                            <th class="text-left">开始时间</th>
+                            <th class="text-left">截止时间</th>
+                            <th class="text-left">前置工作</th>
+                            <th>当前状态</th>
+                            <th>管理</th>
+                        </tr>
+                        @if (Model == null || Model.Tasks == null || Model.Tasks.Count == 0)
+                        {
+                            <tr><td colspan="8" class="text-center" style="font-size:18px">暂无工作</td></tr>
+                        }
+                        else
+                        {
+                            for (int i = 0; i < Model.Tasks.Count; ++i)
+                            {
+                                var task = Model.Tasks[i];
+                                <tr id="@task.ShortCode" index="@i" class="@(i % 2 == 0 ? " table_row_grey" : "table_row_grey_alt")">
+                                    <td class="ProjectName text-left" style="color:#ffc000; overflow: hidden;">
+                                        <a class="cnabs_yellow cnabs_ellipsis left" title=@task.ProjectName style="width:189px;" href="/ProductDashboard#/Info?projectGuid=@task.ProjectGuid">
+                                            @task.ProjectName
+                                        </a>
+                                    </td>
+                                    <td class="TaskName text-left" style="overflow:hidden;">
+                                        <a class="cnabs_yellow cnabs_ellipsis left" title=@task.TaskName style="width:320px;" href="/Task?shortCode=@task.ShortCode" target="_blank">@task.TaskName</a>
+                                    </td>
+                                    <td class="text-left">@task.StartTime</td>
+                                    <td class="EndTime text-left" endtime="@task.EndTime">@task.EndTime</td>
+                                    <td class="divOperations text-left">
+                                        @if (task.PrevTaskShortCodeArray.Count == 0)
+                                        {
+                                            <text>-</text>
+                                        }
+                                        else
+                                        {
+                                            var labelName = "展开" + task.PrevTaskShortCodeArray.Count + "项";
+                                            <div class="projectOperationsbox" style="cursor:pointer;">
+                                                <span style="color:#ffc000;">@labelName</span>@*（@task.PrevTaskShortCodeArray.Count）*@
+                                                <text class="ui-icon ui-icon-carat-1-s ImageSize cnabs_yellow"></text>
+                                                <div class="project-operations">
+
+                                                    @{
+                                                        var tupleList = new List<Tuple<string, string, int>>();
+                                                        for (int index = task.PrevTaskShortCodeArray.Count - 1; index >= 0; --index)
+                                                        {
+                                                            var prevTaskShortCode = task.PrevTaskShortCodeArray[index];
+                                                            var prevTaskShortName = task.PrevTaskNameArray[index];
+                                                            var lineNumber = Model.Tasks.Count;
+
+                                                            for (int line = 0; line < Model.Tasks.Count; ++line)
+                                                            {
+                                                                if (Model.Tasks[line].ShortCode == prevTaskShortCode)
+                                                                {
+                                                                    lineNumber = line;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            tupleList.Add(Tuple.Create(prevTaskShortCode, prevTaskShortName, lineNumber));
+                                                        }
+
+                                                        tupleList.Sort((l, r) => l.Item3.CompareTo(r.Item3));
+
+                                                        foreach (var tuple in tupleList)
+                                                        {
+                                                            <a style="color:#ff6d10; display:block;" href="/Task?shortCode=@tuple.Item1" target="_blank">@tuple.Item2</a>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                                        }
+                                    </td>
+                                    <td style=@Toolkit.GetTaskStatusStyle(task.Status)>@Toolkit.ToCnString(task.Status)</td>
+                                    <td>
+                                        <a class="cnabs_yellow text-left" href="/Task?shortCode=@task.ShortCode" target="_blank">进入</a>
+                                    </td>
+                                </tr>
+                                                            }
+                                                        }
+                    </tbody>
+                </table>
+
+                <div class="convenientPaging" style="height:24px;padding:4px;text-align:center;margin-top:10px;">
+                    @if (Model.PageInfo != null)
+                    {
+                        if (Model.PageInfo.TotalPages == 0)
+                        {
+                            <span>第&nbsp; &nbsp;</span><span id="currentPage">0</span><span>/</span><span id="totalPage">0</span><span>&nbsp;&nbsp;页&nbsp;&nbsp;</span>
+                            <a onclick="filterTaskByPage(0)" class="a-state">首页</a>
+                        }
+                        else
+                        {
+                            <span>第&nbsp; &nbsp;</span><span id="currentPage">@Model.PageInfo.CurrentPage</span><span>/</span><span id="totalPage">@Model.PageInfo.TotalPages</span><span>&nbsp;&nbsp;页&nbsp;&nbsp;</span>
+                            <a onclick="filterTaskByPage(1)" class="a-state">首页</a>
+                            if (Model.PageInfo.CurrentPage >= 2)
+                            {
+                                <a onclick="filterTaskByPage(@Model.PageInfo.CurrentPage-1)" class="a-state">上一页</a>
+                            }
+                            else
+                            {
+                                <a class="a-state">上一页</a>
+                            }
+                            if (Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages)
+                            {
+                                <a class="a-state">下一页</a>
+                            }
+                            else
+                            {
+                                <a onclick="filterTaskByPage(@Model.PageInfo.CurrentPage+1)" class="a-state">下一页</a>
+                            }
+                        }
+                    }
+                    <a onclick="filterTaskByPage(@Model.PageInfo.TotalPages)" class="a-state">尾页</a>&nbsp;&nbsp;
+                    <span>单页显示数目</span>
+                    <select id="pageSize" name="pageSize" style="width:52px;">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>&nbsp;&nbsp;
+                    <span>跳转到：</span><input type="text" name="page" id="paging-number">&nbsp;&nbsp;<a onclick="JumpFilterTaskByPage()" class="a-state">跳转</a>
+                </div>
+            </div>
+            <div style="position:relative;">
+                <div class="colorSpecification" id="colorSpecification" style="display:none;">
+                    <span class="fc-blue"></span>
+                    <span>等待/进行中</span>
+                    <span class="fc-green"></span>
+                    <span>已经完成</span>
+                    <span class="fc-red"></span>
+                    <span>逾期/错误</span>
+                </div>
+                <div id='calendar' style="display:none; margin-bottom:40px;"></div>
+            </div>
+            <div id="TaskToolTip">
+                <header></header>
+                <div style="padding:5px 8px;">
+                    <h5 style="padding:0px">产品名称：</h5>
+                    <div id="fc_projectName"></div>
+                    <h5>工作目标：</h5>
+                    <div id="fc_taskTarget"></div>
+                    <h5>工作描述：</h5>
+                    <div id="fc_taskDetail" style="padding:0px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var previousTaskPrefix = "[前置] ";
+    $("#taskTablebody tr .divOperations").mouseover(function () {
+        var preTaskArray = $(this).children(".projectOperationsbox").children(".project-operations").children("a");
+        var morePreTask = $(this).children(".projectOperationsbox").children("span");
+        var morePreTaskImg = $(this).children(".projectOperationsbox").children("text");
+        if (preTaskArray.length != 0) {
+            for (var i = 0; i < preTaskArray.length; i++) {
+                var preTaskShortCode = preTaskArray[i].href.split("=")[1];
+                var preTaskName = $("#" + preTaskShortCode).children(".TaskName").children("a");
+                if (preTaskName.length != 0) {
+                    var taskName = preTaskName.html();
+                    if (taskName.indexOf(previousTaskPrefix) == -1) {
+                        preTaskName.html(previousTaskPrefix + taskName);
+                    };
+                    preTaskName.css({
+                        'color': "#ff6d10"
+                    });
+                    morePreTask.css({
+                        'color': "#ff6d10"
+                    });
+                    morePreTaskImg.css("color", "#ff6d10");
+                }
+            };
+        }
+    })
+    $("#taskTablebody tr .divOperations").mouseout(function () {
+        var preTaskArray = $(this).children(".projectOperationsbox").children(".project-operations").children("a");
+        var morePreTask = $(this).children(".projectOperationsbox").children("span");
+        var morePreTaskImg = $(this).children(".projectOperationsbox").children("text");
+        if (preTaskArray.length != 0) {
+            for (var i = 0; i < preTaskArray.length; i++) {
+                var preTaskShortCode = preTaskArray[i].href.split("=")[1];
+                var preTaskName = $("#" + preTaskShortCode).children(".TaskName").children("a");
+                if (preTaskName.length != 0) {
+                    var taskName = preTaskName.html();
+                    if (taskName.indexOf(previousTaskPrefix) != -1) {
+                        preTaskName.html(taskName.substr(previousTaskPrefix.length, taskName.length - previousTaskPrefix.length));
+                    };
+                    preTaskName.css({
+                        'color': "#ffc446",
+                    });
+                    morePreTask.css({
+                        'color': "#ffc446"
+                    });
+                    morePreTaskImg.css("color", "#ffc446");
+                }
+            };
+        }
+    });
+
+</script>

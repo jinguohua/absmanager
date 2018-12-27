@@ -1,0 +1,342 @@
+[
+  //{
+  //  name: '租赁公司名称',
+  //  field: 'col1',
+  //  type: 'string'
+  //},
+  {
+    name: '申请编号',
+    field: 'col2',
+    type: 'string'
+  },
+  {
+    name: '合同号码',
+    field: 'col3',
+    type: 'string'
+  },
+  //{
+  //  name: '申请类型',
+  //  field: 'col4',
+  //  type: 'string'
+  //},
+  {
+    name: '客户名称',
+    field: 'col5',
+    type: 'string'
+  },
+  //{
+  //  name: '申请人性别',
+  //  field: 'col6',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '婚姻状况',
+  //  field: 'col7',
+  //  type: 'string'
+  //},
+  {
+    "name": "年龄",
+    "field": "col8",
+    "type": "numeric"
+  },
+  //{
+  //  name: '单位名称',
+  //  field: 'col9',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '现单位详细地址',
+  //  field: 'col10',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '证件类型',
+  //  field: 'col11',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '证件号码',
+  //  field: 'col12',
+  //  type: 'string'
+  //},
+  {
+    name: '车辆类型',
+    field: 'col13',
+    type: 'string'
+  },
+  //{
+  //  name: '租赁属性',
+  //  field: 'col14',
+  //  type: 'string'
+  //},
+  {
+    "name": "贷款期限",
+    "field": "col15",
+    "type": "numeric"
+  },
+  //{
+  //  name: '产品方案名称',
+  //  field: 'col16',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '申请状态',
+  //  field: 'col17',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '制造商',
+  //  field: 'col18',
+  //  type: 'string'
+  //},
+  {
+    name: '品牌',
+    field: 'col19',
+    type: 'string'
+  },
+  //{
+  //  name: '车系',
+  //  field: 'col20',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '车型',
+  //  field: 'col21',
+  //  type: 'string'
+  //},
+  {
+    "name": "车辆销售价",
+    "field": "col22",
+    "type": "numeric"
+  },
+  //{
+  //  name: '车架号',
+  //  field: 'col23',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '新车指导价',
+  //  field: 'col24',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '投资总额',
+  //  field: 'col25',
+  //  type: 'string'
+  //},
+  {
+    "name": "贷款额",
+    "field": "col26",
+    "type": "numeric"
+  },
+  {
+    "name": "客户利率",
+    "field": "col27",
+    "type": "numeric"
+  },
+  {
+    "name": "首付比例",
+    "field": "col28",
+    "type": "numeric"
+  },
+  //{
+  //  name: '首付金额',
+  //  field: 'col29',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '尾付比例',
+  //  field: 'col30',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '尾付金额',
+  //  field: 'col31',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '手续费率',
+  //  field: 'col32',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '手续费',
+  //  field: 'col33',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '手续费扣款方式',
+  //  field: 'col34',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '结算手续费率',
+  //  field: 'col35',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '补贴手续费',
+  //  field: 'col36',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '贴息金额',
+  //  field: 'col37',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '保证金比例',
+  //  field: 'col38',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '保证金',
+  //  field: 'col39',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '保证金冲抵方式',
+  //  field: 'col40',
+  //  type: 'string'
+  //},
+  {
+    "name": "每期客户租金",
+    "field": "col41",
+    "type": "numeric"
+  },
+  //{
+  //  name: '申请日期',
+  //  field: 'col42',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '合同生成日期',
+  //  field: 'col43',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '合同生效日期',
+  //  field: 'col44',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '合同结束日期',
+  //  field: 'col45',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '第一次预计扣款时间',
+  //  field: 'col46',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '最后一次预计扣款时间',
+  //  field: 'col47',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '店面省份',
+  //  field: 'col48',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '店面城市',
+  //  field: 'col49',
+  //  type: 'string'
+  //},
+  {
+    name: '放款日期',
+    field: 'col50',
+    type: 'string'
+  },
+  {
+    name: '扣款日',
+    field: 'col51',
+    type: 'string'
+  },
+  //{
+  //  name: '历史累计逾期天数',
+  //  field: 'col52',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '当期逾期天数',
+  //  field: 'col53',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '剩余本金',
+  //  field: 'col54',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '剩余利息',
+  //  field: 'col55',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '剩余本息',
+  //  field: 'col56',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '合同状态',
+  //  field: 'col57',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '还款方式',
+  //  field: 'col58',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '保险',
+  //  field: 'col59',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '购置税',
+  //  field: 'col60',
+  //  type: 'string'
+  //},
+  //{
+  //  name: 'gps',
+  //  field: 'col61',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '职业',
+  //  field: 'col62',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '年收入',
+  //  field: 'col63',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '历史最高逾期天数',
+  //  field: 'col64',
+  //  type: 'string'
+  //},
+  {
+    name: '客户所在地区',
+    field: 'col65',
+    type: 'string'
+  }
+  //{
+  //  name: '帐户管理费',
+  //  field: 'col66',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '责信保正常类型费用',
+  //  field: 'col67',
+  //  type: 'string'
+  //},
+  //{
+  //  name: '责信保二档类型费用',
+  //  field: 'col68',
+  //  type: 'string'
+  //}
+]

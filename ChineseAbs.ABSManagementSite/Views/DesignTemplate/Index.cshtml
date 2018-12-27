@@ -1,0 +1,209 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DesignTemplateViewModel
+@using ChineseAbs.ABSManagementSite.Common;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+<style>
+    .ModelTableHeader span, .ModelTableTr_sameBackground span {
+        font-size: 14px;
+    }
+
+    .ModelTableTr_sameBackground {
+        border-bottom: 1px solid #666;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .ModelTableHeader span:nth-of-type(1), .ModelTableTr_sameBackground span:nth-of-type(1) {
+        width: 350px;
+    }
+
+    .ModelTableHeader span:nth-of-type(2), .ModelTableTr_sameBackground span:nth-of-type(2) {
+        text-align: center;
+        width: 100px;
+    }
+
+    .ModelTableHeader span:nth-of-type(3), .ModelTableTr_sameBackground span:nth-of-type(3) {
+        text-align: center;
+        width: 100px;
+    }
+
+    .ModelTableHeader span:nth-of-type(4), .ModelTableTr_sameBackground span:nth-of-type(4) {
+        text-align: center;
+        width: 100px;
+    }
+
+    .ModelTableHeader span:nth-of-type(5), .ModelTableTr_sameBackground span:nth-of-type(5) {
+        text-align: center;
+        width: 130px;
+    }
+
+    .ModelTableHeader span:nth-of-type(6), .ModelTableTr_sameBackground span:nth-of-type(6) {
+        width: 140px;
+        margin-left: 20px;
+    }
+</style>
+}
+
+@section scripts{
+<script>
+    $(function () {
+        BindingElementActive(4, 2, 0);
+
+        $('#createNewTemplate').click(function () {
+            cnabsDlgYesNo('divCreateTemplate', '创建模板', function () {
+                var newTemplateName = $("#newTemplateName").val();
+                if (!newTemplateName) {
+                    cnabsAlert("请输入模板名称");
+                    return;
+                }
+                cnabsAlert("正在创建模板，请稍候...");
+
+                cnabsAjax("创建模板", "/DesignTemplate/CreateTemplate", { newTemplateName: newTemplateName }, function () {
+                    cnabsMsgSuccess("模板创建成功", true);
+                });
+            });
+        });
+    });
+
+    function DeleteTemplate(templateGuid, templateName) {
+        $("#removeMessage")[0].innerHTML = "确定删除模板 [" + templateName + "] ？";
+
+        cnabsDlgYesNo('divRemoveTemplate', '删除模板', function () {
+            cnabsAjax('删除模板', '/DesignTemplate/DeleteTemplate', { templateGuid: templateGuid }, function () {
+                cnabsMsgSuccess('模板 [' + templateName + '] 删除成功', true);
+            });
+        });
+    }
+
+    function RenameTemplate(templateGuid, templateName) {
+        cnabsDlgYesNo('divRenameTemplate', '重命名模板', function () {
+            var newTemplateName = $("#renameTemplateName").val();
+            if (!newTemplateName) {
+                cnabsAlert("请输入模板名称");
+                return;
+            }
+            cnabsAlert("正在修改模板名称，请稍候...");
+            var params = { templateGuid: templateGuid, newTemplateName: newTemplateName };
+            cnabsAjax("修改模板名称", "/DesignTemplate/RenameTemplate", params, function () {
+                cnabsMsgSuccess("模板名称修改成功", true);
+            });
+        });
+    }
+
+</script>
+}
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow" href="/DesignTemplate">设计模板</span>
+    </header>
+
+    <div class="am_panel">
+        <div class="am_section am_font">
+            <div class="tableTitleBox">
+                <div class="tableTitle fixedColor">模板列表</div>
+                <div class="addButton floatRight" id="createNewTemplate">
+                    <a style="outline:none; color:#ffc446;">
+                        <span class="ui-icon ui-icon-plusthick smallImageSize left buttonImage"></span>
+                        <span class="buttonText">创建模板</span>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <header class="ModelTableHeader">
+                    <span>模板名称</span>
+                    <span>修改名称</span>
+                    <span>修改模板</span>
+                    <span>删除模板</span>
+                    <span>创建人</span>
+                    <span>创建时间</span>
+                </header>
+                <div class="ModelTableBody">
+                    @foreach (var template in Model.Templates)
+                    {
+                        <div class="ModelTableTr_sameBackground">
+                            <span>
+                                <span style="color: #ffc446;font-size:16px;"><text>@template.TemplateName</text></span>
+                            </span>
+                            <span>
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-calculator-b smallImageSize" onclick='RenameTemplate("@template.TemplateGuid", "@template.TemplateName")'></text>
+                                </a>
+                            </span>
+                            <span>
+                                <a target="_blank" href="/EditTemplateTask?templateGuid=@template.TemplateGuid">
+                                    <text class="ui-icon ui-icon-bullets smallImageSize"></text>
+                                </a>
+                            </span>
+                            <span>
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-trash smallImageSize" onclick='DeleteTemplate("@template.TemplateGuid", "@template.TemplateName")'></text>
+                                </a>
+                            </span>
+                            <span>@Toolkit.ToString(template.CreateUser)</span>
+                            <span>@Toolkit.DateTimeToString(template.CreateTime)</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog begin-->
+<div class="module scenario" style="display:none;">
+    <div id="divRemoveTemplate">
+        <br />
+        <div id="removeMessage" style="text-align:center">
+
+        </div>
+        <br />
+        <br />
+        <br />
+    </div>
+</div>
+
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divCreateTemplate">
+        <dl>
+            <dt class="np-title"><span style="margin-top:-5px;">新模板名称</span></dt>
+            <dd class="np-detail" style="margin-left:80px;">
+                <div class="np-input">
+                    <input type="text" id="newTemplateName" style="width:240px; outline:none;">
+                </div>
+                <div class="np-tip">
+                    &nbsp
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divRenameTemplate">
+        <dl>
+            <dt class="np-title"><span style="margin-top:-5px;">新模板名称</span></dt>
+            <dd class="np-detail" style="margin-left:80px;">
+                <div class="np-input">
+                    <input type="text" id="renameTemplateName" style="width:240px; outline:none;">
+                </div>
+                <div class="np-tip">
+                    &nbsp
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!--Dialog end-->

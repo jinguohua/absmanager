@@ -1,0 +1,459 @@
+
+.cnabs_auto_complete_hidden {
+	width: 199px!important;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	border-left: 1px solid #333;
+	border-right: 1px solid #333;
+	position: absolute;
+	display: none;
+    padding-left:2px;
+}
+
+.cnabs_auto_complete_show {
+	width: 199px!important;
+	border: 1px solid #666;
+    background-color: #47423c;
+	position: absolute;
+	z-index: 9999; /* 设置对象的层叠顺序 */
+	display: block;
+    padding-left:2px;
+}
+
+.cnabs_auto_complete_onmouseover {
+	color: #ffffff;
+	background:url(../../Images/searchbg.jpg) repeat-x;
+    height:19px;
+    line-height:19px;
+	width: 99%;
+    border:1px solid #59b4d4;
+
+}
+.cnabs_auto_complete_onmouseout {
+	color: #fff;
+	width: 99%;
+    height:19px;
+    line-height:19px;
+	background-color: #47423c;
+}
+/*dialog内容自动填充样式开始*/
+  .cnabs_dialog_content_everyline{
+        margin-top:12px; overflow:hidden;
+        width:101%;
+    }
+    .cnabs_dialogCloth{
+        margin:0px 20px;
+    }
+    .cnabs_dialog_content_title{
+        color:#B7AFA5;
+        float:left;
+        margin-top:1px;
+        margin-right:10px;
+        width:60px;
+    }
+    .left{
+        float:left;
+    }
+    .cnabs_dialog_content_title_checkbox{
+        color:#B7AFA5;
+        margin-top:1px;
+        width:256px;
+        display:block;
+    }
+    .cnabs_dialog_content_everyline input[type=checkbox]{
+        margin:0px;
+        margin-top:3px;
+        margin-right:10px;
+        cursor:pointer;
+    }
+    .cnabs_dialog_input_wid{
+        width:200px;
+        outline:none;
+        resize:none;
+        padding:1px;
+        border:1px;
+    }
+    select.cnabs_dialog_input_wid{
+        box-sizing:content-box;
+        padding-top:0px;
+        padding-bottom:0px;
+    }
+    textarea.cnabs_dialog_input_wid{
+        padding-top:2px;
+        padding-bottom:2px;
+    }
+    .cnabs_dialog_textarea_height{
+        height:80px;
+    }
+    .cnabs_dialog_prompt{
+		color: #ff4A4A;
+		overflow: hidden;
+		display: none;
+	}
+	.cnabs_dialog_oPromptImage{
+		width:7%;
+        margin-top:1px;
+	}
+	.cnabs_dialog_oPromptMsg{
+		width:93%;
+	}
+	.cnabs_dialog_IptRadioBox{
+		overflow: hidden;
+	}
+    .cnabs_breakWord{
+        word-wrap:break-word;
+    }
+    .cnabs_whiteSpace{
+        white-space:normal!important;
+    }
+    .cnabs_ellipsis{
+        text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
+    }
+    .cnabs_pointer{
+        cursor:pointer;
+    }
+    .cnabs_radius{
+        border-radius:2px;
+    }
+    .cnabs_overhide{
+        overflow:hidden;
+    }
+    .cnabs_bolder{
+        font-weight:bolder;
+    }
+/*dialog内容自动填充样式结束*/
+/*悬浮icon样式开始*/
+.cnabs_smallImageSize{
+    font-size:18px;
+    color:#FFC446;
+}
+/*滚动条样式*/
+.cnabs_scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: #3f3a35;
+}
+/*定义滚动条的轨道，内阴影及圆角*/
+.cnabs_scrollbar::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background-color: #3f3a35;
+}
+/*定义滑块，内阴影及圆角*/
+.cnabs_scrollbar::-webkit-scrollbar-thumb {
+    width: 10px;
+    border-radius: 0px;
+    background-color: #b7afa5;
+}
+/*IE*/
+/*.cnabs_scrollbar {
+    scrollbar-track-color: #3f3a35;
+    scrollbar-arrow-color: #b7afa5;
+    scrollbar-face-color: #b7afa5;
+}*/
+.cnabs_btn_add{
+   cursor:pointer;padding:0px 10px 0px 30px;height:24px;line-height:24px;text-align:center;background-color:#8064a2;border-radius:2px;font-size:14px;
+   float:right;background-image:url(../../Images/Common/add.png);background-repeat:no-repeat;background-position:10px 0px;
+}
+.cnabs_btn_add:hover{
+   background-color:#8b6daf;
+}
+.cnabs_btn{
+   cursor:pointer;padding:0px 10px 0px 10px;height:24px;line-height:24px;text-align:center;background-color:#8064a2;border-radius:2px;font-size:14px;min-width:50px;
+}
+.cnabs_btn:hover{
+   background-color:#8b6daf;
+}
+.cnabs_btn_disabled{
+   padding:0px 10px 0px 10px;height:24px;line-height:24px;text-align:center;background-color:#59534C;border-radius:2px;font-size:14px;color:#726C65;min-width:50px;
+}
+.cnabs_btn_purple{
+   height:30px;line-height:30px;min-width:56px;min-width:70px;text-align:center;color:#fff;font-size:14px;padding:0px 10px;background-color:#8064a2;margin-top:20px;float:left;border-radius:2px;cursor:pointer;
+}
+.cnabs_btn_purple:hover{
+    background-color:#8b6daf;
+}
+.cnabs_btn_tab{
+    float: left;height: 39px;line-height: 39px;text-align: center;padding-left:20px;padding-right:20px; background-color: #4f4a43;color: #b7afa5;border: 1px solid #4f4a43;cursor: pointer;margin-left:10px;
+}
+.cnabs_btn_tab_v2{
+    float: left;height: 39px;line-height: 39px;text-align: center;padding-left:20px;padding-right:20px; background-color:#68625b;color:#E0E0E3;border: 1px solid #4f4a43;cursor: pointer;margin-left:10px;
+}
+.cnabs_btn_tab_selected {
+    background-color:transparent; border: 1px solid #4f4a43;border-top-width:2px;border-top-color: #ffc205; border-bottom-color: #37342e;color: #ffc205;height:38px;line-height: 38px;
+}
+.cnabs_error_message{
+    text-align:left;
+    color:#ff6666;
+    font-size:15px;
+    font-weight:bold;
+    word-wrap:break-word;
+}
+.cnabs_bubbleText{
+    background-color:#34a753;
+    border-radius:2px;
+    padding-left:5px;
+    padding-right:5px;
+}
+.cnabs_dot{
+    float:left;
+    width:4px;
+    height:4px;
+    background-color:#fff;
+    margin:9px 10px 3px 0px;
+}
+.cnabs_multipleChoice{
+    padding: 0px 10px 0px 10px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #4f4a43;
+    margin-bottom: 2px;
+}
+.cnabs_prompt{
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    color: #b7afa5;
+    background-color: #3B3831;
+    padding: 0px 7px 0px 26px;
+    border-radius: 50px;
+    background-position: 7px 5px;
+    background-repeat: no-repeat;
+    margin-left: 15px;
+}
+.cnabs_circle_green {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: #34a753;
+    margin-right: 5px;
+    display: inline-block;
+}
+.cnabs_circle_red {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: #ff4a4a;
+    margin-right: 5px;
+    display: inline-block;
+}
+.cnabs_btn_previous{
+    width:30px;
+    height:24px;
+    background-color:#534D46;
+    border-radius:2px;
+    background-image: url(../../Images/DashBoard/left.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.cnabs_btn_next{
+    width:30px;
+    height:24px;
+    background-color:#534D46;
+    border-radius:2px;
+    background-image: url(../../Images/DashBoard/right.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.cnabs_btn_previous:hover,.cnabs_btn_next:hover{
+    background-color:#847c71;
+}
+.cnabs_green{
+   color:#55FF55;
+}
+.cnabs_bg_green{
+   background-color:#34a753;
+}
+.cnabs_red{
+   color:#ff4a4a;
+}
+.cnabs_bg_red{
+   background-color:#ff4a4a;
+}
+.cnabs_orange{
+    color: #ffb366;
+}
+.cnabs_yellow{
+   color:#ffc446;
+}
+/*当dialog框为白底时候的链接颜色*/
+.cnabs_yellow_alertify {
+    color:#FFB114;
+}
+.cnabs_blue{
+   color:#3995cd;
+}
+.cnabs_brown{
+   color:#B7AFA5;
+}
+.cnabs_brown_v2{
+    color: #8f877b;
+}
+.cnabs_grey{
+   color: #cdcdcd;
+}
+.cnabs_white{
+   color:#ffffff;
+}
+.cnabs_panel {
+    background-color: #47423C;
+    height: 99%;
+    margin: 10px 20px;
+    padding: 10px 20px;
+}
+.cnabs_label {
+    font-size: 16px;
+    line-height: 30px;
+    margin-left: 20px;
+    vertical-align: middle;
+}
+.cnabs_table_margin {
+    margin-top:0px !important;
+}
+abbr{
+    text-decoration:none;
+}
+.cnabs_v2_margin {
+    margin:10px 0px 0px 0px!important;
+}
+.cnabs_label_v2 {
+    font-size: 16px;
+    line-height: 30px;    
+    vertical-align: middle;
+}
+.cnabs_panel_v2 {
+    background-color: #47423C;
+    height: 99%;
+}
+.cnabs_div_v2 {
+    padding:10px 20px;
+}
+.alertify .ajs-body .ajs-content{
+    font-size: 13px!important;
+}
+.cnabsDlgYesNoHeader {
+    border-width: 0;
+    height: 26px;
+    line-height: 26px;
+    background-color: #615d54;
+    font-weight: 100;
+    font-size: 13px;
+}
+
+.cnabsDlgYesNoClose {
+    line-height: 30px !important;
+    font-size: 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin-top: -15px !important;
+    padding: 0 6px 0 0 !important;
+    color: #f2f0f0;
+    font-weight: lighter !important;
+    background: none !important;
+    text-indent: 0;
+    border: none !important;
+}
+.ui-widget-overlay{
+    /*z-index:105!important;*/
+}
+.ui-dialog{
+    /*z-index:106!important;*/
+}
+.cnabs_block {
+    display:block;
+}
+.cnabs_none {
+    display:none;        
+}
+.cnabs_dialog_panel {
+    padding: 20px;
+    background: #4e4a44;
+}
+.cnabs_marginRight0 {
+    margin-right: 0px !important;
+}
+.cnabs_marginRight10 {
+   margin-right:10px;
+}
+.cnabs_marginLeft0 {
+    margin-left: 0px!important;
+}
+.cnabs_marginLeft5{
+    margin-left:5px;
+}
+.cnabs_marginLeft10{
+    margin-left:10px;
+}
+.cnabs_marginLeft30 {
+    margin-left:30px;
+}
+.cnabs_marginTop2 {
+    margin-top: 2px;
+}
+.cnabs_marginTop10 {
+    margin-top: 10px;
+}
+.cnabs_marginTop15{
+    margin-top:15px;
+} 
+.cnabs_marginTop20 {
+    margin-top: 20px;
+}
+.cnabs_marginTop30 {
+    margin-top: 30px;
+}
+.cnabs_marginRight20{
+    margin-right:20px;
+}
+.cnabs_padding20{
+    padding:20px;
+}
+.cnabs_paddingLeft20 {
+   padding-left:20px;
+}
+.cnabs_paddingRight20 {
+   padding-right: 20px;
+}
+.cnabs_paddingBottom20{
+    padding-bottom:20px;
+}
+.cnabs_paddingTop20{
+    padding-top:20px;
+} 
+.cnabs_relative {
+    position: relative;
+} 
+.cnabs_absolute {
+    position: absolute;
+}
+.cnabs_font16{
+    font-size:16px;
+}
+.cnabs_font14 {
+    font-size: 14px;
+}
+.cnabs_font12 {
+    font-size: 12px;
+}
+.cnabs_width180{
+    width:180px;
+}
+.cnabs_width166 {
+    width: 166px;
+}
+.cnabs_borderBottomInDialog {
+    border-bottom: 1px solid #56514a;
+}
+.cnabs_panelInDialog {
+    background-color: #4e4a44;
+}
+/*资产端*/
+.ht_clone_top {
+    z-index: 97 !important;
+}
+.ht_clone_left {
+    z-index: 98!important;
+}
+.ht_clone_top_left_corner,
+.ht_clone_bottom_left_corner {
+    z-index: 99!important;
+}

@@ -1,0 +1,297 @@
+﻿.handsontable td {
+    padding: 5px 10px;
+    border-right: 1px solid #666 !important;
+    border-bottom: none;
+    height: 22px !important;
+}
+
+.handsontable tbody tr th:nth-last-child(2) {
+    height: 21px !important;
+}
+
+.handsontable td:last-child {
+    border-right: none;
+}
+
+.handsontable th {
+    padding: 5px 10px 0px 10px !important;
+    /*border-top: 1px solid #666 !important;*/
+    /*border-bottom: 1px solid #666 !important;*/
+    border-left: none !important;
+    font-weight: bold;
+}
+
+.handsontable tr:first-child th,
+.handsontable tr:first-child td {
+    border-top: none !important;
+}
+
+.handsontable th:first-child,
+.handsontable th:nth-child(2),
+.handsontable td:first-of-type,
+.handsontable .htNoFrame + th,
+.handsontable .htNoFrame + td {
+    border-left: none;
+}
+
+.handsontable tr:nth-child(even) {
+    background-color: #514C44 !important;
+}
+
+.handsontable tr:nth-child(odd) {
+    background-color: #47423C !important;
+}
+
+.htItemWrapper {
+    color: black;
+}
+
+.handsontable .htFiltersMenuLabel {
+    font-size: 13px;
+}
+
+div.htAutocompleteArrow {
+    display: none;
+}
+
+#dlgautoColumns .disabled {
+    color: grey;
+}
+/*#dlgautoColumns .disabled-img{
+            visibility: hidden;
+        }
+        #dlgautoColumns .notchecked-img{
+            visibility: hidden;
+        }*/
+#dlgautoColumns div {
+    padding: 4px;
+}
+
+#publicColumns div {
+    float: left;
+    margin: 4px;
+    border: 1px solid #625C53;
+}
+
+#dlgautoColumns span {
+    cursor: pointer;
+    padding: 0 0 0 18px;
+}
+
+#dlgautoColumns > .columns > span {
+    display: inline-block;
+}
+
+#divOkCancel button {
+    text-align: center;
+}
+/*  ZQ  */
+.handsontable {
+    width:1010px;
+    margin-left:5px;
+}
+.handsontable th, .handsontable td {
+    text-align: center;
+}
+.handsontable td:first-of-type {
+    text-align:left;
+}
+.handsontable th {
+    background-color: #625C53;
+    color: #b7afa5;
+}
+
+.handsontable.ht__selection--columns thead th.ht__highlight,
+.handsontable.ht__selection--rows tbody th.ht__highlight {
+    background-color: #B7AFA5;
+    color: #fff;
+}
+
+.handsontable tbody th.ht__highlight, .handsontable thead th.ht__highlight {
+    background-color: #B7AFA5;
+    color: #fff;
+}
+
+.handsontable td.area {
+    background: -moz-linear-gradient(top, rgba(255, 255, 255,0.06) 0%, rgba(255, 255, 255,0.06) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255,0.06)), color-stop(100%,rgba(255, 255, 255,0.06))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255,0.06) 0%,rgba(255, 255, 255,0.06) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(255, 255, 255,0.06) 0%,rgba(255, 255, 255,0.06) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(255, 255, 255,0.06) 0%,rgba(255, 255, 255,0.06) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(255, 255, 255,0.06) 0%,rgba(255, 255, 255,0.06) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#57b5d1ff', endColorstr='#57b5d1ff',GradientType=0 ); /* IE6-9 */
+}
+
+.highlight {
+    color: #fff;
+}
+
+#divFilters span, #divdlgFilters span {
+    display: inline-block;
+    padding: 1px 7px;
+    margin: 0 5px 5px 5px;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    color: #000;
+}
+
+.handsontable td.htSeparator {
+    height: 0 !important;
+}
+
+.handsontable th:last-child {
+    border-right: 1px solid #666;
+}
+
+.handsontable th, .handsontable td {
+    border-right: 1px solid #666;
+}
+
+.ht_master:not(.innerBorderLeft):not(.emptyColumns) ~ .handsontable tbody tr:nth-child(2n+1) th {
+    background-color: #47423C;
+}
+
+.ht_master:not(.innerBorderLeft):not(.emptyColumns) ~ .handsontable tbody tr:nth-child(2n) th {
+    background-color: #514C44;
+}
+
+.handsontable th {
+    border-bottom: none !important;
+}
+
+.handsontable.ht__selection--columns thead th.ht__highlight, .handsontable thead th.ht__highlight {
+    background-color: #7f786f;
+}
+
+.handsontable .columnSorting.descending::after, .handsontable .columnSorting.ascending::after {
+    color: #b7afa5;
+}
+
+.handsontable .htUIMultipleSelect div.htUIMultipleSelectHot, .handsontable .htUIMultipleSelect div.wtHolder {
+    height: initial !important;
+    min-height: 110px !important;
+    max-height: 210px !important;
+}
+
+.handsontable .htUIMultipleSelect div.htUIMultipleSelectHot table td, .handsontable .htUIMultipleSelect div.wtHolder table td {
+    text-align: left;
+    color: #000;
+}
+
+.divChecked {
+    background-color: #625C53;
+}
+
+.imgChecked {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+}
+
+.imgUnchecked {
+    visibility: hidden;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    margin-top: 3px;
+}
+
+.operatePnl {
+    margin: 15px 20px;
+}
+
+.operatePnl > span.button {
+    margin-right: 10px;
+    padding: 3px 5px 7px 5px;
+}
+
+.operatePnl > span.button * {
+    vertical-align: middle;
+}
+
+.filterPnl {
+    margin-top: 0px;
+    padding: 10px;
+}
+
+.filterPnl .filterTitle {
+    padding-left: 5px;
+    padding-top: 5px;
+    text-align: right;
+    width: 140px;
+}
+
+.filterPnl .filterTitle, .filterPnl .filterCheck {
+    display: inline-table;
+    vertical-align: top;
+}
+
+.filterCheck label, .filterCheck input {
+    cursor: pointer;
+}
+
+.filterOperate {
+    text-align: center;
+}
+
+.ht_clone_bottom_left_corner, .ht_clone_bottom {
+    display: none;
+}
+
+.filterOperate .Button {
+    margin-right: 7px;
+}
+
+.ui-widget select {
+    margin-right: 14px;
+    width:150px;
+}
+
+.ui-widget .ui-widget {
+    margin-right: 7px;
+}
+
+.filterPnl .filterCheck, .filterPnl .filterTitle {
+    display: inline\9; /*  IE  */
+    display: inline\0;
+}
+
+.filterPnl .iestylech {
+    margin-left:-3px\9;
+    margin-left:-3px\0;    
+}
+
+.filterPnl .ietitch {
+    display: inline-block\9;
+    display: inline-block\0;
+    padding-top:4px\0;
+    padding-top:4px\9;
+}
+
+table.filterCheck {
+    margin-top:2px;
+}
+
+.handsontable .htDimmed {
+     color: #fff; 
+}
+
+#dlgautoColumns span.addnewtext {
+    margin:0;
+    display:block;
+}
+
+#dlgautoColumns #divOkCancel {
+    position: absolute;
+    left: 28px;
+    bottom:10px;
+}
+
+#dlgautoColumns .addnewmar {
+    margin-top:-15px;
+}
+input[type="checkbox"], input[type="radio"] {
+    vertical-align: middle;
+    margin: 3px 2px 3px 2px;
+}

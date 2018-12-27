@@ -1,0 +1,460 @@
+@import "../color.less";
+@import "../font.less";
+
+@perfect-scrollbar-color: @grey-9;
+@min-screen-width: 1024px;
+@sidebar-content-width: 200px;
+@basic-info-right-content-width: 280px;
+@right-content-min-width: @min-screen-width - @sidebar-content-width;
+// 标准前缀名
+@abs-prefix: abs;
+@ant-prefix: ant;
+
+// font
+@abs-font-color: @white-1;
+@abs-font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+
+//layout
+@abs-layout-bg: @black-5;
+
+// panel
+@abs-panel-bg: @grey-17;
+@abs-panel-border-color: @grey-18;
+
+// switch
+@abs-switch-checked-bg: @orange-1;
+@abs-switch-nochecked-disabled-bg: @grey-8;
+@abs-switch-bg: @grey-9;
+@abs-switch-checked-disabled-bg: @orange-2;
+@abs-switch-disabled-circle-m: @grey-2;
+@abs-switch-disabled-circle-s: @grey-6;
+
+// page-title
+@abs-page-title-bg: @black-2;
+@abs-page-title-bottom-border-color: @grey-18;
+@abs-page-title-border-color: @orange-1;
+@abs-page-title-content-title-color: @yellow-1;
+@abs-page-title-content-subtitle-color: @grey-2;
+
+// expert-list
+@abs-expert-dynamic-color: @grey-2;
+@abs-expert-content-color: @white-1;
+@abs-expert-hover-bg-color: @grey-7;
+@abs-expert-remove-button-hover-color: @abs-link-hover-color;
+
+// input
+@abs-input-color: @white-1;
+@abs-input-bg: @grey-9;
+@abs-input-border: @grey-5;
+@abs-input-border-hover: @grey-4;
+@abs-input-border-focus: @orange-1;
+@abs-search-input-bg: @white-1;
+
+// select
+@abs-select-color: @white-1;
+@abs-select-bg: @grey-9;
+@abs-select-border: @grey-5;
+@abs-select-border-hover: @grey-4;
+@abs-select-border-focus: @orange-1;
+@abs-select-arrow: @grey-2;
+@abs-select-placeholder: @grey-2;
+@abs-option-bg:  @grey-11;
+@abs-option-border:  @grey-11;
+@abs-option-hover:  @grey-7;
+
+// tag
+@abs-tag-bg: @red-1;
+@abs-tag-color: @white-1;
+
+//link
+@abs-link-color: @orange-5;
+@abs-link-hover-color: @orange-6;
+
+// list
+@abs-list-header-color: @yellow-1;
+@abs-list-even-bg: @grey-12;
+@abs-list-odd-bg: @grey-13;
+@abs-list-color: @white-1;
+@abs-list-divider: @grey-2;
+@abs-list-border: @grey-15;
+@abs-list-tr-hover: @grey-7;
+@abs-list-no-data-bg: @grey-13;
+
+// anchor point
+@abs-anchor-point-active-item-bg-color: @orange-1;
+@abs-anchor-point-item-color:  @orange-1;
+
+// icon
+@abs-ant-icon-bg: @white-1;
+@abs-ant-icon-size-s: @font-m;
+@abs-ant-icon-size-m: @font-xl;
+@abs-ant-icon-size-l: @font-xxl;
+
+// tabs
+@abs-tabs-color: @yellow-1;
+@abs-tabs-borderColor: @grey-7;
+@abs-tabs-hover-color: @abs-link-hover-color;
+@abs-tabs-active-color: @orange-1;
+@abs-tabs-content-color: @abs-font-color;
+
+//button
+@abs-btn-color: @abs-font-color;
+@abs-btn-primary-color: @blue-2;
+@abs-btn-default-color: @grey-4;
+@abs-btn-danger-color: @red-2;
+@abs-btn-disabled-color: @grey-8;
+
+//news-list
+@abs-newsList-bgcolor: @black-3;
+@abs-newsList-borderColor: @black-4;
+@abs-newsList-titleColor: @orange-3;
+@abs-newsList-issuerColor: @grey-10;
+
+// abs link card
+@abs-link-list-item-flag-bg-blue-1: @blue-1;
+@abs-link-list-item-flag-bg-blue-2: @blue-2;
+@abs-link-list-item-flag-bg-blue-3: @blue-3;
+@abs-link-list-item-flag-bg-blue-4: @blue-11;
+@abs-link-list-item-flag-bg-green-1: @green-1;
+@abs-link-list-item-flag-bg-green-2: @green-2;
+@abs-link-list-item-flag-bg-red-1: @red-1;
+@abs-link-list-item-flag-bg-red-2: @red-2;
+@abs-link-list-item-flag-bg-yellow-1: @yellow-1;
+@abs-link-list-item-flag-bg-yellow-2: @yellow-2;
+@abs-link-list-item-flag-bg-orange-1: @orange-1;
+@abs-link-list-item-flag-bg-orange-2: @orange-2;
+@abs-link-list-item-flag-bg-white-1: @white-1;
+@abs-link-list-item: @grey-11;
+@abs-link-list-item-hover: @grey-7;
+@abs-link-list-item-content: @white-1;
+
+@abs-link-list-item-flag-bg-blue-19: @blue-19;
+@abs-link-list-item-flag-bg-blue-20: @blue-20;
+@abs-link-list-item-flag-bg-green-5: @green-5;
+@abs-link-list-item-flag-bg-red-10: @red-10;
+@abs-link-list-item-flag-bg-violet-1: @violet-1;
+//message
+@abs-message-color: @white-1;
+@abs-message-bg: @black-6;
+@abs-message-border-color: @grey-7;
+@abs-message-box-shadow-color: @black-1;
+
+// abs structure
+@abs-structure-white-color: @white-1;
+@abs-structure-black-color: @black-1;
+
+// modal
+@abs-modal-color: @abs-font-color;
+@abs-modal-bgcolor: @grey-11;
+@abs-modal-border-color: @grey-7;
+@abs-modal-header-bgcolor: @grey-7-rgba;
+@abs-modal-closebtn-color: @grey-2;
+@abs-modal-closebtn-hover-color: @yellow-3;
+@abs-modal-size: @font-m;
+@abs-modal-confirm-title-size: @font-l;
+@abs-modal-confirm-content-lineheight: @font-xxl;
+@abs-modal-footer-absolute-bg: @black-6-rgba;
+
+//modal-confirm
+@abs-modal-confirm-success-color: @green-7;
+@abs-modal-confirm-error-color: @red-4;
+@abs-modal-confirm-warning-color: @orange-1;
+// @abs-modal-confirm-info-color: @blue-2;
+
+//modal-pricing
+@abs-pricing-modal-title-color: @blue-3;
+@abs-pricing-modal-title-font: @font-m;
+@abs-pricing-modal-title-padding: 6*@hd;
+@abs-pricing-modal-content-margin-bottom: @font-m;
+@abs-pricing-title-margin-left: @font-s;
+@abs-pricing-content-margin-bottom: 6*@hd;
+
+// checkbox and radio 
+@abs-radio-selected-inner-bg: @orange-1;
+@abs-radio-text-color: @white-1;
+@abs-radio-hover-inner-boder-color: @orange-1;
+@abs-checked-inner-border-color: @orange-1;
+@abs-radio-inner-border-color: @grey-3;
+@abs-radio-disabled-inner-bg: @grey-6;
+
+@abs-checkbox-selected-inner-bg: @orange-1;
+@abs-checkbox-inner-border-color: @grey-3;
+@abs-checkbox-disabled-inner-bg: @grey-8;
+@abs-checkbox-disabled-inner-border-color: @grey-6;
+@abs-checkbox-text-color: @white-1;
+
+// calendar
+@abs-calendar-bg: @grey-9;
+@abs-calendar-color: @grey-2;
+@abs-calendar-border: @grey-5;
+@abs-calendar-border-hover: @grey-4;
+@abs-calendar-border-focus: @orange-1;
+@abs-calender-content-border: @grey-7;
+@abs-calender-content-bg: @grey-11;
+@abs-calender-checked: @red-2;
+@abs-calender-defalut-color: @white-1;
+@abs-calender-extra-footer-border-color: @grey-26;
+
+//upload
+@abs-upload-hover-color: @abs-link-hover-color;
+@abs-upload-hover-div-color: @grey-5;
+@abs-upload-bg: @black-7;
+
+//pagination
+@abs-pagination-disable: @grey-2;
+@abs-pagination-current: @orange-1;
+@abs-pagination-bg: @grey-9;
+@abs-pagination-border: @grey-4;
+
+//calender
+@abs-calender-bg: @grey-9;
+@abs-calender-color: @grey-2;
+@abs-calender-inner-bg: @black-6;
+@abs-calender-border: @grey-7;
+@abs-calender-hover: @orange-1;
+@abs-calender-current: @red-3;
+@abs-calender-font-color: @white-1;
+@abs-white-font-color: @white-1;
+// label value list
+@abs-label-value-title-color: @blue-3;
+
+// login
+@abs-other-login-icon-bg: @grey-7;
+@abs-other-login-icon-text: @green-2;
+@abs-other-login-bg: @grey-15;
+@abs-other-login-title-liner-left: @grey-7;
+@abs-other-login-title-liner-right: @grey-15;
+@abs-other-login-title-text: @grey-2;
+
+// container 
+@abs-container-padding: 6px;
+
+// emphasize text
+@abs-emphasize-text-color: @white-1;
+
+// comment
+@abs-comment-text-color: @red-4;
+@abs-comment-font-size: @font-s;
+
+// abs footer item
+@abs-footer-item-border-left-color: @grey-19;
+@abs-footer-bottom-border-color: @grey-19;
+@abs-footer-bg: @grey-20;
+@abs-footer-color: @grey-2;
+@abs-footer-hover-color: @abs-link-hover-color;
+
+// bubble
+@abs-bubble-border: @grey-7;
+@abs-bubble-shadow: @black-1;
+
+// abs backtop
+@abs-back-top-bg: @grey-22;
+@abs-back-top-icon-color: @white-1;
+@abs-back-top-hover-bg: @orange-1;
+
+// uploadAvatar
+@abs-upload-avatar-title-color: @white-1;
+@abs-upload-avatar-mask-bg: @grey-23-rgba;
+
+// loading
+@abs-loading-color-blue: @blue-2;
+@abs-loading-color-white: @white-1;
+@abs-loading-size-small: @font-m;
+@abs-loading-size-default: @font-xxl;
+@abs-loading-size-large: @font-xxxxl;
+
+// abs pagination
+@abs-pagination-item-bg: @grey-9;
+@abs-pagination-item-link-color: @grey-9;
+@abs-pagination-item-color: @white-1;
+@abs-pagination-item-link-color: @abs-link-hover-color;
+@abs-pagination-item-hover-bg: @grey-4;
+@abs-pagination-item-active-bg: @orange-1;
+
+// abs sidebar menu
+@abs-menu-item-color: @yellow-1;
+@abs-menu-submenu-item-color: @white-1;
+@abs-menu-item-hover-bg-color: @grey-7;
+@abs-menu-item-active-bg: @orange-1;
+@abs-menu-item-active-color: @white-1;
+@abs-sidebar-border-color: @grey-18;
+
+// abs modal uplaod
+@abs-modal-upload-list-item-name-color: @orange-4;
+@abs-modal-upload-enclosure-color: @blue-3;
+@abs-modal-upload-enclosure_size-color: @red-4;
+
+// ans market 
+@abs-market-detail-name-color: @orange-4;
+
+// abs double date picker
+@abs-double-date-picker-required-label-color: @red-4;
+
+// deal-list-issuing
+@abs-deal-list-issuing-defalut-title: @white-1; 
+@abs-deal-list-issuing-title: @white-1; 
+
+// myattention
+@abs-attention-cancel-follow-color: @grey-2;
+@abs-attention-follow-color: @orange-1;
+
+// header
+@abs-header-bg-color: @blue-14;
+@abs-header-border-color: @blue-15;
+
+// feedback
+@abs-feedback-color: @white-1;
+@abs-feedback-hover-color: @orange-1;
+@abs-feedback-font-size: @font-xl;
+
+// follow
+@abs-follow-color: @white-1;
+@abs-follow-font-size: @font-xl;
+
+//abs header menu
+@abs-header-menu-bg-color: @blue-14;
+@abs-header-menu-item-color: @white-1;
+@abs-header-menu-item-hover-color: @orange-1;
+@abs-header-menu-horizontal-border-color: @blue-15;
+@abs-header-menu-arrow-page-bg-color: @black-2;
+@abs-header-menu-arrow-home-bg-color: @black-5;
+@abs-header-menu-submenu-popup-bg-color: @blue-16;
+@abs-header-ant-menu-item-group-border-color: @blue-17;
+@abs-header-ant-menu-item-group-title-color: @yellow-1;
+@abs-reddot-color: @red-1;
+@abs-header-menu-item-font-size: @font-l;
+@abs-header-ant-menu-item-group-item-font-size: @font-m;
+
+// notice
+@abs-notice-color: @white-1;
+@abs-notice-hover-color: @orange-1;
+@abs-notice-font-size: @font-xl;
+@abs-notice-ant-badge-sup: @red-1;
+@abs-notice-ant-badge-sup-small: @red-8;
+@abs-notice-ant-badge-sup-big: @red-7;
+
+// person menu
+@abs-person-menu-item-danger-color: @red-1;
+@abs-person-menu-item-danger-border-color: @blue-17;
+@abs-person-name-fong-size: @font-m;
+@abs-person-i-fong-size: @font-s;
+
+// header search
+@abs-header-search-placeholder-color: @grey-2;
+@abs-header-search-popover-item-color: @orange-1;
+@abs-header-search-popover-arrow-bg-color: @black-6;
+@abs-header-search-popover-arrow-border-color: @grey-7;
+@abs-header-search-popover-tag-color: @yellow-1;
+@abs-header-search-popover-content-color: @white-1;
+@abs-header-search-popover-description-color: @grey-2;
+@abs-header-search-popover-footer-bg-color: @blue-18;
+@abs-header-search-popover-title-font-size: @font-m;
+@abs-header-search-popover-description-font-size: @font-s;
+
+// expert
+@abs-expert-name-color: @blue-3;
+@abs-expert-company-color: @grey-2;
+@abs-expert-border-color: @grey-2;
+@abs-expert-profile-bg: @black-2;
+@abs-expert-profile-border-color: @grey-18;
+@abs-expert-empty-color: @grey-2;
+@abs-expert-account-color: @grey-2;
+@abs-expert-profile-edit: @orange-1;
+@abs-expert-other-tag-color: @grey-25;
+@abs-expert-other-tag-bg: @grey-4;
+@abs-expert-content-hover-bg: @grey-4;
+@abs-expert-file-icon: @blue-21;
+@abs-expert-file-color: @orange-1;
+@abs-expert-bound-color: @white-1;
+@abs-ecpert-select-border-color: @grey-5;
+
+// abs icon Tooptip
+@abs-icon-tooltip-color: @abs-link-color;
+@abs-icon--tooltip-hover-color: @abs-link-hover-color;
+@abs-icon-tooltip-size: @font-m;
+
+// login
+@abs-login-input-i-color: @grey-2;
+@abs-login-btn-backhome-bg-color: @grey-24-rgba;
+@abs-login-btn-backhome-border-color: @grey-9;
+@abs-login-backhome-color: @abs-link-color;
+@abs-login-backhome-hover-color: @abs-link-hover-color;
+@abs-login-title-color: @white-1;
+@abs-login-modal-otherway-title-color: @yellow-1;
+@abs-login-btn-font-size: @font-l;
+@abs-login-title-font-size: @font-xxxxl;
+@abs-login-bg-color: @grey-15;
+
+// register
+@abs-register-title-font-size: @font-xxxxl;
+@abs-register-btn-font-size: @font-l;
+@abs-register-bg-color: @grey-15;
+
+// register overseas
+@abs-overseas-tooltip-title-color: @blue-3;
+@abs-overseas-errorMsg-color: @red-9;
+
+// register-success
+@abs-register-success-title-font-size: @font-l;
+@abs-register-success-content-color: @white-1;
+@abs-register-success-content-second-color: @red-1;
+
+// register domestic
+@abs-domestic-ant-form-label-color: @yellow-1;
+@abs-domestic-input-i-color: @grey-2;
+@abs-domestic-aggrement-checkbox-color: @grey-2;
+@abs-domestic-aggrement-checkbox-font-size: @font-m;
+@abs-domestic-aggrement-title-color: @yellow-1;
+@abs-domestic-aggrement-section-title-color: @blue-3;
+@abs-domestic-input-addon-color: @white-1;
+
+// TagField 
+@abs-expert-tag-bg: @orange-1;
+@abs-expert-tag-color: @white-1;
+@abs-expert-tag-remove: @grey-25;
+@abs-expert-tag-chioce-defalut: @grey-2;
+@abs-expert-tag-chioce-selected: @orange-1;
+
+// abs switch version
+@abs-switch-version-color: @white-1;
+@abs-switch-version-bg: @red-1;
+
+// abs file header
+@abs-file-header-title-font: @font-l;
+@abs-file-header-title-color: @yellow-1;
+@abs-file-header-time-font: @font-s;
+@abs-file-header-time-color: @grey-2;
+@abs-file-header-button-line: @grey-2;
+
+// cashflow
+@abs-confirm-title-icon-warning: @orange-1;
+
+// reference-parameter
+@reference-parameter-table-name-title: @orange-1;
+
+// feature
+@abs-feature-heard-text: @orange-1;
+@abs-feature-priceview-background: @blue-13;
+@abs-feature-dataview-background: @black-5;
+
+// abs newsPanl hover
+@abs-text-hover:  @orange-6;
+@abs-text-background: @grey-7;
+@reference-parameter-table-name-title: @orange-1;
+
+// desktop
+@abs-desktop-heard-text: @orange-1;
+@abs-desktop-form-label-font: @font-m;
+@abs-desktop-form-label-color: @yellow-1;
+@abs-desktop-content-text-font: @font-xl;
+@abs-desktop-content-text-color: @blue-4;
+@abs-desktop-content-text-phone-font: @font-xxxxl;
+@abs-desktop-content-text-phone-color: @orange-1;
+
+//index
+@abs-header-banner-bg: @blue-23;
+@abs-header-banner-title-light-color: @orange-1;
+@abs-header-banner-title-light-font: @font-40;
+@abs-header-banner-text-color: @white-1;
+@abs-header-banner-title-top-font: @font-xxxl;
+@abs-header-banner-title-bottom-font: @font-xl;

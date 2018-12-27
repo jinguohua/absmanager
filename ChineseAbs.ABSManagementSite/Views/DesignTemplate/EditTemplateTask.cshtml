@@ -1,0 +1,261 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.EditTemplateTaskViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+<style>
+</style>
+}
+
+@section scripts{
+<script>
+    function DeleteTemplateTask(templateTaskId, templateTaskName) {
+        var msg = "确认删除模板工作 [" + templateTaskName + "] ？";
+        cnabsAutoDlgYesNo(null, "删除模板工作", function () {
+            cnabsAjax("删除模板工作", "/EditTemplateTask/DeleteTemplateTask", { templateTaskId: templateTaskId }, function () {
+                cnabsMsgSuccess("模板工作[" + templateTaskName + "]删除成功", true);
+            })
+        }, msg)
+    }
+
+    function DeleteTemplateTime(templateGuid, templateTimeName) {
+        var msg = "确认删除模板时间 [" + templateTimeName + "] ？";
+        cnabsAutoDlgYesNo(null, "删除模板时间", function () {
+            var param = { templateGuid: templateGuid,  templateTimeName: templateTimeName };
+            cnabsAjax("删除模板时间", "/EditTemplateTask/DeleteTemplateTime", param, function () {
+                cnabsMsgSuccess("模板时间[" + templateTimeName + "]删除成功", true);
+            })
+        }, msg)
+    }
+
+    function EstimateTemplateTime(templateGuid, templateTimeName) {
+        var params = { templateGuid: templateGuid, templateTimeName: templateTimeName };
+        cnabsAjax('测算模板时间', '/EditTemplateTask/EstimateTemplateTime', params, function (data) {
+            var html = "";
+            $.each(data, function(){
+                html += this + "<br/>";
+            });
+            $("#estimateTemplateTimeContent").html(html);
+            cnabsDlgOk('divEstimateTemplateTime', '模板对应时间');
+        });
+    }
+
+    $(document).ready(function () {
+        BindingElementActive(4, 2, 0);
+
+        $("#btnDownloadTaskTemplate,#txtDownloadTaskTemplate").click(function () {
+            window.location = "/EditTemplateTask/DownloadTemplateTaskFile?templateGuid=@Model.TemplateGuid";
+        })
+
+        $("#btnUploadTaskTemplate,#txtUploadTaskTemplate").click(function () {
+            var param = { templateGuid: '@Model.TemplateGuid' };
+            cnabsDlgAjaxUploadExcel2007('上传工作模板', '/EditTemplateTask/UploadTemplateTaskFile', param, function (count) {
+                var msg = '工作模板文件导入成功, 共添加了' + count + '条模板工作';
+                cnabsMsgSuccess(msg, true);
+            });
+        })
+
+        $("#btnUploadTemplateTime,#txtUploadTemplateTime").click(function () {
+            var param = { templateGuid: '@Model.TemplateGuid' };
+            cnabsDlgAjaxUploadExcel2007('上传模板时间', '/EditTemplateTask/UploadTemplateTimeFile', param, function (count) {
+                var msg = '模板时间文件导入成功, 共添加了' + count + '条模板时间';
+                cnabsMsgSuccess(msg, true);
+            });
+        })
+
+        $("#btnDownloadTemplateTime,#txtDownloadTemplateTime").click(function () {
+            window.location = "/EditTemplateTask/DownloadTemplateTimeFile?templateGuid=@Model.TemplateGuid";
+        })
+
+        $("#btnClearTaskTemplate,#txtClearTaskTemplate").click(function () {
+            var templateTaskCount = @(Model.TemplateTasks == null ? 0 : Model.TemplateTasks.Count);
+            var msg = "确定删除全部模板工作，共计：" + templateTaskCount + "条？";
+            cnabsAutoDlgYesNo(null, '清空模板工作', function () {
+                var param = { templateGuid: '@Model.TemplateGuid' };
+                cnabsAjax('清空模板工作', '/EditTemplateTask/RemoveAllTemplateTask', param, function (taskCount) {
+                    cnabsMsgSuccess('模板工作清空成功，共删除：' + taskCount + '条模板工作', true);
+                });
+            }, msg);
+        })
+
+        $("#btnClearTemplateTime,#txtClearTemplateTime").click(function () {
+            var templateTimeCount = @(Model.TemplateTimes == null ? 0 : Model.TemplateTimes.Count);
+            var msg = "确定删除全部时间列表，共计：" + templateTimeCount + "条？";
+            cnabsAutoDlgYesNo(null, '清空模板时间', function () {
+                var param = { templateGuid: '@Model.TemplateGuid' };
+                cnabsAjax('清空模板时间', '/EditTemplateTask/RemoveAllTemplateTime', param, function (timeCount) {
+                    cnabsMsgSuccess('模板时间清空成功,共删除：' + timeCount + '条模板时间', true);
+                });
+            }, msg);
+        })
+    })
+</script>
+}
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/DesignTemplate">设计模板</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">修改模板</span>
+    </header>
+
+    <div class="projectNamePrompt" style="padding-left:10px;">
+        <span class="currentProject">当前模板：</span>
+        <a href="/EditTemplateTask?templateGuid=@Model.TemplateGuid" style="color:#ffc446;"><span class="currentProjectName">@Model.TemplateName</span></a>
+    </div>
+
+    <div class="label">模板工作列表</div>
+    <div class="am_panel">
+        <div class="tableTitleBox">
+            <div class="addButton floatRight">
+                <a style="outline:none; color:#ffc446;">
+                    <span id="btnClearTaskTemplate" class="ui-icon ui-icon-delete smallImageSize left buttonImage"></span>
+                    <span id="txtClearTaskTemplate" class="buttonText">清空</span>
+                </a>
+            </div>
+            <div class="addButton floatRight" style="margin-right:20px">
+                <a style="outline:none; color:#ffc446;">
+                    <span id="btnDownloadTaskTemplate" class="ui-icon ui-icon-download smallImageSize left buttonImage"></span>
+                    <span id="txtDownloadTaskTemplate" class="buttonText">导出</span>
+                </a>
+            </div>
+            <div class="addButton floatRight" style="margin-right:20px">
+                <a style="outline:none; color:#ffc446;">
+                    <span id="btnUploadTaskTemplate" class="ui-icon ui-icon-upload smallImageSize left buttonImage"></span>
+                    <span id="txtUploadTaskTemplate" class="buttonText">导入</span>
+                </a>
+            </div>
+        </div>
+
+        <div style="margin-top:10px;">
+            <table class="operationTable hover" style="width:100%;">
+                <tr class="toolbar">
+                    <th>编号</th>
+                    <th>工作名称</th>
+                    <th>开始时间</th>
+                    <th>截止时间</th>
+                    <th>前置工作</th>
+                    <th>删除</th>
+                </tr>
+
+                @if (Model == null || Model.TemplateTasks == null || Model.TemplateTasks.Count == 0)
+                {
+                    <tr><td colspan="6" style="text-align:center;font-size:18px">暂无模板工作</td></tr>
+                }
+                else
+                {
+                    foreach (var templateTask in Model.TemplateTasks)
+                    {
+                        <tr>
+                            <td class="text-center">@templateTask.RowSequence</td>
+                            <td class="text-center">@templateTask.Name</td>
+                            <td class="text-center">@templateTask.BeginDate</td>
+                            <td class="text-center">@templateTask.TriggerDate</td>
+                            <td class="text-center">@templateTask.PrevTaskNames</td>
+
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-trash smallImageSize" onclick='DeleteTemplateTask("@templateTask.Id","@templateTask.Name")'></text>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="label">模板时间列表</div>
+    <div class="am_panel">
+        <div class="tableTitleBox">
+            <div class="addButton floatRight">
+                <a style="outline:none; color:#ffc446;">
+                    <span id="btnClearTemplateTime" class="ui-icon ui-icon-delete smallImageSize left buttonImage"></span>
+                    <span id="txtClearTemplateTime" class="buttonText">清空</span>
+                </a>
+            </div>
+            <div class="addButton floatRight" style="margin-right:20px">
+                <a style="outline:none; color:#ffc446;">
+                    <span id="btnDownloadTemplateTime" class="ui-icon ui-icon-download smallImageSize left buttonImage"></span>
+                    <span id="txtDownloadTemplateTime" class="buttonText">导出</span>
+                </a>
+            </div>
+            <div class="addButton floatRight" style="margin-right:20px">
+                <a style="outline:none; color:#ffc446;">
+                    <span id="btnUploadTemplateTime" class="ui-icon ui-icon-upload smallImageSize left buttonImage"></span>
+                    <span id="txtUploadTemplateTime" class="buttonText">导入</span>
+                </a>
+            </div>
+        </div>
+
+        <div style="margin-top:10px;">
+            <table class="operationTable hover" style="width:100%;">
+                <tr class="toolbar">
+                    <th>编号</th>
+                    <th>模板时间名称</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>时间间隔</th>
+                    <th>时间间隔单位</th>
+                    <th>模板时间类型</th>
+                    <th>日期查找方向</th>
+                    <th>重复处理</th>
+                    <th>查看</th>
+                    <th>删除</th>
+                </tr>
+
+                @if (Model == null || Model.TemplateTimes == null || Model.TemplateTimes.Count == 0)
+                {
+                    <tr><td colspan="11" style="text-align:center;font-size:18px">暂无模板时间</td></tr>
+                }
+                else
+                {
+                    for (int i = 0; i < Model.TemplateTimes.Count; ++i)
+                    {
+                        var templateTime = Model.TemplateTimes[i];
+                        <tr>
+                            <td class="text-center">@(i + 1)</td>
+                            <td class="text-center">@templateTime.TemplateTimeName</td>
+                            <td class="text-center">@templateTime.BeginTime.ToString("yyyy-MM-dd")</td>
+                            <td class="text-center">@templateTime.EndTime.ToString("yyyy-MM-dd")</td>
+                            <td class="text-center">@templateTime.TimeSpan</td>
+                            <td class="text-center">@templateTime.TimeSpanUnit</td>
+                            <td class="text-center">@templateTime.TemplateTimeType</td>
+                            <td class="text-center">@templateTime.SearchDirection</td>
+                            <td class="text-center">@templateTime.HandleReduplicate</td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-view-list smallImageSize" onclick='EstimateTemplateTime("@Model.TemplateGuid","@templateTime.TemplateTimeName")'></text>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-trash smallImageSize" onclick='DeleteTemplateTime("@Model.TemplateGuid","@templateTime.TemplateTimeName")'></text>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<!--Dialog begin-->
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divEstimateTemplateTime">
+        <div id="estimateTemplateTimeContent">
+            &nbsp
+        </div>
+    </div>
+</div>
+<!--Dialog end-->

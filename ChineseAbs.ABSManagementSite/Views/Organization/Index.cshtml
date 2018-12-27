@@ -1,0 +1,399 @@
+﻿@using ChineseAbs.ABSManagementSite.Common
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+	<style type="text/css">
+		tr {
+			text-align: center;
+		}
+
+		.table_v2 {
+			table-layout: fixed;
+			width: 100% !important;
+			margin: 10px 0px !important;
+		}
+		.hidden_style {
+			width: 140px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			margin-right: 15px;
+		}
+		.table_v2 td {
+			text-align: center;
+		}
+
+		.cnabs_btn_add {
+			margin-top: 28px;
+			margin-bottom: 12px;
+		}
+
+		.background_this {
+			margin-right: 20px;
+		}
+
+		.LocalDeployedManage {
+			overflow: hidden;
+			padding: 10px 20px 10px;
+		}
+
+		#divOperator {
+			margin-top: 10px;
+			overflow: hidden;
+			padding: 8px 4px 8px 20px;
+			background: #4f4a43;
+		}
+
+
+		.addCollaborativePerson div:nth-of-type(1) {
+			color: #b7afa5;
+			float: left;
+			line-height: 24px;
+		}
+
+		#divOperator.fixed {
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: #47423c;
+			z-index: 99999;
+		}
+
+		.cnabs_dialog_content_title {
+			height: 28px;
+			line-height: 28px;
+			width: 65px;
+		}
+
+		input[type='text'], input[type='password'], #role, .cnabs_dialog_input_wid {
+			padding-left: 10px;
+			border: none;
+			width: 191px;
+			height: 26px;
+			border-radius: 2px;
+		}
+
+		.select2-selection {
+			min-height: 26px !important;
+		}
+
+		.select2-dropdown, .select2-selection, .select2-results__options, .select2-search__field {
+			width: 200px !important;
+			color: black;
+			font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+		}
+
+		#Department_tree {
+			margin-top: 10px;
+			padding: 20px;
+			background-color: #47423c;
+			min-height: 420px;
+		}
+
+		.delete_red_style {
+			cursor: pointer;
+			margin-left: 10px;
+		}
+	</style>
+
+	@Scripts.Render("~/bundles/angular")
+	<script src="~/Scripts/paulkinzett-toolbar/jquery.toolbar.js"></script>
+	<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+	<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+	<link href="~/Content/paulkinzett-toolbar/jquery.toolbar.css" rel="stylesheet" />
+
+	<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+
+	<script src="~/Scripts/select2.min.js"></script>
+
+	<link href="~/Scripts/style.min.css" rel="stylesheet" />
+	<script src="~/Scripts/jstree.min.js"></script>
+	<script src="~/Scripts/safs_tree.js"></script>
+
+}
+<div class="tablecloth">
+	<header class="am_site_map_panel">
+		<span class="am_site_map_arrow">当前位置：</span>
+		<a class="am_site_map_label" href="/">账户管理</a>
+		<span class="am_site_map_arrow">></span>
+		<span class="am_site_map_arrow">组织设置</span>
+	</header>
+	<div ng-app="Organizationetting" style="display:flex">
+		<div>
+
+			<div ng-controller="OrganizationettingCtrl" class="LocalDeployedManage">
+				<div class="">
+					<div id="divOperator">
+						<a id="lnkAdd" href="#nogo" ng-click="AddOrganization()">新增<i class="icon add"></i></a>
+						<a id="lnkEdit" href="#nogo" ng-click="EditOrganization()">修改<i class="icon edit"></i></a>
+						<a id="lnkDelete" href="#nogo" ng-click="DeleteOrganization()">删除<i class="delete icon "></i></a>
+					</div>
+					<div id="Department_tree">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div ng-controller="MembersCtrl" class="background_this ">
+				<div class="cnabs_btn_add" ng-click="addMembers()">添加成员</div>
+				<div>
+					<table class="table_v2 embed hover">
+
+						<tr class="tbody_th">
+							<th>用户名称</th>
+							<th>用户昵称</th>
+							<th>电子邮箱</th>
+							<th>电话</th>
+							<th>角色</th>
+							<th>操作</th>
+						</tr>
+
+						<tr ng-cloak ng-repeat="item in MembersInfo">
+							<td class="hidden_style"><a title="{{item.UserName}}">{{item.UserName}}</a></td>
+							<td class="hidden_style">{{item.NickName}}</td>
+							<td class="hidden_style" title="{{item.Email}}">{{item.Email}}</td>
+							<td class="hidden_style" title="{{item.PhoneNumber}}">{{item.PhoneNumber}}</td>
+							<td class="hidden_style">{{item.RoleNames}}</td>
+							<td><span ng-click="deleteMember(item)" class="delete_red_style cnabs_red">移除</span></td>
+
+						</tr>
+
+					</table>
+				</div>
+
+
+			</div>
+		</div>
+
+	</div>
+</div>
+@section scripts{
+	<script src="~/Scripts/jquery.form.min.js"></script>
+	<script src="~/Scripts/select2.min.js"></script>
+	<script type="text/javascript">
+		var OrganizationettingApp = angular.module('Organizationetting', []);
+		OrganizationettingApp.controller('OrganizationettingCtrl', function ($scope, $rootScope) {
+
+			$scope.AddOrganization = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				var createOrganizationControls = [{
+					title: "名称",
+					type: "text",
+					elementId: "Name",
+					value: "",
+					placeHolder: "请填写名称",
+
+				}]
+
+				cnabsAutoDialog(createOrganizationControls, "添加组织", function (data) {
+					var node = getSelectedNode();
+					var param = {
+						Name: data.Name,
+						ParentID: node.id,
+					};
+					cnabsAjax("添加组织", "/Organization/AddOrganization", param, function (result) {
+						$(".cnabs_dialogCloth").dialog("close");
+						$scope.RefreshOrganization();
+					});
+				})
+			}
+
+			$scope.EditOrganization = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				if (node.parent == "#") {
+					alertify.error("不能编辑根节点")
+					return;
+				}
+
+				var editOrganizationControls = [{
+					title: "名称",
+					type: "text",
+					elementId: "Name",
+					value: node.text,
+					placeHolder: "请填写名称",
+
+				}]
+
+				cnabsAutoDialog(editOrganizationControls, "编辑组织", function (data) {
+					var node = getSelectedNode();
+					var param = {
+						Id: node.id,
+						ParentID: node.parent,
+						Name: data.Name,
+						
+					};
+					cnabsAjaxSync("编辑组织", "/Organization/EditOrganization", param, function (result) {
+						$(".cnabs_dialogCloth").dialog("close");
+						$scope.RefreshOrganization();
+					})
+				})
+
+			}
+
+			$scope.DeleteOrganization = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				if (node.parent == "#") {
+					alertify.error("不能删除根节点")
+					return;
+				}
+				cnabsAutoDlgYesNo(null, "删除组织", function (data) {
+					cnabsAjax("删除组织", "/Organization/DeleteOrganization", { id: node.id }, function (data) {
+						$scope.RefreshOrganization();
+					})
+				}, '确认删除组织[' + node.text + ']');
+			}
+
+			$scope.RefreshOrganization = function () {
+				reloadTree();
+			}
+		});
+
+
+		OrganizationettingApp.controller('MembersCtrl', function ($scope, $rootScope) {
+
+			$scope.MembersInfo = [];
+
+			$scope.UsersInfo = []
+
+			$scope.addMembers = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				if (node.children != "") {
+					alertify.error("请选择一个根节点");
+					return;
+				}
+				var addMembersControls = [
+					{
+						title: "部门",
+						type: "label",
+						elementId: "Sequence",
+						value: node.text,
+
+					}, {
+						title: "用户",
+						type: "multiselect",
+						elementId: "Member",
+						value: "",
+						OptionArray: $scope.UsersInfo,
+						placeHolder: "请选择用户",
+
+					}]
+
+				cnabsAutoDialog(addMembersControls, "添加成员", function (data) {
+					var node = getSelectedNode();
+					var param = {
+						organizationId: node.id,
+						userIds: $("#Member").val(),
+					};
+					cnabsAjax("添加成员", "/Organization/AddMemberForOrganiations", param, function (result) {
+						$(".cnabs_dialogCloth").dialog("close");
+						$scope.RefreshMembers();
+					});
+				})
+				setSelect2();
+			}
+
+			$scope.deleteMember = function (item) {
+
+				cnabsAutoDlgYesNo(null, "删除成员", function (data) {
+					var node = getSelectedNode();
+					var param = {
+						organizationId: node.id,
+						userId: item.id,
+					};
+					cnabsAjax("删除成员", "/Organization/RemoveMemberForOrganiations", param, function (data) {
+						$scope.RefreshMembers();
+					})
+				}, '确认删除成员[' + item.NickName + ']');
+			}
+
+
+			$scope.RefreshMembers = function () {
+				var node = $("#Department_tree").jstree(true).get_selected(true)[0];				
+				if (node != null) {
+					cnabsAjax("获取成员列表", "/Organization/GetMemberList", { organizationId: node.id }, function (result) {
+						$scope.UsersInfo = result.users;
+						$scope.MembersInfo = result.members;
+						$scope.$apply()
+					});
+				}
+			}
+
+
+			$("#Department_tree").on("changed.jstree", function (e, data) {
+				$scope.RefreshMembers();
+			});
+
+			setSelect2();
+
+			function setSelect2() {
+				var data = $scope.UsersInfo;
+				$("#Member").select2({
+					tags: false,                          //支持新增，默认为false
+					multiple: true,                      //支持多选，默认为false
+					data: data,                      //下拉框绑定的数据
+					allowClear: true,                    //支持清空，默认为false
+					placeholder: '请选择用户'      //提示语
+				});
+			}
+		});
+
+
+		$(document).ready(function () {
+			var top = $("#divOperator").offset().top;
+			var left = $("#divOperator").offset().left;
+			window.onscroll = function () {
+				var scrollTop = $(window).scrollTop();
+				if (scrollTop > top) {
+					$("#divOperator").addClass("fixed").css("left", left);
+				}
+				else {
+					$("#divOperator").removeClass("fixed")
+				}
+			}
+
+			$('#Department_tree').tree({
+				targettreeid: 'Department_tree',//渲染树ID
+
+				treeurl: '/Organization/GetOrganizationList'//数据接口
+			});
+
+		})
+
+
+		function getSelectedNode() {
+			var node = $("#Department_tree").jstree(true).get_selected(true)[0];
+			if (node) {
+				return node;
+			}
+			else {
+				alertify.error("请选择一个组织");
+			}
+			return null;
+		}
+
+		function reloadTree() {
+
+			$("#Department_tree").jstree(true).refresh();
+
+			$("#Department_tree").jstree(true).select_node("#", true)
+		}
+
+
+
+	</script>
+}

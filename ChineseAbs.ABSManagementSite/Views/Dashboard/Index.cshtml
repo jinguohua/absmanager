@@ -1,0 +1,285 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DashboardViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/cnabsUtils/semantic/components/sidebar.min.css" rel="stylesheet" />
+@section styles{
+    <style>
+        .fontTranform {
+            height: 60px;
+            line-height: 15px;
+            text-align: center;
+            width: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+            cursor: pointer;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            position: absolute;
+        }
+
+        .selectedLabel {
+            background-image: url(../../Images/DashBoard/selectedLabel.png);
+            background-size: 35px 80px;
+            background-repeat: no-repeat;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+            left: -35px;
+            color: #ffc446;
+        }
+
+        .unselectedLabel {
+            background-image: url(../../Images/DashBoard/unselectedLabel.png);
+            padding-left: 5px;
+            padding-right: 5px;
+            left: -30px;
+        }
+
+        .dashboardEx {
+            display: none;
+            min-height: 600px;
+        }
+    </style>
+}
+
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/lodash")
+<script src="~/Scripts/paulkinzett-toolbar/jquery.toolbar.js"></script>
+<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+<script src="~/Scripts/me-lazyload/me-lazyload.js"></script>
+<script src="~/Scripts/cnabsAngular/cnabsSrvUser.js?version=201709210503"></script>
+
+@section scripts{
+
+}
+
+
+<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.fancytree.min.js"></script>
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+<script>
+
+    $(function () {
+        BindingElementActive(4, 1, 1);
+        cnabsRegisterAjaxLock('/DocumentCompare/GetImgs', false, '文档对比');
+    });
+
+    var avatarCache = new Array();
+    var calendarDay = cnabsGetDate();
+    var DashBoardApp = angular.module('DashBoard', ['me-lazyload', 'cnabsSrvUser']);
+
+    DashBoardApp.controller('DashboardTabs', function ($scope, $rootScope, $location) {
+        $scope.currentProjectSeriesGuid = "";
+        var labels = [{ title: "项目面板", dashboardExId: "Homepage", style: "unselectedLabel" },
+        { title: "项目进度", dashboardExId: "Process", style: "unselectedLabel" },
+        { title: "项目成员", dashboardExId: "Member", style: "unselectedLabel" },
+        { title: "项目日历", dashboardExId: "Calendar", style: "unselectedLabel" },
+        { title: "项目问题", dashboardExId: "Issue", style: "unselectedLabel" },
+        { title: "参与机构", dashboardExId: "Organization", style: "unselectedLabel" },
+        { title: "项目文件", dashboardExId: "Document", style: "unselectedLabel" }
+            //{ title: "项目动态", dashboardExId: "Monitor", style: "unselectedLabel" },
+        ];
+        $.each(labels, function (index, item) {
+            item.top = index * 84 + "px";
+            item.controlLabelStyle = { top: item.top };
+        })
+        $scope.labels = labels;
+
+        $scope.isProjectSeriesChangedByUser = false;
+        $scope.labelChange = function (dashboardExId, issueGuid, folderGuid, MonitorGuid,taskGroupGuid) {
+            $('#divDashboardExPermission').css('display', 'none');
+            $('#DashboardExMember').css('display', 'block');
+            $("#permissionBtn span").text('高级权限管理');
+            $(".DashboardExMember").css('paddingBottom', '10px');
+            $("#permissionBtn img")[0].src = '../../Images/DashBoard/arrow_right_yellow.png';
+            $("#permissionBtn").attr('hide', 'true');
+            if (!$scope.isProjectSeriesChangedByUser) {
+                $scope.currentProjectSeriesGuid = cnabsGetUrlParam('projectSeriesGuid');
+            }
+
+            var projectSeriesGuid = $location.search().projectSeriesGuid;
+            if (projectSeriesGuid != null) {
+                $scope.currentProjectSeriesGuid = projectSeriesGuid;
+            }
+            $location.path(dashboardExId);
+
+            $.each($scope.labels, function () {
+                var div = $("#divDashboardEx" + this.dashboardExId);
+                this.translateX = -((this.index - 1) * 53 + 24) + "px";
+                if (this.dashboardExId == dashboardExId) {
+                    if ('Issue' == dashboardExId && issueGuid != undefined && issueGuid != null) {
+
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectSeriesGuid, issueGuid);
+                    } else if ('Document' == dashboardExId && folderGuid != undefined && folderGuid != null) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectSeriesGuid, issueGuid, folderGuid);
+                    } else if (MonitorGuid != undefined) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectSeriesGuid, issueGuid, folderGuid, MonitorGuid);
+                    }
+                    else if ('Process' == dashboardExId && taskGroupGuid != undefined && taskGroupGuid != null) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId,$scope.currentProjectSeriesGuid, MonitorGuid, taskGroupGuid);
+                    }
+                    else {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectSeriesGuid);
+                    }
+                    if ('Member' == dashboardExId) {
+                        $rootScope.$emit("UpdateDashboardEx" + 'Permission', $scope.currentProjectSeriesGuid);
+                    }
+
+                    this.style = 'selectedLabel';
+                    div.css({ 'display': 'block' });
+                } else {
+                    this.style = 'unselectedLabel';
+                    div.css({ 'display': 'none' });
+                }
+            })
+        };
+
+        $rootScope.$on("UpdateCurrentProjectSeriesGuid", function (event, projectSeriesGuid) {
+            $scope.currentProjectSeriesGuid = projectSeriesGuid;
+            $scope.isProjectSeriesChangedByUser = true;
+            $location.search({ projectSeriesGuid: projectSeriesGuid });
+        });
+
+        $rootScope.$on("ChangeLabel", function (event, data) {
+            $scope.labelChange(data.dashboardExId, data.issueGuid, data.folderGuid, data.MonitorGuid,data.taskGroupGuid);
+        });
+    });
+
+    DashBoardApp.service('projectSeriesHelper', function () {
+        this.reload = function (projectSeriesGuid) {
+            var projectSeriesInfo = null;
+            cnabsAjaxSync("GetProjectSeriesNameAndGuid", "/ProjectSeries/GetProjectSeriesNameAndGuid", null, function (data) {
+                var selectedItem = null;
+                $.each(data, function () {
+                    if (this.Guid == projectSeriesGuid) {
+                        selectedItem = this;
+                    }
+                })
+
+                if (selectedItem == null) {
+                    if (data.length) {
+                        selectedItem = data[0];
+                    }
+                }
+                projectSeriesInfo = { items: data, selectedItem: selectedItem };
+            });
+            return projectSeriesInfo;
+
+        }
+    });
+
+    DashBoardApp.service('locationURL', function ($location) {
+        var hash = null;
+        this.getInitURL = function () {
+            if (hash == null) {
+                hash = {};
+                var dashboardExIdstr;
+                var path = $location.path();
+                path = path.replace(/\//g, "");
+                var dashboardExIdstr = path == "" ? "Homepage" : path;
+                var issueGuid = $location.search().issueGuid;
+                var folderGuid = $location.search().folderGuid;
+                var MonitorGuid = $location.search().MonitorGuid;
+                var taskGroupGuid= $location.search().taskGroupGuid;
+                hash.dashboardExId = dashboardExIdstr;
+                hash.issueGuid = issueGuid;
+                hash.folderGuid = folderGuid;
+                hash.MonitorGuid = MonitorGuid;
+                hash.taskGroupGuid = taskGroupGuid;
+            }
+            return hash;
+        };
+
+        this.setURLHash = function (hashKey, hashValue) {
+            $location.search(hashKey, hashValue);
+        }
+
+    });
+
+    DashBoardApp.service('avatarHelper', function ($http) {
+        this.load = function (user) {
+            var userInfoArray = user;
+            if (!$.isArray(userInfoArray)) {
+                userInfoArray = [user];
+            }
+
+            $.each(userInfoArray, function () {
+                var userInfo = this;
+                var userName = "";
+                if (cnabsHasContent(userInfo.UserName)) {
+                    var userName = userInfo.UserName;
+                }
+                if (cnabsHasContent(userInfo.userName)) {
+                    var userName = userInfo.userName;
+                }
+                if (cnabsHasContent(userInfo.CreateUserName)) {
+                    var userName = userInfo.CreateUserName;
+                }
+                if (cnabsHasContent(avatarCache[userName])) {
+                    userInfo.AvatarPath = avatarCache[userName];
+                } else {
+                    $http.get('/DashBoard/GetUserAvatar', { params: { userName: userName } }).success(
+                        function (data, status, headers, config) {
+                            //data = data == '' ? '/Images/avatar/headerDefault.jpg' : data;
+                            //avatarCache[userName] = cnabsFormatAvatarPath(data);
+                            //userInfo.AvatarPath = avatarCache[userName];
+                            userInfo.AvatarPath = data;
+                        }
+                    );
+                }
+            })
+        }
+    });
+
+</script>
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/ProjectSeries">发行协作平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">项目面板</span>
+    </header>
+
+    <div ng-app="DashBoard">
+        <div ng-controller="DashboardTabs" style="position:relative;">
+           <div ng-cloak ng-repeat="label in labels" id="divLabel{{label.dashboardExId}}" class="fontTranform {{label.style}}" ng-click="labelChange(label.dashboardExId)" ng-style="label.controlLabelStyle">{{label.title}}</div>
+        </div>
+
+        <div id="divDashboardExHomepage" class="dashboardEx">
+            @Html.Partial("_DashboardExHomepage")
+        </div>
+        <div id="divDashboardExProcess" class="dashboardEx">
+            @Html.Partial("_DashboardExProcess")
+        </div>
+        <div id="divDashboardExMember" class="dashboardEx">
+            @Html.Partial("_DashboardExMember")
+            <div id="divDashboardExPermission" style="display:none;">@Html.Partial("_DashboardExPermission")</div>
+        </div>
+        <div id="divDashboardExCalendar" class="dashboardEx">
+            @Html.Partial("_DashboardExCalendar")
+        </div>
+        <div id="divDashboardExIssue" class="dashboardEx">
+            @Html.Partial("_DashboardExIssue")
+        </div>
+        <div id="divDashboardExOrganization" class="dashboardEx">
+            @Html.Partial("_DashboardExOrganization")
+        </div>
+        <div id="divDashboardExDocument" class="dashboardEx">
+            @Html.Partial("_DashboardExDocument")
+        </div>
+        @*<div id="divDashboardExMonitor" class="dashboardEx">
+                @Html.Partial("_DashboardExMonitor")
+            </div>*@
+        <!--提醒弹出框---->
+        @Html.Partial("../Module/MessageRemind")
+    </div>
+</div>

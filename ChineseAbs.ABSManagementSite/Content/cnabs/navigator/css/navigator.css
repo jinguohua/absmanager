@@ -1,0 +1,131 @@
+﻿/*** 导航栏 ***/
+#cnabsNavigator #operationNavigator {
+    position: fixed;
+    top: 297px;
+    right: 10px;
+    width: 50px;
+}
+
+    #cnabsNavigator #operationNavigator .cnabsNavIcon {
+        width: 100%;
+        height: 50px;
+        text-align: center;
+        background-color: transparent;
+        cursor: pointer;
+    }
+        #cnabsNavigator #operationNavigator .cnabsNavIcon i {
+            color: #ccc !important;
+        }
+
+/*** 用户统计 ***/
+#cnabsUserAccessStatis table.table_v2 {
+    font-size: 13px;
+    border-collapse: collapse;
+}
+
+    #cnabsUserAccessStatis table.table_v2 .table_head {
+        color: #B7AFA5;
+        font-size: 13px;
+    }
+
+    #cnabsUserAccessStatis table.table_v2 tr:first-child {
+        color: #E0E0E3 !important;
+        background-color: #625C53 !important;
+        height: 40px;
+        padding: 0 20px;
+    }
+
+#cnabsUserAccessStatis table_v2 tr:not(:first-child) {
+    height: 32px;
+}
+
+#cnabsUserAccessStatis table.table_v2 tr:nth-child(even) {
+    background-color: #47423C;
+}
+
+#cnabsUserAccessStatis table.table_v2 .table_head td {
+    vertical-align: middle;
+}
+
+#cnabsUserAccessStatis table.table_v2 td:first-child,
+#cnabsUserAccessStatis table.table_v2 th:first-child {
+    padding-left: 20px;
+}
+
+#cnabsUserAccessStatis .mar120 {
+    margin: 120px;
+}
+/*** 意见反馈 ***/
+#cnabsNavigator #dialog select {
+    height: 26px !important;
+    padding-left: 5px !important;
+}
+
+    #cnabsNavigator #dialog select option {
+        background-color: #fff;
+        color: #47423C;
+        border-color: none;
+        outline: none;
+        vertical-align: middle;
+    }
+
+#cnabsNavigator #dialog .feedback-text {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    background-color: #514C44;
+    text-align: left;
+    color: #000;
+    font-size: 16px;
+}
+/*** 自定义菜单 ***/
+#custom-menujs .more-custom-menu > ul > li {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+    #custom-menujs .more-custom-menu > ul > li > ul {
+        overflow: auto;
+        zoom: 1;
+    }
+
+        #custom-menujs .more-custom-menu > ul > li > ul > li {
+            float: left;
+            /*padding: 3px 0 3px 0px;*/
+        }
+
+            #custom-menujs .more-custom-menu > ul > li > ul > li > ul > li {
+                height: 20px;
+                margin-right: 80px;
+                cursor: pointer;
+            }
+
+#custom-menujs .more-custom-menu .firstMenu {
+    font-size: 1.2em;
+    color: #e0e0e3;
+    display: block;
+    margin-bottom: 3px;
+}
+
+#custom-menujs .more-custom-menu .secordMenu {
+    display: block;
+    margin-bottom: 3px;
+}
+
+#custom-menujs .more-custom-menu .disabled {
+    color: grey;
+}
+
+/*** 用户协议 ***/
+#cnabsAgreement :first-child {
+    margin: 5px 0 10px 0;
+}
+
+#cnabsAgreement .protocol_text {
+    width: 660px;
+    height: 250px;
+    margin: auto;
+    text-align: left;
+    overflow: auto;
+    font-size: 1em;
+}

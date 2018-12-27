@@ -1,0 +1,726 @@
+﻿<style>
+    .DashboardExHomepagePart {
+        width: 330px;
+        height: 330px;
+        background: #47423c;
+        float: left;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .DashboardExTitle {
+        width: 100%;
+        background: #625c53;
+        height: 50px;
+        line-height: 50px;
+        overflow: hidden;
+    }
+
+    .DashboardExTitle img:nth-of-type(1) {
+        float: left;
+        margin-left: 20px;
+        margin-top: 17px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .DashboardExTitle span:nth-of-type(1) {
+        float: left;
+        font-size: 16px;
+        margin-left: 10px;
+    }
+
+    .DashboardExLineElement {
+        overflow: hidden;
+    }
+
+    .DashboardExLineElement span {
+        float: left;
+        padding: 5px 3px;
+    }
+
+    .DashboardExHomepage_projectInformation .DashboardExLineElement span:nth-of-type(1) {
+        width: 24%;
+        color: #b7b0a5;
+    }
+
+    .DashboardExHomepage_projectInformation .DashboardExLineElement span:nth-of-type(2) {
+        width: 85px;
+        text-align: left;
+    }
+
+    .DashboardExLineElement span:nth-of-type(3) {
+        text-align: center;
+    }
+
+    .projectInfo {
+        padding: 12px 17px;
+    }
+
+
+    .DashboardExYellowColor {
+        color: #FFC446;
+    }
+
+    .DashboardExColumnElement {
+        float: left;
+    }
+
+    .DashboardExHomepage_projectProcess .DashboardExColumnElement {
+        width: 25%;
+    }
+
+    .DashboardExColumnElement div {
+        padding: 5px 3px;
+        text-align: center;
+    }
+
+    .DashboardExHomepage_projectProcess .DashboardExColumnElement div:nth-of-type(1) {
+        color: #b7b0a5;
+    }
+
+    .DashboardExHomepage_projectProcess .DashboardExLineElement span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .DashboardExHomepage_projectProcess .DashboardExLineElement span:nth-of-type(2) {
+        width: 22%;
+    }
+
+    .DashboardExHomepage_projectCalendar .projectInfo {
+        /*border-top: 1px solid #534d46;*/
+        overflow: hidden;
+        height: 81px;
+    }
+
+    .DashboardExHomepage_projectCalendar .projectInfo:not(:last-child) {
+        margin-bottom: 2px;
+    }
+
+    .DashboardExHomepage_projectCalendar .DashboardExColumnElement .DashboardExLineElement span:nth-of-type(2) {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: left;
+    }
+
+    .DashboardExHomepage_projectOrganization .DashboardExLineElement, .DashboardExHomepage_projectCalendar .DashboardExLineElement {
+        padding: 0;
+    }
+
+    .getMoreBtn {
+        float: right;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .DashboardExHomepage_projectCalendar .dayTitle {
+        width: 100%;
+        height: 100%;
+        word-break: break-word;
+        line-height: 16px;
+        text-align: center;
+        background-color: #3d3933;
+        font-size: 14px;
+        color: #B7AFA5;
+        padding: 0;
+        display: table;
+        background-color: #534d46;
+    }
+
+    .DashboardExHomepage_projectCalendar .dayTitle span {
+        vertical-align: middle;
+        display: table-cell;
+        padding: 2px;
+    }
+
+    .DashboardExHomepageTitleColor {
+        color: #b7b0a5;
+    }
+
+    .DashboardExHomepage_projectOrganization .DashboardExColumnElement .DashboardExLineElement span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: left;
+    }
+
+    .DashboardExHomepage_projectOrganization div:nth-of-type(2) {
+        border-top: 0px solid #534d46 !important;
+    }
+
+    .Calendar_date {
+    }
+
+    .calendarProjectInfo {
+        padding: 0px !important;
+    }
+
+    .calendarColumn2 {
+        height: 100%;
+        background-color: #3d3833;
+    }
+
+
+    .calendarColumn2 span {
+        line-height: 16px;
+        padding: 0px 3px;
+    }
+
+    .solidDot {
+        width: 4px;
+        height: 4px;
+        border-radius: 2px;
+        background-color: #5a544d;
+        padding: 0 !important;
+        float: left;
+        margin: 0px 7px 0px 10px;
+    }
+
+    .verticalLine {
+        width: 2px;
+        height: 16px;
+        background-color: #5a544d;
+        float: left;
+        position: absolute;
+        padding: 0px !important;
+    }
+
+    .Calendar_today {
+        background-color: #847c71 !important;
+        color: white !important;
+    }
+
+    .CalendarColumn2_today {
+        background-color: #37322e !important;
+    }
+
+    .calendarColumn2 > div {
+        margin-top: 8px;
+    }
+
+    .totalCount {
+        color: #B7AFA5;
+        cursor: pointer;
+    }
+
+    .totalCount:hover {
+        color: white;
+    }
+
+    .DashboardExHomepage_projectIssue .issueInfoInHomepage {
+        font-size: 12px;
+        color: #b7afa5;
+        margin-top: 2px;
+        width: 279px;
+        overflow: hidden;
+        margin-left: 15px;
+        height: 16px;
+    }
+
+    .DashboardExHomepage_projectIssue .issueInfoInHomepage .timeago {
+        width: 75px;
+        text-align: right;
+        margin-left: 5px;
+    }
+
+    .DashboardExHomepage_projectIssue .eachIssueInHomepage {
+        border-top: 1px solid #534d46;
+        overflow: hidden;
+        padding: 17px 17px;
+        cursor: pointer;
+    }
+
+    .DashboardExHomepage_projectIssue div:nth-of-type(2) {
+        border-top: 0px solid #534d46 !important;
+    }
+
+    .DashboardExHomepage_projectIssue .userImg {
+        width: 30px;
+        height: 30px;
+        border-radius: 2px;
+        background-size: 30px 30px;
+    }
+
+    .DashboardExHomepage_projectIssue .issueName {
+        width: 163px;
+        padding-left: 15px;
+        background-repeat: no-repeat;
+        background-position: 0px 2px;
+    }
+
+    .DashboardExHomepage_projectMonitor .MonitorInfoInHomepage {
+        margin-top: 2px;
+        width: 282px;
+        height: 16px;
+    }
+
+    .DashboardExHomepage_projectMonitor .eachMonitorInHomepage .timeago {
+        width: 71px;
+        text-align: right;
+        margin-left: 5px;
+        color: #b7afa5;
+        font-size: 12px;
+    }
+
+    .DashboardExHomepage_projectMonitor .eachMonitorInHomepage {
+        border-top: 1px solid #534d46;
+        overflow: hidden;
+        padding: 17px 17px;
+    }
+
+    .DashboardExHomepage_projectMonitor div:nth-of-type(2) {
+        border-top: 0px solid #534d46 !important;
+    }
+    /*.DashboardExHomepage_projectMonitor .userImg{
+        width:30px;height:30px;border-radius:2px;background-size:30px 30px;
+    }*/
+    .DashboardExHomepage_projectOrganization .organizationName {
+        width: 185px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .DashboardExHomepage_projectIssue .divHasfile {
+        overflow: hidden;
+        margin-top: 4px;
+    }
+
+    .DashboardExHomepage_projectIssue .divHasfile img {
+        float: right;
+    }
+
+    .DashboardExHomepage_projectIssue .divHasfile img:nth-of-type(2) {
+        margin-right: 10px;
+    }
+
+    .DashboardExHomepage_projectDocument .documentName {
+        width: 165px;
+        color: #FFC446;
+        margin-right: 14px;
+    }
+</style>
+
+<div ng-controller="DashboardExHomepage" style="overflow:hidden; padding:10px 20px 10px 20px;">
+    <div style="height:50px;line-height:50px; overflow:hidden;">
+        <span style="float:left;color:#b7afa5;font-size:14px;">选择项目：</span>
+        <select style="width:213px;height:28px;margin-left:3px;" ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid)" ng-model="projectSeriesInfo.selectedItem" ng-options="x.Name for x in projectSeriesInfo.items;"></select>
+    </div>
+    <div class="DashboardExHomepage_projectInformation DashboardExHomepagePart" style="margin-left:0px;">
+        <div class="DashboardExTitle">
+            <img src="~/Images/DashBoard/projectInfo.png" alt="Alternate Text" />
+            <span>项目信息</span>
+        </div>
+        <div class="projectInfo" style="border-bottom:1px solid #534d46;">
+            <div class="DashboardExLineElement">
+                <span>项目名称</span>
+                <span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;width:207px;">{{projectSeriesProcessInfo.name}}</span>
+            </div>
+            <div class="DashboardExLineElement">
+                <span>负责人</span>
+                <span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;width:207px;" class="DashboardExYellowColor"
+                      ng-mouseover="loadProfile(projectSeriesProcessInfo.personInCharge.userName)"
+                      title="{{showProfile(projectSeriesProcessInfo.personInCharge.userName)}}">
+                    {{projectSeriesProcessInfo.personInCharge.realName}}
+                </span>
+            </div>
+        </div>
+        <div class="projectInfo">
+            <div class="DashboardExLineElement">
+                <span>立项时间</span>
+                <span>{{projectSeriesProcessInfo.createDate}}</span>
+            </div>
+            <div class="DashboardExLineElement">
+                <span>计划完成</span>
+                <span>{{projectSeriesProcessInfo.estimatedFinishTime}}</span>
+                <span>{{projectSeriesProcessInfo.remainingDayCount}}</span>
+            </div>
+            <div class="DashboardExLineElement">
+                <span>项目类型</span>
+                <span>{{projectSeriesProcessInfo.projectType}}</span>
+            </div>
+            <div class="DashboardExLineElement">
+                <span>项目邮箱</span>
+                <span style="min-width:207px; text-overflow:ellipsis;overflow: hidden;white-space: nowrap;" title="{{projectSeriesProcessInfo.email}}">
+                    {{projectSeriesProcessInfo.email}}
+                </span>
+            </div>
+            <div class="DashboardExLineElement">
+                <span>项目模型</span>
+                <span>未关联</span>
+                <span class="DashboardExYellowColor" style="display:none">设置</span>
+            </div>
+            <div class="DashboardExLineElement">
+                <span>私有产品</span>
+                <span>未关联</span>
+                <span class="DashboardExYellowColor" style="display:none">设置</span>
+            </div>
+        </div>
+    </div>
+    <div class="DashboardExHomepage_projectProcess DashboardExHomepagePart">
+        <div class="DashboardExTitle" ng-click="LabelChangeByBtn('Process')" ng-mouseenter="changeGetMoreBtnColorToWhite('Process')" ng-mouseleave="changeGetMoreBtnColorToGrey('Process')" style="cursor:pointer;">
+            <img src="~/Images/DashBoard/projectProcess.png" alt="Alternate Text" />
+            <span>项目进度</span>
+            <span class="getMoreBtn DashboardExHomepageTitleColor" ng-style="ProcessGetMoreBtnColor">了解详细</span>
+        </div>
+        <div class="projectInfo" style="border-bottom:1px solid #534d46;overflow:hidden;padding-left:0;padding-right:0;">
+            <div class="DashboardExColumnElement">
+                <div>总数</div>
+                <div>{{currentTasksInfo.statisticInfo.allTasksCount}}</div>
+            </div>
+            <div class="DashboardExColumnElement">
+                <div>进行</div>
+                <div>{{currentTasksInfo.statisticInfo.runningTaskCount}}</div>
+            </div>
+            <div class="DashboardExColumnElement">
+                <div>完成</div>
+                <div>{{currentTasksInfo.statisticInfo.finishedTaskCount}}</div>
+            </div>
+            <div class="DashboardExColumnElement">
+                <div>进度</div>
+                <div>{{currentTasksInfo.statisticInfo.finishedPercent}}</div>
+            </div>
+        </div>
+        <div class="projectInfo" style="max-height:173px; overflow-y:hidden;">
+            <div ng-repeat=" task in currentTasksInfo.tasks" ng-cloak>
+                <div class="DashboardExLineElement">
+                    <span style="width:150px; color: #FFC446; margin-right:14px;"><a class="DashboardExYellowColor" href="/Task?shortCode={{task.ShortCode}}" target="_blank" title="{{task.Description}}">{{task.Description}}</a></span>
+                    <span ng-style="task.controlTaskStatusColorInHomePage">{{task.Status}}</span>
+                    <span style="width:39px;text-align:left; margin-left:5px;"
+                          ng-mouseover="loadProfile(task.personInChargeUserName)"
+                          title="{{showProfile(task.personInChargeUserName)}}">
+                        {{task.personInChargeRealName}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="DashboardExHomepage_projectCalendar DashboardExHomepagePart">
+        <div class="DashboardExTitle" ng-click="LabelChangeByBtn('Calendar')" ng-mouseenter="changeGetMoreBtnColorToWhite('Calendar')" ng-mouseleave="changeGetMoreBtnColorToGrey('Calendar')" style="cursor:pointer;">
+            <img src="~/Images/DashBoard/projectCalendar.png" alt="Alternate Text" />
+            <span>项目日历</span>
+            <span class="getMoreBtn DashboardExHomepageTitleColor" ng-style="CalendarGetMoreBtnColor">了解详细</span>
+        </div>
+        <div style="padding:16px 20px">
+            <div class="projectInfo calendarProjectInfo" ng-repeat="y in CalendarInfo">
+                <div class="DashboardExColumnElement calendarColumn1" style="width:30px;height:100%">
+                    <div class="dayTitle"><span>{{y.CnStartDate}}</span></div>
+                </div>
+                <div class="DashboardExColumnElement calendarColumn2">
+                    <div class="DashboardExLineElement " ng-repeat="x in y.AgendaInfos">
+                        <div style="float:left;padding:5px 0"><i class="solidDot"></i></div>
+
+                        <span class="Calendar_date">{{x.StartTime}}</span>
+                        <span class="cnabs_ellipsis left" style="width:192px;" title="{{x.Title}}">{{x.Title}}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="DashboardExHomepage_projectIssue DashboardExHomepagePart" style="margin-left:0px;">
+        <div class="DashboardExTitle" ng-click="LabelChangeByBtn('Issue')" ng-mouseenter="changeGetMoreBtnColorToWhite('Issue')" ng-mouseleave="changeGetMoreBtnColorToGrey('Issue')" style="cursor:pointer;">
+            <img src="~/Images/DashBoard/projectMonitor.png" alt="Alternate Text" />
+            <span>项目问题</span>
+            <span class="getMoreBtn DashboardExHomepageTitleColor" ng-style="IssueGetMoreBtnColor">了解详细</span>
+        </div>
+        <div class="projectInfo eachIssueInHomepage" ng-clock ng-repeat="issue in issues" ng-click="LabelChangeByBtn('Issue',issue.IssueGuid)">
+            <div style="overflow:hidden;">
+                <div class="cnabs_ellipsis issueName left" style="width:225px;background-image:url({{issue.EmergencyLevelImageSrc}});" title="{{issue.IssueName}}">{{issue.IssueName}}</div>
+                <div id="divHasfile" class="left divHasfile" style="width:40px;">
+                    <img ng-if="issue.IsExistFile" src="~/Images/Common/fileIcon.png" alt="Alternate Text" />
+                    <img ng-if="issue.IsExistImage" src="~/Images/Common/imgIcon.png" alt="Alternate Text" />
+                </div>
+            </div>
+            <div class="issueInfoInHomepage">
+                <span class="cnabs_ellipsis left" style="margin-right:5px;max-width:40px;" ng-mouseover="loadProfile(issue.UserInfo.UserName)" title="{{showProfile(issue.UserInfo.UserName)}}">{{issue.UserInfo.RealName}}</span>
+                <span class="left">{{issue.action}}</span>
+                <abbr class="timeago ng-binding right cnabs_ellipsis" title="{{issue.LastModifyTime}}">{{issue.LastModifyTime}}</abbr>
+            </div>
+        </div>
+    </div>
+    <div class="DashboardExHomepage_projectOrganization DashboardExHomepagePart" style="display:none;">
+        <div class="DashboardExTitle" ng-click="LabelChangeByBtn('Organization')" ng-mouseenter="changeGetMoreBtnColorToWhite('Organization')" ng-mouseleave="changeGetMoreBtnColorToGrey('Organization')" style="cursor:pointer;">
+            <img src="~/Images/DashBoard/projectOrganization.png" alt="Alternate Text" />
+            <span>参与机构</span>
+            <span class="getMoreBtn DashboardExHomepageTitleColor" ng-style="OrganizationGetMoreBtnColor">了解详细</span>
+        </div>
+        <div class="projectInfo" style="border-top:1px solid #534d46; overflow:hidden;padding:17px;" ng-clock ng-repeat="organization in organizations">
+            <div class="DashboardExColumnElement" style="width:35%;">
+                <div class="DashboardExLineElement">
+                    <span class="DashboardExHomepageTitleColor" style="width:83px;padding-top:0px;">{{organization.dutyType}}</span>
+                </div>
+            </div>
+            <div class="DashboardExColumnElement" style="width:65%;">
+                <div class="DashboardExLineElement">
+                    <span class="organizationName" title="{{organization.organizationName}}">{{organization.organizationName}}</span>
+                </div>
+                <div class="DashboardExLineElement">
+                    <span style="max-width:64px;padding-top:1px;padding-bottom:0px;" title="{{organization.name}}">{{organization.name}}</span>
+                    <span style="max-width:112px;padding-top:1px;padding-bottom:0px;" title="{{organization.cellPhone}}">{{organization.cellPhone}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="DashboardExHomepage_projectDocument DashboardExHomepagePart">
+        <div class="DashboardExTitle" ng-click="LabelChangeByBtn('Document')" ng-mouseenter="changeGetMoreBtnColorToWhite('Document')" ng-mouseleave="changeGetMoreBtnColorToGrey('Document')" style="cursor:pointer;">
+            <img src="~/Images/DashBoard/projectDocument.png" alt="Alternate Text" />
+            <span>项目文件</span>
+            <span class="getMoreBtn DashboardExHomepageTitleColor" ng-style="DocumentGetMoreBtnColor">了解详细</span>
+        </div>
+        <div class="projectInfo" style="margin-bottom:2px;">
+            <div ng-repeat="document in documents" ng-cloak ng-click="LabelChangeByBtn('Document', null, document.folderGuid)">
+                <div class="DashboardExLineElement cnabs_pointer">
+                    <span class="cnabs_yellow cnabs_ellipsis documentName" title="{{document.fileSeriesName}}">{{document.fileSeriesName}}</span>
+                    <span style="color:#b7afa5;font-size:12px;width:30px;">V.{{document.version}}</span>
+                    <abbr class="right timeago" style="padding:5px 5px 0px 0px;color:#b7afa5;font-size:12px;" title="{{document.lastModifyTime}}">{{document.lastModifyTime}}</abbr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="DashboardExHomepage_projectMonitor DashboardExHomepagePart">
+        <div class="DashboardExTitle" @*ng-click="LabelChangeByBtn('Monitor')"*@ ng-mouseenter="changeGetMoreBtnColorToWhite('Monitor')" ng-mouseleave="changeGetMoreBtnColorToGrey('Monitor')" @*style="cursor:pointer;"*@>
+            <img src="~/Images/DashBoard/projectMonitor.png" alt="Alternate Text" />
+            <span>项目动态</span>
+            @*<span class="getMoreBtn DashboardExHomepageTitleColor" ng-style="MonitorGetMoreBtnColor">了解详细</span>*@
+        </div>
+        <div class="projectInfo eachMonitorInHomepage" ng-clock ng-repeat="activity in activities">
+            @*<div class="left userImg" style="background-image:url({{issue.UserInfo.AvatarPath}});"></div>*@
+            <div class="left cnabs_pointer" style="margin-left:10px;" ng-click="LabelChangeByBtn(activity.linkPage, null, null,activity.activityLinkInfo)">
+                <div class="cnabs_ellipsis" title="{{activity.Comment}}" style="width:282px;">
+                    {{activity.Comment}}
+                </div>
+                <div class="MonitorInfoInHomepage cnabs_ellipsis">
+                    <span class="cnabs_brown" style="margin-right:5px;font-size:12px;" ng-mouseover="loadProfile(activity.UserInfo.UserName)" title="{{showProfile(activity.UserInfo.UserName)}}">{{activity.UserInfo.RealName}}</span>
+                    <abbr class="timeago ng-binding right cnabs_ellipsis" title="{{activity.LastModifyTime}}">{{activity.LastModifyTime}}</abbr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    angular.module('DashBoard').controller('DashboardExHomepage', function ($scope, $rootScope, avatarHelper, projectSeriesHelper, locationURL) {
+        $scope.loadProfile = cnabsLoadUserInfoTitle;
+        $scope.showProfile = cnabsGetUserInfoTitle;
+
+        $scope.changeGetMoreBtnColorToWhite = function (title) {
+            $scope[title + 'GetMoreBtnColor'] = { color: '#fff' };
+        }
+        $scope.changeGetMoreBtnColorToGrey = function (title) {
+            $scope[title + 'GetMoreBtnColor'] = { color: '#b7b0a5' };
+        }
+        $scope.GetCurrentTasksInfo = function () {
+            var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, taskStatusFilter: 'Overdue|Running|Waitting|Finished', taskCountLimit: 6 };
+            cnabsAjax("获取项目进度", "/DashBoard/GetTasks", param, function (data) {
+                $.each(data.tasks, function (index, item) {
+                    item.statusColor = cnabsGetColorByTaskStatus(item.Status);
+                    item.controlTaskStatusColorInHomePage = { 'color': item.statusColor };
+                    item.Status = cnabsGetChineseStatusByTaskStatus(item.Status)
+                    if (item.Status == '逾期') {
+                        item.Status = item.Status + item.OverdueDaysCount + "天";
+                    }
+                    if (item.personInChargeUserProfile != null) {
+                        item.personInChargeRealName = item.personInChargeUserProfile.RealName;
+                        item.personInChargeUserName = item.personInChargeUserProfile.UserName;
+                    } else {
+                        item.Name = ""
+                    }
+
+                })
+                $scope.currentTasksInfo = data;
+                $scope.$apply();
+            });
+        }
+        //$scope.GetOrganizationsInfo = function () {
+        //    cnabsAjax("获取机构列表", "/Contact/GetContacts", { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid }, function (data) {
+        //        var fourOrganizations = _.take(data, 4);
+        //        $scope.organizations = eval(fourOrganizations);
+        //        $scope.$apply();
+        //    })
+        //}
+        $scope.GetProjectDocuments = function () {
+            $scope.documents = [];
+            cnabsAjax("获取文档列表", "/DMS/GetLatestFiles", { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, limitFileCount: 9 }, function (data) {
+                $scope.documents = eval(data);
+                $scope.$apply();
+                cnabsInitTimeAgo();
+            })
+        }
+        $scope.GetMonitorInfo = function () {
+            $scope.activities = [];
+            cnabsAjax("获取动态", "/ProjectActivity/GetProjectActivities", { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, topRecordCount: 4 }, function (data) {
+                $.each(data, function (index, item) {
+                    if (item.Type == 'Task' || item.Type == 'TaskGroup') {
+                        item.linkPage = 'Process';
+                    } else if (item.Type == 'TeamMember' || item.Type == 'TeamAdmin') {
+                        item.linkPage = 'Member';
+                    } else if (item.Type == 'Agenda') {
+                        item.linkPage = 'Calendar';
+                    } else if (item.Type == 'Contact') {
+                        item.linkPage = 'Organization';
+                    }
+                    if (item.Type == 'Task' && !item.UidChainInfo.IsValidRecord) {
+                        item.activityLinkInfo = { type: item.Type, uidChain: item.UidChainInfo.UidChain };
+                    } else {
+                        item.activityLinkInfo = { type: item.Type, uidChain: item.UidChainInfo.IsValidRecord ? item.UidChainInfo.UidChain : undefined };
+                    }
+                })
+                $scope.activities = eval(data);
+                $scope.$apply();
+                cnabsInitTimeAgo();
+            })
+        }
+        $scope.GetProjectIssueInfo = function () {
+            var params = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, issueActivityCount: 4 };
+            cnabsAjax('获取项目问题', '/Issue/GetIssueActivityListInHomePage', params, function (data) {
+                $scope.issues = [];
+                $.each(data, function () {
+                    avatarHelper.load(this.UserInfo);
+                    if (cnabsHasContent(this.EmergencyLevel)) {
+                        this.EmergencyLevelImageSrc = '../../Images/DashBoard/emergencyLevel' + this.EmergencyLevel + '.png';
+                    }
+                    if (this.IssueOperationType == "AdditionalIssue") {
+                        this.action = '追加了此问题'
+                    } else if (this.IssueOperationType == 'CreateIssue') {
+                        this.action = '提出了此问题'
+                    } else if (this.IssueOperationType == 'DeleteIssueActivity') {
+                        this.action = '删除了追加内容'
+                    } else if (this.IssueOperationType == 'CloseIssue') {
+                        this.action = '关闭了此问题'
+                    }
+                })
+
+                $scope.issues = data;
+                $scope.$apply();
+                cnabsInitTimeAgo();
+            })
+        }
+        $scope.getProjectSeriesProcessInfo = function (projectSeriesGuid) {
+            if (cnabsHasContent(projectSeriesGuid)) {
+                var params = { projectSeriesGuid: projectSeriesGuid };
+                cnabsAjax('获取产品进度', '/ProjectSeries/GetProjectSeriesProcessInfo', params, function (data) {
+
+                    data.createDate = data.createTimeStamp.split(" ")[0];
+                    var DayCount = parseInt(data.remainingDayCount);
+                    if (DayCount < 0) {
+                        data.remainingDayCount = '已超' + Math.abs(DayCount) + '天';
+                    } else {
+                        data.remainingDayCount = '剩余' + data.remainingDayCount + '天';
+                    }
+                    data.email = data.email == null ? "未配置" : data.email;
+                    data.personInCharge.displayName = cnabsFormatUserName(data.personInCharge);
+
+                    $scope.projectSeriesProcessInfo = data;
+                    $scope.$apply();
+                });
+            }
+        }
+
+        $scope.getCalendarInfo = function () {
+            var params = {
+                projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                startDate: cnabsGetDate(),
+                // startDate: '2017-05-01',
+            };
+            cnabsAjax('获取项目日历', '/Agenda/GetAgendaTop', params, function (data) {
+                $scope.CalendarInfo = data;
+                $scope.$apply();
+                $(".calendarColumn2").width($(".calendarProjectInfo").width() - $(".calendarColumn1").width());
+                DrawVerticalLine();
+                $(".calendarColumn1").each(function () {
+                    if ($(this).html().indexOf("今天") > -1) {
+                        $(this).find(".dayTitle").addClass("Calendar_today");
+
+                        $(this).next().addClass("CalendarColumn2_today");
+                    }
+                })
+
+                window.onresize = function () {
+                    DrawVerticalLine();
+                }
+            });
+        }
+
+        function DrawVerticalLine() {
+
+            $(".verticalLine").remove();
+            $(".solidDot").each(function () {
+                if ($(this).parent().parent().next().html() != undefined) {
+                    $(this).parent().after("<div class='verticalLine'></div>");
+                    $(this).parent().next().css({ "top": $(this).offset().top + 6, "left": $(this).offset().left + 1 });
+                }
+                var totalSpan = $(this).parent().next().next();
+                var startSpan = $(this).parent().next();
+                var spanHtml = totalSpan.html()
+                if (new RegExp("共\\d+条").test(spanHtml)) {
+                    startSpan.hide();
+                    totalSpan.addClass("totalCount");
+                    //点击共几条
+                    totalSpan.click(function () {
+                        calendarDay = startSpan.html();
+                        $("#divLabelCalendar").click();
+                    })
+                }
+            });
+        }
+
+        $rootScope.$on("UpdateDashboardExHomepage", function (event, projectSeriesGuid) {
+            if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            }
+
+            $scope.finishedTaskCount = 0;
+            $scope.taskCount = 0;
+            $scope.percentCompleted = "0.00%";
+
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+            $scope.getProjectSeriesProcessInfo($scope.projectSeriesInfo.selectedItem.Guid);
+            $scope.GetCurrentTasksInfo();
+            //$scope.GetOrganizationsInfo();
+            $scope.GetProjectDocuments();
+            $scope.GetProjectIssueInfo();
+            $scope.getCalendarInfo();
+            $scope.GetMonitorInfo();
+
+        });
+
+        $scope.projectSeriesChange = function (projectSeriesGuid) {
+            $rootScope.$emit("UpdateCurrentProjectSeriesGuid", projectSeriesGuid);
+            $scope.getProjectSeriesProcessInfo($scope.projectSeriesInfo.selectedItem.Guid);
+            $scope.GetCurrentTasksInfo();
+            //$scope.GetOrganizationsInfo();
+            $scope.GetProjectDocuments();
+            $scope.GetProjectIssueInfo();
+            $scope.getCalendarInfo();
+            $scope.GetMonitorInfo();
+        }
+
+        $scope.LabelChangeByBtn = function (dashboardExId, issueGuid, folderGuid, MonitorGuid) {
+            var hashData = {};
+            hashData.dashboardExId = dashboardExId;
+            hashData.issueGuid = issueGuid;
+            hashData.folderGuid = folderGuid;
+            hashData.folderGuid = folderGuid;
+
+            //if (dashboardExId == 'Issue' && issueGuid!= undefined && issueGuid!= null) {
+            //    $rootScope.$emit("ChangeLabel", dashboardExId,issueGuid);
+            //} else if (dashboardExId == 'Document' && folderGuid!= undefined && folderGuid!= null) {
+            //    $rootScope.$emit("ChangeLabel", dashboardExId, issueGuid, folderGuid);
+            //} else if (MonitorGuid != undefined) {
+            //    $rootScope.$emit("ChangeLabel", dashboardExId, issueGuid, folderGuid, MonitorGuid);
+            //}else {
+            //    $rootScope.$emit("ChangeLabel", dashboardExId);
+            //}
+            $rootScope.$emit("ChangeLabel", hashData);
+
+        }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Homepage") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+    })
+</script>

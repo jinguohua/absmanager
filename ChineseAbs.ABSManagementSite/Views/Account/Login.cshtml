@@ -1,0 +1,108 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.LoginModel
+
+<style>
+    .divLogin{
+        height:714px;
+        background:url(../../Images/Common/localLogin_bg.png);
+        margin-top:-17px;
+    }
+    .divLoginInfo{
+        width:319px;
+        background:rgba(0,0,0,0.6);
+        margin-right:62px;
+        margin-top:122px;
+    }
+    .loginInfoHeader{
+        padding:26px 60px 13px;
+        border-bottom:2px solid rgba(255,255,255,0.2);
+        height:17px; 
+        line-height:17px;
+        font-size:16px;
+        background-image:url(../../Images/Common/localLogin_icon.png);
+        background-position:30px 26px;
+        background-repeat:no-repeat;
+        margin-bottom:15px;
+    }
+    .tdUserName input[type=text],.tdPassWord input[type=password]{
+        width:168px;
+        padding-left:10px;
+        height:26px;
+        border:none;
+        border-radius:2px;
+        background-color:#fff;
+        -webkit-box-shadow: 0 0 0px 1000px white inset;
+        font-size:14px;
+        outline:none;
+    }
+    .form-table td{
+        padding-bottom:20px;
+    }
+    .divLoginInfo .validation-summary-errors ul{
+        color:#ff4a4a;
+        padding-left:70px;
+    }
+    .title_userName,.title_password{
+        padding-left:25px;
+        width:37px;
+    }
+</style>
+<br />
+<div class="tablecloth divLogin">
+    <div>
+        <section id="loginForm" class="cnabs_overhide">
+            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+            {
+                <div class="right divLoginInfo">
+                    <div class="loginInfoHeader">
+                        用户登录
+                    </div>
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <table class="form-table" data-bind="visible: Status() != ActionStatus.Submitted" style="margin-bottom:17px;font-size:14px;">
+                        <tr>
+                            <td class="cell-required"></td>
+                            <td class="form-text title_userName">
+                                用户
+                            </td>
+                            <td class="tdUserName">
+                                @Html.EditorFor(m => m.UserName)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="cell-required"></td>
+                            <td class="form-text title_password">
+                                密码
+                            </td>
+                            <td class="tdPassWord" id="am_inp">
+                                @Html.EditorFor(m => m.Password)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <input style="border:none;margin-top:0px;outline:none;"
+                                       class="cnabs_btn_purple"
+                                       onclick="this.disabled=true; this.value='登录中...'; this.form.submit();"
+                                       type="submit"
+                                       value="登录"
+                                       commandname="Login" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".nav-item").removeClass('active');
+            $("#nav_1").addClass('active');
+            ABSManagementPageTitle('Login');
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

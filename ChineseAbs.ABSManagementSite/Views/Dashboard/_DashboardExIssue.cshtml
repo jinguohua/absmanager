@@ -1,0 +1,1397 @@
+﻿<style>
+    .issueListTable td:nth-of-type(1), .issueListTable th:nth-of-type(1) {
+        width:250px;
+    }
+    .issueListTable td:nth-of-type(2), .issueListTable th:nth-of-type(2) {
+        width:62px;
+    }
+    .issueListTable td:nth-of-type(3), .issueListTable th:nth-of-type(3) {
+        width:62px;
+    }
+    .issueListTable td:nth-of-type(4), .issueListTable th:nth-of-type(4) {
+        width:80px;
+    }
+    .issueListTable td:nth-of-type(5), .issueListTable th:nth-of-type(5) {
+        width:62px;
+    }
+    .issueListTable td:nth-of-type(6), .issueListTable th:nth-of-type(6) {
+        width:110px;
+    }
+
+    .issueListTable thead {
+        background-color:#625c53;
+    }
+
+    .divDashboardExIssueParent {
+    }
+    .divDashboardExIssueLeft {
+        float:left;
+        width:686px;
+        background-color:#332e25;
+        min-height:600px;
+        padding:10px 20px;
+    }
+    .divDashboardExIssueRight {
+        float:right;
+        width:324px;
+        min-height:623px;
+        background-color:#45423d;
+        padding-bottom:10px;
+        display:none;
+    }
+    .divDashboardUnSelectedIssueRight {
+        float:right;
+        width:284px;
+        min-height:643px;
+        height:auto;
+        background-color:#45423d;
+        padding:10px 20px;
+        display:block;
+    }
+    .divMultipleSelectedIssueRight {
+        float: right;
+        width: 284px;
+        min-height: 643px;
+        height: auto;
+        background-color: #45423d;
+        padding: 10px 20px;
+        display: none;
+    }
+    .multipleSelectedIssueDiv {
+        padding-left:27px;
+        padding-top:1px;
+        background-image:url(../../Images/Icons/pass.png);
+        background-repeat:no-repeat;
+        height:20px;
+        margin-top:70px;
+        margin-left:50px;
+    }
+    .unSelIssueDiv {
+        padding-left:110px;
+        padding-top:110px;
+        font-size:14px;
+        color:#a9a198;
+    }
+    .unSelIssueImgDiv {
+        padding-left: 125px;
+        padding-top:30px;
+    }
+    .projectsOption {
+        width:213px;
+        height:28px;
+        border-radius:2px;
+        margin-left:3px;
+    }
+    .issueStatusDiv {
+        height: auto;
+        font-size: 14px;
+        float: left;
+        margin-top:-3px;
+    }
+    .emergencyLevelDiv {
+        padding-top:12px;
+        font-size:14px;
+        float:left;
+    }
+    .issueStatusLabel {
+        margin-right:5px;
+        display:inline-block;
+        width:80px;
+    }
+    .selectProjectDiv {
+        font-size:14px;
+        line-height:50px;
+    }
+    .emergencyLevelLabel {
+        margin-right: 5px;
+        display: inline-block;
+        width: 80px;
+    }
+    .issueListDiv {
+        margin-top:20px;
+        overflow:hidden;
+        margin-bottom:13px;
+    }
+    .issueList {
+        font-size:16px;
+    }
+    .issueListBtn {
+        margin-left:10px;
+    }
+    .issueListTableDiv {
+        width:100%;
+        /*max-height:458px;
+        min-height:458px;
+        overflow:hidden;
+        overflow-y:auto;*/
+    }
+    .issueListTable {
+        width:100%;
+    }
+    .issueDetailDiv {
+        height:40px;
+        border-bottom:1px solid #68625b;
+        width:324px;
+        padding-top:20px;
+    }
+    .issueDescriptionDiv {
+        color: #E0E0E3;
+        padding:20px 20px 0 20px;
+        max-height:572px;
+        min-height:572px;
+        overflow:hidden;
+        overflow-y:auto;
+    }
+    .issueProgressDiv {
+        padding-top: 20px;
+        color: #E0E0E3;
+        max-height: 572px;
+        min-height: 572px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .issueDescripTitle {
+        font-size:19px;
+        word-break:break-all;
+    }
+    .issueProgressMainly {
+        padding:0 20px;
+    }
+    .issueProgressTitle {
+        font-size:19px;
+        width:190px;
+    }
+    .issueProgressInfo {
+        background-color:#4e4a45;
+        font-size:14px;
+        overflow:hidden;
+        margin-top:10px;
+        padding:15px 20px;
+    }
+    .descriptionIssuse {
+        margin-top:10px;
+        border-top:1px solid #68625b;
+        padding-top:10px;
+    }
+    .selectedIssueImages {
+        margin-top:10px;
+    }
+    .selectedIssueFiles {
+        margin-top:10px;
+    }
+    .eachPreviewImage {
+        float:left;
+        margin-top:10px;
+    }
+    .eachUploadFile {
+        background-repeat:no-repeat;
+        background-size:18px 18px;
+        padding:10px 10px 10px 38px;
+        background-position:10px 9px;
+        background-color:#4f4a43;
+        overflow:hidden;
+        margin-top:10px;
+    }
+    .downLoadFile {
+        cursor:pointer;
+    }
+        .downLoadFile:hover {
+            color:#ffc446;
+        }
+    .cnabs_btn_tab_selected {
+        border:1px solid #4f4a43;
+        border-top-width:2px;
+        border-top-color:#ffc205;
+        color:#ffc205;
+        height:38px;
+        line-height:38px;
+        border-bottom-color:#45423d;
+    }
+    .cnabs_btn_tab_v2 {
+        margin-left:15px;
+    }
+    .addBlockedWorkDiv {
+        background-color: #4f4a43;
+        margin-top:2px;
+        margin-left:125px;
+        margin-right:74px;
+        padding:10px;
+    }
+    .delBlockedWorkDiv {
+        float:right;
+        cursor:pointer;
+    }
+    #issueWroklist {
+        display:none;
+        width:468px;
+        margin-bottom:8px;
+    }
+    .blockedInfoDiv {
+        margin-top:20px;
+    }
+    .blockedDiv {
+        margin-top: 14px;
+        background-color: #4f4a43;
+        padding:5px 10px;
+    }
+    .originalBloWorkDiv {
+        color:#ffc446;
+        margin:5px 0px;
+    }
+    .divEachOriginalImage {
+        position:relative;
+        height:50px;
+        float:left;
+        margin-right:5px;
+        margin-bottom:10px;
+    }
+    .downLoadOrPreview {
+        color: #fff;
+        background: rgba(0,0,0,0.5);
+        position: absolute;
+        height: 50px;
+        font-size: 30px;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+        top: 0px;
+        left: 0px;
+        margin-top:10px;
+    }
+        .downLoadOrPreview div {
+            height:17px;
+            padding-top:8px;
+        }
+        .downLoadOrPreview img {
+            width:12px;
+            height:12px;
+            margin:0px auto;
+            display:block;
+        }
+    .bgGrayImg {
+        position:absolute;
+        top:0;
+        right:0;
+        left:0;
+        bottom:0;
+        background:#5c5c5c;
+        z-index:1002;
+        opacity:.8;
+        display:block;
+    }
+    .smallIconStyle {
+        display:block;
+        position:absolute;
+        z-index:1004;
+    }
+    .largeImgStyle {
+        display:block;
+        position:absolute;
+        z-index:1003;
+    }
+    .largeImage img {
+        max-width:1000px;
+        min-width:110px;
+        margin-top:7px;
+        margin-bottom:7px;
+        height:auto;
+    }
+    #divLargeImage + .ui-dialog-buttonpane {
+        display: none;
+    }
+    .divEditIssue {
+        display:none;
+    }
+    .allInfoListDiv {
+        margin-top:10px;
+    }
+    .allInfoSpan {
+        color:#a9a198;
+    }
+    .allInfo {
+        margin-right:15px;
+    }
+    .issueProgressCreator {
+        color:#ffc446;
+        padding-left:2px;
+    }
+    .issueProgressDescription {
+        padding-top:10px;
+        word-wrap:break-word;
+    }
+    .deleteIssueActivityDiv {
+        padding-left:5px;
+        cursor:pointer;
+    }
+        .deleteIssueActivityDiv:hover {
+            color:#ffc446;
+        }
+    .timeAgoSpan {
+        color:#b7afa5;
+        padding-left:10px;
+    }
+    .divUploadInAdd {
+        padding-left:57px;
+        margin-top:10px;
+        display:none;
+    }
+    .issueName {
+        background-repeat:no-repeat;
+        padding:0px 15px;
+        background-position:0 3px;
+    }
+    #addIssueCommentInDialog {
+        width:462px;
+        height:121px;
+        margin:12px 57px 0px 57px;
+    }
+    #divAddDescriptionAuto .cnabs_dialog_content_title {
+        display:none;
+    }
+    .divCreateIssueContentAuto {
+        padding-left:57px;
+    }
+    #divCreateIssueFilePicker {
+    }
+    #issueWroklist {
+        padding-left:57px;
+    }
+    .divCreateIssue .divUpload {
+        border-top:1px solid #534d46;
+        width:464px;
+        margin-top:20px;
+        padding-top:20px;
+        margin-left:57px;
+        display:none;
+    }
+    #divCreateIssueContentAuto input, #divCreateIssueContentAuto select {
+        width:320px;
+    }
+    #issueDescription {
+        width:320px;
+    }
+    #issueWroklist select {
+        width:320px;
+    }
+    .fixedThead {
+        display:block;
+        width:100%;
+    }
+    .scrollTbody {
+        display:block;
+        max-height:418px;
+        min-height:418px;
+        overflow:hidden;
+        overflow-y:auto;
+    }
+    .issueListTableDiv table.table_v2 tbody tr:first-child {
+        background-color: #4F4A43 !important;
+        color:#fff;
+        height:32px;
+    }
+        .issueListTableDiv table.table_v2 tbody tr:first-child:hover {
+            background-color: #7f786f!important;
+        }
+</style>
+<div id="divDashboardExIssueParent" class="divDashboardExIssueParent" ng-controller="DashboardExIssue">
+    <div id="divDashboardExIssueLeft" class="divDashboardExIssueLeft">
+        <div>
+            <div class="selectProjectDiv">
+                <span class="left">选择项目：</span>
+                <select class="projectsOption"
+                        ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid,projectSeriesInfo.selectedItem.CurrentProjectGuid)"
+                        ng-model="projectSeriesInfo.selectedItem"
+                        ng-options="x.Name for x in projectSeriesInfo.items">
+
+                </select>
+            </div>
+            <div class="issueStatusDiv">
+                <span>问题状态：</span>
+                <label for="issueStatusId($index)" class="issueStatusLabel" ng-repeat="issueStatus in issueStatusList" ng-click="filterIssueList($index,'issueStatus')">
+                    <input id="issueStatusId$index($index)" type="checkbox" ng-checked="issueStatus.checked" /><span>{{issueStatus.name}}</span>
+                </label>
+            </div>
+            <div class="emergencyLevelDiv">
+                <span>紧急程度：</span>
+                <label for="emergencyLevelId($index)" class="emergencyLevelLabel" ng-repeat="emergencyLevel in emergencyLevelList" ng-click="filterIssueList($index,'emergencyLevel')">
+                    <input id="emergencyLevelId$index($index)" type="checkbox" ng-checked="emergencyLevel.checked"
+                           ng-model="emergencyLevelList" /><span>{{emergencyLevel.name}}</span>
+                </label>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div>
+            <div class="issueListDiv">
+                <div class="issueList left">问题列表</div>
+                <div class="right">
+                    <div class="cnabs_btn issueListBtn left" ng-click="receiveIssue()">领取问题</div>
+                    <div ng-if="resolveBtn == '解决问题' || resolveBtn == null " class="cnabs_btn issueListBtn left" ng-click="resolveIssue()">解决问题</div>
+                    <div ng-if="resolveBtn == '重置已解决问题'" class="cnabs_btn issueListBtn left" ng-click="unResolveIssue()">重新开启</div>
+                    <div ng-if="resolveBtn == '状态不明确'" class="issueListBtn cnabs_btn_disabled left ">解决问题</div>
+                    <div class="cnabs_btn_add issueListBtn left" ng-click="createIssue()">提出问题</div>
+                </div>
+            </div>
+            <div class="issueListTableDiv">
+                <table class="table_v2 alone hover cnabs_v2_margin issueListTable" style="width:100%;margin:0 !important">
+                    <thead class="fixedThead">
+                        <tr>
+                            <th class="text-left">
+                                <input id="selectAllIssueLists" class="cnabs_pointer" type="checkbox" ng-change="selectAll(selectedAllIssue)" ng-model="selectedAllIssue" />
+                                <label for="selectAllIssueLists" class="cnabs_pointer" style="padding-left:12px">标题</label>
+                            </th>
+                            <th class="text-left">状态</th>
+                            <th class="text-left">提问者</th>
+                            <th class="text-left">提问时间</th>
+                            <th class="text-left">领取人</th>
+                            <th class="text-left">领取时间</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scrollTbody cnabs_scrollbar">
+                        <tr class="firstList" ng-repeat="issue in issueCorrespondProject" ng-click="checkedByDiv($index,issueCorrespondProject)">
+                            <td>
+                                <input class="cnabs_pointer left" type="checkbox" ng-change="checkedIssueLists(issueCorrespondProject)"
+                                       ng-click="stopDefalutEvent($event)" ng-model="issueCorrespondProject[$index].isChecked" />
+                                <span class="issueName cnabs_ellipsis left cnabs_pointer" title={{issue.IssueName}}
+                                      style="width:183px;background-image:url(../../Images/DashBoard/emergencyLevel{{issue.EmergencyLevel}}.png)">
+                                    {{issue.IssueName}}
+                                </span>
+                            </td>
+                            <td class="text-left">{{issue.issueStatusCN}}</td>
+                            <td class="text-left">
+                                <div class="cnabs_ellipsis left" style="width:40px;" ng-mousemove="loadProfile(issue.CreateUser.UserName)"
+                                     title="{{showProfile(issue.CreateUser.UserName)}}">{{issue.CreateUser.RealName}}</div>
+                            </td>
+                            <td class="text-left">{{issue.CreateTime|limitTo:10}}</td>
+                            <td class="text-left">
+                                <div class="cnabs_ellipsis left" style="width:40px" ng-mousemove="loadProfile(issue.AllotUser.UserName)"
+                                     title="{{showProfile(issue.AllotUser.UserName)}}">{{issue.AllotUser.RealName}}</div>
+                            </td>
+                            <td ng-if="issueCorrespondProject.length<14" style="width:121px" class="text-left">{{issue.UpdateTime|limitTo:10}}</td>
+                            <td ng-if="issueCorrespondProject.length>=14" class="text-left" style="width:110px">{{issue.UpdateTime|limitTo:10}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="allInfoListDiv">
+                <div class="left allInfo"><span class="allInfoSpan">待解决：</span>{{preparingCount}}</div>
+                <div class="left allInfo"><span class="allInfoSpan">进行中：</span>{{runningCount}}</div>
+                <div class="left allInfo"><span class="allInfoSpan">已解决：</span>{{finishedCount}}</div>
+                <div class="left allInfo"><span class="allInfoSpan">完成度：</span>{{percentCompleted}}</div>
+            </div>
+        </div>
+    </div>
+    <div id="divDashboardExIssueRight" class="divDashboardExIssueRight">
+        <div class="issueDetailDiv">
+            <div class="cnabs_btn_tab_selected cnabs_btn_tab_v2" id="openIssueDescriptionId" ng-click="openIssueDescription()">问题描述</div>
+            <div class="cnabs_btn_tab_v2" id="openIssueProgressId" ng-click="openIssueProgress()">问题进展</div>
+        </div>
+        <div class="issueDescriptionDiv cnabs_block">
+            <div class="left issueDescripTitle">{{selectedIssueName}}</div>
+            <div style="clear:both"></div>
+            <div class="descriptionIssuse">{{selectedIssueDescription}}</div>
+            <div class="selectedIssueImages">
+                <div class="divEachOriginalImage" ng-repeat="originalImage in originalImages" id="{{originalImage.Guid}}"
+                     ng-mouseenter="downLoadImageOrPreviewImage(originalImage.Guid)" ng-mouseleave="removeDownLoadOrPreview()">
+                    <img class="eachPreviewImage" lazy-src={{originalImage.ThumbnSrc}} alt={{originalImage.Name}} />
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="selectedIssueFiles">
+                <div class="eachUploadFile" ng-repeat="originalFile in originalFiles" style="background-image:url({{originalFile.iconSrc}})">
+                    <span class="left uploadFileName cnabs_ellipsis" style="width:180px;" title={{originalFile.Name}}>{{originalFile.Name}}</span>
+                    <span class="right downLoadFile" ng-click="downloadFile(originalFile.Guid)">下载</span>
+                </div>
+            </div>
+            <div class="blockedInfoDiv">
+                <div>受阻工作</div>
+                <div class="blockedDiv">
+                    <div class="originalBloWorkDiv" ng-repeat="originalBloWork in originalBloWorks">
+                        <a href="/Task?shortCode={{originalBloWork.shortCode}}" target="_blank">
+                            <span>{{originalBloWork.taskName}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="issueProgressDiv cnabs_none cnabs_scrollbar">
+            <div class="issueProgressMainly">
+                <div class="left issueProgressTitle cnabs_ellipsis" title="{{selectedIssueName}}"><span>{{selectedIssueName}}</span></div>
+                <div class="right cnabs_btn_add" ng-click="addIssueComment(selectedIssueGuid,selectedIssueName,selectedIssueStatus)">追加</div>
+            </div>
+            <div style="clear:both;"></div>
+            <div class="issueProgressInfo" ng-repeat="activity in activities">
+                <div class="left">
+                    <img style="width:22px;float:left;border-radius:10px" title="{{showProfile(activity.CreateUserName)}}" src="{{activity.AvatarPath}};" />
+                    <div class="left issueProgressCreator" ng-mousemove="loadProfile(activity.CreateUserName)"
+                         title="{{showProfile(activity.CreateUserName)}}">{{activity.CreateRealUserName}}</div>
+                    <abbr class="timeago timeAgoSpan" title="{{activity.CreateTime}}">{{activity.CreateTime}}</abbr>
+                </div>
+                <div class="right issueProgressDate">
+
+                    <div class="right deleteIssueActivityDiv" ng-style="{{activity.deleteActivityBtnColor }}"
+                         ng-click="deleteIssueActivity(selectedIssueGuid,selectedIssueName,activity.Guid,activity.ActivityType,activity.Description,activity.IsValid)">
+                        删除
+                    </div>
+                </div>
+
+                <div style="clear:both;"></div>
+                <div class="issueProgressDescription" ng-bind-html="activity.Description|trustHtml">{{activity.Description}}</div>
+                <div class="selectedIssueImages">
+                    <div class="divEachOriginalImage" ng-repeat="additionalImage in activity.ImageInfo" id="{{additionalImage.Guid}}"
+                         ng-mouseenter="downLoadImageOrPreviewImage(additionalImage.Guid)" ng-mouseleave="removeDownLoadOrPreview()">
+                        <img class="eachPreviewImage" lazy-src="{{additionalImage.ThumbnSrc}}" alt="{{additionalImage.Name}}" />
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="eachUploadFile" ng-repeat="additionalFile in activity.FileInfo" style="background-image:url({{additionalFile.iconSrc}});background-color:#45423d;">
+                    <span class="left uploadFileName cnabs_ellipsis" style="width:180px;" title={{additionalFile.Name}}>{{additionalFile.Name}}</span>
+                    <span class="right downLoadFile" ng-click="downloadFile(additionalFile.Guid)">下载</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divDashboardUnSelectedIssueRight" class="divDashboardUnSelectedIssueRight">
+        <div class="unSelIssueDiv">
+            请先选择问题
+        </div>
+        <div class="unSelIssueImgDiv">
+            <img src="~/Images/DashBoard/noSelectedIssue.png" />
+        </div>
+    </div>
+    <div id="divMultipleSelectedIssueRight" class="divMultipleSelectedIssueRight">
+        <div class="multipleSelectedIssueDiv">
+            选中了<span class="cnabs_yellow">{{selectedIssueList}}</span>个问题
+        </div>
+    </div>
+    <div id="divCreateIssue" class="divCreateIssue">
+        <div id="divCreateIssueContentAuto" class="divCreateIssueContentAuto"></div>
+        <div id="issueWroklist" class="cnabs_dialog_content_everyline">
+            <span class="cnabs_dialog_content_title">工作列表</span>
+            <div class="left">
+                <select class="cnabs_dialog_input_wid" ng-change="setBlockedWork(issuelIst)" ng-model="issuelIst">
+                    <option value={{issuelIst}} ng-repeat="issuelIst in issueWroklist">{{issuelIst[1]}}</option>
+                </select>
+            </div>
+        </div>
+        @*受阻工作*@
+        <div id="blockedWorkDiv"></div>
+        <div class="cnabs_dialog_content_everyline divUpload">
+            <div id="divCreateIssueFilePicker"></div>
+        </div>
+    </div>
+    @* 追加 *@
+    <div id="divAddDescription" class="divAddDescription">
+        <div id="divAddDescriptionAuto"></div>
+        <div id="divAddActivityFilePicker" class="divUploadInAdd"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var autoDiv = new CnabsAutoDiv("divCreateIssueContentAuto");
+    var autoDiv_add = new CnabsAutoDiv("divAddDescriptionAuto");
+    var autoDiv_edit = new CnabsAutoDiv("divEditDescriptionAuto");
+
+    angular.module('DashBoard').filter('trustHtml', function ($sce) {
+        return function (input) {
+            return $sce.trustAsHtml(input);
+        }
+    });
+    angular.module('DashBoard').controller('DashboardExIssue', function ($scope, $rootScope, userHelper, avatarHelper, $http, $compile, projectSeriesHelper, locationURL) {
+        $scope.loadProfile = cnabsLoadUserInfoTitle;
+        $scope.showProfile = cnabsGetUserInfoTitle;
+
+        $rootScope.$on("UpdateDashboardExIssue", function (event, projectSeriesGuid, issueGuid) {
+            $scope.reloadPage(projectSeriesGuid, issueGuid);
+        });
+        $scope.reloadPage = function (projectSeriesGuid, issueGuid) {
+            if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            }
+            $scope.percentCompleted = "0.00%";
+            $scope.issueStatusList = [
+                { name: "全部", key: "All", checked: true },
+                { name: "待解决", key: "Preparing", checked: false },
+                { name: "进行中", key: "Running", checked: false },
+                { name: "已解决", key: "Finished", checked: false },
+                { name: "已忽略", key: "Ignore", checked: false },
+            ];
+            $scope.emergencyLevelList = [
+                { name: "全部", key: "All", checked: true},
+                { name: "十分紧急", key: "Critical", checked: false},
+                { name: "紧急", key: "Major", checked: false },
+                { name: "一般", key: "Minor", checked: false },
+                { name: "不紧急", key: "Trivial", checked: false }
+            ];
+            //初始化
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+            $scope.getLocationHref();
+            $scope.getIssueList();
+        }
+
+        //切换选择项目
+        $scope.projectSeriesChange = function (projectSeriesGuid, projectGuid) {
+            //获取问题列表
+            $scope.getIssueList();
+            //右边的div的显示（问题列表的选择为0）
+            $scope.judgeDisplay(0);
+        }
+
+        //一些针对css以及html的控制
+        $scope.clearIssueInfo = function () {
+            $scope.activities = [];
+            $scope.issueWroklist = [];
+            $scope.blockedWorkArry = [];
+            $scope.editBlockedWorkArry = [];
+            $scope.selectedIssueGuid="";
+            $scope.selectedIssueStatus="";
+        }
+        $scope.openIssueDescription = function () {
+            $(".issueProgressDiv").removeClass("cnabs_block");
+            $(".issueProgressDiv").addClass("cnabs_none");
+            $(".issueDescriptionDiv").removeClass("cnabs_none");
+            $(".issueDescriptionDiv").addClass("cnabs_block");
+            $("#openIssueProgressId").removeClass("cnabs_btn_tab_selected");
+            $("#openIssueDescriptionId").addClass("cnabs_btn_tab_selected");
+        }
+        $scope.openIssueProgress = function () {
+            $(".issueDescriptionDiv").addClass("cnabs_none");
+            $(".issueDescriptionDiv").removeClass("cnabs_block");
+            $(".issueProgressDiv").removeClass("cnabs_none");
+            $(".issueProgressDiv").addClass("cnabs_block");
+            $("#openIssueDescriptionId").removeClass("cnabs_btn_tab_selected");
+            $("#openIssueProgressId").addClass("cnabs_btn_tab_selected");
+        }
+        $scope.blockedWorkHtml = function (shortCode,currentWork) {
+            var newBlockedWork = { blockedType: currentWork };
+            newBlockedWork.html = '<div class="addBlockedWorkDiv" id="' + shortCode + '"><span>'
+                + currentWork + '</span><span class="delBlockedWorkDiv cnabs_red" ng-click=delBlockedWork("' + shortCode + '")>删除</span></div>';
+            return newBlockedWork;
+        }
+        $scope.getLocationHref = function () {
+            var loc = location.href;
+            var positionIssueGuid = loc.indexOf("#issueGuid=");
+            var positionTaskGroupGuid = loc.indexOf("?taskGroupGuid=");
+            if (positionIssueGuid > -1) {
+                var issueStart = positionIssueGuid + 11;
+                var issueGuid = loc.substr(issueStart);
+                $scope.issueGuidFromPro = issueGuid;
+            }
+            if (positionTaskGroupGuid > -1) {
+                var taskGroupGuidStart = positionTaskGroupGuid + 15;
+                var taskGroupGuid = loc.substring(taskGroupGuidStart, positionIssueGuid);
+            }
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(taskGroupGuid);
+        }
+
+        //获取当前项目下的问题列表(同时获取提出问题中的值)
+        $scope.getIssueList = function () {
+            $scope.clearIssueInfo();
+            $scope.taskGroupList = [" "];
+            $scope.allotUserList = [" "];
+            $scope.issueCorrespondProject = [];
+            $scope.getTaskGroupList();
+            $scope.getTeamMember();
+
+            $scope.preparingCount;
+            $scope.runningCount;
+            $scope.finishedCount;
+
+            var preparing = [];
+            var running = [];
+            var finished = [];
+
+            //全选为false
+            $scope.selectedAllIssue = false;
+
+            //获取完成度
+            $scope.getIssueProcessInfo($scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+
+            var issueStatusTextStr = _($scope.issueStatusList).filter('checked').map('key').join('|');
+            var emergencyLevelTextStr = _($scope.emergencyLevelList).filter('checked').map('key').join('|');
+
+            //清空数据
+            cnabsInitObject($scope.issueCorrespondProject);
+
+            var param = {
+                projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                issueStatusText: issueStatusTextStr,
+                emergencyLevelText: emergencyLevelTextStr
+            };
+            cnabsAjax("获取该产品系列下的问题", "/Issue/GetIssueList", param, function (data) {
+                if (data.length) {
+                    $scope.issueCorrespondProject = data;
+                    $.each($scope.issueCorrespondProject, function (index, item) {
+                        if (item.IssueStatus == "Preparing") {
+                            item.issueStatusCN = "待解决";
+                            preparing.push(item);
+                        }
+                        if (item.IssueStatus == "Running") {
+                            item.issueStatusCN = "进行中";
+                            running.push(item);
+                        }
+                        if (item.IssueStatus == "Finished") {
+                            item.issueStatusCN = "已解决";
+                            finished.push(item);
+                        }
+
+                        var compareResult = $scope.isExistCurrentList($scope.issueCorrespondProject, $scope.keepCheckedGuid);
+
+                        //解决问题之后，保持checked && 受阻问题的check保持
+                        if (compareResult) {
+                            $.each($scope.keepCheckedGuid, function (indexGuid, itemGuid) {
+                                if (item.IssueGuid == itemGuid) {
+                                    if ($scope.keepCheckedGuid.length == 1) {
+                                        $scope.GetIssueInfo(item.IssueGuid, item.IssueName, item.IssueStatus);
+                                    }
+                                    item.isChecked = true;
+                                }
+                            })
+                            $scope.judgeDisplay($scope.keepCheckedGuid.length);
+                        }
+                        if (!compareResult && $scope.issueGuidFromPro != undefined && $scope.issueGuidFromPro == item.IssueGuid) {
+                            $scope.GetIssueInfo(item.IssueGuid, item.IssueName, item.IssueStatus);
+                            item.isChecked = true;
+                            $scope.judgeDisplay(1);
+                        }
+                        if (!compareResult && $scope.issueGuidFromPro == undefined) {
+                            $scope.judgeDisplay(0);
+                        }
+                    })
+                    $scope.preparingCount = preparing.length;
+                    $scope.runningCount = running.length;
+                    $scope.finishedCount = finished.length;
+                    $scope.issues = eval(data);
+                } else {
+                    $scope.issueCorrespondProject = [];
+                    $scope.judgeDisplay(0);
+                }
+
+                $scope.checkedIssueLists($scope.issueCorrespondProject);
+
+                $scope.$apply();
+
+            })
+        }
+
+        //判断选择的问题数组是否存在当前显示出来的数组里面
+        $scope.isExistCurrentList = function (masterArry, currentArry) {
+            var compareResult = false;
+            $.each(masterArry, function (index, item) {
+                $.each(currentArry, function (indexCurrent, itemCurrent) {
+                    if (item.IssueGuid == itemCurrent) {
+                        compareResult = true;
+                    }
+                })
+            })
+            return compareResult;
+        }
+
+        //获取当前项目下的工作组
+        $scope.getTaskGroupList = function () {
+            var param = { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid };
+            cnabsAjax("获取该产品系列下的工作组", "/TaskGroup/GetTaskGroupList", param, function (data) {
+                $.each(data, function (index, item) {
+                    $scope.taskGroupList.push([item.guid, item.name]);
+                })
+            })
+        }
+
+        $scope.getIssueProcessInfo = function (projectGuid) {
+            if (cnabsHasContent(projectGuid)) {
+                var params = { projectGuid: projectGuid };
+                cnabsAjax('获取问题总进度', '/Issue/GetProjectProcessInfo', params, function (data) {
+                    $scope.finishedIssueCount = data.finishedIssueCount;
+                    $scope.issueCount = data.issueCount;
+                    $scope.percentCompleted = data.percentCompleted;
+                    $scope.$apply();
+                });
+            }
+        }
+
+        //获取项目成员的列表
+        $scope.getTeamMember = function () {
+            var param = { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid };
+            cnabsAjax("获取项目成员的列表", "/Task/GetPersonInCharges", param, function (data) {
+                $.each(data, function (index, item) {
+                    $scope.allotUserList.push([item.UserInfo.UserName, cnabsFormatUserName(item.UserInfo)]);
+                })
+            })
+        }
+
+        //通过条件筛选问题列表
+        $scope.filterIssueList = function (selectedIndex, type) {
+            $scope.keepCheckedGuid = [];
+            if (type == "issueStatus") {
+                if ($scope.issueStatusList[selectedIndex].key == "All") {
+                    $.each($scope.issueStatusList, function (index, item) {
+                        if (item.key != "All") {
+                            item.checked = false;
+                        }
+                    })
+                }
+                if ($scope.issueStatusList[selectedIndex].key != "All") {
+                    $scope.issueStatusList[0].checked = false;
+                }
+                $scope.issueStatusList[selectedIndex].checked = !$scope.issueStatusList[selectedIndex].checked;
+            }
+            if (type == "emergencyLevel") {
+                if ($scope.emergencyLevelList[selectedIndex].key == "All") {
+                    $.each($scope.emergencyLevelList, function (index, item) {
+                        if (item.key != "All") {
+                            item.checked = false;
+                        }
+                    })
+                }
+                if ($scope.emergencyLevelList[selectedIndex].key != "All") {
+                    $scope.emergencyLevelList[0].checked = false;
+                }
+                $scope.emergencyLevelList[selectedIndex].checked = !$scope.emergencyLevelList[selectedIndex].checked;
+            }
+            $scope.getIssueList();
+            $scope.judgeDisplay(0);
+        }
+
+        //领取问题
+        $scope.receiveIssue = function () {
+            var issueGuidTextArry = [];
+            var issueGuidTextStr = "";
+            $.each($scope.issueCorrespondProject, function (index, item) {
+                if (item.isChecked) {
+                    issueGuidTextArry.push(item.IssueGuid);
+                }
+            })
+            if (issueGuidTextArry.length) {
+                issueGuidTextStr = issueGuidTextArry.join("|");
+                var param = {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    issueGuidText: issueGuidTextStr
+                };
+                cnabsAjax("领取问题", "/Issue/SetAllotUser", param, function () {
+                    $scope.getIssueList();
+                    alertify.success("领取成功");
+                    $scope.judgeDisplay(0);
+                })
+            } else {
+                alertify.error("请您选择至少一个问题");
+            }
+        }
+
+        //解决问题
+        $scope.resolveIssue = function () {
+            var issueGuidTextArry = [];
+            var issueGuidTextStr = "";
+            $.each($scope.issueCorrespondProject, function (index, item) {
+                if (item.isChecked) {
+                    issueGuidTextArry.push(item.IssueGuid);
+                }
+            })
+            $scope.keepCheckedGuid = issueGuidTextArry;
+            if (issueGuidTextArry.length) {
+                //$scope.getIssueList();
+                issueGuidTextStr = issueGuidTextArry.join("|");
+                var param = {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    issueGuidText: issueGuidTextStr
+                };
+                cnabsAjax("解决问题", "/Issue/ResolveIssue", param, function () {
+                    $scope.getIssueList();                    
+                    alertify.success("解决成功");
+                    $scope.resolveBtn = "重置已解决问题";
+                    //$scope.judgeDisplay(0);
+                })
+            } else {
+                alertify.error("请您选择至少一个问题");
+            }
+        }
+
+        //重新开启
+        $scope.unResolveIssue = function () {
+            var issueGuidTextArry = [];
+            var issueGuidTextStr = "";
+            $.each($scope.issueCorrespondProject, function (index, item) {
+                if (item.isChecked) {
+                    issueGuidTextArry.push(item.IssueGuid);
+                }
+            })
+            $scope.keepCheckedGuid = issueGuidTextArry;
+            if (issueGuidTextArry.length) {
+                issueGuidTextStr = issueGuidTextArry.join("|");
+                var param = {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    issueGuidText: issueGuidTextStr
+                };
+                cnabsAjax("解决问题", "/Issue/ResetIssueStatus", param, function () {
+                    $scope.getIssueList();                    
+                    alertify.success("重新开启成功");
+                    $scope.resolveBtn = "解决问题";
+                })
+            } else {
+                alertify.error("请您选择至少一个问题");
+            }
+        }
+
+        $scope.addIssueComment = function (issueGuid, issueName, issueStatus) {
+            if (issueStatus == "Finished") {
+                cnabsMsgError("追加失败：问题已经完成，无法追加");
+                return;
+            }
+            $(".divUploadInAdd").css("display", "block");
+            var addIssueCommentDialog = [{
+                title: " ",
+                type: "textarea",
+                elementId: "addIssueCommentInDialog",
+                value: "",
+                placeHolder: "请填写评论",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "500"
+                }
+            }]
+            autoDiv_add.init(addIssueCommentDialog);
+
+            var filePicker = new CnabsFilePicker();
+            filePicker.init("divAddActivityFilePicker");
+
+            cnabsDlgYesNo("divAddDescription", "追加", function () {
+                var data = autoDiv_add.getUIValue();
+                var formData = filePicker.getFormData();
+                var comment = data.addIssueCommentInDialog;
+                comment = comment.replace(/\n|\r\n/g, encodeURI("<br/>"));
+                formData.append("projectGuid", $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+                formData.append("issueGuid", issueGuid);
+                formData.append("comment", comment);
+                cnabsAjaxUploadFile("追加", "/Issue/CreateIssueActivity", formData, function (data) {
+                    $scope.GetIssueInfo(issueGuid, issueName);
+                    $scope.openIssueProgress();
+                });
+            },'auto','auto')
+        }
+
+        $scope.setBlockedWork = function (shortCode) {
+            var shortObj = JSON.parse(shortCode);
+            var currentWork;
+            var selectedWork;
+            var isPush = true;
+            if ($scope.blockedWorkArry.length != 0) {
+                $.each($scope.blockedWorkArry, function (index, item) {
+                    if (shortObj[0] == item) {
+                        isPush = false;
+                    }
+                })
+            }
+            if (isPush) {
+                var newRule = $scope.blockedWorkHtml(shortObj[0], shortObj[1]);
+                var $html = $compile(newRule.html)($scope);
+                $scope.blockedWorkArry.push(shortObj[0]);
+                $("#blockedWorkDiv").append($html);
+            }
+
+        }
+
+        $scope.delBlockedWork = function (shortCode) {
+            var idObj = document.getElementById(shortCode);
+            $.each($scope.blockedWorkArry, function (index, item) {
+                if (shortCode == item) {
+                    $scope.blockedWorkArry.splice(index, 1);
+                    idObj.parentNode.removeChild(idObj);
+                }
+            })
+        }
+
+        //Div来控制input(问题列表)
+        $scope.checkedByDiv = function (index, data) {
+            var isChecked = data[index].isChecked;
+            if (!isChecked) {
+                data[index].isChecked = true;
+            } else {
+                data[index].isChecked = false;
+            }
+            $scope.checkedIssueLists(data);
+        }
+        //组止input的默认事件
+        $scope.stopDefalutEvent = function (event) {
+            var event = event || window.event;
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                window.event.returnValue = false;
+            }
+        }
+        //获取问题的详细信息
+        $scope.GetIssueInfo = function (IssueGuid, IssueName,IssueStatus) {
+            $scope.clearIssueInfo();
+            if (IssueGuid != null) {
+                $scope.selectedIssueName = IssueName;
+                var param = {
+                    issueGuid: IssueGuid
+                };
+                cnabsAjax("获取问题的详细信息", "/Issue/GetIssueActivityList", param, function (data) {
+                    $scope.getIssueDetail = data;
+                    $scope.selectedIssueGuid = IssueGuid;
+                    $scope.selectedIssueName = IssueName;
+                    $scope.selectedIssueStatus = IssueStatus;
+                    $.each(data.issueActivityList, function (index, item) {
+                        $.each(item.FileInfo, function () {
+                            this.iconSrc = '../../Images/Common/' + cnabsGetFileIconByFileName(this.Name);
+                        });
+                        $.each(item.ImageInfo, function () {
+                            this.ThumbnSrc = '../../Issue/ShowImage?projectGuid=' + $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid + '&imageGuid=' + this.Guid + '&imageSharpnessTypeText=Thumbnail';
+                        });
+
+                        if (item.ActivityType == "Original") {
+                            $scope.selectedIssueDescription = item.Description;
+                            $scope.originalFiles = item.FileInfo;
+                            $scope.originalImages = item.ImageInfo;
+                            $scope.originalBloWorks = item.ConnectionTasks;
+                            if ($scope.originalBloWorks.length>0) {
+                                $(".blockedInfoDiv").css("display", "block");
+                            } else { $(".blockedInfoDiv").css("display", "none"); }
+                        } else {
+                            if (!item.IsValid) {
+                                item.FileInfo = [];
+                                item.ImageInfo = [];
+                                item.Description = "<div style='color:#7a7269;'>内容已经被删除</div>";
+                                item.deleteActivityBtnColor = { display: 'none' }
+                            }
+                            if (item.ActivityType == 'SystemGenerate') {
+                                item.deleteActivityBtnColor = { display: 'none' }
+                            }
+                            item.AvatarPath = null;
+                            item.Description = decodeURI(item.Description);
+                            $scope.activities.push(item);
+                        }
+                        $scope.$apply();
+                        $('img').error(function () {
+                            $(this).attr('src', '../../Images/Common/imgError.png');
+                        });
+                        $scope.controlleftAndRightPanelHeight()
+                        //图片加载完再调整高度
+                        $.each($('.selectedIssueImages img'), function (index, item) {
+                            item.onload = function () {
+                                $scope.controlleftAndRightPanelHeight();
+                            }})
+                    })
+                    avatarHelper.load($scope.activities);
+                    cnabsInitTimeAgo();
+                })
+            }
+        }
+
+        $scope.controlleftAndRightPanelHeight = function () {
+            $('#issueLabels').height('auto');
+            if ($('#issueLabels').height() <= $('#divIssueInfo').height()) {
+                $('#issueLabels').height($('#divIssueInfo').height())
+            }
+        }
+
+        //删除问题进展
+        $scope.deleteIssueActivity = function (IssueGuid, IssueName, ActivityGuid, ActivityType, Comment, IsValid) {
+            if (!IsValid) {
+                return
+            }
+            if (ActivityType == 'SystemGenerate') {
+                cnabsMsgError('删除失败：系统自动生成的内容无法删除。')
+                return
+            }
+            var msg = '<div class="cnabs_breakWord" style="width:350px;">确认删除[' + Comment + ']以及相关图片和文件？</div>';
+            cnabsAutoDlgYesNo(null, '删除活动', function () {
+                var param = {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    issueGuid: IssueGuid,
+                    issueActivityGuid: ActivityGuid
+                }
+                cnabsAjax("删除活动", "/Issue/DeleteIssueActivity/", param, function (data) {
+                    $scope.GetIssueInfo(IssueGuid, IssueName);
+                    $scope.$apply();
+                });
+            }, msg);
+        }
+
+        //下载文件
+        $scope.downloadFile = function (fileGuid) {
+            var param = { fileGuid: fileGuid };
+            cnabsAjaxDownloadFile("下载文件", "/Issue/DownloadFile", param, function () { })
+        }
+        $scope.clearPreviewImage = function () {
+            $("#bgImageGray").remove();
+            $("#divLargeImage").remove();
+            $("#divSmallIcon").remove();
+        }
+        $scope.downLoadImageOrPreviewImage = function (ImgGuid) {
+            $(".downLoadOrPreview").remove();
+            $("#" + ImgGuid).append('<div class="downLoadOrPreview"><div class="preview"><img src="../../Images/Common/enlarge.png">'
+                + '</div><div class="downLoad"><img src="../../Images/Common/downLoad.png"></div></div>');
+            if ($("#" + ImgGuid).width() > $($("#" + ImgGuid).parent()).width()) {
+                $(".downLoadOrPreview").css({
+                    width: $($("#" + ImgGuid).parent()).width() + 'px'
+                });
+            } else {
+                $('.downLoadOrPreview').css({
+                    width:100+"%"
+                });
+            }
+            var LockPreviewImg = false;
+            var Hscreen = document.documentElement.clientHeight;
+            var Wscreen = document.documentElement.clientWidth;
+            $(".downLoadOrPreview .preview").click(function () {
+                if (!LockPreviewImg) {
+                    LockPreviewImg = true;
+                    var previewImageSrc = '../../Issue/ShowImage?projectGuid=' + $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid
+                        + '&imageGuid=' + ImgGuid + '&imageSharpnessTypeText=PreviewImage';
+                    var img = new Image();
+                    img.src = previewImageSrc;
+                    img.onload = function () {
+                        $("body").scrollTop(0);
+                        $scope.clearPreviewImage();
+                        $('#divDashboardExIssueParent').append('<div id="bgImageGray" class="bgGrayImg"></div>')
+                        $('#divDashboardExIssueParent').append('<div id="divSmallIcon" class="smallIconStyle"></div>');
+                        $('#divSmallIcon').append('<img style="cursor:pointer" src="../../Images/Common/imgDelIcon.png" />');
+                        $('#divDashboardExIssueParent').append('<div id="divLargeImage" class="largeImage largeImgStyle" ></div>');
+                        $('#divLargeImage').append(img);
+
+                        var webVirtualHeight = document.body.offsetHeight;
+                        var grayDiv = document.getElementById("bgImageGray");
+                        grayDiv.style.height = webVirtualHeight + 50 + "px";
+
+                        var divLargeImage = document.getElementById("divLargeImage");
+                        var divSmallIcon = document.getElementById("divSmallIcon");
+
+                        var W_img = divLargeImage.offsetWidth;
+                        var H_img = divLargeImage.offsetHeight;
+
+                        if (img.height > 880) {
+                            divLargeImage.style.top = 60 + "px";
+                            divSmallIcon.style.top = (webVirtualHeight + 50 - H_img) / 2 - 5 + "px";
+                        }
+
+                        if (img.height <= 880) {
+                            divLargeImage.style.top = (Hscreen - H_img) / 2 + "px";
+                            divSmallIcon.style.top = (Hscreen - H_img) / 2 - 5 + "px";
+                        }
+                        divSmallIcon.style.left = (Wscreen + W_img) / 2 - 13 + "px";
+                        divLargeImage.style.left = (Wscreen - W_img) / 2 + "px";
+                        //点击Icon关闭大图 & 点击灰色背景关闭大图
+                        $("#divSmallIcon,#bgImageGray").click(function () {
+                            $scope.clearPreviewImage();
+                        })
+
+                        //ESC关闭大图
+                        $(document).keyup(function (event) {
+                            var e = event || window.event;
+                            if (e && e.keyCode == 27) {
+                                $scope.clearPreviewImage();
+                            }
+                        })
+
+                        LockPreviewImg = false;
+                    }
+                    img.onerror = function () {
+                        cnabsMsgError("预览图加载失败！")
+                        LockPreviewImg = false;
+                    }
+                }
+            })
+            $(".downLoadOrPreview .downLoad").click(function () {
+                cnabsAjaxDownloadFile('下载图片', '/Issue/DownloadImage', { imageGuid: ImgGuid, imageSharpnessTypeText: 'MasterMap' });
+            })
+        }
+        $scope.removeDownLoadOrPreview = function () {
+            $('.downLoadOrPreview').remove();
+        }
+
+        $scope.getGroupOfList = function (selectedTaskGroupGuid) {
+            $scope.issueWroklist = [[""][""]];
+            var param = {
+                taskGroupGuid: selectedTaskGroupGuid
+            };
+            cnabsAjax("获取工作组下的工作列表", "/TaskGroup/GetTasks", param, function (data) {
+                $.each(data, function (index, item) {
+                    $scope.issueWroklist.push([item.shortCode, item.taskName]);
+                })
+                $scope.$apply();
+            })
+        }
+
+        $scope.createIssue = function () {
+            $scope.getTaskGroupList();
+            $scope.getTeamMember();
+            $scope.blockedWorkArry = [];
+            $("#blockedWorkDiv").empty();
+            $(".divUpload").css("display", "block");
+            var groupList = $scope.getTaskGroupList();
+            if (groupList) {
+
+            }
+            var createIssueDialog = [{
+                title: "问题名称",
+                type: "text",
+                elementId: "issueName",
+                value: "",
+                placeHolder: "请填写问题名称",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "30"
+                }
+            }, {
+                title: "问题描述",
+                type: "textarea",
+                elementId: "issueDescription",
+                value: "",
+                placeHolder: "请填写描述",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "500"
+                }
+            }, {
+                title: "紧急程度",
+                type: "select",
+                elementId: "issuePriority",
+                OptionArray: [["Trivial", "不紧急"], ["Minor", "一般"], ["Major", "紧急"], ["Critical", "十分紧急"]]
+            }, {
+                title: "领取人",
+                type: "select",
+                elementId: "allotUser",
+                OptionArray: $scope.allotUserList
+            }, {
+                title: "工作组",
+                type: "select",
+                elementId: "issueGroup",
+                OptionArray: $scope.taskGroupList
+            }];
+            autoDiv.init(createIssueDialog);
+
+            //选择文件
+            var filePicker = new CnabsFilePicker();
+            filePicker.init("divCreateIssueFilePicker");
+
+            //进行选择工作组
+            $("#issueGroup").change(function () {
+                $("#issueWroklist").css("display", "block");
+                var data = autoDiv.getUIValue();
+                $scope.getGroupOfList(data.issueGroup);
+
+            })
+            cnabsDlgYesNo('divCreateIssue', "提出问题", function () {
+                if (!autoDiv.validate(createIssueDialog, true)) {
+                    return false;
+                };
+                var data = autoDiv.getUIValue();
+                var formData = filePicker.getFormData();
+                var blockedWorkStr = "";
+                blockedWorkStr = $scope.blockedWorkArry.join("|");
+                formData.append("projectGuid", $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+                formData.append("issueName", data.issueName);
+                formData.append("description", data.issueDescription);
+                formData.append("emergencyLevelText", data.issuePriority);
+                formData.append("allotUser", data.allotUser);
+                formData.append("shortCodeText", blockedWorkStr);
+                cnabsAjaxUploadFile("提出问题", "/Issue/CreateIssue", formData, function (data) {
+                    $scope.keepCheckedGuid = [];
+                    $scope.getIssueList();
+                    $scope.$apply();
+                    $scope.judgeDisplay(0);
+                })
+            },'auto','auto')
+        }
+
+        $scope.issueChange = function (data) {
+            $.each($scope.issues, function (index, item) {
+                if (item.IssueGuid == data.IssueGuid) {
+                    $scope.selectedIssueAllInfo = data;
+                    $scope.GetIssueInfo(data.IssueGuid, data.IssueName, data.IssueStatus);
+                }
+            })
+        }
+
+        //点击勾选
+        $scope.checkedIssueLists = function (issueCorrespondProject) {
+            $scope.resolveBtn = "";
+            var countIsChecked = $scope.countIssueChecked(issueCorrespondProject);
+            $scope.judgeDisplay(countIsChecked.length);
+            $scope.resolveBtn = $scope.resolveBtnStatus(countIsChecked);
+            if (countIsChecked.length == 1) {
+                $scope.issueChange(countIsChecked[0]);
+            }
+            //关于全选是否勾选上
+            if (countIsChecked.length == $scope.issueCorrespondProject.length) {
+                $scope.selectedAllIssue = true;
+            } else {
+                $scope.selectedAllIssue = false;
+            }
+            $scope.selectedIssueList = countIsChecked.length;
+        }
+
+        //解决问题（重新开启）按钮转换
+        $scope.resolveBtnStatus = function (selectedIssue) {
+            var result = "";
+            var resolveIssueCount = [];
+            var unResolveIssueCount = [];
+            if (selectedIssue.length == 0) {
+                result = "状态不明确";
+                return result;
+            }
+            $.each(selectedIssue, function (index, item) {
+                if (item.issueStatusCN == "已解决") {
+                    resolveIssueCount.push(item);
+                } else {
+                    unResolveIssueCount.push(item);
+                }
+            })
+            if (resolveIssueCount.length == selectedIssue.length) {
+                result = "重置已解决问题";
+            }
+            else if (unResolveIssueCount.length == selectedIssue.length) {
+                result = "解决问题";
+            } else {
+                result = "状态不明确";
+            }
+            return result;
+        }
+
+        //根据选中的问题数量来决定样式的改变
+        $scope.judgeDisplay = function (symbol) {
+            if (symbol == 0) {
+                $(".divDashboardExIssueRight").css("display", "none");
+                $(".divDashboardUnSelectedIssueRight").css("display", "block");
+                $(".divMultipleSelectedIssueRight").css("display", "none");
+            }
+            if (symbol == 1) {
+                $(".divDashboardExIssueRight").css("display", "block");
+                $(".divDashboardUnSelectedIssueRight").css("display", "none");
+                $(".divMultipleSelectedIssueRight").css("display", "none");
+            }
+            if (symbol > 1) {
+                $(".divDashboardExIssueRight").css("display", "none");
+                $(".divDashboardUnSelectedIssueRight").css("display", "none");
+                $(".divMultipleSelectedIssueRight").css("display", "block");
+            }
+        }
+        //全选问题列表
+        $scope.selectAll = function (selectedAllIssue) {
+            $.each($scope.issueCorrespondProject, function (index, item) {
+                item.isChecked = selectedAllIssue;
+            })
+            $scope.resolveBtn = $scope.resolveBtnStatus($scope.issueCorrespondProject);
+            var issueList = _.filter($scope.issueCorrespondProject,'isChecked')
+            $scope.selectedIssueList = issueList.length;
+            $scope.judgeDisplay($scope.selectedIssueList);
+        }
+        //选中问题列表
+        $scope.countIssueChecked = function (data) {
+            var countIsChecked = [];
+            $.each(data, function (index, item) {
+                if (item.isChecked) {
+                    countIsChecked.push(item);
+                }
+            })
+            return countIsChecked;
+        }
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Issue") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+    })
+</script>

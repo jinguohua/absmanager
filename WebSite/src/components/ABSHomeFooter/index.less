@@ -1,0 +1,28 @@
+@import '../../styles/theme/default.less';
+
+.abs-home-footer {
+  width: 100%;
+  background-color: @abs-footer-bg;
+  border-bottom: 1px solid @abs-footer-bottom-border-color;
+  position: inherit;
+  &-content {
+    width: 1200px;
+    padding: 16px 20px;
+    margin: 0 auto;
+  }
+  &-logo {
+    display: inline-block;
+    height: 92px;
+  }
+  &-link {
+    float: right;
+    width: 715px;
+    .abs-footer-item {
+      float: left;
+      width: 198px;
+      &:last-child {
+        width: 110px;
+      }
+    }
+  }
+}

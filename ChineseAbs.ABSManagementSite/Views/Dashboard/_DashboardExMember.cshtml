@@ -1,0 +1,432 @@
+﻿<script type="text/javascript">
+    angular.module('DashBoard').controller('DashboardExMember', function ($scope, $rootScope, avatarHelper, projectSeriesHelper, userHelper, locationURL) {
+        $scope.loadProfile = cnabsLoadUserInfoTitle;
+        $scope.showProfile = cnabsGetUserInfoTitle;
+
+        //更新选择项目
+        $rootScope.$on("UpdateDashboardExMember", function (event, projectSeriesGuid) {
+            $scope.ReloadPageByProjectSeriesGuid(projectSeriesGuid);
+        });
+
+        //使用projectSeriesGuid重新加载页面
+        $scope.ReloadPageByProjectSeriesGuid = function (projectSeriesGuid) {
+            if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            }
+
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+
+            $scope.ReloadPage();
+            $scope.ShowPermission();
+        }
+
+        //重新加载页面
+        $scope.ReloadPage = function () {
+            $scope.GetAllUserInfo();
+        }
+
+        //选择项目发生变化
+        $scope.projectSeriesChange = function (projectSeriesGuid) {
+            $scope.ReloadPageByProjectSeriesGuid(projectSeriesGuid);
+
+            $rootScope.$emit("UpdateCurrentProjectSeriesGuid", projectSeriesGuid);
+            $rootScope.$emit("UpdateDashboardExPermission", projectSeriesGuid);
+        }
+
+        $scope.ShowPermission = function () {
+            $('#divDashboardExPermission').css('display', 'none');
+            $('#DashboardExMember').css('display', 'block');
+            $("#permissionBtn span").text('高级权限管理');
+            $(".DashboardExMember").css('paddingBottom', '10px');
+            $("#permissionBtn img")[0].src = '../../Images/DashBoard/arrow_right_yellow.png';
+            $("#permissionBtn").attr('hide', 'true')
+            $scope.isChief = false;
+            $scope.isAdmin = false;
+            $scope.isCreator = false;
+            cnabsAjax("通过用户名获取产品系列", "/ProjectSeries/GetProjectSeriesByUsername", null, function (data) {
+                var ChiefsProjectSeries = data.ChiefsProjectSeries;
+                var TeamAdminProjectSeries = data.TeamAdminProjectSeries;
+                var CreatorProjectSeries = data.CreatorProjectSeries;
+                $.each(ChiefsProjectSeries, function () {
+                    if (this.Guid == $scope.projectSeriesInfo.selectedItem.Guid) {
+                        $scope.isChief = true;
+                    }
+                })
+                $.each(TeamAdminProjectSeries, function () {
+                    if (this.Guid == $scope.projectSeriesInfo.selectedItem.Guid) {
+                        $scope.isAdmin = true;
+                    }
+                })
+                $.each(CreatorProjectSeries, function () {
+                    if (this.Guid == $scope.projectSeriesInfo.selectedItem.Guid) {
+                        $scope.isCreator = true;
+                    }
+                })
+                $scope.$apply();
+            });
+        }
+
+        //退出项目
+        $scope.ExitProjectSeries = function (projectSeriesGuid, projectSeriesName) {
+            for (var i = 0; i < $scope.projectSeriesInfo.items.length; ++i) {
+                if (projectSeriesGuid == $scope.projectSeriesInfo.items[i].Guid
+                    && $scope.isCreator) {
+                    cnabsAlert("退出失败：只有非创建者才能进行退出操作");
+                    return;
+                }
+            }
+
+            var msg = '是否确定退出[' + projectSeriesName + ']？<br/>退出后该项目将不会出现在您的项目列表中。<br/>如果想重新加入，需要该项目管理员添加您为项目成员。';
+            cnabsAutoDlgYesNo(null, "退出项目", function () {
+                cnabsAjax("退出项目", '/ProjectSeries/ExitProjectSeries', { projectSeriesGuid: projectSeriesGuid }, function (data) {
+                    if (data == 1) {
+                        window.location.reload();
+                    }
+                })
+            }, msg)
+        }
+
+        //获取所有负责人、创建者、管理员、项目成员信息
+        $scope.GetAllUserInfo = function () {
+            userHelper.reload($scope.projectSeriesInfo.selectedItem.Guid, function () {
+                $scope.allUserInfo = userHelper.getAllUserInfo();
+
+                $scope.isNotTeamMemberOfUserArr = userHelper.getUserToTeamMember();
+                var allAuthedUsers = userHelper.getAllAuthedUsers();
+
+                avatarHelper.load($scope.allUserInfo.PersonInCharge);
+                avatarHelper.load($scope.allUserInfo.Creator);
+                avatarHelper.load($scope.allUserInfo.TeamMembers);
+                avatarHelper.load($scope.allUserInfo.TeamAdmins);
+                avatarHelper.load($scope.isNotTeamMemberOfUserArr);
+
+                $scope.$apply();
+            });
+        }
+
+        $scope.addAdmin = function () {
+            var userOptionArray = userHelper.convertUserOptionArray(userHelper.getUsersToAddAdmin());
+            var controls = [{
+                title: "选择用户",
+                type: "select",
+                elementId: "userListInAddAdmin",
+                value: userOptionArray[0][0],
+                OptionArray: userOptionArray
+            }];
+
+            cnabsAutoDlgYesNo(controls, "增加管理员", function (data) {
+                $scope.SetAdmin(data.userListInAddAdmin);
+            });
+        }
+
+        //设置项目管理员
+        $scope.SetAdmin = function (userNames) {
+            var param = {
+                projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                userNames: userNames
+            };
+            cnabsAjax("设置项目管理员", "/TeamAdmin/AddTeamAdmins", param, function () {
+                $scope.ReloadPage();
+            })
+        }
+
+        //移除项目管理员
+        $scope.RemoveTeamAdmin = function (userName) {
+            var controls = [{
+                title: "将管理员移至项目成员",
+                type: "checkbox",
+                elementId: "moveToTeamMember",
+                checkboxStyle: "checkboxText",
+                value: true,
+            }];
+
+            cnabsAutoDlgYesNo(controls, "移除管理员", function (data) {
+                var param = {
+                    projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                    userNames: userName
+                };
+                cnabsAjax("移除管理员", "/TeamAdmin/RemoveTeamAdmins", param, function () {
+                    if (data.moveToTeamMember) {
+                        var arr = ["Read", "Write", "Execute"];
+                        var param = {
+                            projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                            userNames: userName,
+                            permissions: arr.join('|')
+                        };
+
+                        cnabsAjax('移至项目成员', "/TeamMember/AddTeamMembers", param, function () {
+                            $scope.ReloadPage();
+                        })
+                    } else {
+                        $scope.ReloadPage();
+                    }
+                })
+
+            }, "确认移除管理员[" + userName + "]?");
+        }
+
+        //移除项目成员
+        $scope.RemoveTeamMember = function (userName) {
+            cnabsAutoDlgYesNo(null, "移除项目成员", function () {
+                var param = {
+                    projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                    userNames: userName
+                };
+                cnabsAjax("移除项目成员", "/TeamMember/RemoveTeamMembers", param, function (data) {
+                    $scope.GetAllUserInfo();
+                })
+            }, "确认移除项目成员[" + userName + "]？");
+        }
+
+        $scope.ModifyTeamMembersPermission = function (userName) {
+            var controls = [];
+            var realName = "";
+            var param = { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid };
+            cnabsAjaxSync("获取所有项目成员权限", "/TeamMember/GetTeamMembers", param, function (data) {
+
+                $.each(data.TeamMembers, function () {
+
+                    if (this.UserName == userName) {
+                        realName = this.RealName;
+                        controls = [{
+                            title: "项目成员",
+                            type: "label",
+                            elementId: "name",
+                            value: realName + "(" + userName + ")",
+                        },{
+                            title: "只读权限",
+                            type: "checkbox",
+                            elementId: "read",
+                            disabled:true,
+                            value: this.Permission.Read,
+                        }, {
+                            title: "编写权限",
+                            type: "checkbox",
+                            elementId: "write",
+                            value: this.Permission.Write,
+                        }, {
+                            title: "执行权限",
+                            type: "checkbox",
+                            elementId: "execute",
+                            value: this.Permission.Execute,
+                        }];
+                    }
+                })
+            });
+            cnabsAutoDlgYesNo(controls, "编辑项目成员权限", function (data) {
+                var arr = [];
+                if (data.read) {
+                    arr.push('Read');
+                }
+                if (data.write) {
+                    arr.push('Write');
+                }
+                if (data.execute) {
+                    arr.push('Execute');
+                }
+
+                var param = {
+                    projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                    userNames: userName,
+                    permissions: arr.join('|')
+                };
+                cnabsAjax("编辑项目成员权限", "/TeamMember/ModifyTeamMembersPermission", param, function (data) {
+                    $scope.GetAllUserInfo();
+                })
+            })
+        }
+
+        $scope.ShowOrHidePermission = function () {
+            if ($("#permissionBtn").attr('hide') == 'true') {
+                $('#divDashboardExPermission').css('display', 'block');
+                $('#DashboardExMember').css('display', 'none');
+                $("#permissionBtn span").text('返回项目成员列表');
+                $(".DashboardExMember").css('paddingBottom', '0px');
+                $("#permissionBtn img")[0].src='../../Images/DashBoard/arrow_left_yellow.png';
+                $("#permissionBtn").attr('hide', 'false');
+
+                $rootScope.$emit("UpdateDashboardExPermission", $scope.projectSeriesInfo.selectedItem.Guid);
+            } else {
+                $('#divDashboardExPermission').css('display', 'none');
+                $('#DashboardExMember').css('display', 'block');
+                $("#permissionBtn span").text('高级权限管理');
+                $(".DashboardExMember").css('paddingBottom', '10px');
+                $("#permissionBtn img")[0].src = '../../Images/DashBoard/arrow_right_yellow.png';
+                $("#permissionBtn").attr('hide', 'true')
+            }
+        }
+
+        $scope.getUserAllGroupInfo = function () {
+            cnabsAjax("获取用户的所有分组", "/UserGroup/GetUserGroups", null, function (data) {
+                $scope.userAllGroupObj = data;
+                $scope.$apply();
+            })
+        }
+
+        $scope.selectAllGroups = function (isChecked) {
+            $.each($scope.userAllGroupObj, function (index, item) {
+                item.isChecked = isChecked;
+            })
+        }
+
+        $scope.addOneOrMoreTeamMember = function (param) {
+            cnabsAjax("批量添加项目成员", "/TeamMember/AddTeamMembers", param, function (data) {
+                $scope.GetAllUserInfo();
+            })
+        }
+        $scope.stopPropagation = function (event) {
+            var event = event || window.event;
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                window.event.returnValue = false;
+            }
+        }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Member") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+    });
+</script>
+<style>
+   .DashboardExMember{
+        overflow:hidden; padding:10px 20px 10px;
+    }
+    .DashboardExMember .changeCollaborativePersonBtn {
+        float: left;background: #FFC446;color: black;text-align: center;border-radius: 3px;padding: 3px 12px;cursor: pointer;
+    }
+    .DashboardExMember .personIncharge,.DashboardExMember .creator{
+        overflow:hidden;margin-bottom:20px;float:left;
+    }
+    .DashboardExMember .personPosition{
+        width:98px; height:60px; line-height:60px; padding-left:22px;background:#625c53;color:#b7afa5;float:left;
+    }
+    .DashboardExMember .personInfo{
+        overflow:hidden;width:360px; height:60px; padding-left:20px;background:#47423c;float:left;
+    }
+    .DashboardExMember .personInfo .imgParent{
+        float:left;margin-top:10px; width:40px; height:40px;border-radius:3px;background-color:#4f4a43;background-size:40px 40px;
+    }
+    .DashboardExMember .personInfo .displayName{
+        float:left;margin-left:10px;margin-top:10px;
+    }
+    .DashboardExMember .personInfo .displayName .realName{
+        height:25px;color:#ffc446;
+    }
+    .DashboardExMember .personInfo .displayName .userName{
+        color:#b7afa5;
+    }
+    .addCollaborativePerson{
+        overflow:hidden;padding:8px 20px 8px 20px;height:24px;background:#4f4a43;
+    }
+    .addCollaborativePerson div:nth-of-type(1){
+        color:#b7afa5;float:left;line-height:24px;
+    }
+    .editCollaborativePerson{
+        float:right;
+        margin-right:10px;
+        cursor:pointer;
+    }
+    .removeCollaborativePerson{
+        float:right;
+        cursor:pointer;
+    }
+    ul.collaborativePersons{
+        padding:0;
+        margin:0;
+        list-style:none;
+        overflow:hidden;
+    }
+    ul.collaborativePersons li.personInfo{
+        margin-right:10px;width:205px;padding-right:20px;margin-top:10px;
+    }
+        ul.collaborativePersons li:nth-of-type(4n) {
+            margin-right: 0px;
+        }
+</style>
+<div ng-controller="DashboardExMember" class="DashboardExMember" >
+    <div style="height:60px;line-height:50px; overflow:hidden;">
+        <span style="float:left;color:#b7afa5;font-size:14px;">选择项目：</span>
+        <select style="width:213px;height:28px;margin-left:3px;" ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid)" ng-model="projectSeriesInfo.selectedItem" ng-options="x.Name for x in projectSeriesInfo.items"></select>
+        <span id="permissionBtn" ng-show="isChief" ng-click="ShowOrHidePermission()" hide="true" style="display:none;float:right;font-size:14px;color:#ffc446;overflow:hidden; cursor:pointer;"><span style="float:right;">高级权限管理</span><img style="float:right;margin-right:6px;margin-top:18px;" ng-src="../../Images/DashBoard/arrow_right_yellow.png" /></span>
+        <div id="eixtBtn" ng-show="!isCreator" ng-click="ExitProjectSeries(projectSeriesInfo.selectedItem.Guid, projectSeriesInfo.selectedItem.Name)" hide="true" class="cnabs_btn right" style="display:block;margin-top:13px;margin-right:20px;">退出项目</div>
+    </div>
+    <div id="DashboardExMember">
+        <div style="overflow:hidden;">
+            <div class="personIncharge">
+                <div class="personPosition">负责人</div>
+                <div class="personInfo">
+                    <div class="imgParent" style="background-image:url({{allUserInfo.PersonInCharge.AvatarPath}});"></div>
+                    <div class="displayName">
+                        <div class="realName" ng-mouseover="loadProfile(allUserInfo.PersonInCharge.UserName)" title="{{showProfile(allUserInfo.PersonInCharge.UserName)}}">{{allUserInfo.PersonInCharge.RealName}}</div>
+                        <div style="overflow:hidden;width:289px;">
+                            <div style="float:left;color:#b7afa5;">读 写 执行</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="creator" style="margin-left:10px;">
+                <div class="personPosition">创建者</div>
+                <div class="personInfo">
+                    <div class="imgParent" style="background-image:url({{allUserInfo.Creator.AvatarPath}});"></div>
+                    <div class="displayName">
+                        <div class="realName" ng-mouseover="loadProfile(allUserInfo.Creator.UserName)" title="{{showProfile(allUserInfo.Creator.UserName)}}">{{allUserInfo.Creator.RealName}}</div>
+                        <div style="overflow:hidden;width:289px;">
+                            <div style="float:left;color:#b7afa5;">读 写 执行</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom:20px;">
+            <div class="addCollaborativePerson">
+                <div>管理员</div>
+                <div class="cnabs_btn_add" ng-click="addAdmin()" ng-show="isChief">增加管理员</div>
+            </div>
+            <ul class="collaborativePersons" ng-cloak>
+                <li class="personInfo" ng-repeat="teamAdmins in allUserInfo.TeamAdmins">
+                    <div class="imgParent" style="background-image:url({{teamAdmins.AvatarPath}});"></div>
+                    <div class="displayName" style="width:155px;">
+                        <div style="overflow:hidden;">
+                            <div class="realName" style="float:left;" ng-mouseover="loadProfile(teamAdmins.UserName)" title="{{showProfile(teamAdmins.UserName)}}">{{teamAdmins.RealName}}</div>
+                            <div class="removeCollaborativePerson" ng-click="RemoveTeamAdmin(teamAdmins.UserName)" ng-show="isChief">移除</div>
+                        </div>
+                        <div style="overflow:hidden;">
+                            <div style="float:left;color:#b7afa5;">
+                                读 写 执行
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="addCollaborativePerson">
+            <div>项目成员</div>
+            <div class="cnabs_btn_add" style="margin-left:10px;" ng-click="editMoreTeamMemberPermission(projectSeriesInfo.selectedItem.Guid)" ng-show="isChief||isAdmin">编辑成员权限</div>
+            <div class="cnabs_btn_add" ng-click="addTeamMember(projectSeriesInfo.selectedItem.Guid)" ng-show="isChief||isAdmin">增加新成员</div>
+        </div>
+        <ul class="collaborativePersons" ng-cloak>
+            <li class="personInfo" style="" ng-repeat="teamMember in allUserInfo.TeamMembers">
+                <div class="imgParent" style="background-image:url({{teamMember.AvatarPath}});"></div>
+                <div class="displayName" style="width:155px;">
+                    <div style="overflow:hidden;">
+                        <div class="realName" style="float:left;" ng-mouseover="loadProfile(teamMember.UserName)" title="{{showProfile(teamMember.UserName)}}">{{teamMember.RealName}}</div>
+                        <div class="removeCollaborativePerson" ng-click="RemoveTeamMember(teamMember.UserName)" ng-show="isChief||isAdmin">移除</div>
+                        <div class="editCollaborativePerson" ng-click="ModifyTeamMembersPermission(teamMember.UserName)" ng-show="isChief||isAdmin">编辑</div>
+                    </div>
+                    <div style="overflow:hidden;">
+                        <div style="float:left;color:#b7afa5;">
+                            {{(teamMember.Permission.Read ? '读 ' : '') + (teamMember.Permission.Write ? '写 ' : '') + (teamMember.Permission.Execute ? '执行 ' : '')}}
+                        </div>
+                        <div style="float:right;cursor:pointer;color:#b7afa5" ng-click="SetAdmin(teamMember.UserName)" ng-show="isChief">设为管理员</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    @Html.Partial("../Module/TeamMemberAdd")
+    @Html.Partial("../Module/TeamMemberPermissionModify")
+</div>
+

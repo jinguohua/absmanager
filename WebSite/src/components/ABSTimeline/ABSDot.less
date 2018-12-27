@@ -1,0 +1,18 @@
+@import '../../styles/theme/default.less';
+
+.abs-dot {
+  border: 1px solid @abs-anchor-point-active-item-bg-color;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .abs-inner-dot {
+    background-color: @abs-anchor-point-active-item-bg-color;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+}

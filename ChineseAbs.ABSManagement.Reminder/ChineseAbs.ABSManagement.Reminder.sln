@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChineseAbs.ABSManagement.Reminder", "ChineseAbs.ABSManagement.Reminder\ChineseAbs.ABSManagement.Reminder.csproj", "{C8AD2D18-766E-4043-8F7C-99452086E425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChineseAbs.ABSManagement.Foundation", "..\ChineseAbs.ABSManagement.Foundation\ChineseAbs.ABSManagement.Foundation.csproj", "{D0D68153-D1E4-4060-8187-763893FE6F0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChineseAbs.ABSManagement.ReminderHost", "ChineseAbs.ABSManagement.ReminderHost\ChineseAbs.ABSManagement.ReminderHost.csproj", "{7EB014A4-7634-46CD-863E-CA324DD54126}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8AD2D18-766E-4043-8F7C-99452086E425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8AD2D18-766E-4043-8F7C-99452086E425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8AD2D18-766E-4043-8F7C-99452086E425}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C8AD2D18-766E-4043-8F7C-99452086E425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8AD2D18-766E-4043-8F7C-99452086E425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8AD2D18-766E-4043-8F7C-99452086E425}.Release|x86.ActiveCfg = Release|Any CPU
+		{D0D68153-D1E4-4060-8187-763893FE6F0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D68153-D1E4-4060-8187-763893FE6F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D68153-D1E4-4060-8187-763893FE6F0E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0D68153-D1E4-4060-8187-763893FE6F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D68153-D1E4-4060-8187-763893FE6F0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0D68153-D1E4-4060-8187-763893FE6F0E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7EB014A4-7634-46CD-863E-CA324DD54126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB014A4-7634-46CD-863E-CA324DD54126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB014A4-7634-46CD-863E-CA324DD54126}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7EB014A4-7634-46CD-863E-CA324DD54126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB014A4-7634-46CD-863E-CA324DD54126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EB014A4-7634-46CD-863E-CA324DD54126}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

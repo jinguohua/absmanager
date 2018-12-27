@@ -1,0 +1,3976 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.EditTaskViewModel
+@using ChineseAbs.ABSManagementSite.Common
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/angular")
+@section styles{
+    
+    <link rel="stylesheet" type="text/css" href="~/Content/pagewalkthrough/jquery.pagewalkthrough.css">
+    <link rel="stylesheet" href="~/Content/glDatePicker.default.css" type="text/css" />
+    @Styles.Render("~/Content/cnabsDatepick")
+    @Scripts.Render("~/bundles/cnabsDatepick")
+    <style type="text/css">
+        input[type="text"], textarea{
+            min-width:52px;
+        }
+        .am_TaskName {
+            float: left;
+            width: 110px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-left: 5px;
+        }
+
+        .am_operation span:nth-of-type(4n+4) {
+            width: 155px;
+        }
+
+        .am_operation span:nth-of-type(8n+1) {
+            background: #3b3831;
+        }
+
+        .am_operation span:nth-of-type(8n+2) {
+            background: #3b3831;
+        }
+
+        .am_operation span:nth-of-type(8n+3) {
+            background: #3b3831;
+        }
+
+        .am_operation span:nth-of-type(8n+4) {
+            background: #3b3831;
+        }
+
+        .oneTaskInfor {
+            overflow: hidden;
+        }
+
+            .oneTaskInfor span {
+                float: left;
+                margin-left: 5px;
+            }
+
+                .oneTaskInfor span:nth-of-type(2) {
+                    width: 90px;
+                }
+
+                .oneTaskInfor span:nth-of-type(1) {
+                    min-width: 30px;
+                    text-align: center;
+                    margin-left: 0px;
+                }
+        .screeningTitle {
+            font-size: 17px;
+            height: 45px;
+            line-height: 45px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .filter {
+            margin-top: 18px;
+            margin-bottom: 18px;
+            margin-left: 10px;
+        }
+
+        .filterTitle {
+            color: #B7AFA5;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .filter select {
+            width: 214px;
+            margin-left: 10px;
+            height: 20px;
+        }
+
+        .filter .date {
+            width: 89px;
+            min-width: 89px !important;
+            margin-left: 10px;
+            height: 18px;
+        }
+
+        .iconColorYellow {
+            color: #ffc446;
+        }
+
+        .iconPosition {
+            margin-left: 10px;
+            margin-bottom: 1px;
+        }
+
+        .divOperations {
+            position: relative;
+        }
+
+        .EditTask_edit {
+            position: relative;
+        }
+
+        .EditTask_editOperations {
+            position: absolute;
+            z-index: 10;
+            border: 1px solid grey;
+            background: #47423C;
+            padding: 4px 2px;
+        }
+
+        .project-operations {
+            position: absolute;
+            white-space: nowrap;
+            z-index: 10;
+            border: 1px solid grey;
+            background: #47423C;
+            padding: 4px 2px;
+        }
+
+        .ImageSize {
+            width: 15px;
+            height: 15px;
+            font-size: 15px;
+        }
+
+        .toolbar th:nth-of-type(1), .EditTask_taskTableTr td:nth-of-type(1) {
+            width: 45px;
+            min-width: 45px;
+            max-width: 45px;
+        }
+
+        .toolbar th:nth-of-type(2), .EditTask_taskTableTr td:nth-of-type(2) {
+            width: 250px;
+            min-width: 250px;
+            max-width: 250px;
+        }
+
+        .toolbar th:nth-of-type(3), .EditTask_taskTableTr td:nth-of-type(3) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+
+        .toolbar th:nth-of-type(4), .EditTask_taskTableTr td:nth-of-type(4) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .toolbar th:nth-of-type(5), .EditTask_taskTableTr td:nth-of-type(5) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .toolbar th:nth-of-type(6), .EditTask_taskTableTr td:nth-of-type(6) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+
+        .toolbar th:nth-of-type(7), .EditTask_taskTableTr td:nth-of-type(7) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+
+        .toolbar th:nth-of-type(8), .EditTask_taskTableTr td:nth-of-type(8) {
+            width: 70px;
+            min-width: 70px;
+            max-width: 70px;
+        }
+
+        .selected td:nth-of-type(2), .selected td:nth-of-type(8) {
+            color: #ffc446;
+            cursor: pointer;
+        }
+
+        .toolbar_dialog th:nth-of-type(1), .errorTaskListView td:nth-of-type(1) {
+            width: 40px;
+            min-width: 40px;
+            max-width: 40px;
+        }
+
+        .toolbar_dialog th:nth-of-type(2), .errorTaskListView td:nth-of-type(2) {
+            width: 300px;
+            min-width: 300px;
+            max-width: 300px;
+        }
+
+        .toolbar_dialog th:nth-of-type(3), .errorTaskListView td:nth-of-type(3) {
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+
+        .toolbar_dialog th:nth-of-type(4), .errorTaskListView td:nth-of-type(4) {
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+
+        .toolbar_dialog th:nth-of-type(5), .errorTaskListView td:nth-of-type(5) {
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+
+        .toolbar_dialog th:nth-of-type(6), .errorTaskListView td:nth-of-type(6) {
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+
+        .toolbar_dialog th:nth-of-type(7), .errorTaskListView td:nth-of-type(7) {
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+
+        .toolbar_dialog th:nth-of-type(8), .errorTaskListView td:nth-of-type(8) {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        .toolbar_dialog th:nth-of-type(9), .errorTaskListView td:nth-of-type(9) {
+            width: 40px;
+            min-width: 40px;
+            max-width: 40px;
+        }
+
+        .toolbar_CheckList_dialog th:nth-of-type(1), .checkListView td:nth-of-type(1) {
+            width: 40px;
+            min-width: 40px;
+            max-width: 40px;
+        }
+
+        .toolbar_CheckList_dialog th:nth-of-type(2), .checkListView td:nth-of-type(2) {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        .toolbar_CheckList_dialog th:nth-of-type(3), .checkListView td:nth-of-type(3) {
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
+        }
+
+        .toolbar_CheckList_dialog th:nth-of-type(4), .checkListView td:nth-of-type(3) {
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+        }
+        .toolbar_document_dialog th:nth-of-type(1), .documentListView td:nth-of-type(1) {
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
+        }
+
+        .toolbar_document_dialog th:nth-of-type(2), .documentListView td:nth-of-type(2) {
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+        }
+
+        .toolbar_document_dialog th:nth-of-type(3), .documentListView td:nth-of-type(3) {
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+        .editDocumentBtn {
+            cursor:pointer;
+        }
+        .deleteDocumentBtn{
+            margin-left:10px;cursor:pointer;
+        }
+	
+        .createTaskLink {
+            float: right;
+            font-size: 14px;
+            color: #ffc446;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .createTaskLink img {
+            float: right;
+            margin-right: 6px;
+            margin-top: 8px;
+        }
+
+        .lineElementHasForm .elementInput{
+            width:342px;height:26px;border:none;border-radius:3px;float:left;padding-left:4px;padding-right:4px;
+        }
+        .lineElementHasForm .elementSelect{
+            width:350px;height:28px;border:none;border-radius:3px;float:left;
+        }
+        .lineElementHasForm .elementTextarea{
+            height:48px;padding:6px 4px 6px 4px;width:342px;border:none;border-radius:3px;float:left;
+        }
+        .lineElement{
+            padding:16px 0px 20px 0px;
+            line-height:34px;
+            overflow:hidden;
+            border-bottom:1px solid #534d46;
+        }
+        .lineElementHasForm{
+            padding:20px 0px 20px 0px;
+            line-height:28px;
+            overflow:hidden;
+            border-bottom:1px solid #534d46;
+        }
+        .lineElement .elementTitle,.lineElementHasForm .elementTitle{
+            float:left;
+            margin-right:20px;
+        }
+        .lineElementHasForm .elementTitle{
+            height:28px;
+        }
+        .lineElement .cnabs_btn{
+            margin-top:4px;
+        }
+        .lineElement .elementContent{
+            float:left;width:350px;word-wrap: break-word;
+        }
+        .divCreateTaskBtn{
+           overflow:hidden;margin-bottom:10px;
+        }
+        .divCreateTaskBtn .cnabs_btn_purple{
+            margin-left:73px;
+        }
+        .errorMsg{
+            float:left;
+            margin-left:16px;
+            overflow:hidden;
+        }
+        .errorMsg span:nth-of-type(1){
+            width:12px;
+            height:27px;
+            margin-top:1px;
+        }
+        .deletePreTask,.deleteRule{
+            width:57px;cursor:pointer;
+        }
+        table.infoTable td:last-child{
+            padding-right:2px;
+        }
+        table.infoTable .preTask,table.infoTable .rule{
+            width:263px;
+            word-wrap:break-word;
+            padding-right:10px;
+        }
+        .lineElementInDialog{
+            margin-top:10px;
+            overflow:hidden;
+            line-height:28px;
+        }
+        .lineElementInDialog .lineElementTitleInDialog{
+            width:56px;
+            float:left;
+            text-align:right;
+            height:28px;
+        }
+        .lineElementInDialog .lineElementSelectInDialog{
+            margin-left:20px;
+            float:left;
+            width:203px;
+            height:28px;
+            border:none;border-radius:3px;
+        }
+        .lineElementInDialog .lineElementInputInDialog{
+            margin-left:20px;
+            float:left;
+            width:195px;
+            height:26px;
+            padding-left:4px;padding-right:4px;
+            border:none;border-radius:3px;
+        }
+        .lineElementInDialog .lineElementTextareaInDialog{
+            margin-left:20px;
+            float:left;
+            width:195px;
+            height:134px;
+            padding:6px 4px 6px 4px;
+            border:none;border-radius:3px;
+            resize:none;
+        }
+        .divRules{
+            border-top:1px solid #534d46;
+            padding-top:10px;
+            margin-top:20px;
+        }
+        .formElement{
+            min-width:60px!important;
+            width:60px!important;
+        }
+        .variable{
+            border-bottom:1px solid #fff;
+        }
+        .divCheckTime{
+             width:500px;
+             height:395px;
+             overflow-x:auto;
+        }
+        .divDateTip{
+            position:relative;
+            cursor:pointer;
+            display:inline-block;
+        }
+        .DateTip{
+            position:absolute;
+            display:none;
+            border:1px solid #666;
+            background: #47423C;
+            width:160px;
+            z-index:1000;
+            color:#B7AFA5;
+            padding:3px 10px;
+        }
+        .addPreTaskDialog{
+            margin-top:20px;
+            margin-left:28px;
+            height:67px;
+        }
+        .availablePreviousTaskSelect{
+            float: left;
+            width: 203px;
+            height: 28px;
+            border: none;
+            border-radius: 3px;
+        }
+    </style>
+}
+@section scripts{
+
+    @*<script type="text/javascript" src="~/Scripts/cnabsUtils/cnabsUtils.ui.js"></script>*@
+
+    <script>
+        var taskListView = document.getElementById("TaskListView");
+        var amoperation = document.getElementById("am_operation");
+        var errorTaskListView = document.getElementById("errorTaskListView");
+        var checkListTableView = document.getElementById("checkListView");
+        var documentListTableView = document.getElementById("documentListView");
+        var isExpanding = false;
+        var currentShortCodes = [];
+
+        var autoDivModifyTime = new CnabsAutoDiv("divModifyTime");
+        var autoDivModifyCheckList = new CnabsAutoDiv("divAddCheckItem");
+
+
+        //创建工作
+        $(document).ready(function () {
+            BindingElementActive(4, 2, 0);
+
+            $("#btnCreateTask").click(function () {
+                CreateTask();
+            });
+
+            $("#txtCreateTask").click(function () {
+                CreateTask();
+            });
+
+            $("#btnRemoveAllTasks").click(function () {
+                cnabsAjaxSync('清空产品任务', '/DesignProduct/GetTasksCount', { projectGuid: "@Model.Project.Guid" }, function (taskCount) {
+                    var message = "将删除[" + "@Model.Project.ProjectName" + "]产品下的" + taskCount + "个工作，是否继续？";
+                    cnabsAutoDlgYesNo(null, '清空产品任务', function () {
+                        cnabsAjax('清空产品任务', '/DesignProduct/RemoveAllTasks', { projectGuid: "@Model.Project.Guid" }, function (resultCount) {
+                            cnabsMsgSuccess('清空产品任务成功，共删除了：' + resultCount + '条工作', true);
+                        });
+                    }, message);
+                });
+            })
+
+            $("#btnGenerateTasks").click(function () {
+                cnabsAjaxSync('获取模板列表', '/DesignProduct/GetTemplates', {}, function (templates) {
+                    if (templates.length == 0) {
+                        alert("模板列表为空");
+                        return;
+                    }
+
+                    var optionArray = new Array();
+                    for (var i = 0; i < templates.length; ++i) {
+                        optionArray[i] = new Array();
+                        optionArray[i][0] = templates[i].TemplateGuid;
+                        optionArray[i][1] = templates[i].TemplateName;
+                    }
+
+                    var uiParams = [
+                        {
+                            title: "选择模板",
+                            type: "select",
+                            elementId: "template",
+                            value: templates[0].TemplateGuid,
+                            OptionArray: optionArray
+                        }
+                    ]
+
+                    cnabsAutoDlgYesNo(uiParams, '选择模板', function (uiValue) {
+                        var templateGuid = uiValue.template;
+                        var projectGuid = "@Model.Project.Guid";
+                        cnabsAjaxSync('生成任务', '/DesignProduct/GetGenerateTasksCount', { projectGuid: projectGuid, templateGuid: templateGuid }, function (data) {
+                            var message = "产品：" + "@Model.Project.ProjectName" + "中，已有" + data.taskCount + "条任务，本次将生成" + data.generateTaskCount + "条任务。确定生成任务吗？";
+                            cnabsAutoDlgYesNo(null, '生成任务', function () {
+                                cnabsAjax('生成任务', '/DesignProduct/GenerateTasks', { projectGuid: projectGuid, templateGuid: templateGuid }, function (resultCount) {
+                                    cnabsMsgSuccess('生成任务成功，共生成：' + resultCount + '条工作', true);
+                                });
+                            }, message);
+                        });
+                    });
+                });
+            })
+            $("#btnRemoveSelectedTasks").click(function () {
+                var shortCodeArray = GetSelectedShortCodes();
+                var shortCodeString = shortCodeArray.join(",");
+                if (shortCodeArray.length == 0) {
+                    cnabsAlert("必须选择一个工作！");
+                    return;
+                }
+
+                var message = "将删除[" + "@Model.Project.ProjectName" + "]产品下的" + shortCodeArray.length + "个工作，是否继续？";
+                cnabsAutoDlgYesNo(null, '删除产品工作', function () {
+                    cnabsAjax('删除产品工作', '/DesignProduct/RemoveSelectedTasks', { projectGuid: "@Model.Project.Guid", ShortCodeToString: shortCodeString }, function (resultCount) {
+                        cnabsMsgSuccess('删除产品工作成功，共删除了：' + resultCount + '条工作', true);
+                    });
+                }, message);
+            })
+
+            $("#btnFinishTasks").click(function () {
+                var shortCodeArray = GetSelectedShortCodes();
+                var shortCodeString = shortCodeArray.join(",");
+                if (shortCodeArray.length == 0) {
+                    cnabsAlert("必须选择一个工作！");
+                    return;
+                }
+
+                var message = "将对[" + "@Model.Project.ProjectName" + "]产品下的" + shortCodeArray.length
+                    + "个工作中的简单工作（没有扩展工作，且前置工作不包含扩展工作）进行 [开始工作]、[完成工作] 操作，是否继续？";
+                cnabsAutoDlgYesNo(null, '快速完成工作', function () {
+                    var params = { projectGuid: "@Model.Project.Guid", ShortCodeToString: shortCodeString };
+                    cnabsAjax('快速完成工作', '/DesignProduct/FinishSelectedTasks', params, function (resultCount) {
+                        cnabsMsgSuccess('快速完成工作成功，共完成了：' + resultCount + '条工作');
+                    });
+                }, message);
+            });
+
+            $("#btnSetTasksPeriod").click(function () {
+                var shortCodeArray = GetSelectedShortCodes();
+                var shortCodeString = shortCodeArray.join(",");
+                if (shortCodeArray.length == 0) {
+                    cnabsAlert("必须选择一个工作！");
+                    return;
+                }
+                var paymentDates = [];
+                var message = "您将对当前所选择的" + shortCodeArray.length + "个工作进行修改。";
+                cnabsAjax('获取偿付期列表', '/Schedule/GetPaymentDays', { projectGuid: "@Model.Project.Guid" }, function (data) {
+                    if (data.paymentDays.length) {
+                        $.each(data.paymentDays, function (index, item) {
+                            var value = "第 " + item.Sequence + " 期 " + item.PaymentDay;
+                            paymentDates.push([item.PaymentDay, value]);
+                        })
+                        
+                        var controlsPaymentDate = [
+                            {
+                                title: "偿付期",
+                                type: "select",
+                                elementId: "paymentDate",
+                                OptionArray: paymentDates
+                            }
+                        ];
+
+                        cnabsAutoDlgYesNo(controlsPaymentDate, '设置偿付期', function (uiValue) {
+                            var params = {
+                                shortCodeToString: shortCodeString,
+                                paymentDateStr: uiValue.paymentDate
+                            };
+                            cnabsAjax('设置偿付期', '/DesignProduct/SetTaskPaymentPeriod', params, function (resultCount) {
+                                cnabsMsgSuccess('偿付期设置成功');
+                            });
+                        }, message);
+                    }
+                });
+
+            });
+
+            UpdateTaskViewEvents();
+        });
+
+        function CreateTask() {
+            $("#FormatToolTip").css("display", "none");
+            cnabsDlgYesNo('divCreateTask', '创建工作', function () {
+            }, 230, 350);
+        }
+
+        //确定要修改工作扩展类型的工作信息
+        function GetTaskNameIdDeadlineState(shortCode) {
+            var data = {
+                ProductName: "",
+                TaskList: []
+            };
+            shortCode = shortCode.join(",");
+            var msg = "";
+            cnabsAjaxSync('获取产品名称', '/DesignProduct/GetProductNameByShortCode', { shortCode: shortCode }, function (productName) {
+                data.ProductName = productName;
+                cnabsAjaxSync('获取工作信息', '/DesignProduct/GetTasksInfo', { shortCode: shortCode }, function (taskList) {
+                    data.TaskList = taskList;
+                    $("#am_taskCount").html(data.TaskList.length + "个");
+                    $("#am_productName").html("[" + data.ProductName + "]");
+
+                    for (var i = 0; i < data.TaskList.length; i++) {
+                        var index = i + 1;
+                        var str = "<div class='oneTaskInfor'><span>[index]</span><a class='am_TaskName' style='color:#ffc446;' target='_blank' href='../../Task?shortCode=[ShortCode]'>[TaskName]</a><a class='am_TaskName' target='_blank' style='color:#ffc446;width:70px;' href='../../Task?shortCode=[ShortCode]'>[ShortCode]</a><span style='margin-left:5px;'>[EndTime]</span><span class='am_status' style='margin-left:5px; color:[color];'>[TaskStatus]</span></div>";
+                        str = str.replace("[index]", index);
+                        str = str.replace('[TaskName]', data.TaskList[i].TaskName);
+                        str = str.replace(/\[ShortCode\]/g, data.TaskList[i].ShortCode);
+                        str = str.replace('[EndTime]', data.TaskList[i].EndTime);
+                        str = str.replace('[TaskStatus]', data.TaskList[i].Status);
+                        var color = cnabsGetColorByTaskStatus(data.TaskList[i].Status);
+                        str = str.replace('[color]', color);
+                        msg += str;
+                    };
+                });
+            });
+            return msg;
+        }
+
+        function rendertime(date) {
+            var da = new Date(parseInt(date.replace("/Date(", "").replace(")/", "").split("+")[0]));
+            return da.getFullYear() + "-" + (da.getMonth() + 1) +
+                "-" + da.getDate() + " " + da.getHours() + ":" + da.getMinutes() + ":" +
+                ((da.getSeconds("ss")) > 9 ? (da.getSeconds("ss")) : "0" + (da.getSeconds("ss")));
+        }
+
+        //修改工作文档dialog中移除单个文档事件
+        function deleteDocument(name) {
+            $("#removeMessage")[0].innerHTML = "确认删除文档[" + name + "]?";
+            cnabsDlgYesNo('divRemove', '删除文档', function () {
+                cnabsAjax("删除文档", "/DesignProduct/DeleteExtensionDocument", { shortCode: currentShortCodes.join(','), documentName: name }, function (data) {
+                    setTimeout(ModifyDocInnerHTML(currentShortCodes), 3000);
+                })
+            },200,'auto')
+        }
+    //修改工作文档dialog中,编辑单个文档事件
+        function editDocument(name, fileType, isAutoGenerate, documentType, namingRule, patternType, isAutoConfig) {
+            var documentName = name;
+            var postfixName = null;
+            if (isAutoConfig) {
+                var index = -1;
+                switch (patternType) {
+                    case 'IncomeDistributionReport':
+                        index = name.lastIndexOf('收益分配报告');
+                        break;
+                    case 'SpecialPlanTransferInstruction':
+                        index = name.lastIndexOf('划款指令');
+                        break;
+                    case 'CashInterestRateConfirmForm':
+                        index = name.lastIndexOf('兑付兑息确认表');
+                        break;
+                    case 'InterestPaymentPlanApplication':
+                        index = name.lastIndexOf('付息方案');
+                        break;
+                    default:
+                }
+                if (index != -1) {
+                    documentName = name.substring(0, index);
+                    postfixName = name.substring(index);
+                }
+            }
+
+        var controlsEditTaskExDocument = [
+        {
+            title: "文档名称",
+            type: "text",
+            elementId: "documentName",
+            value: documentName,
+            placeHolder: "例如: 收益分配报告",
+            limit: {
+                type: "custom",
+                callback: DefineValidate
+            }
+        },
+        {
+            title: "文件类型",
+            type: "select",
+            elementId: "fileType",
+            value: fileType,
+            OptionArray: [["Word", "Word"], ["Excel", "Excel"], ["PDF", "PDF"],
+                ["Others", "其它"]]
+        },
+        {
+            title: "文档类型",
+            type: "select",
+            elementId: "documentType",
+            value: documentType,
+            OptionArray: [["IssuerFile", "发行文件"], ["RegularReport", "定期报告"],
+                ["Certificate", "凭证单据"], ["GradeReport", "评级报告"], ["Others", "其它文档"]]
+        },
+        {
+            title: "系统生成",
+            type: "checkbox",
+            elementId: "checkboxAutoGenerate",
+            value: isAutoGenerate
+        },
+        {
+            title: "文档模板",
+            type: "select",
+            elementId: "patternType",
+            value: patternType,
+            OptionArray: [["None", "无"], ["IncomeDistributionReport", "收益分配报告"],
+                ["SpecialPlanTransferInstruction", "专项计划划款指令"],
+                ["CashInterestRateConfirmForm", "兑付兑息确认表"],
+                ["InterestPaymentPlanApplication", "付息方案申请"]],
+            limit: {
+                type: "custom",
+                callback: CheckDocumentPatternType
+            }
+        },
+        {
+            title: "命名方式",
+            type: "select",
+            elementId: "namingRule",
+            value: namingRule,
+            OptionArray: [["ByShortCode", "使用ShortCode后缀"], ["ByDatasetDuration", "使用偿付区间后缀"]]
+        }
+        ]
+        var message = "您将对当前所选择的" + currentShortCodes.length + "个工作进行修改。";
+        cnabsAutoDlgYesNo(controlsEditTaskExDocument, '修改文档', function (uiValue) {
+            var TaskNameIdDeadlineState = GetTaskNameIdDeadlineState(currentShortCodes);
+            $("#TaskNameIdDeallineState").html(TaskNameIdDeadlineState);
+            cnabsDlgYesNo('divTaskNameIdDeallineState', '修改扩展工作文档', function () {
+                var params = {
+                    shortCode: currentShortCodes.join(","),
+                    documentName: postfixName == null ? uiValue.documentName : uiValue.documentName + postfixName,
+                    fileType: uiValue.fileType,
+                    documentType: uiValue.documentType,
+                    autoGenerate: uiValue.checkboxAutoGenerate,
+                    patternType: uiValue.patternType,
+                    namingRule: uiValue.namingRule,
+                    oldDocumentName: name,
+                    isAutoConfig: isAutoConfig,
+                    prefixName: uiValue.documentName
+                };
+                cnabsAjaxSync("修改文档", "/DesignProduct/ModifyExtensionDocument", params, function () {
+                    cnabsMsgSuccess('扩展文档修改成功');
+                })
+                setTimeout(ModifyDocInnerHTML(currentShortCodes), 3000);
+            });
+        })
+    }
+        //修改工作文档dialog中增加文档事件
+        function btnAddTaskExtensionDocument() {
+            var message = "您将对当前所选择的" + currentShortCodes.length + "个工作进行修改。";
+            cnabsAutoDlgYesNo(controlsAddTaskExDocument, '增加扩展工作文档', function (uiValue) {
+                var TaskNameIdDeadlineState = GetTaskNameIdDeadlineState(currentShortCodes);
+                $("#TaskNameIdDeallineState").html(TaskNameIdDeadlineState);
+                cnabsDlgYesNo('divTaskNameIdDeallineState', '增加扩展工作文档', function () {
+                    var params = {
+                        shortCode: currentShortCodes.join(","),
+                        documentName: uiValue.documentName,
+                        fileType: uiValue.fileType,
+                        documentType: uiValue.documentType,
+                        autoGenerate: uiValue.checkboxAutoGenerate,
+                        patternType: uiValue.patternType,
+                        namingRule: uiValue.namingRule,
+                        autoConfig: uiValue.checkboxAutoConfig
+                    };
+                    cnabsAjaxSync('增加扩展工作文档', '/DesignProduct/AddTaskExtensionDocument', params, function () {
+                        cnabsMsgSuccess('扩展文档增加成功');
+                    });
+
+                    setTimeout(ModifyDocInnerHTML(currentShortCodes), 3000);
+                });
+            }, message, {
+                onInitialized: function () {
+                    var autoConfigCheckbox = document.getElementById("checkboxAutoConfig");
+                    $('#patternType').change(function () {
+                        var currDocType = $('#patternType')[0].value;
+                        if (currDocType != "None") {
+                            autoConfigCheckbox.disabled = false;
+                            $('#checkboxAutoConfig').prop("checked", true);
+                        } else {
+                            autoConfigCheckbox.disabled = true;
+                            $('#checkboxAutoConfig').prop("checked", false);
+                        }
+                    })
+                }
+            });
+        }
+        var controlsAddTaskExDocument = [
+            {
+                title: "文档名称",
+                type: "text",
+                elementId: "documentName",
+                value: "",
+                placeHolder: "例如: 收益分配报告",
+                limit: {
+                    type: "custom",
+                    callback: DefineValidate
+                }
+            },
+            {
+                title: "文件类型",
+                type: "select",
+                elementId: "fileType",
+                value: "Forward",
+                OptionArray: [["Word", "Word"], ["Excel", "Excel"], ["PDF", "PDF"],
+                    ["Others", "其它"]]
+            },
+            {
+                title: "文档类型",
+                type: "select",
+                elementId: "documentType",
+                value: "IssuerFile",
+                OptionArray: [["IssuerFile", "发行文件"], ["RegularReport", "定期报告"],
+                ["Certificate", "凭证单据"], ["GradeReport", "评级报告"], ["TradeFile", "交易文件"], ["Others", "其它文档"]]
+            },
+            {
+                title: "系统生成",
+                type: "checkbox",
+                elementId: "checkboxAutoGenerate",
+                value: false
+            },
+            {
+                title: "文档模板",
+                type: "select",
+                elementId: "patternType",
+                value: "None",
+                OptionArray: [["None", "无"], ["IncomeDistributionReport", "收益分配报告"],
+                    ["SpecialPlanTransferInstruction", "专项计划划款指令"],
+                    ["CashInterestRateConfirmForm", "兑付兑息确认表"],
+                    ["InterestPaymentPlanApplication", "付息方案申请"]],
+                limit: {
+                    type: "custom",
+                    callback: CheckDocumentPatternType
+                }
+            },
+            {
+                title: "自动配置",
+                type: "checkbox",
+                elementId: "checkboxAutoConfig",
+                disabled:true,
+                value: false
+            },
+            {
+                title: "命名方式",
+                type: "select",
+                elementId: "namingRule",
+                value: "ByShortCode",
+                OptionArray: [["ByShortCode", "使用ShortCode后缀"], ["ByDatasetDuration", "使用偿付区间后缀"]]
+            }
+        ]
+
+        function CheckDocumentPatternType(value, title) {
+            var jsonResult = {
+                verdict: false,
+                msg: ""
+            }
+
+            if ($("#checkboxAutoGenerate").is(':checked')) {
+                if (value == "None") {
+                    jsonResult.msg = "勾选自动生成后，必须选择一个" + title + "！";
+                    return jsonResult;
+                }
+            }
+
+            jsonResult.verdict = true;
+            return jsonResult;
+        }
+
+        //对文档名称的验证 字符串长度和特殊字符的判断
+        function DefineValidate(value, title) {
+            var jsonResult = {
+                verdict: false,
+                msg: ""
+            }
+            value = value.replace(/(^[\s\n\t]+|[\s\n\t]+$)/g, "");
+            if (value.length == 0) {
+                jsonResult.msg = title + "不能为空。";
+                return jsonResult;
+            }
+            if (title == "Check Item") {
+                if (value.length >= 500) {
+                    jsonResult.msg = title + "的长度不能超过500个字符。";
+                    return jsonResult;
+                }
+            }
+            else if (value.length >= 100) {
+                jsonResult.msg = title + "的长度不能超过100个字符。";
+                return jsonResult;
+            }
+            var invalidCharList = "/\\:*?\"<>|";
+            for (var i = 0; i < value.length; i++) {
+                if (invalidCharList.indexOf(value[i]) >= 0) {
+                    jsonResult.msg = title + "不能包含特殊字符/\\:*?\"<>|";
+                    return jsonResult;
+                }
+            }
+            jsonResult.verdict = true;
+            return jsonResult;
+        }
+
+        //修改工作文档dialog中移除所有文档事件
+        function btnRemoveTaskExtensionDocuments() {
+            var TaskNameIdDeadlineState = GetTaskNameIdDeadlineState(currentShortCodes);
+            $("#TaskNameIdDeallineState").html(TaskNameIdDeadlineState);
+            cnabsDlgYesNo('divTaskNameIdDeallineState', '移除所有扩展工作文档', function () {
+                cnabsAjaxSync('移除所有扩展工作文档', '/DesignProduct/RemoveAllTaskExtensionDocuments', { shortCode: currentShortCodes.join(',') }, function () {
+                    cnabsMsgSuccess('扩展工作文档移除成功');
+                })
+                setTimeout(ModifyDocInnerHTML(currentShortCodes), 3000);
+            })
+        }
+
+        //修改开始时间&修改结束时间
+        function ModifyTimeCommon(title, modifyByAppointed, modifyByCondition) {
+            var checkboxId = GetSelectedShortCodes();
+            if (checkboxId != "") {
+                var btnValue = $("#btnChangeTimeView")[0].value;
+
+                var taskNameList = [];
+                var selectTaskNames = [];
+                $(".EditTask_taskTableTr").each(function (i) {
+                    taskNameList.push($(this)[0].children[1].innerHTML);
+                    if ($(this).is(".selected")) {
+                        selectTaskNames.push($(this)[0].children[1].innerHTML);
+                    }
+                })
+                var selectTaskDistinct = cnabsGetUnique(selectTaskNames);
+
+                var controls = [{
+                    title: "基准工作",
+                    type: "select",
+                    elementId: "selectText",
+                    value: "",
+                    OptionArray: cnabsGetUnique(taskNameList)
+                }];
+
+                for (var i = 0; i < modifyTimeByCondition.length; i++) {
+                    controls.push(modifyTimeByCondition[i]);
+                }
+                if (selectTaskDistinct.length != 1) {
+                    $("#modifyTimeByStandardOption").css("display", "none");
+                    //当前选择中，工作名称必须全部相同时，才可以进行批量修改。
+                } else {
+                    $("#modifyTimeByStandardOption").css("display", "block");
+                }
+                btnModifyType(btnValue, controls);
+                $("#ModifyNumber")[0].innerHTML = "您将对当前所选择的" + checkboxId.length + "个工作进行修改。";
+                cnabsDlgYesNo('ModifyStartEndTime', title, function () {
+                    if ($("#btnChangeTimeView")[0].value == "modifyTimeByAppointed") {
+                        if (!autoDivModifyTime.validate(modifyTimeByAppointed, true)) {
+                            return false;
+                        }
+                        cnabsAjaxSync(title, '/DesignProduct/' + modifyByAppointed, {
+                            shortCode: checkboxId.join(','),
+                            appointedDay: autoDivModifyTime.getUIValue().timeInput
+                        }, function () {
+                            cnabsMsgSuccess(title + '成功');
+                        })
+                    } else if ($("#btnChangeTimeView")[0].value == "modifyTimeByCondition") {
+                        if (!autoDivModifyTime.validate(modifyTimeByCondition, true)) {
+                            return false;
+                        }
+                        var dialogValue = autoDivModifyTime.getUIValue();
+                        var timeSpan = dialogValue.timeSpan;
+                        if (dialogValue.searchDirection == "Forward") {
+                            timeSpan = -timeSpan;
+                        }
+                        cnabsAjaxSync(title, '/DesignProduct/' + modifyByCondition, {
+                            shortCode: checkboxId.join(','),
+                            intervalTime: timeSpan,
+                            timeType: dialogValue.timeType
+                        }, function () {
+                            cnabsMsgSuccess(title + '成功');
+                        })
+                    } else {
+                        if (!autoDivModifyTime.validate(controls, true)) {
+                            return false;
+                        }
+                        var dialogValue = autoDivModifyTime.getUIValue();
+                        var timeSpan = dialogValue.timeSpan;
+                        if (dialogValue.searchDirection == "Forward") {
+                            timeSpan = -timeSpan;
+                        }
+                        if (title == "修改开始时间") {
+                            var controllerFunction = 'ModifyTaskBeginTimeByStandard';
+                        } else {
+                            var controllerFunction = 'ModifyTaskEndTimeByStandard';
+                        }
+                        cnabsAjaxSync(title, '/DesignProduct/' + controllerFunction, {
+                            shortCode: checkboxId.join(','),
+                            standardTaskName: dialogValue.selectText,
+                            intervalTime: timeSpan,
+                            timeType: dialogValue.timeType,
+                        }, function (value) {
+                            cnabsMsgSuccess(title + '成功');
+                        })
+                    }
+
+                    UpdateTaskView();
+                })
+            } else {
+            cnabsAlert("必须选择一个工作");
+            }
+        }
+
+        $("#btnChangeTimeView").change(function () {
+            var btnValue = $("#btnChangeTimeView")[0].value;
+            var taskNameList = [];
+            $(".EditTask_taskTableTr").each(function (i) {
+                taskNameList.push($(this)[0].children[1].innerHTML);
+            })
+
+            var controls = [{
+                title: "基准工作",
+                type: "select",
+                elementId: "selectText",
+                value: "",
+                OptionArray: cnabsGetUnique(taskNameList)
+            }];
+
+            for (var i = 0; i < modifyTimeByCondition.length; i++) {
+                controls.push(modifyTimeByCondition[i]);
+            }
+            btnModifyType(btnValue, controls);
+        })
+
+        function btnModifyType(btnValue, divModifyTimeInput) {
+            $("#divModifyTime").empty();
+            if (btnValue == "modifyTimeByAppointed") {
+                autoDivModifyTime.init(modifyTimeByAppointed);
+            }
+            if (btnValue == "modifyTimeByCondition") {
+                autoDivModifyTime.init(modifyTimeByCondition);
+            }
+            if (btnValue == "modifyTimeByStandard") {
+                autoDivModifyTime.init(divModifyTimeInput);
+            }
+        }
+
+        var controlsAddTaskExCheckListOldGroup = [
+        {
+            title: "分组名称",
+            type: "select",
+            elementId: "oldGroupName",
+            value: "",
+            OptionArray: null
+        },
+        {
+            title: "工作要点",
+            type: "textarea",
+            elementId: "oldCheckItemName",
+            value: "",
+            limit: {
+                type: "custom",
+                callback: DefineValidate
+            }
+        }];
+
+        var controlsAddTaskExCheckListNewGroup = [
+        {
+            title: "分组名称",
+            type: "text",
+            elementId: "newGroupName",
+            value: "",
+            limit: {
+                type: "custom",
+                callback: DefineValidate
+            }
+        },
+        {
+            title: "工作要点",
+            type: "textarea",
+            elementId: "newCheckItemName",
+            value: "",
+            limit: {
+                type: "custom",
+                callback: DefineValidate
+            }
+        }];
+
+        var modifyTimeByCondition = [
+        {
+            title: "修改方向",
+            type: "select",
+            elementId: "searchDirection",
+            value: "Forward",
+            OptionArray: [["Forward", "向前"], ["Backward", "向后"], ]
+        },
+        {
+            title: "时间间隔",
+            type: "text",
+            elementId: "timeSpan",
+            value: "",
+            placeHolder: "任意正整数",
+            limit: {
+                type: "number",
+                isDigit: true,//判断是否为整数;
+                max: 365,
+                min: 1
+            }
+        },
+        {
+            title: "时间单位",
+            type: "select",
+            elementId: "timeType",
+            value: "NaturalDay",
+            OptionArray: [["NaturalDay", "自然日"], ["WorkingDay", "工作日"], ["TradingDay", "交易日"]]
+        }
+        ];
+
+        var modifyTimeByAppointed = [
+            {
+                title: "",
+                type: "date",
+                elementId: "timeInput",
+                value: "",
+                placeHolder: "例如：2016-02-02",
+                limit: {
+                    "type": "dateISO"//判断日期格式必须为YYYY-MM-DD
+                }
+            }
+        ];
+
+        //修改悬浮框内点击事件
+        function EditBtnClickEvent() {
+            $("#btnModifyStartTime").click(function () {
+                $("#btnChangeTimeView option[value=modifyTimeByAppointed]").prop("selected", true);
+                $("#divModifyTime").empty();
+                modifyTimeByAppointed[0].title = "开始时间";
+                ModifyTimeCommon("修改开始时间", 'ModifyTaskBeginTimeForAppointed', 'ModifyTaskBeginTimeForCondition');
+            });
+            $("#btnModifyEndTime").click(function () {
+                $("#btnChangeTimeView option[value=modifyTimeByAppointed]").prop("selected", true);
+                $("#divModifyTime").empty();
+                modifyTimeByAppointed[0].title = "截止时间";
+                ModifyTimeCommon("修改截止时间", 'ModifyTaskEndTimeForAppointed', 'ModifyTaskEndTimeForCondition');
+            });
+            //修改前置工作
+            $("#btnModifyBatchPrevTask").click(function () {
+                var checkboxId = [];
+                var taskNameList = [];
+                var selectTaskNames = [];
+                var shortCodeList = [];
+                var endTimeList = [];
+                $(".EditTask_taskTableTr").each(function (i) {
+                    taskNameList.push($(this)[0].children[1].innerHTML);
+                    shortCodeList.push($(this)[0].firstElementChild.firstElementChild.id);
+                    endTimeList.push($(this)[0].children[4].innerHTML);
+                    if ($(this).is(".selected")) {
+                        checkboxId.push($(this)[0].firstElementChild.firstElementChild.id);
+                        selectTaskNames.push($(this)[0].children[1].innerHTML);
+                    }
+                })
+
+                var selectNameList = cnabsGetUnique(taskNameList);
+                var selectTaskDistinct = cnabsGetUnique(selectTaskNames);
+
+                if (checkboxId.length >= 2) {
+                    if (selectTaskDistinct.length == 1) {
+                        var controls = [{
+                            title: "前置工作",
+                            type: "select",
+                            elementId: "selectText",
+                            value: "",
+                            OptionArray: selectNameList
+                        }];
+
+                    var message = "您将对当前所选择的" + checkboxId.length + "个工作进行修改。";
+                    cnabsAutoDlgYesNo(controls, '批量修改前置工作', function (uiValue) {
+                        var shortCode = checkboxId.join(',');
+                        var params = { shortCode: shortCode, prevTaskName: uiValue.selectText };
+                        cnabsAjaxSync('添加前置工作', '/DesignProduct/AddBatchPrevTaskShortCode',
+                            params, function (value) {
+                                cnabsMsgSuccess("添加前置工作成功，共修改了" + value + "个工作");
+                            });
+                        UpdateTaskView();
+                    }, message);
+                } else {
+                    cnabsAlert("当前选择的工作中，工作名称必须全部相同时，才可以进行批量修改。");
+                }
+            } else if (checkboxId.length == 1) {
+                var nameAndShortCodeList = [];
+                for (var i = 0; i < taskNameList.length; i++) {
+                    var row = [];
+                    row.push(shortCodeList[i]);
+                    row.push(endTimeList[i] + "  " + taskNameList[i] + "  " + shortCodeList[i]);
+                    nameAndShortCodeList.push(row);
+                }
+
+                    var controls = [{
+                        title: "前置工作",
+                        type: "select",
+                        elementId: "selectText",
+                        value: "",
+                        OptionArray: nameAndShortCodeList
+                    }];
+
+                    var message = "您将对当前所选择的" + checkboxId.length + "个工作进行修改。";
+                    cnabsAutoDlgYesNo(controls, '添加一条前置工作', function (uiValue) {
+                        var shortCode = checkboxId.toString();
+                        var params = { shortCode: shortCode, prevTaskShortCode: uiValue.selectText };
+                        cnabsAjaxSync('添加前置工作', '/DesignProduct/AddOncePrevTaskShortCode',
+                            params, function (value) {
+                                cnabsMsgSuccess("添加前置工作成功，共修改了" + value + "个工作");
+                            })
+                        UpdateTaskView();
+                    }, message);
+                }
+                else {
+                    cnabsAlert("必须选择一个工作");
+                }
+            })
+            $("#btnModifyTaskDetail").click(function () {
+                modifyTaskDetailAndTarget('工作描述', 'TaskDetail');
+            });
+            $("#btnModifyTaskTarget").click(function () {
+                modifyTaskDetailAndTarget('工作目标', 'TaskTarget');
+            });
+            //修改工作类型
+            $("#btnDerivedTaskModify").click(function () {
+                var shortCodes = GetSelectedShortCodes();
+                if (shortCodes != "") {
+                    var controls = [{
+                        title: "扩展类型",
+                        type: "select",
+                        elementId: "taskExType",
+                        value: "None",
+                        OptionArray: [["None", "无"],
+                            ["AssetCashflow", "资产端现金流（AssetCashflow）"],
+                            ["Cashflow", "证券端现金流（Cashflow）"],
+                            ["RecyclingPaymentDate", "确认账户余额"],
+                            ["Document", "文档上传下载"],
+                            //存续期管理，暂不提供 “工作要点检查”
+                            //["CheckList", "工作要点检查"],
+                            ["DemoJianYuanReport", "建元Demo（上传Excel生成报告）"]
+                        ]
+                    }];
+
+                    cnabsAutoDlgYesNo(controls, '修改工作扩展类型', function (uiValue) {
+                        var TaskNameIdDeadlineState = GetTaskNameIdDeadlineState(shortCodes);
+                        $("#TaskNameIdDeallineState").html(TaskNameIdDeadlineState);
+                        cnabsDlgYesNo('divTaskNameIdDeallineState', '修改工作扩展类型', function () {
+                            shortCodes = shortCodes.join(",");
+                            var param = { shortCode: shortCodes, newTaskExtensionType: uiValue.taskExType };
+                            cnabsAjaxSync('修改工作扩展类型', "/DesignProduct/ModifyTaskExtensionType", param, function (value) {
+                                cnabsMsgSuccess("工作扩展类型修改成功，共修改了" + value + "个工作");
+                            })
+                            UpdateTaskView();
+                        })
+                    })
+                } else {
+                    cnabsAlert("必须选择一个工作");
+                }
+            })
+            //选择工作文档-按钮
+            $("#btnExtensionDocumentModify").click(function () {
+                currentShortCodes = [];
+                var shortCodeList = [];
+
+                var isAllDocumentType = true;
+                $(".EditTask_taskTableTr.selected").each(function (i) {
+                    var extensionType = $(this)[0].children[6].innerHTML;
+                    if (extensionType != "文档上传下载") {
+                        cnabsAlert("所选择的工作中，扩展类型必须为[文档上传下载]。");
+                        isAllDocumentType = false;
+                        return false;
+                    }
+                    shortCodeList.push($(this)[0].firstElementChild.firstElementChild.id);
+                })
+
+                if (!isAllDocumentType) {
+                    return;
+                }
+
+                if (shortCodeList.length > 0) {
+                    currentShortCodes = shortCodeList;
+                    ModifyDocInnerHTML(shortCodeList);
+                } else {
+                    cnabsAlert("必须选择一个扩展类型为[文档上传下载]的工作。");
+                }
+            })
+            //修改工作要点-按钮
+            $("#btnExtensionCheckListModify").click(function () {
+                currentShortCodes = [];
+                var shortCodeList = [];
+
+                var isAllCheckListType = true;
+                $(".EditTask_taskTableTr.selected").each(function (i) {
+                    var extensionType = $(this)[0].children[6].innerHTML;
+                    if (extensionType != "工作要点检查") {
+                        cnabsAlert("所选择的工作中，扩展类型必须为[工作要点检查]。");
+                        isAllCheckListType = false;
+                        return false;
+                    }
+                    shortCodeList.push($(this)[0].firstElementChild.firstElementChild.id);
+                })
+
+                if (!isAllCheckListType) {
+                    return;
+                }
+
+                if (shortCodeList.length > 0) {
+                    currentShortCodes = shortCodeList;
+                    ModifyCheckListHtml(shortCodeList);
+                } else {
+                    cnabsAlert("必须选择一个扩展类型为[工作要点检查]的工作。");
+                }
+            })
+
+            //修改工作账户余额对比方式-按钮
+            $("#btnExtensionRecyclingPaymentDateModify").click(function () {
+                currentShortCodes = [];
+                var shortCodeList = [];
+
+                var isAllCheckListType = true;
+                $(".EditTask_taskTableTr.selected").each(function (i) {
+                    var extensionType = $(this)[0].children[6].innerHTML;
+                    if (extensionType != "确认账户余额") {
+                        cnabsAlert("所选择的工作中，扩展类型必须为[确认账户余额]。");
+                        isAllCheckListType = false;
+                        return false;
+                    }
+                    shortCodeList.push($(this)[0].firstElementChild.firstElementChild.id);
+                })
+
+                if (!isAllCheckListType) {
+                    return;
+                }
+
+            if (shortCodeList.length > 0) {
+                currentShortCodes = shortCodeList;
+                btnExtensionRecyclingPaymentDateModify(shortCodeList);
+            } else {
+                cnabsAlert("必须选择一个扩展类型为[确认账户余额]的工作。");
+            }
+        })
+    }
+
+        //修改工作描述&工作目标
+        function modifyTaskDetailAndTarget(fieldName, modifyType) {
+            var shortCodes = GetSelectedShortCodes();
+            if (shortCodes.length == 0) {
+                cnabsAlert("必须选择一个工作");
+                return;
+            }
+
+            var title = "修改" + fieldName;
+
+            cnabsAjaxSync(title, '/DesignProduct/Get' + modifyType, { shortCode: shortCodes.join(',') }, function (response) {
+                var controls = [{
+                    title: fieldName,
+                    type: "textarea",
+                    elementId: "detailTarget",
+                    value: response
+                }];
+                var message = "您将对当前所选择的" + shortCodes.length + "个工作进行修改。";
+
+                cnabsAutoDlgYesNo(controls, title, function (uiValue) {
+                    var params = { shortCode: shortCodes.join(','), modifyText: uiValue.detailTarget };
+                    cnabsAjaxSync(title, '/DesignProduct/Modify' + modifyType, params, function () {
+                        cnabsMsgSuccess(title + '成功');
+                    })
+                    UpdateTaskView();
+                }, message);
+            });
+        }
+
+        function UpdateExceptionTaskView() {
+            if (isExpanding) {
+                document.getElementById("expandExceptionTaskBtn").innerHTML = "收起异常工作列表";
+                $(".exceptionTask").css("display", "table-row");
+            } else {
+                document.getElementById("expandExceptionTaskBtn").innerHTML = "展开异常工作列表";
+                $(".exceptionTask").css("display", "none");
+            }
+        }
+
+        function expandExceptionTask() {
+            isExpanding = !isExpanding;
+            UpdateExceptionTaskView();
+        }
+
+        function SelectOneTask(shortCode, updateSelectedStatus) {
+            var checkBox = $("#" + shortCode);
+            checkBox.prop("checked", true);
+            var tr = $(checkBox[0].parentNode.parentNode);
+            tr.addClass("selected");
+
+            if (updateSelectedStatus == undefined || updateSelectedStatus === true) {
+                UpdateTaskViewSelectedStatus();
+                ShowTasks(IsOnlyShowSelectedTasks());
+            }
+        }
+
+        function SelectTasks(shortCodes) {
+            $.each(shortCodes, function () {
+                SelectOneTask(this, false);
+            });
+
+            UpdateTaskViewSelectedStatus();
+            ShowTasks(IsOnlyShowSelectedTasks());
+        }
+
+        function UnselectOneTask(shortCode, updateSelectedStatus) {
+            var checkBox = $("#" + shortCode);
+            checkBox.prop("checked", false);
+            var tr = $(checkBox[0].parentNode.parentNode);
+            tr.removeClass("selected");
+
+            if (updateSelectedStatus == undefined || updateSelectedStatus === true) {
+                UpdateTaskViewSelectedStatus();
+                ShowTasks(IsOnlyShowSelectedTasks());
+            }
+        }
+
+        function UnselectTasks(shortCodes) {
+            $.each(shortCodes, function () {
+                UnselectOneTask(this, false);
+            });
+
+            UpdateTaskViewSelectedStatus();
+            ShowTasks(IsOnlyShowSelectedTasks());
+        }
+
+        //是否全选
+        function IsAllSelected() {
+            return $("#selectAll").is(":checked");
+        }
+
+        //是否只显示已选择工作
+        function IsOnlyShowSelectedTasks() {
+            return $("#btnShowSelected").html() == "显示全部工作";
+        }
+
+        function GetTaskNameByShortCode(shortCode) {
+            var checkBox = $("#" + shortCode);
+            var tr = $(checkBox[0].parentNode.parentNode);
+            return tr.children()[1].innerHTML;
+        }
+
+        //获取选中Task的ShortCodes
+        function GetSelectedShortCodes() {
+            var shortCodes = [];
+            $(".EditTask_taskTableTr").each(function (i) {
+                if ($(this).is(".selected")) {
+                    shortCodes.push($(this)[0].firstElementChild.firstElementChild.id);
+                }
+            });
+            return shortCodes;
+        }
+
+        //获取所有ShortCodes
+        function GetAllShortCodes() {
+            var shortCodes = [];
+            $(".EditTask_taskTableTr").each(function (i) {
+                shortCodes.push($(this)[0].firstElementChild.firstElementChild.id);
+            });
+            return shortCodes;
+        }
+
+        //获取当前页面的显示状态
+        function GetTaskViewSetting() {
+            var viewSetting = {
+                isAllSelected: IsAllSelected(),
+                isOnlyShowSelectedTasks: IsOnlyShowSelectedTasks(),
+                selectedShortCodes: GetSelectedShortCodes()
+            };
+            return viewSetting;
+        }
+
+        //更新页面中Task是否显示
+        function ShowTasks(isOnlyShowSelectedTasks) {
+            if (isOnlyShowSelectedTasks) {
+                $(".EditTask_taskTableTr").css("display", "none");
+                $(".selected").css("display", "table-row");
+                $("#btnShowSelected").html("显示全部工作");
+            } else {
+                $(".EditTask_taskTableTr").css("display", "table-row");
+                $("#btnShowSelected").html("只显示已选择工作");
+            }
+
+            //为奇偶行设置不同背景色
+            $(".EditTask_taskTableTr:visible:even").css("background-color", "rgb(81, 76, 68)");
+            $(".EditTask_taskTableTr:visible:odd").css("background-color", "rgb(71, 66, 60)");
+        }
+
+        //更新Task页面
+        function UpdateTaskView() {
+            var setting = GetTaskViewSetting();
+            UpdateTaskViewHtml();
+            UpdateTaskViewBySetting(setting);
+            UpdateTaskViewEvents();
+            UpdateTaskViewSelectedStatus();
+        }
+
+        //更新页面中Task相关事件
+        function UpdateTaskViewEvents() {
+            $(".EditTask_taskTableTr").each(function (i) {
+                var checkboxId = $(this)[0].firstElementChild.firstElementChild.id;
+                var tr = $(this);
+                var editbtnId = tr[0].children[7].id;
+
+                $("#" + checkboxId).unbind("click");
+                $("#" + checkboxId).click(function () {
+                    if (tr.is(".selected")) {
+                        tr.removeClass("selected");
+                        if ($("#selectAll").is(":checked")) {
+                            $("#selectAll").prop("checked", false)
+                        }
+                    } else {
+                        tr.addClass("selected");
+                    }
+
+                    UpdateTaskViewSelectedStatus();
+                    ShowTasks(IsOnlyShowSelectedTasks());
+                })
+
+                $("#" + editbtnId).unbind("mouseenter").unbind("mouseleave");
+                $("#" + editbtnId).hover(
+                    function () {
+                        if ($(this.parentNode).is(".selected")) {
+                            $(".EditTask_edit").html("<span>修改</span>");
+                            var EditTask_edit_HTML = "<span>修改</span>"
+                                + "<div class='EditTask_editOperations' style='padding:4px 2px;width:90px;'>"
+                                + "<a id='btnModifyStartTime' href='JavaScript:void(0)'>开始时间</a><br />"
+                                + "<a id='btnModifyEndTime' href='javascript:void(0)'>截止时间</a><br />"
+                                + "<a id='btnModifyBatchPrevTask' href='javascript:void(0)'>前置工作</a><br />"
+                                + "<a id='btnModifyTaskDetail' href='javascript:void(0)'>工作描述</a><br />"
+                                + "<a id='btnModifyTaskTarget' href='javascript:void(0)'>工作目标</a><br />"
+                                + "<a id='btnDerivedTaskModify' href='javascript:void(0)'>工作类型</a><br />"
+                            if ($(this.parentNode).attr("taskExtension") == "Document") {
+                                EditTask_edit_HTML += "<a id='btnExtensionDocumentModify' href='javascript:void(0)'>工作文档</a>"
+                            }
+                            if ($(this.parentNode).attr("taskExtension") == "CheckList") {
+                                EditTask_edit_HTML += "<a id='btnExtensionCheckListModify' href='javascript:void(0)'>工作要点</a>"
+                            }
+                            if ($(this.parentNode).attr("taskExtension") == "RecyclingPaymentDate") {
+                                EditTask_edit_HTML += "<a id='btnExtensionRecyclingPaymentDateModify' href='javascript:void(0)'>工作账户</a>"
+                            }
+                            EditTask_edit_HTML += "</div>"
+                            $("#" + editbtnId).html(EditTask_edit_HTML)
+                            var div = $(this).find("div.EditTask_editOperations");
+                            div.css("top", 0);
+                            div.css("left", $(this).width());
+                            EditBtnClickEvent();
+                        }
+                    },
+                    function () {
+                        if ($(this.parentNode).is(".selected")) {
+                            var div = $(this).find("div.EditTask_editOperations");
+                            div.remove();
+                        }
+                    }
+                );
+            });
+
+            $("#selectAll").unbind("click");
+            $("#selectAll").click(function () {
+                var isAllSelected = IsAllSelected();
+                var shortCodes = GetAllShortCodes();
+                if (isAllSelected) {
+                    SelectTasks(shortCodes);
+                } else {
+                    UnselectTasks(shortCodes);
+                }
+            })
+
+            //前置工作悬浮效果
+            $(".divOperations").unbind("mouseenter").unbind("mouseleave");
+            $(".divOperations").hover(
+               function () {
+                   var div = $(this).find("div.project-operations");
+                   div.css("top", $(this).height() + 8);
+                   div.css("left", ($(this).width() - div.width()) / 2);
+                   div.show();
+               },
+               function () {
+                   $(this).find("div.project-operations").hide();
+               }
+           );
+        }
+
+        //更新页面中Task是否选中的统计状态
+        function UpdateTaskViewSelectedStatus() {
+            var allShortCodes = GetAllShortCodes();
+            var selectedShortCodes = GetSelectedShortCodes();
+            var content = '已选择 ' + selectedShortCodes.length + '/' + allShortCodes.length + ' 个工作';
+            $('#btnSelectedStatus').html(content);
+        }
+
+        //更新页面中Task是否选中、显示
+        function UpdateTaskViewBySetting(setting) {
+            //根据setting恢复选中状态
+            var allShortCodes = GetAllShortCodes();
+            UnselectTasks(allShortCodes);
+            SelectTasks(setting.selectedShortCodes);
+
+            //根据setting恢复显示状态
+            ShowTasks(setting.isOnlyShowSelectedTasks);
+        }
+
+        //翻译扩展工作类型
+        function TranslateTaskExType(TaskExtension) {
+            switch (TaskExtension) {
+                case "AssetCashflow":
+                    return "资产端现金流";
+                case "Cashflow":
+                    return "证券端现金流";
+                case "Document":
+                    return "文档上传下载";
+                case "RecyclingPaymentDate":
+                    return "确认账户余额";
+                case "CheckList":
+                    return "工作要点检查";
+                case "DemoJianYuanReport":
+                    return "建元Demo（上传Excel生成报告）";
+                default:
+            }
+            return "";
+        }
+
+        //翻译错误工作列表中错误原因类型
+        function ErrorTaskType(errorType) {
+            switch (errorType) {
+                case "StartTimeError":
+                    return "开始时间错误";
+                case "EndTimeError":
+                    return "截止时间错误";
+                case "StartEndTimeError":
+                    return "开始、截止时间错误";
+                case "TaskRepeat":
+                    return "通过工作模板生成的工作数量与现有的工作数量不匹配，无法检查";
+                default:
+            }
+            return "";
+        }
+
+        //翻译扩展工作CheckList类型
+        function TaskExCheckType(checkType) {
+            switch (checkType) {
+                case "Checked":
+                    return "已检查";
+                case "Unchecked":
+                    return "未检查";
+                default:
+            }
+        }
+
+        //更新工作列表
+        function UpdateTaskViewHtml() {
+            cnabsAjaxSync('获取最新工作数据', '/DesignProduct/GetAllTask', { projectGuid: "@Model.Project.Guid" }, function (value) {
+                if (value != null && value.length > 0) {
+                    var html = "<tr class='toolbar'><th><input id='selectAll' style='cursor:pointer;' type='checkbox' name='' value='all' /></th><th>工作名称</th><th>工作代码</th><th>开始时间</th><th>截止时间</th><th>前置工作</th><th>工作类型</th><th>操作</th></tr>";
+                    for (var i = 0; i < value.length; i++) {
+                        var task = value[i];
+                        html += "<tr class=\"EditTask_taskTableTr\" taskExtension=\"" + (task.TaskExtension == null ? "" : task.TaskExtension.TaskExtensionType) + "\">";
+                        html += "<td class='text-center'><input id=\"" + task.ShortCode + "\" class=\"checkbox\" style=\"cursor:pointer;\" type=\"checkbox\" value=\"" + task.ShortCode + "\" /></td>"
+                        html += "<td class='text-center'>";
+                        html += "<a target='_blank' href='/Task?shortCode=" + task.ShortCode + "'>" + task.Description + "</a>";
+                        html += "</td>";
+                        html += "<td class='text-center'>" + task.ShortCode + "</td>"
+                        html += "<td class='text-center'>" + ChangeDateFormat(task.StartTime) + "</td>"
+                        html += "<td class='text-center'>" + ChangeDateFormat(task.EndTime) + "</td>"
+                        var subHtml = "<td class='text-center'><text>-</text></td>";
+                        var prevShortCodes = task.PrevTaskShortCodeArray;
+                        if (prevShortCodes != null && prevShortCodes.length != 0) {
+                            subHtml = "<td class='divOperations text-center'>";
+                            var labelName = "展开" + prevShortCodes.length + "项";
+                            subHtml += "<div class='projectOperationsbox' style='cursor:pointer;'>";
+                            subHtml += "<span style='color:#ffc000;'>" + labelName + "</span>";
+                            subHtml += "<text style='color: #ffc446;' class='ui-icon ui-icon-carat-1-s ImageSize'></text>";
+                            subHtml += "<div class='project-operations'>";
+                            $.each(prevShortCodes, function () {
+                                subHtml += "<a style='color:#ff6d10; display:block;' href='/Task?shortCode=" + this + "' ";
+                                subHtml += " target='_blank'>" + GetTaskNameByShortCode(this) + "</a>";
+                            });
+                            subHtml += "</div>";
+                            subHtml += "</div>";
+                            subHtml += "</td>";
+                        }
+                        html += subHtml;
+                        if (task.TaskExtension == null) {
+                            html += "<td class='text-center'>-</td>";
+                        } else {
+                            var cnTaskExType = TranslateTaskExType(task.TaskExtension.TaskExtensionType);
+                            html += "<td class='text-center'>" + cnTaskExType + "</td>";
+                        }
+                        html += "<td class='text-center EditTask_edit' id='editbtn_" + task.ShortCode + "'>"
+                            + "<span>修改</span>" + "</td>";
+                        html += "</tr>";
+                    }
+                    taskListView.innerHTML = html;
+                }
+            })
+        }
+
+        function ChangeDateFormat(time) {
+            if (time == null) {
+                return "-";
+            }
+
+            var date = new Date(parseInt(time.replace("/Date(", "").replace(")/", "")));
+            Y = date.getFullYear() + '-';
+            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + "-";
+            D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+            return Y + M + D;
+        }
+
+    </script>
+}
+
+<script>
+    //绑定时间规则（替换指定日）2个select的value
+    function bindSameValue(i, event) {
+        var event = window.event || event;
+        if (i == 1) {
+            $($($(event.target).parent()).find($('.ReplaceAppointDate_SecondConditionUnitType'))).val($(event.target).val());
+        }
+        if (i == 2) {
+            $($($(event.target).parent()).find($('.ReplaceAppointDate_ConditionUnitType'))).val($(event.target).val());
+        }
+    }
+    var userapp = angular.module('EditTaskView', []);
+    //转义html标签
+    userapp.filter('trustHtml', function ($sce) {
+        return function (input) {
+            return $sce.trustAsHtml(input);
+        }
+    });
+    userapp.controller('EditTaskCtrl', function ($scope, $http) {
+        //显示、隐藏创建工作视图
+        $scope.ShowOrHideCreateTaskView = function () {
+            if ($("#createTaskLink").attr('name') == 'createTask') {
+                $scope.viewtitle = '创建工作';
+                $scope.createTaskView = true;
+                $scope.taskTableView = false;
+                $scope.createTaskLinkText = '返回工作列表';
+                $scope.createTaskLinkArrowSrc = '../../Images/DashBoard/arrow_left_yellow.png';
+                $("#createTaskLink").attr('name', 'taskTable');
+            } else {
+                $scope.viewtitle = '工作列表';
+                $scope.createTaskView = false;
+                $scope.taskTableView = true;
+                $scope.createTaskLinkText = '创建工作';
+                $scope.createTaskLinkArrowSrc = '../../Images/DashBoard/arrow_right_yellow.png';
+                $("#createTaskLink").attr('name', 'createTask')
+            }
+        }
+        $scope.clearAll = function () {
+            $scope.selectedRules_startTime = [];
+            $scope.selectedRules_endTime = [];
+            $scope.currentStartTimeTimeSeriesGuid = '';
+            $scope.currentEndTimeTimeSeriesGuid = '';
+            $scope.clearErrorMsg();
+            $scope.task = { name: '', startTime: '-', endTime: '-', preTasks: [], type: 'None', target: '', description: '', rule: '' };
+        }
+        $scope.clearErrorMsg = function () {
+            $scope.invalidCreateTaskName = false;
+            $scope.invalidCreateTaskEndTime = false;
+        }
+        //获取已有工作/前置工作
+        $scope.GetAllWorks = function () {
+            var param = { projectGuid: "@Model.Project.Guid" }
+            cnabsAjax('获取已有工作', '/TimeRuleTemplateWork/GetAllMetaTasks', param, function (data) {
+                $scope.time_startTime = {
+                    TimeOrigin: 'NewBuilt', NewBuiltType: 'Cycle', isCycle: true, firstTime: '', cycleTime: { number: 1, unit: 'Day' }, cycleEndTime: '', dayList: '', workTimeType: 'StartTime'
+                };
+                $scope.time_endTime = {
+                    TimeOrigin: 'NewBuilt', NewBuiltType: 'Cycle', isCycle: true, firstTime: '', cycleTime: { number: 1, unit: 'Day' }, cycleEndTime: '', dayList: '', workTimeType: 'StartTime'
+                };
+                $scope.time_startTime.works = data;
+                $scope.time_endTime.works = data;
+                $scope.availablePreviousTasks = data;
+                if (data.length) {
+                    $scope.time_startTime.work = data[0].guid;
+                    $scope.time_endTime.work = data[0].guid;
+                    $scope.availablePreviousTask = data[0].guid;
+                } else {
+                    $scope.time_startTime.work = '';
+                    $scope.time_endTime.work = '';
+                    $scope.availablePreviousTask = '';
+                }
+                $scope.$apply();
+            })
+        }
+        $scope.onload = function () {
+            $scope.ShowOrHideCreateTaskView();
+            $scope.clearAll();
+            $scope.GetAllWorks();
+        }
+        $scope.onload()
+        $scope.WorkTip = function (workGuid) {
+            $("div.DateTip .divBeginTime").html('');
+            $("div.DateTip .divEndTime").html('');
+            if (workGuid == '') {
+                $('.divDateTip').hide();
+                $('.endTimeErrorMsg').show();
+                $('.beginTimeErrorMsg').show();
+                return
+            } else {
+                $('.divDateTip').show();
+                $('.endTimeErrorMsg').hide();
+                $('.beginTimeErrorMsg').hide();
+            }
+            
+            cnabsAjaxSync('获取元工作信息', '/TimeRuleTemplateWork/GetMetaTask', { projectGuid: "@Model.Project.Guid", metaTaskGuid: workGuid }, function (data) {
+                var beginTimeStr = '';
+                if (data.beginTimeGuid == null) {
+                    beginTimeStr = '无'
+                } else {
+                    var param = { timeSeriesGuid: data.beginTimeGuid }
+                    cnabsAjaxSync('查看时间', '/TimeRuleTemplateWork/TestCalculateTime', param, function (data) {
+                        var array = data.split(',')
+                        $.each(array, function (index,item) {
+                            beginTimeStr += item;
+                            if (index != array.length - 1) {
+                                beginTimeStr+=','
+                            }
+                            if (index % 2 == 1) {
+                                beginTimeStr += '</br>'
+                            }
+                        })
+                    }, function () {
+                        $("div.DateTip .divBeginTime").html('获取失败！');
+                     })
+                }
+                $("div.DateTip .divBeginTime").html(beginTimeStr);
+                var endTimeStr = '';
+                if (data.endTimeGuid == null) {
+                    endTimeStr = '无'
+                } else {
+                    var param = { timeSeriesGuid: data.endTimeGuid }
+                    cnabsAjaxSync('查看时间', '/TimeRuleTemplateWork/TestCalculateTime', param, function (data) {
+                        var array = data.split(',')
+                        $.each(array, function (index, item) {
+                            endTimeStr += item;
+                            if (index != array.length - 1) {
+                                endTimeStr += ','
+                            }
+                            if (index % 2 == 1) {
+                                endTimeStr += '</br>'
+                            }
+                        })
+                    }, function () {
+                        $("div.DateTip .divEndTime").html('获取失败！');
+                    })
+                }
+                $("div.DateTip .divEndTime").html(endTimeStr);
+            });
+            $(".divDateTip").hover(
+                function () {
+                    var div = $(document).find("div.DateTip");
+                    div.css("top", $(this).offset().top);
+                    div.css("left", $(this).offset().left + $(this).width() + 5);
+                    div.show();
+                },
+                function () {
+                    $(document).find("div.DateTip").hide();
+                }
+            );
+        }
+
+        //时间来源联动效果
+        $scope.changeTimeOrigin = function (type) {
+            var item;
+            if (type == "StartTime") {
+                item = $scope.time_startTime;
+            } else {
+                item = $scope.time_endTime;
+            }
+            if (item.TimeOrigin == 'BaseExist') {
+                $scope.WorkTip(item.work);
+            }
+        }
+
+        $scope.changeNewBuiltType = function (type) {
+            var item;
+            if (type == "StartTime") {
+                item = $scope.time_startTime
+            } else {
+                item = $scope.time_endTime;
+            }
+            if (item.NewBuiltType == 'Cycle') {
+                item.isCycle = true;
+            } else {
+                item.isCycle = false;
+            }
+        }
+        //获取TimeSeriesGuid
+        $scope.GetTimeSeriesGuid = function (type) {
+            var guid = '';
+            cnabsAjaxSync("创建时间系列", "/TimeRuleTemplateWork/CreateTimeSeries", {timeSeriesName:'timeSeries'}, function (data) {
+                guid = data;
+            });
+            return guid;
+        }
+        //整合时间规则参数
+        $scope.GetRuleArgument = function (type, timeSeriesGuid) {
+            var param = { TimeSeriesGuid: timeSeriesGuid };
+            var Rules;
+            if (type == "StartTime") {
+                Rules = $scope.selectedRules_startTime;
+            } else {
+                Rules = $scope.selectedRules_endTime;
+            };
+            if (Rules.length==0) {
+                param.IsExistRule = false;
+                return param;
+            }
+            param.IsExistRule = true;
+            param.TimeRuleOrder = [];
+            param.PeriodSequenceList=[];
+            param.ConditionShiftList=[];
+            param.ShiftList=[];
+            param.RemoveRepeatDateList=[];
+
+            $.each(Rules, function (index) {
+                param.TimeRuleOrder.push(this.RuleType);
+                this.Ranking = index + 1;
+                if (this.RuleType == 'MoveAppointDate') {
+                    this.TimeMoveDirection = $("#divSet" + type + " div.rule" + index + " .MoveAppointDate_TimeMoveDirection").val();
+                    this.Interval = $("#divSet" + type + " div.rule" + index + " .MoveAppointDate_Interval").val();
+                    this.ConditionUnitType = $("#divSet" + type + " div.rule" + index + " .MoveAppointDate_ConditionUnitType").val();
+                    param.ShiftList.push(this);
+                } else if (this.RuleType == 'ReplaceAppointDate') {
+                    this.TimeMoveDirection = $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_TimeMoveDirection").val();
+                    this.Interval = $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_Interval").val();
+                    this.ConditionUnitType = $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_ConditionUnitType").val();
+                    this.DateType = this.ConditionUnitType;
+                    param.ConditionShiftList.push(this);
+                } else if (this.RuleType == 'FindAppointDate') {
+                    this.PeriodType = $("#divSet" + type + " div.rule" + index + " .FindAppointDate_PeriodType").val();
+                    this.Interval = $("#divSet" + type + " div.rule" + index + " .FindAppointDate_Interval").val();
+                    this.ConditionUnitType = $("#divSet" + type + " div.rule" + index + " .FindAppointDate_ConditionUnitType").val();
+                    param.PeriodSequenceList.push(this);
+                } else {
+                    this.IsRemoveRepeatDate = true;
+                    param.RemoveRepeatDateList.push(this);
+                }
+            })
+            return param;
+        }
+        //保存时间规则参数
+        $scope.SaveTimeRule = function (type, timeSeriesGuid) {
+            var param = $scope.GetRuleArgument(type, timeSeriesGuid);
+            var isSuccess = false
+            cnabsAjaxSync("保存时间规则", "/TimeRuleTemplateWork/SaveTimeRule", param, function () {
+                isSuccess=true
+            });
+            return isSuccess;
+        }
+        $scope.isvaildDate = function (title,val) {
+            var obj = {flag:true,msg:''};
+            if (val == '') {
+                obj.flag = false;
+                obj.msg = "请填写" + title + "！";
+                return obj;
+            } else {
+                var reg = /^[1-2]{1}([0-9]{3})-(0[1-9]|1[012])-(([0-2]){1}([0-9]{1})|([3]{1}[0-1]{1}))$/;
+                obj.flag = reg.test(val);
+                obj.msg = title + "格式：YYYY-MM-DD";
+                if (obj.flag) {
+                    var date = new Date(val);
+                    if (date > new Date(g_cnabsValidYearMax.toString() + "-12-31")) {
+                        obj.flag = false;
+                        obj.msg = title + "输入时间不能大于" + g_cnabsValidYearMax + "-12-31";;
+                        return obj;
+                    }
+                    else if (date < new Date(g_cnabsValidYearMin.toString())) {
+                        obj.flag = false;
+                        obj.msg = title + "输入时间不能小于" + g_cnabsValidYearMin + "-01-01";
+                        return obj;
+                    }
+                }
+            }
+            return obj;
+        }
+        $scope.isvaildNumber = function (title, val, min, max) {
+            var obj = { flag: true, msg: '' };
+            var reg = /^[-+]?\d+$/;
+            if (!reg.test(val)) {
+                obj.flag = false;
+                obj.msg = title + "必须输入整数！";
+                return obj;
+            }
+            
+            var InputValue = cnabsParseFloat(val);
+
+            var Min = cnabsParseFloat(min);
+            if (!isNaN(Min) && InputValue < Min) {
+                obj.flag = false;
+                obj.msg = title + "不能小于" + Min + "！";
+                return obj;
+            }
+
+            var Max = cnabsParseFloat(max);
+            if (!isNaN(Max) && InputValue > Max) {
+                obj.flag = false;
+                obj.msg = title + "不能大于" + Max + "！";
+                return obj;
+            }
+            return obj;
+        }
+        $scope.clearSetTimeDialogErrorMsg = function () {
+            $scope.isVaildStartTimeFirstTime = false;
+            $scope.isVaildStartTimeCycleEndTime = false;
+            $scope.isVaildEndTimeFirstTime = false;
+            $scope.isVaildEndTimeCycleEndTime = false;
+            $scope.isVaildStartTimeCycleTime = false;
+            $scope.isVaildEndTimeCycleTime = false;
+            $scope.isVaildStartTimeDayList = false;
+            $scope.isVaildEndTimeDayList = false;
+            $scope.isVaildPrevTask = false;
+        }
+        //整合时间来源参数
+        $scope.GetTimeOriginParam = function (type, timeSeriesGuid,isSetTime) {
+            var item = { TimeSeriesGuid: timeSeriesGuid };
+
+            var correspondingItem;
+            if(type=="StartTime"){
+                correspondingItem = $scope.time_startTime;
+            } else {
+                correspondingItem = $scope.time_endTime;
+            }
+            var obj = {};
+            if (correspondingItem.TimeOrigin == 'NewBuilt') {
+                if (correspondingItem.NewBuiltType == 'Cycle') {
+                    //验证循环
+                    var Flag = true;
+                    var firstTimeObj = $scope.isvaildDate('循环开始时间', correspondingItem.firstTime);
+                    if (!firstTimeObj.flag) {
+                        if (type == "StartTime") {
+                            $scope.StartTimeFirstTimeErrorMsg = firstTimeObj.msg;
+                            $scope.isVaildStartTimeFirstTime = true;
+                        }
+                        if (type == "EndTime") {
+                            $scope.EndTimeFirstTimeErrorMsg = firstTimeObj.msg;
+                            $scope.isVaildEndTimeFirstTime = true;
+                        }
+                        Flag = false;
+                    }
+
+                    var endTimeObj = $scope.isvaildDate('循环截止时间', correspondingItem.cycleEndTime);
+                    if (!endTimeObj.flag) {
+                        if (type == 'StartTime') {
+                            $scope.StartTimeCycleEndTimeErrorMsg = endTimeObj.msg;
+                            $scope.isVaildStartTimeCycleEndTime = true;
+                        }
+                        if (type == 'EndTime') {
+                            $scope.EndTimeCycleEndTimeErrorMsg = endTimeObj.msg;
+                            $scope.isVaildEndTimeCycleEndTime = true;
+                        }
+
+                        Flag = false;
+                    }
+                    if (Flag && correspondingItem.firstTime > correspondingItem.cycleEndTime) {
+                        if (type == 'StartTime') {
+                            $scope.StartTimeCycleEndTimeErrorMsg = '循环截止时间不能早于循环开始时间';
+                            $scope.isVaildStartTimeCycleEndTime = true;
+                        }
+                        if (type == 'EndTime') {
+                            $scope.EndTimeCycleEndTimeErrorMsg = '循环截止时间不能早于循环开始时间';
+                            $scope.isVaildEndTimeCycleEndTime = true;
+                        }
+                        Flag = false;
+                    }
+                    var cycleTimeObj = $scope.isvaildNumber('循环周期', correspondingItem.cycleTime.number,1,365);
+                    if (!cycleTimeObj.flag) {
+                        if (type == 'StartTime') {
+                            $scope.StartTimeCycleTimeErrorMsg = cycleTimeObj.msg;
+                            $scope.isVaildStartTimeCycleTime = true;
+                        }
+                        if (type == 'EndTime') {
+                            $scope.EndTimeCycleTimeErrorMsg = cycleTimeObj.msg;
+                            $scope.isVaildEndTimeCycleTime = true;
+                        }
+
+                        Flag = false;
+                    }
+                    if (!Flag) {
+                        if (isSetTime == 'setTime') {
+                            $scope.$apply();
+                        }
+                        return null;
+                    }
+                    item.TimeOriginType = 'Loop'
+                    obj.BeginTime = correspondingItem.firstTime;
+                    obj.Interval = correspondingItem.cycleTime.number;
+                    obj.RuleUnitType = correspondingItem.cycleTime.unit;
+                    obj.EndTime = correspondingItem.cycleEndTime;
+                    item.Loop = obj;
+                } else {
+                    if (correspondingItem.dayList == '') {
+                        if (type == 'StartTime') {
+                            $scope.StartTimeDayListErrorMsg = '请填写日期列表，如2017-05-10,2017-09-08';
+                            $scope.isVaildStartTimeDayList = true;
+                        }
+                        if (type == 'EndTime') {
+                            $scope.EndTimeDayListErrorMsg = '请填写日期列表，如2017-05-10,2017-09-08';
+                            $scope.isVaildEndTimeDayList = true;
+                        }
+                        if (isSetTime == 'setTime') {
+                            $scope.$apply();
+                        }
+                        return null;
+                    }
+
+
+                    var result = cnabsParseDateArray(correspondingItem.dayList);
+                    if (!result.isValidDate) {
+                        if (type == 'StartTime') {
+                            $scope.StartTimeDayListErrorMsg = result.errorMsg;
+                            $scope.isVaildStartTimeDayList = true;
+                        }
+                        if (type == 'EndTime') {
+                            $scope.EndTimeDayListErrorMsg = result.errorMsg;
+                            $scope.isVaildEndTimeDayList = true;
+                        }
+                        if (isSetTime == 'setTime') {
+                            $scope.$apply();
+                        }
+                        return null;
+                    }
+                    var dateStr = '';
+                    $.each(result.dateArray, function (index, item) {
+                        dateStr += item;
+                        if (index != result.dateArray.length - 1) {
+                            dateStr += ','
+                        }
+                    })
+                    
+                    item.TimeOriginType = 'CustomInput';
+                    obj.CustomTimeList = dateStr;
+                    item.CustomInput = obj;
+                }
+            } else if (correspondingItem.TimeOrigin == 'BaseExist') {
+                if (correspondingItem.work == '') {
+                    $scope.PrevTaskErrorMsg = '请选择一个工作';
+                    $scope.isVaildPrevTask = true;
+
+                    if (isSetTime == 'setTime') {
+                        $scope.$apply();
+                    }
+                    return null;
+                }
+
+                item.TimeOriginType = 'MetaTask';
+                obj.MetaTaskGuid = correspondingItem.work;
+                obj.MetaTaskTimeType = correspondingItem.workTimeType;
+                item.PrevMetaTask = obj;
+            } else if (correspondingItem.TimeOrigin == 'BaseSelfTime') {
+                item.TimeOriginType = 'TaskSelfTime';
+                if (type == 'StartTime') {
+                    obj.TimeSeriesGuid = $scope.currentEndTimeTimeSeriesGuid;
+                    obj.TimeType = 'EndTime';
+                } else if (type == 'EndTime') {
+                    obj.TimeSeriesGuid = $scope.currentStartTimeTimeSeriesGuid;
+                    obj.TimeType = 'StartTime';
+                }
+                item.TaskSelfTime = obj;
+            }
+            var param = item;
+            return param;
+        }
+        //保存时间来源参数
+        $scope.SaveTimeOrigin = function (type, timeSeriesGuid,isSetTime) {
+            var isSuccess = false;
+            var param = $scope.GetTimeOriginParam(type, timeSeriesGuid, isSetTime);
+            if (param==null) {
+                return false;
+            }
+            cnabsAjaxSync("保存时间来源", "/TimeRuleTemplateWork/SaveTimeOrigin", param, function () {
+                isSuccess = true;
+            });
+            return isSuccess;
+        }
+        //整合创建元工作参数
+        $scope.GetAllParam = function () {
+            var param = { projectGuid: "@Model.Project.Guid" };//projectGuid
+            param.metaTaskName = $scope.task.name;
+            param.taskExtensionType = $scope.task.type;
+            param.target = $scope.task.target;
+            param.detail = $scope.task.description;
+            var preTasks = '';
+            $.each($scope.task.preTasks, function (index,item) {
+                preTasks += item.guid;
+                if (index != $scope.task.preTasks.length - 1) {
+                    preTasks+=','
+                }
+            })
+            param.prevMetaTaskText = preTasks;
+            param.guidAsStartTime = $scope.currentStartTimeTimeSeriesGuid;
+            param.guidAsEndTime = $scope.currentEndTimeTimeSeriesGuid;
+            return param;
+        }
+        //保存元工作、创建工作
+        $scope.createTask = function () {
+            $scope.clearErrorMsg();
+            var isInvalid = true;
+            if ($scope.task.name == undefined || $scope.task.name == '') {
+                $scope.invalidCreateTaskName = true;
+                isInvalid = false;
+            }
+            if ($scope.task.endTime == '' || $scope.task.endTime == undefined || $scope.task.endTime == '-') {
+                $scope.invalidCreateTaskEndTime = true;
+                isInvalid = false;
+            }
+            if (!isInvalid) {
+                return;
+            }
+            var param = $scope.GetAllParam();
+            cnabsAjax("创建元工作", "/TimeRuleTemplateWork/CreateMetaTask", param, function (data) {
+                cnabsAjax("创建工作", "/TimeRuleTemplateWork/CreateTasksByMetaTask", { projectGuid: "@Model.Project.Guid" ,metaTaskGuid:data}, function (data) {
+                    cnabsMsgSuccess('创建工作成功',true)
+                })
+              
+            });
+
+
+        }
+
+
+        $scope.translation = function (item) {
+            item = item.replace(/Month/g, '<span class="cnabs_yellow variable">月</span>');
+            item = item.replace(/Year/g, '<span class="cnabs_yellow variable">年</span>');
+            item = item.replace(/Season/g, '<span class="cnabs_yellow variable">季度</span>');
+            item = item.replace(/Week/g, '<span class="cnabs_yellow variable">周</span>');
+            item = item.replace(/Plus/g, '<span class="cnabs_yellow variable">未来</span>');
+            item = item.replace(/Minus/g, '<span class="cnabs_yellow variable">过去</span>');
+            item = item.replace(/StartTime/g, '<span class="cnabs_yellow variable">开始时间</span>');
+            item = item.replace(/EndTime/g, '<span class="cnabs_yellow variable">截止时间</span>');
+            item = item.replace(/TradingDay/g, '<span class="cnabs_yellow variable">交易日</span>');
+            item = item.replace(/WorkingDay/g, '<span class="cnabs_yellow variable">工作日</span>');
+            item = item.replace(/Day/g, '<span class="cnabs_yellow variable">自然日</span>');
+            return item;
+        }
+        $scope.returnSettingView = function (type) {
+            $("#" + type + "SettingView").css('display', 'block');
+            $("#" + type + "ResultsView").css('display', 'none');
+        }
+        //获取时间来源
+        $scope.GetTimeOriginSet = function (item,guid) {
+            cnabsAjax("获取时间来源", "/TimeRuleTemplateWork/GetTimeOriginSet", { timeSeriesGuid: guid }, function (data) {
+                if (data.TimeOriginType == 'Loop') {
+                    item.TimeOrigin = 'NewBuilt';
+                    item.NewBuiltType = 'Cycle';
+                    item.isCycle = true;
+                    item.firstTime = data.Loop.BeginTime;
+                    item.cycleEndTime = data.Loop.EndTime;
+                    item.cycleTime.number = data.Loop.Interval;
+                    item.cycleTime.unit = data.Loop.RuleUnitType;
+                    item.dayList = '';
+                    item.workTimeType = 'StartTime';
+                    if (item.works.length) {
+                        item.work = item.works[0].guid;
+                    } else {
+                        item.work = '';
+                    }
+                    $scope.$apply();
+                    return;
+                }
+                if (data.TimeOriginType == 'CustomInput') {
+                    item.TimeOrigin = 'NewBuilt';
+                    item.NewBuiltType = 'Input';
+                    item.isCycle = false;
+                    item.firstTime = '';
+                    item.cycleEndTime = '';
+                    item.cycleTime.number = 1;
+                    item.cycleTime.unit = 'Day';
+                    item.dayList = data.CustomInput.CustomTimeList;
+                    item.workTimeType = 'StartTime';
+                    if (item.works.length) {
+                        item.work = item.works[0].guid;
+                    } else {
+                        item.work = '';
+                    }
+                    $scope.$apply();
+                    return;
+                }
+                if (data.TimeOriginType == 'MetaTask') {
+                    item.TimeOrigin = 'BaseExist';
+                    item.NewBuiltType = 'Cycle';
+                    item.isCycle = true;
+                    item.firstTime = '';
+                    item.cycleEndTime = '';
+                    item.cycleTime.number = 1;
+                    item.cycleTime.unit = 'Day';
+                    item.dayList = '';
+                    item.workTimeType = data.PrevMetaTask.MetaTaskTimeType;
+                    item.work = data.PrevMetaTask.MetaTaskGuid;
+                    $scope.WorkTip(item.work);
+                    $scope.$apply();
+                    return;
+                }
+                if (data.TimeOriginType == 'TaskSelfTime') {
+                    item.TimeOrigin = 'BaseSelfTime';
+                    item.NewBuiltType = 'Cycle';
+                    item.isCycle = true;
+                    item.firstTime = '';
+                    item.cycleEndTime = '';
+                    item.cycleTime.number = 1;
+                    item.cycleTime.unit = 'Day';
+                    item.dayList = '';
+                    item.workTimeType = 'StartTime';
+                    if (item.works.length) {
+                        item.work = item.works[0].guid;
+                    } else {
+                        item.work = '';
+                    }
+                    $scope.$apply();
+                    return;
+                }
+            })
+        }
+        //获取时间规则
+        $scope.GetTimeRuleSet = function (type, guid,callback) {
+            var rule = [];
+            cnabsAjax("获取时间规则", "/TimeRuleTemplateWork/GetTimeRuleSet", { timeSeriesGuid: guid}, function (data) {
+                $.each(data.TimeRuleOrder, function (index, item) {
+                    //var obj = $scope.RuleHtml(item);
+                    var obj = {RuleType:item};
+                    if (item == "MoveAppointDate") {
+                        $.each(data.ShiftList, function (i,ele) {
+                            if (ele.Ranking == index + 1) {
+                                obj.ConditionUnitType = ele.ConditionUnitType;
+                                obj.Interval = Math.abs(ele.Interval);
+                                obj.Ranking = ele.Ranking;
+                                obj.TimeMoveDirection = ele.TimeMoveDirection;
+                                //obj.html = $scope.generateMoveAppointDate([obj.TimeMoveDirection, obj.Interval, obj.ConditionUnitType]);
+                                obj.html = '向 <select class="formElement MoveAppointDate_TimeMoveDirection" value="'
+                                    + obj.TimeMoveDirection + '"><option value="Plus">未来</option><option value="Minus">过去</option></select> 移动 <input class="formElement MoveAppointDate_Interval" type="text" value="'
+                                    + obj.Interval + '"> 个 <select class="formElement MoveAppointDate_ConditionUnitType" value="' + obj.ConditionUnitType + '"><option value="TradingDay">交易日</option><option value="Day">自然日</option><option value="WorkingDay">工作日</option></select>';
+                                rule.push(obj);
+                                return;
+                            }
+                        })
+                    }
+                    if (item == "FindAppointDate") {
+                        $.each(data.PeriodSequenceList, function (i, ele) {
+                            if (ele.Ranking == index + 1) {
+                                obj.ConditionUnitType = ele.ConditionUnitType;
+                                obj.Interval = Math.abs(ele.Interval);
+                                obj.Ranking = ele.Ranking;
+                                obj.PeriodType = ele.PeriodType;
+                                //obj.html = $scope.generateFindAppointDate([obj.PeriodType, obj.Interval, obj.ConditionUnitType]);
+                                obj.html = '移动到当 <select class="formElement FindAppointDate_PeriodType" value="'
+                                    + obj.PeriodType + '"><option value="Month">月</option><option value="Week">周</option><option value="Year">年</option></select> 第 <input class="formElement FindAppointDate_Interval" type="text" value="'
+                                    + obj.Interval + '"> 个 <select class="formElement FindAppointDate_ConditionUnitType" value="'
+                                    + obj.ConditionUnitType + '"><option value="Day">自然日</option><option value="TradingDay">交易日</option><option value="WorkingDay">工作日</option></select>';
+                                rule.push(obj);
+                                return;
+                            }
+                        })
+                    }
+                    if (item == "ReplaceAppointDate") {
+                        $.each(data.ConditionShiftList, function (i, ele) {
+                            if (ele.Ranking == index + 1) {
+                                obj.ConditionUnitType = ele.ConditionUnitType;
+                                obj.Interval = Math.abs(ele.Interval);
+                                obj.Ranking = ele.Ranking;
+                                obj.DateType = ele.DateType;
+                                obj.TimeMoveDirection = ele.TimeMoveDirection;
+                                //obj.html = $scope.generateReplaceAppointDate(
+                                //    [obj.ConditionUnitType, obj.TimeMoveDirection, obj.Interval, obj.DateType]);
+                                obj.html = '如果当天不是 <select class="formElement ReplaceAppointDate_ConditionUnitType" onchange="bindSameValue(' + 1 + ')" value="'
+                                    + obj.ConditionUnitType + '"><option value="TradingDay">交易日</option><option value="Day">自然日</option><option value="WorkingDay">工作日</option></select>，向 <select class="formElement ReplaceAppointDate_TimeMoveDirection" value="'
+                                    + obj.TimeMoveDirection + '"><option value="Plus">未来</option><option value="Minus">过去</option></select> 移动到下 <input class="formElement ReplaceAppointDate_Interval" type="text" value="'
+                                    + obj.Interval + '"> 个 <select class="formElement ReplaceAppointDate_SecondConditionUnitType" onchange="bindSameValue(' + 2 + ')" value="' + obj.DateType + '"><option value="TradingDay">交易日</option><option value="Day">自然日</option><option value="WorkingDay">工作日</option></select>';
+                                rule.push(obj);
+                                return;
+                            }
+                        })
+                    }
+                    if (item == "RemoveRepeatDate") {
+                        $.each(data.RemoveRepeatDateList, function (i, ele) {
+                            if (ele.Ranking == index + 1) {
+                                obj.IsRemoveRepeatDate = ele.IsRemoveRepeatDate;
+                                obj.Ranking = ele.Ranking;
+                                obj.html = '去掉重复日期';
+                                rule.push(obj);
+                                return;
+                            }
+                        })
+                    }
+                })
+                if (type == 'StartTime') {
+                    $scope.selectedRules_startTime = rule;
+                } else if (type == 'EndTime') {
+                    $scope.selectedRules_endTime = rule;
+                }
+                $scope.$apply();
+                $.each($('select.formElement'), function (index, item) {
+                    $(item).val($(item).attr('value'))
+                })
+                if (callback != undefined) {
+                    callback();
+                }
+            }) 
+        }
+
+        //$scope.generateFindAppointDate = function (params) {
+        //    if (params == undefined) {
+        //        params = ['Month', 1, 'TradingDay'];
+        //    }
+
+        //    return cnabsGenerateUIChain('FindAppointDate_', '移动到当{PeriodType}第{DateCount}个{DateType}', params);
+        //};
+
+        //$scope.generateMoveAppointDate = function (params) {
+        //    if (params == undefined) {
+        //        params = ['Plus', 1, 'TradingDay'];
+        //    }
+
+        //    return cnabsGenerateUIChain('MoveAppointDate_', '向{DateDirection}移动{DateCount}个{DateType}', params);
+        //};
+
+        //$scope.generateReplaceAppointDate = function (params) {
+        //    if (params == undefined) {
+        //        params = ['TradingDay', 'Plus', 1, 'TradingDay'];
+        //    }
+
+        //    return cnabsGenerateUIChain('ReplaceAppointDate_',
+        //        '如果当天不是{DateType-BindA}，向{DateDirection}移动到下{DateCount}个{DateType-BindB}', params);
+        //};
+
+        //设置时间
+        $scope.setTime = function (type) {
+            $scope.clearSetTimeDialogErrorMsg();
+            var guid='';
+            if (type == 'StartTime') {
+                if ($scope.currentStartTimeTimeSeriesGuid == '') {
+                    $scope.time_startTime.TimeOrigin= 'NewBuilt';
+                    $scope.time_startTime.NewBuiltType='Cycle';
+                    $scope.time_startTime.isCycle=true;
+                    $scope.time_startTime.firstTime='';
+                    $scope.time_startTime.cycleTime={ number: 1, unit: 'Day' };
+                    $scope.time_startTime.cycleEndTime='';
+                    $scope.time_startTime.dayList='';
+                    $scope.time_startTime.workTimeType = 'StartTime';
+                    if ($scope.time_startTime.works.length) {
+                        $scope.time_startTime.work = $scope.time_startTime.works[0].guid
+                    } else {
+                        $scope.time_startTime.work = '';
+                    }
+                    $scope.selectedRules_startTime = [];
+                    $scope.currentRule_startTime = '';
+                } else {
+                    guid = $scope.currentStartTimeTimeSeriesGuid;
+                    $scope.GetTimeOriginSet($scope.time_startTime, guid);
+                    $scope.GetTimeRuleSet(type, guid);
+                }
+
+            }
+            if (type == 'EndTime') {
+                if ($scope.currentEndTimeTimeSeriesGuid == '') {
+                    $scope.time_endTime.TimeOrigin = 'NewBuilt';
+                    $scope.time_endTime.NewBuiltType = 'Cycle';
+                    $scope.time_endTime.isCycle = true;
+                    $scope.time_endTime.firstTime = '';
+                    $scope.time_endTime.cycleTime = { number: 1, unit: 'Day' };
+                    $scope.time_endTime.cycleEndTime = '';
+                    $scope.time_endTime.dayList = '';
+                    $scope.time_endTime.workTimeType = 'StartTime';
+                    if ($scope.time_endTime.works.length) {
+                        $scope.time_endTime.work = $scope.time_endTime.works[0].guid;
+                    } else {
+                        $scope.time_endTime.work = '';
+                    }
+                    $scope.selectedRules_endTime = [];
+                    $scope.currentRule_endTime = '';
+                } else {
+                    guid = $scope.currentEndTimeTimeSeriesGuid;
+                    $scope.GetTimeOriginSet($scope.time_endTime, guid);
+                    $scope.GetTimeRuleSet(type, guid);
+                }
+
+            }
+
+
+            $scope.returnSettingView(type);
+            //var param = { projectGuid: cnabsGetUrlParam('projectGuid') }
+
+
+            cnabsDlgYesNo('divSet' + type, '时间设置', function () {
+                $scope.clearSetTimeDialogErrorMsg();
+                var item;
+                if (type == "StartTime") {
+                    item = $scope.time_startTime;
+                    itemRules = $scope.selectedRules_startTime;
+                    currentTimeSeriesGuid = $scope.currentStartTimeTimeSeriesGuid;
+                } else {
+                    item = $scope.time_endTime;
+                    itemRules = $scope.selectedRules_endTime;
+                    currentTimeSeriesGuid = $scope.currentEndTimeTimeSeriesGuid;
+                }
+                var timeSeriesGuid = $scope.GetTimeSeriesGuid(type);
+                // 保存时间来源
+                if (!$scope.SaveTimeOrigin(type, timeSeriesGuid,'setTime')) {
+                    return false;
+                };
+                //保存规则
+                if (!$scope.SaveTimeRule(type, timeSeriesGuid)) {
+                    return false;
+                };
+                if (type == "StartTime") {
+                    $scope.currentStartTimeTimeSeriesGuid = timeSeriesGuid;
+                    if ($scope.time_endTime.TimeOrigin == 'BaseSelfTime') {
+
+                        $scope.GetTimeRuleSet('EndTime', $scope.currentEndTimeTimeSeriesGuid, function () {
+                            var TimeSeriesGuid = $scope.GetTimeSeriesGuid('EndTime');
+                            // 保存时间来源
+                            if (!$scope.SaveTimeOrigin('EndTime', TimeSeriesGuid, 'setTime')) {
+                                return false;
+                            };
+                            //保存规则
+                            if (!$scope.SaveTimeRule('EndTime', TimeSeriesGuid)) {
+                                return false;
+                            };
+                            $scope.currentEndTimeTimeSeriesGuid = TimeSeriesGuid;
+                        });
+
+                    }
+                }
+                if (type == "EndTime") {
+                    $scope.currentEndTimeTimeSeriesGuid = timeSeriesGuid;
+                    if ($scope.time_startTime.TimeOrigin == 'BaseSelfTime') {
+
+                        $scope.GetTimeRuleSet('StartTime', $scope.currentStartTimeTimeSeriesGuid, function () {
+                            var TimeSeriesGuid = $scope.GetTimeSeriesGuid('StartTime');
+                            // 保存时间来源
+                            if (!$scope.SaveTimeOrigin('StartTime', TimeSeriesGuid, 'setTime')) {
+                                return false;
+                            };
+                            //保存规则
+                            if (!$scope.SaveTimeRule('StartTime', TimeSeriesGuid)) {
+                                return false;
+                            };
+                            $scope.currentStartTimeTimeSeriesGuid = TimeSeriesGuid;
+                        });
+
+                    }
+                }
+                var Html = '';
+                if (item.TimeOrigin == 'NewBuilt') {
+                    if (item.NewBuiltType == 'Cycle') {
+                        Html = "从<span class='cnabs_yellow variable'>" + item.firstTime + "</span>开始，每<span class='cnabs_yellow variable'>" + item.cycleTime.number + "</span><span>个</span>" + $scope.translation(item.cycleTime.unit) + "循环一次，截止到<span class='cnabs_yellow variable'>" + item.cycleEndTime + "</span>。</br>"
+                    } else {
+                        Html = item.dayList + '</br>';
+                    }
+                } else if (item.TimeOrigin == 'BaseExist') {
+                    var workTimeType = $scope.translation(item.workTimeType);
+                    var workName = '';
+                    $.each(item.works, function () {
+                        if (this.guid == item.work) {
+                            workName=this.name
+                        }
+                    })
+                    Html = "以<span class='cnabs_yellow variable'>" + workName + "</span>的" + workTimeType + "为基数"+'</br>'
+                } else if (item.TimeOrigin == 'BaseSelfTime') {
+                    if (type == 'StartTime') {
+                        Html = "基于截止时间" + '</br>'
+                    } else if (type == 'EndTime') {
+                        Html = "基于开始时间" + '</br>'
+                    }
+                }
+                $.each(itemRules, function (index) {
+                    var ruleHtml = '';
+                    if (this.RuleType == 'MoveAppointDate') {
+                        ruleHtml = '向' + $("#divSet" + type + " div.rule" + index + " .MoveAppointDate_TimeMoveDirection").val() + '移动<span class="cnabs_yellow variable">' + $("#divSet" + type + " div.rule" + index + " .MoveAppointDate_Interval").val() + '</span>个' + $("#divSet" + type + " div.rule" + index + " .MoveAppointDate_ConditionUnitType").val();
+                    } else if (this.RuleType == 'ReplaceAppointDate') {
+                        ruleHtml = '如果当天不是' + $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_ConditionUnitType").val() + '，向' + $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_TimeMoveDirection").val() + '移动到下<span class="cnabs_yellow variable">' + $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_Interval").val() + '</span>个' + $("#divSet" + type + " div.rule" + index + " .ReplaceAppointDate_ConditionUnitType").val();
+                    } else if (this.RuleType == 'FindAppointDate') {
+                        ruleHtml = '移动到当' + $("#divSet" + type + " div.rule" + index + " .FindAppointDate_PeriodType").val() + '第<span class="cnabs_yellow variable">' + $("#divSet" + type + " div.rule" + index + " .FindAppointDate_Interval").val() + '</span>个' + $("#divSet" + type + " div.rule" + index + " .FindAppointDate_ConditionUnitType").val();
+                    } else if (this.RuleType == 'RemoveRepeatDate') {
+                        ruleHtml = '去掉重复日期'
+                    }
+                    Html += $scope.translation(ruleHtml) + "</br>"
+                });
+                if (type == "StartTime") {
+                    $scope.task.startTime = Html;
+                } else {
+                    $scope.task.endTime = Html;
+                }
+                $scope.$apply();
+            }, 548, 641)
+        }
+        //查看时间
+        $scope.checkTime = function (type, reOpen) {
+            if (reOpen != 'reOpen') {
+                $scope.clearSetTimeDialogErrorMsg();
+            }
+            if (reOpen == 'reOpen' && type == 'StartTime' && $scope.currentStartTimeTimeSeriesGuid=='') {
+                cnabsMsgError('请先设置开始时间！');
+                return;
+            }
+            if (reOpen == 'reOpen' && type == 'EndTime' && $scope.currentEndTimeTimeSeriesGuid == '') {
+                cnabsMsgError('请先设置截止时间！');
+                return;
+            }
+            $('#divCheckTime').html('');
+            var timeSeriesGuid;
+            if (reOpen != 'reOpen') {
+                timeSeriesGuid = $scope.GetTimeSeriesGuid(type);
+                // 保存时间来源
+                if (!$scope.SaveTimeOrigin(type, timeSeriesGuid, 'checkTime')) {
+                    return;
+                };
+                //保存规则
+                if (!$scope.SaveTimeRule(type, timeSeriesGuid)) {
+                    return;
+                };
+            } else {
+                if(type=='StartTime'){
+                    timeSeriesGuid = $scope.currentStartTimeTimeSeriesGuid
+                };
+                if (type == 'EndTime') {
+                    timeSeriesGuid = $scope.currentEndTimeTimeSeriesGuid;
+                };
+                
+            }
+            var param = { timeSeriesGuid: timeSeriesGuid }
+            cnabsAjax('查看时间', '/TimeRuleTemplateWork/TestCalculateTime', param, function (data) {
+                if (data!=null && data.length) {
+                    var Html = data.replace(/,/g, '</br>')
+                    if (reOpen == 'reOpen') {
+                        $('#divCheckTime').html(Html);
+                        cnabsDlgOk('divCheckTime', '查看时间', null,395,500)
+                    } else {
+                        $("#" + type + "Results").html(Html);
+                        $("#" + type + "SettingView").css('display', 'none');
+                        $("#" + type + "ResultsView").css('display', 'block');
+                    }
+                } else {
+                    if (reOpen == 'reOpen') {
+                        $('#divCheckTime').html('没有符合条件的日期！');
+                        cnabsDlgOk('divCheckTime', '查看时间', null, 395,500)
+                    } else {
+                        $("#" + type + "Results").text('没有符合条件的日期！');
+                        $("#" + type + "SettingView").css('display', 'none');
+                        $("#" + type + "ResultsView").css('display', 'block');
+                    }
+                }
+            })
+        }
+        $scope.RuleHtml = function (currentRule) {
+            var newRule = { RuleType: currentRule };
+            if (currentRule == 'MoveAppointDate') {
+                newRule.TimeMoveDirection = 'Plus';
+                newRule.Interval = '1';
+                newRule.ConditionUnitType = "TradingDay"
+                //newRule.html = $scope.generateMoveAppointDate();
+                newRule.html = '向 <select class="formElement MoveAppointDate_TimeMoveDirection"><option value="Plus">未来</option><option value="Minus">过去</option></select> 移动 <input class="formElement MoveAppointDate_Interval" type="text" value="1"> 个 <select class="formElement MoveAppointDate_ConditionUnitType"><option value="TradingDay">交易日</option><option value="Day">自然日</option><option value="WorkingDay">工作日</option></select>'
+            } else if (currentRule == 'ReplaceAppointDate') {
+                newRule.TimeMoveDirection = 'Plus';
+                newRule.Interval = '1';
+                newRule.ConditionUnitType = "TradingDay"
+                //newRule.html = $scope.generateReplaceAppointDate();
+                newRule.html = '如果当天不是 <select class="formElement ReplaceAppointDate_ConditionUnitType" onchange="bindSameValue(' + 1 + ')"><option value="TradingDay">交易日</option><option value="Day">自然日</option><option value="WorkingDay">工作日</option></select>，向 <select class="formElement ReplaceAppointDate_TimeMoveDirection"><option value="Plus">未来</option><option value="Minus">过去</option></select> 移动到下 <input class="formElement ReplaceAppointDate_Interval" type="text" value="1"> 个 <select class="formElement ReplaceAppointDate_SecondConditionUnitType" onchange="bindSameValue(' + 2 + ')"><option value="TradingDay">交易日</option><option value="Day">自然日</option><option value="WorkingDay">工作日</option></select>'
+            } else if (currentRule == 'FindAppointDate') {
+                newRule.PeriodType = 'Month'
+                newRule.Interval = '1';
+                newRule.ConditionUnitType = "Day"
+                //newRule.html = $scope.generateFindAppointDate();
+                newRule.html = '移动到当 <select class="formElement FindAppointDate_PeriodType"><option value="Month">月</option><option value="Week">周</option><option value="Year">年</option></select> 第 <input class="formElement FindAppointDate_Interval" type="text" value="1"> 个 <select class="formElement FindAppointDate_ConditionUnitType"><option value="Day">自然日</option><option value="TradingDay">交易日</option><option value="WorkingDay">工作日</option></select>'
+            } else if (currentRule == 'RemoveRepeatDate') {
+                newRule.html = '去掉重复日期'
+            }
+            return newRule;
+        }
+        //添加时间规则（可重复）
+        $scope.SetRule = function (type) {
+            var currentRule; var selectedRules;
+            if (type == "StartTime") {
+                currentRule = $scope.currentRule_startTime;
+                selectedRules = $scope.selectedRules_startTime;
+            } else {
+                currentRule = $scope.currentRule_endTime;
+                selectedRules = $scope.selectedRules_endTime;
+            }
+            if (currentRule == '') {
+                return
+            };
+            var isRuleExist = false;
+            //$.each(selectedRules, function () {
+            //    if (this.RuleType == currentRule) {
+            //        isRuleExist = true;
+            //        cnabsMsgError("该规则已存在！");
+            //    }
+            //})
+            if (!isRuleExist) {
+                var newRule=$scope.RuleHtml(currentRule);
+                selectedRules.push(newRule);
+            }
+        }
+        //删除时间规则
+        $scope.removeRule = function (type, ruleType,i) {
+            if (type == "StartTime") {
+                var removeRuleIndex = null;
+                $.each($scope.selectedRules_startTime, function (index, item) {
+                    if (item.RuleType == ruleType && i==index) {
+                        removeRuleIndex = index;
+                    }
+                })
+                $scope.selectedRules_startTime.splice(removeRuleIndex, 1);
+                if (!$scope.selectedRules_startTime.length) {
+                    $scope.currentRule_startTime = '';
+                }
+            } else {
+                var removeRuleIndex = null;
+                $.each($scope.selectedRules_endTime, function (index, item) {
+                    if (item.RuleType == ruleType && i == index) {
+                        removeRuleIndex = index;
+                    }
+                })
+                $scope.selectedRules_endTime.splice(removeRuleIndex, 1);
+                if (!$scope.selectedRules_endTime.length) {
+                    $scope.currentRule_endTime = '';
+                }
+            }
+        }
+        //添加前置工作
+        $scope.addPreTask = function () {
+            $scope.WorkTip($scope.availablePreviousTask);
+            cnabsDlgYesNo('addPreTaskDialog', '添加前置工作', function () {
+                var selectPreTaskName = $('#addPreTaskDialog select option:selected').text();
+                if (selectPreTaskName == '无' && $scope.availablePreviousTask == '') {
+                    return;
+                }
+                var isRepeated = false;
+                $.each($scope.task.preTasks, function (index,item) {
+                    if (item.guid == $scope.availablePreviousTask) {
+                        isRepeated = true;
+                    }
+                })
+                if (isRepeated) {
+                    cnabsMsgError('该工作已经是新工作的前置工作，不能重复选择！')
+                    return false;
+                }
+                $scope.task.preTasks.push({ guid: $scope.availablePreviousTask, name: selectPreTaskName })
+                $scope.$apply();
+            }, 200, 300)
+        }
+        //删除前置工作
+        $scope.deletePreTask = function (guid,name) {
+            cnabsAutoDlgYesNo(null, '删除前置工作', function () {
+                var deletePreTaskIndex=null
+                $.each($scope.task.preTasks, function (index,item) {
+                    if (item.guid == guid) {
+                        deletePreTaskIndex = index;
+                    }
+                })
+                $scope.task.preTasks.splice(deletePreTaskIndex, 1)
+                $scope.$apply();
+            }, '<div>确认删除' + name + '[' + guid + ']' + '？</div>')
+        }
+        $scope.resetTime = function (type) {
+            if (type == 'StartTime') {
+                $scope.currentStartTimeTimeSeriesGuid = '';
+                $scope.task.startTime = '-';
+                $scope.time_startTime.TimeOrigin = 'NewBuilt';
+                if ($scope.time_endTime.TimeOrigin == 'BaseSelfTime') {
+                    $scope.currentEndTimeTimeSeriesGuid = '';
+                    $scope.task.endTime = '-';
+                    $scope.time_endTime.TimeOrigin = 'NewBuilt';
+                }
+            }
+            if (type == 'EndTime') {
+                $scope.currentEndTimeTimeSeriesGuid = '';
+                $scope.task.endTime = '-';
+                $scope.time_endTime.TimeOrigin = 'NewBuilt';
+                if ($scope.time_startTime.TimeOrigin == 'BaseSelfTime') {
+                    $scope.currentStartTimeTimeSeriesGuid = '';
+                    $scope.task.startTime = '-';
+                    $scope.time_startTime.TimeOrigin = 'NewBuilt';
+                }
+            }
+        }
+    })
+</script>
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/DesignProduct">设计产品</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow" href="/">修改工作</span>
+    </header>
+    <div ng-app="EditTaskView" ng-controller="EditTaskCtrl" ng-cloak>
+        <div class="projectNamePrompt" style="padding-left:20px;">
+            <span class="currentProject">当前产品：</span>
+            <a target="_blank" href="../../Schedule?projectGuid=@Model.Project.Guid" style="color:#ffc446;"><span class="currentProjectName">@Model.Project.ProjectName</span></a>
+        </div>
+        <div class="label">
+            <span>{{viewtitle}}</span>
+            <span class="createTaskLink" id="createTaskLink" ng-click="ShowOrHideCreateTaskView()" name="taskTable"><span style="float:right;margin-right:20px;">{{createTaskLinkText}}</span><img ng-src="{{createTaskLinkArrowSrc}}" /></span>
+        </div>
+        <div class="taskTableView" ng-show="taskTableView">
+            <div class="panel">
+                <div class="tableTitleBox">
+                    <div class="addButton">
+                        @*<span id="btnDerivedTaskSelected" class="buttonText left" style="margin-right:15px;">选择同类工作</span>*@
+                        <a style="outline:none; margin-right:15px; color:#ffc446;">
+                            <span id="btnSameNameTaskSelected">选择同名工作</span>
+                        </a>
+                        <a style="outline:none; margin-right:15px; color:#ffc446;">
+                            <span id="btnShowSelected">只显示已选择工作</span>
+                        </a>
+                        @if (Model.HasCreateProjectAuthority)
+                        {
+                            <a style="outline:none; margin-right:15px; color:#ffc446;">
+                                <span id="btnCheckAnnualTime">年度工作日期检查</span>
+                            </a>
+                            <a style="outline:none; margin-right:15px; color:#ffc446;">
+                                <span id="btnRemoveAllTasks">删除所有工作</span>
+                            </a>
+                            <a style="outline:none; margin-right:15px; color:#ffc446;">
+                                <span id="btnGenerateTasks">使用模板生成工作</span>
+                            </a>
+                            <a style="outline:none; margin-right:15px; color:#ffc446;">
+                                <span id="btnRemoveSelectedTasks">删除已选择工作</span>
+                            </a>
+                            <a style="outline:none; margin-right:15px; color:#ffc446;">
+                                <span id="btnFinishTasks" title="快速完成已选择工作中的简单工作（没有扩展工作，且前置工作不包含扩展工作）">快速完成已选择工作</span>
+                            </a>
+                            <a style="outline:none; margin-right:15px; color:#ffc446;">
+                                <span id="btnSetTasksPeriod">设置偿付期</span>
+                            </a>
+                        }
+                        @*<a style="outline:none; color:#ffc446; float:right;">
+                            <span id="btnCreateTask" class="ui-icon ui-icon-plusthick smallImageSize left buttonImage"></span>
+                            <span id="txtCreateTask">创建工作</span>
+                        </a>*@
+                    </div>
+                    <div>
+                        <span style="float:right;" id="btnSelectedStatus">已选择 0/@Model.Tasks.Count()个工作</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px;">
+                    <table class="operationTable hover" style="width:100%;" id="TaskListView">
+                        <tr class="toolbar">
+                            <th><input id="selectAll" style="cursor:pointer;" type="checkbox" name="" value="all" /></th>
+                            <th>工作名称</th>
+                            <th>工作代码</th>
+                            <th>开始时间</th>
+                            <th>截止时间</th>
+                            <th>前置工作</th>
+                            <th>工作类型</th>
+                            <th>操作</th>
+                        </tr>
+                        @foreach (var task in Model.Tasks)
+                        {
+                            <tr class="EditTask_taskTableTr" taskextension="@(task.TaskExtension == null ? "-" : task.TaskExtension.Type)">
+                                <td class="text-center"><input id="@task.ShortCode" class="checkbox" style="cursor:pointer;" type="checkbox" name="" value="@task.ShortCode" /></td>
+                                <td class="text-center cnabs_yellow cnabs_pointer" onclick="taskLink('@("/Task?shortCode=" + task.ShortCode)')">
+                                   @task.TaskName
+                                </td>
+                                <td class="text-center">@task.ShortCode</td>
+                                <td class="text-center">@task.StartTime</td>
+                                <td class="text-center">@task.EndTime</td>
+                                <td class="divOperations text-center">
+                                    @if (task.PrevTaskShortCodeArray.Count == 0)
+                                    {
+                                        <text>-</text>
+                                    }
+                                    else
+                                    {
+                                        var labelName = "展开" + task.PrevTaskShortCodeArray.Count + "项";
+                                        <div class="projectOperationsbox" style="cursor:pointer;">
+                                            <span style="color:#ffc000;">@labelName</span>@*（@task.PrevTaskShortCodeArray.Count）*@
+                                            <text style="color: #ffc446;" class="ui-icon ui-icon-carat-1-s ImageSize"></text>
+                                            <div class="project-operations">
+                                                @{
+                                        var tupleList = new List<Tuple<string, string, int>>();
+                                        for (int index = task.PrevTaskShortCodeArray.Count - 1; index >= 0; --index)
+                                        {
+                                            var prevTaskShortCode = task.PrevTaskShortCodeArray[index];
+                                            var prevTaskShortName = task.PrevTaskNameArray[index];
+                                            var lineNumber = Model.Tasks.Count;
+
+                                            for (int line = 0; line < Model.Tasks.Count; ++line)
+                                            {
+                                                if (Model.Tasks[line].ShortCode == prevTaskShortCode)
+                                                {
+                                                    lineNumber = line;
+                                                    break;
+                                                }
+                                            }
+
+                                            tupleList.Add(Tuple.Create(prevTaskShortCode, prevTaskShortName, lineNumber));
+                                        }
+
+                                        tupleList.Sort((l, r) => l.Item3.CompareTo(r.Item3));
+                                        foreach (var tuple in tupleList)
+                                        {
+                                            <a style="color:#ff6d10; display:block;" href="/Task?shortCode=@tuple.Item1" target="_blank">@tuple.Item2</a>
+                                        }
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                                <td class="text-center">@(task.TaskExtension == null ? "-" : Toolkit.ConvertTaskExType(task.TaskExtension.Type))</td>
+                                <td class="text-center EditTask_edit" id="editbtn_@task.ShortCode">
+                                    <span>修改</span>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="createTaskView panel" ng-show="createTaskView">
+            <div class="lineElementHasForm" style="padding-top:10px;">
+                <span class="elementTitle">工作名称</span>
+                <input class="elementInput" type="text" name="name" ng-model="task.name" />
+                <span class="errorMsg cnabs_red" ng-show="invalidCreateTaskName">
+                    <span class="left">*</span>
+                    <span class="left">请填写工作名称</span>
+                </span>
+            </div>
+            <div class="lineElement">
+                <span class="elementTitle">开始时间</span>
+                <span class="elementContent" ng-bind-html="task.startTime|trustHtml"></span>
+                <span class="cnabs_btn right" ng-click="resetTime('StartTime')">重置</span>
+                <span class="cnabs_btn right" style="margin-right:10px;" ng-click="setTime('StartTime')">设置</span>
+                <span class="cnabs_btn right" style="margin-right:10px;" ng-click="checkTime('StartTime','reOpen')">查看</span>
+            </div>
+            <div class="lineElement">
+                <span class="elementTitle">截止时间</span>
+                <span class="elementContent" ng-bind-html="task.endTime|trustHtml"></span>
+                <span class="cnabs_btn right" ng-click="resetTime('EndTime')">重置</span>
+                <span class="cnabs_btn right" style="margin-right:10px;" ng-click="setTime('EndTime')">设置</span>
+                <span class="cnabs_btn right" style="margin-right:10px;" ng-click="checkTime('EndTime','reOpen')">查看</span>
+                <span class="errorMsg cnabs_red" ng-show="invalidCreateTaskEndTime">
+                    <span class="left">*</span>
+                    <span class="left">请设置截止时间</span>
+                </span>
+            </div>
+            <div class="lineElementHasForm">
+                <span class="elementTitle">前置工作</span>
+                <table class="infoTable left" style="min-width:352px;width:352px;margin-top:0px;">
+                    <tr ng-repeat="preTask in task.preTasks">
+                        <td class="text-left"><div class="preTask">{{$index+1+"."+preTask.name}}</div></td>
+                        <td class="text-center deletePreTask cnabs_red" ng-click="deletePreTask(preTask.guid,preTask.name)">删除</td>
+                    </tr>
+                </table>
+                <span class="cnabs_btn right" ng-click="addPreTask()">增加前置工作</span>
+            </div>
+            <div class="lineElementHasForm" style="padding-top:20px;">
+                <span class="elementTitle">扩展类型</span>
+                <select class="elementSelect" ng-model="task.type">
+                    <option value="None">无</option>
+                    <option value="AssetCashflow">资产端现金流（AssetCashflow）</option>
+                    <option value="Cashflow">证券端现金流（Cashflow）</option>
+                    <option value="RecyclingPaymentDate">确认账户余额</option>
+                    <option value="Document">文档上传下载</option>
+                    @*<option value="CheckList">工作要点检查</option>*@
+                </select>
+            </div>
+            <div class="lineElementHasForm" style="padding-top:20px;">
+                <span class="elementTitle">工作目标</span>
+                <textarea class="elementTextarea" ng-model="task.target">{{task.target}}</textarea>
+            </div>
+            <div class="lineElementHasForm" style="padding-top:20px;">
+                <span class="elementTitle">工作描述</span>
+                <textarea class="elementTextarea" ng-model="task.description">{{task.description}}</textarea>
+            </div>
+            <div class="divCreateTaskBtn">
+                <div class="cnabs_btn_purple" ng-click="createTask()">确定创建</div>
+            </div>
+        </div>
+        <div id="Alltasks" style="background:black;">
+
+        </div>
+        <!--Dialog begin-->
+        <div class="module scenario" style="display:none; margin-left: 10px;">
+            <div id="divSetStartTime" style="padding:20px 16px;">
+                <div id="StartTimeSettingView">
+                    <div class="lineElementInDialog">
+                        <span class="lineElementTitleInDialog">来源</span>
+                        <select class="lineElementSelectInDialog" ng-model="time_startTime.TimeOrigin" ng-change="changeTimeOrigin('StartTime')">
+                            <option value="NewBuilt">新建</option>
+                            <option value="BaseExist">基于已有工作</option>
+                            <option ng-if="currentEndTimeTimeSeriesGuid&&time_endTime.TimeOrigin != 'BaseSelfTime'" value="BaseSelfTime">基于截止时间</option>  
+                        </select>
+                    </div>
+                    <div class="divNew" ng-show="time_startTime.TimeOrigin=='NewBuilt'">
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">模式</span>
+                            <select class="lineElementSelectInDialog" ng-model="time_startTime.NewBuiltType" ng-change="changeNewBuiltType('StartTime')">
+                                <option value="Cycle">循环</option>
+                                <option value="Input">输入</option>
+                            </select>
+                        </div>
+                        <div class="divCycle" ng-show="time_startTime.isCycle">
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">第一个</span>
+                                <input class="lineElementInputInDialog date" type="text" name="name" ng-model="time_startTime.firstTime" />
+                                <span class="errorMsg cnabs_red" ng-show="isVaildStartTimeFirstTime" ng-cloak>
+                                    <span class="left">*</span>
+                                    <span class="left">{{StartTimeFirstTimeErrorMsg}}</span>
+                                </span>
+                            </div>
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">循环周期</span>
+                                <input class="lineElementInputInDialog" style="width:52px;" type="text" name="name" ng-model="time_startTime.cycleTime.number" />
+                                <select class="lineElementSelectInDialog" style="width:134px;margin-left:10px;" ng-model="time_startTime.cycleTime.unit">
+                                    <option value="Day">天</option>
+                                    <option value="Month">月</option>
+                                    <option value="Year">年</option>
+                                </select>
+                                <span class="errorMsg cnabs_red" ng-show="isVaildStartTimeCycleTime">
+                                    <span class="left">*</span>
+                                    <span class="left">{{StartTimeCycleTimeErrorMsg}}</span>
+                                </span>
+                            </div>
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">截止到</span>
+                                <input class="lineElementInputInDialog date" type="text" name="name" ng-model="time_startTime.cycleEndTime" />
+                                <span class="errorMsg cnabs_red" ng-show="isVaildStartTimeCycleEndTime" ng-cloak>
+                                    <span class="left">*</span>
+                                    <span class="left">{{StartTimeCycleEndTimeErrorMsg}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="divInput" ng-show="!time_startTime.isCycle">
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">日期列表</span>
+                                <textarea class="lineElementTextareaInDialog" ng-model="time_startTime.dayList" placeholder="例如：2017-05-10,2017-09-08"></textarea>
+                                <span class="errorMsg cnabs_red" ng-show="isVaildStartTimeDayList" ng-cloak>
+                                    <span class="left">*</span>
+                                    <span class="left" style="width:265px;">{{StartTimeDayListErrorMsg}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divBaseExist" ng-show="time_startTime.TimeOrigin=='BaseExist'">
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">工作</span>
+                            <select class="lineElementSelectInDialog" ng-model="time_startTime.work" ng-change="WorkTip(time_startTime.work)">
+                                <option selected="selected" value="">无</option>
+                                <option ng-repeat="work in time_startTime.works" value="{{work.guid}}">{{work.name}}</option>
+                            </select>
+                            <span class="errorMsg cnabs_red beginTimeErrorMsg" ng-show="isVaildPrevTask" ng-cloak>
+                                <span class="left">*</span>
+                                <span class="left" style="width:265px;">{{PrevTaskErrorMsg}}</span>
+                            </span>
+                            <div class="divDateTip">
+                                <em class="ui-icon ui-icon-help smallImageSize fixedColor" style="font-size:14px;margin-left:5px;"></em>
+                            </div>
+                        </div>
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">时间</span>
+                            <select class="lineElementSelectInDialog" ng-model="time_startTime.workTimeType">
+                                <option value="StartTime">开始时间</option>
+                                <option value="EndTime">截止时间</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="divRules">
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">规则</span>
+                            <span class="cnabs_btn right" ng-click="checkTime('StartTime')">查看</span>
+                            <select class="lineElementSelectInDialog" ng-model="currentRule_startTime" ng-change="SetRule('StartTime')">
+                                <option value="">无</option>
+                                <option value="MoveAppointDate">移动</option>
+                                <option value="ReplaceAppointDate">按条件移动</option>
+                                <option value="FindAppointDate">按时间范围移动</option>
+                                <option value="RemoveRepeatDate">去掉重复日期</option>
+                            </select>
+                            <span class="errorMsg cnabs_red" ng-show="false">
+                                <span class="left">*</span>
+                                <span class="left">请填写截止时间，如2017-05-10</span>
+                            </span>
+                        </div>
+                        <div class="lineElementInDialog">
+                            <table class="infoTable left" style="min-width:352px;width:352px;margin-top:0px;margin-left:75px;">
+                                <tr ng-repeat="rule in selectedRules_startTime">
+                                    <td class="text-left ruleDescription"><div class="{{'rule'+$index}}"  ng-bind-html="rule.html|trustHtml"></div></td>
+                                    <td class="text-center deleteRule cnabs_red" ng-click="removeRule('StartTime',rule.RuleType,$index)">删除</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="StartTimeResultsView" style="overflow:hidden; display:none;">
+                    <div class="cnabs_btn right" ng-click="returnSettingView('StartTime')">返回</div>
+                    <div id="StartTimeResults" style="float:left;width:518px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="module scenario" style="display:none; margin-left: 10px;">
+            <div id="divSetEndTime" style="padding:20px 16px;">
+                <div id="EndTimeSettingView">
+                    <div class="lineElementInDialog">
+                        <span class="lineElementTitleInDialog">来源</span>
+                        <select class="lineElementSelectInDialog" ng-model="time_endTime.TimeOrigin" ng-change="changeTimeOrigin('EndTime')">
+                            <option value="NewBuilt">新建</option>
+                            <option value="BaseExist">基于已有工作</option>
+                            <option ng-if="currentStartTimeTimeSeriesGuid&&time_startTime.TimeOrigin != 'BaseSelfTime'" value="BaseSelfTime">基于开始时间</option> 
+                        </select>
+                    </div>
+                    <div class="divNew" ng-show="time_endTime.TimeOrigin=='NewBuilt'">
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">模式</span>
+                            <select class="lineElementSelectInDialog" ng-model="time_endTime.NewBuiltType" ng-change="changeNewBuiltType('EndTime')">
+                                <option value="Cycle">循环</option>
+                                <option value="Input">输入</option>
+                            </select>
+                        </div>
+                        <div class="divCycle" ng-show="time_endTime.isCycle">
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">第一个</span>
+                                <input class="lineElementInputInDialog date" type="text" name="name" ng-model="time_endTime.firstTime" />
+                                <span class="errorMsg cnabs_red" ng-show="isVaildEndTimeFirstTime" ng-cloak>
+                                    <span class="left">*</span>
+                                    <span class="left">{{EndTimeFirstTimeErrorMsg}}</span>
+                                </span>
+                            </div>
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">循环周期</span>
+                                <input class="lineElementInputInDialog" style="width:52px;" type="text" name="name" ng-model="time_endTime.cycleTime.number" />
+                                <select class="lineElementSelectInDialog" style="width:134px;margin-left:10px;" ng-model="time_endTime.cycleTime.unit">
+                                    <option value="Day">天</option>
+                                    <option value="Month">月</option>
+                                    <option value="Year">年</option>
+                                </select>
+                                <span class="errorMsg cnabs_red" ng-show="isVaildEndTimeCycleTime">
+                                    <span class="left">*</span>
+                                    <span class="left">{{EndTimeCycleTimeErrorMsg}}</span>
+                                </span>
+                            </div>
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">截止到</span>
+                                <input class="lineElementInputInDialog date" type="text" name="name" ng-model="time_endTime.cycleEndTime" />
+                                <span class="errorMsg cnabs_red" ng-show="isVaildEndTimeCycleEndTime" ng-cloak>
+                                    <span class="left">*</span>
+                                    <span class="left">{{EndTimeCycleEndTimeErrorMsg}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="divInput" ng-show="!time_endTime.isCycle">
+                            <div class="lineElementInDialog">
+                                <span class="lineElementTitleInDialog">日期列表</span>
+                                <textarea class="lineElementTextareaInDialog" ng-model="time_endTime.dayList" placeholder="例如：2017-05-10,2017-09-08"></textarea>
+                                <span class="errorMsg cnabs_red" ng-show="isVaildEndTimeDayList" ng-cloak>
+                                    <span class="left">*</span>
+                                    <span class="left" style="width:265px;">{{EndTimeDayListErrorMsg}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divBaseExist" ng-show="time_endTime.TimeOrigin=='BaseExist'">
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">工作</span>
+                            <select class="lineElementSelectInDialog" ng-model="time_endTime.work" ng-change="WorkTip(time_endTime.work)">
+                                <option selected="selected" value="">无</option>
+                                <option ng-repeat="work in time_endTime.works" value="{{work.guid}}">{{work.name}}</option>
+                            </select>
+                            <span class="errorMsg cnabs_red endTimeErrorMsg" ng-show="isVaildPrevTask" ng-cloak>
+                                <span class="left">*</span>
+                                <span class="left" style="width:265px;">{{PrevTaskErrorMsg}}</span>
+                            </span>
+                            <div class="divDateTip">
+                                <em class="ui-icon ui-icon-help smallImageSize fixedColor" style="font-size:14px;margin-left:5px;"></em>
+                            </div>
+                            
+                        </div>
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">时间</span>
+                            <select class="lineElementSelectInDialog" ng-model="time_endTime.workTimeType">
+                                <option value="StartTime">开始时间</option>
+                                <option value="EndTime">截止时间</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="divRules">
+                        <div class="lineElementInDialog">
+                            <span class="lineElementTitleInDialog">规则</span>
+                            <span class="cnabs_btn right" ng-click="checkTime('EndTime')">查看</span>
+                            <select class="lineElementSelectInDialog" ng-model="currentRule_endTime" ng-change="SetRule('EndTime')">
+                                <option value="">无</option>
+                                <option value="MoveAppointDate">移动</option>
+                                <option value="ReplaceAppointDate">按条件移动</option>
+                                <option value="FindAppointDate">按时间范围移动</option>
+                                <option value="RemoveRepeatDate">去掉重复日期</option>
+                            </select>
+                            <span class="errorMsg cnabs_red" ng-show="false">
+                                <span class="left">*</span>
+                                <span class="left">请填写截止时间，如2017-05-10</span>
+                            </span>
+                        </div>
+                        <div class="lineElementInDialog">
+                            <table class="infoTable left" style="min-width:352px;width:352px;margin-top:0px;margin-left:75px;">
+                                <tr ng-repeat="rule in selectedRules_endTime">
+                                    <td class="text-left ruleDescription"><div class="{{'rule'+$index}}"  ng-bind-html="rule.html|trustHtml"></div></td>
+                                    <td class="text-center deleteRule cnabs_red" ng-click="removeRule('EndTime',rule.RuleType,$index)">删除</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="EndTimeResultsView" style="overflow:hidden;display:none;">
+                    <div class="cnabs_btn right" ng-click="returnSettingView('EndTime')">返回</div>
+                    <div id="EndTimeResults" style="float:left;width:518px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="module scenario" style="display:none; margin-left: 10px;">
+            <div id="divCheckTime" class="divCheckTime">
+                
+            </div>
+        </div>
+        <div class="module scenario" style="display:none; margin-left: 10px;">
+            <div id="addPreTaskDialog" class="addPreTaskDialog">
+                <select class="availablePreviousTaskSelect" ng-model="availablePreviousTask" ng-change="WorkTip(availablePreviousTask)">
+                    <option selected="selected" value="">无</option>
+                    <option ng-repeat="x in availablePreviousTasks" value="{{x.guid}}">{{x.name}}</option>
+                </select>
+                <div class="divDateTip">
+                    <em class="ui-icon ui-icon-help smallImageSize fixedColor" style="font-size:14px;margin-left:5px;margin-top:3px;"></em>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:none;">
+            <div id="ModifyStartEndTime">
+                <div id="ModifyNumber"></div>
+                <div style="margin-left:50px;margin-top:20px;">
+                    <span class="cnabs_dialog_content_title">修改方式</span>
+                    <select id="btnChangeTimeView" class="cnabs_dialog_input_wid">
+                        <option value="modifyTimeByAppointed">按日期修改</option>
+                        <option value="modifyTimeByCondition">按条件修改</option>
+                        <option id="modifyTimeByStandardOption" value="modifyTimeByStandard">按基准工作修改</option>
+                    </select>
+                </div>
+                <div style="margin-left:50px;">
+                    <div id="divModifyTime" style="display:block;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="module scenario" style="display:none; margin-left: 10px;">
+            <div id="divCreateTask">
+                <dl>
+                    1、创建一个工作
+                    </br>
+                    2、创建多个工作
+                    </br>
+                    2、使用模板生成工作
+                    </br>
+                </dl>
+            </div>
+        </div>
+        <div class="module scenario" style="display:none; margin-left: 10px;">
+            <div id="divTaskNameIdDeallineState">
+                <div hidden="hidden" id="projectGuid">@Model.Project.Guid</div>
+                <div><span>是否确定修改产品</span><span id="am_productName"></span><span>中的以下</span><span id="am_taskCount"></span><span>工作：</span></div>
+                <div id="TaskNameIdDeallineState" style="margin-top:10px;word-break: break-all;line-height:20px;">
+                </div>
+            </div>
+        </div>
+        <div id="modifyDocument" style="text-align: center;" hidden="hidden">
+            <input type="button" style="margin-left:10px;width:90px;max-width:100px;float:right;" class="button" value="增加文档" onclick="btnAddTaskExtensionDocument()">
+            <input type="button" style="max-width:100px; float:right; width:90px;" class="button" value="移除所有文档" onclick="btnRemoveTaskExtensionDocuments()">
+            <div id="documentListView" style="margin-bottom:30px;">
+                <table class="operationTable hover" style="width:100%;margin-bottom:10px"></table>
+            </div>
+        </div>
+        <div class="module scenario" style="display:none;">
+            <div id="divRemove">
+                <br />
+                <div id="removeMessage" style="text-align:left; width:250px;margin:0 auto;">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="errorTaskTable" style="text-align: center;" hidden="hidden">
+            <span id="checkInformation" style="float:left;"></span>
+            <a style="color:#ffc446; float:right;" id="correctErrorTasks"><span>一键校正</span></a>
+            <table class="operationTable hover" style="width:100%;margin-bottom:10px" id="errorTaskListView">
+	    </table>
+        </div>
+
+        <div id="CheckListTable" style="text-align: center;" hidden="hidden">
+            <input type="button" class="button" style=" float:right;width:100px;max-width:110px;" onclick="btnAddTaskExtensionCheckList()" value="添加检查项" />
+            <input type="button" class="button" style=" float:right;width:100px;max-width:110px;margin-right:10px;" onclick="btnDeleteTaskExCheckListGroup()" value="删除检查项分组" />
+            <div id="checkListView">
+                <table class="operationTable hover" style="width:100%;margin-bottom:10px"></table>
+            </div>
+        </div>
+        <div style="display:none;">
+            <div id="addCheckItem">
+                <div id="modifyCheckListMessage"></div>
+                <div style="margin-left:50px;">
+                    <span class="cnabs_dialog_content_title">修改方式</span>
+                    <select id="btnChangeCheckItemTypeView" class="cnabs_dialog_input_wid">
+                        <option value="oldGroup">向现有分组添加工作要点</option>
+                        <option value="newGroup">新建分组并添加工作要点</option>
+                    </select>
+                </div>
+                <div style="margin-left:50px;">
+                    <div id="divAddCheckItem" style="display:block;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="DateTip">
+            <div>开始时间：</div>
+            <div class="divBeginTime"></div>
+            <div>截止时间：</div>
+            <div class="divEndTime"></div>
+        </div>
+        <!--Dialog end-->
+    </div>
+</div>
+
+<script>
+    function taskLink(url) {
+        window.open(url);
+    }
+    var previousTaskPrefix = "[前置] ";
+    $("#taskTablebody tr .divOperations").mouseover(function () {
+        var preTaskArray = $(this).children(".projectOperationsbox").children(".project-operations").children("a");
+        var morePreTask = $(this).children(".projectOperationsbox").children("span");
+        var morePreTaskImg = $(this).children(".projectOperationsbox").children("text");
+        if (preTaskArray.length != 0) {
+            for (var i = 0; i < preTaskArray.length; i++) {
+                var preTaskShortCode = preTaskArray[i].href.split("=")[1];
+                var preTaskName = $("#" + preTaskShortCode).children(".TaskName").children("a");
+                if (preTaskName.length != 0) {
+                    var taskName = preTaskName.html();
+                    if (taskName.indexOf(previousTaskPrefix) == -1) {
+                        preTaskName.html(previousTaskPrefix + taskName);
+                    };
+                    preTaskName.css({
+                        'color': "#ff6d10"
+                    });
+                    morePreTask.css({
+                        'color': "#ff6d10"
+                    });
+                    morePreTaskImg.css("color", "#ff6d10");
+                }
+            };
+        }
+    })
+    $("#taskTablebody tr .divOperations").mouseout(function () {
+        var preTaskArray = $(this).children(".projectOperationsbox").children(".project-operations").children("a");
+        var morePreTask = $(this).children(".projectOperationsbox").children("span");
+        var morePreTaskImg = $(this).children(".projectOperationsbox").children("text");
+        if (preTaskArray.length != 0) {
+            for (var i = 0; i < preTaskArray.length; i++) {
+                var preTaskShortCode = preTaskArray[i].href.split("=")[1];
+                var preTaskName = $("#" + preTaskShortCode).children(".TaskName").children("a");
+                if (preTaskName.length != 0) {
+                    var taskName = preTaskName.html();
+                    if (taskName.indexOf(previousTaskPrefix) != -1) {
+                        preTaskName.html(taskName.substr(previousTaskPrefix.length, taskName.length - previousTaskPrefix.length));
+                    };
+                    preTaskName.css({
+                        'color': "#ffc446",
+                    });
+                    morePreTask.css({
+                        'color': "#ffc446"
+                    });
+                    morePreTaskImg.css("color", "#ffc446");
+                }
+            };
+        }
+    })
+
+    //只显示已选择&显示全部
+    $("#btnShowSelected").click(function () {
+        ShowTasks(!IsOnlyShowSelectedTasks());
+    })
+
+    //表头脱离文档流效果
+
+    var toolbarOffsetTop = 238;
+    tableHeaderFix();
+    function tableHeaderFix() {
+        var pageScrollTop = $(window).scrollTop();
+        var tableclothLeft = $(".tablecloth")[0].offsetLeft;
+        if (pageScrollTop >= toolbarOffsetTop) {
+            $(".toolbar").css({
+                "background": "#47423C",
+                "width": 985 + "px",
+                "position": "fixed",
+                "top": 26 + "px",
+                "left": tableclothLeft + "px",
+                "paddingLeft": "20px",
+                "paddingRight": "5px",
+                "marginLeft": "20px",
+                "marginRight": "10px",
+                "z-index": "100"
+            });
+            $(".am_section").css({
+                "paddingTop": "32px"
+            });
+        } else {
+            $(".toolbar").css({
+                "background": "transparent",
+                "width": 1020 + "px",
+                "position": "static",
+                "padding": 0 + "px",
+                "marginLeft": 0 + "px",
+                "marginRight": 0 + "px",
+                "z-index": "0"
+            });
+            $(".am_section").css({
+                "paddingTop": "0px"
+            });
+        }
+    }
+
+
+    $(window).scroll(function () {
+        tableHeaderFix();
+    })
+    $(window).resize(function () {
+        tableHeaderFix();
+    })
+
+    //选择同名工作-按钮
+    $("#btnSameNameTaskSelected").click(function () {
+        var selectTaskName = [];
+        $(".EditTask_taskTableTr").each(function (i) {
+            if ($(this).is(".selected")) {
+                selectTaskName.push($(this)[0].children[1].innerHTML);
+            }
+        })
+
+        if (selectTaskName.length == 0) {
+            cnabsAlert("必须选择一个工作");
+            return;
+        }
+        selectTaskName = cnabsGetUnique(selectTaskName);
+        var selectNum = 0;
+        $(".EditTask_taskTableTr").each(function (i) {
+            var shortCode = $(this)[0].firstElementChild.firstElementChild.id;
+            if (selectTaskName.indexOf($(this)[0].children[1].innerHTML) >= 0) {
+                SelectOneTask(shortCode);
+                ++selectNum;
+            }
+        })
+    })
+
+    //选择同类工作-按钮
+    $("#btnDerivedTaskSelected").click(function () {
+        var shortCodes = GetSelectedShortCodes();
+        if (shortCodes.length != 1) {
+            cnabsAlert("当前已选择" + shortCodes.length + "个工作，无法进行同类工作筛选，只有选择1个工作时，才可以选择同类工作。");
+            return;
+        }
+
+        var shortCode = shortCodes[0];
+        var selectedShortCodes = [];
+        cnabsAjaxSync('获取同类工作', '/DesignProduct/GetAnalogousTaskShortCode', { shortCode: shortCode }, function (shortCodes) {
+            var setting = GetTaskViewSetting();
+            setting.selectedShortCodes = shortCodes;
+            UpdateTaskViewBySetting(setting);
+            cnabsAlert("共选择了" + shortCodes.length + "个同类工作");
+        })
+    })
+    //修改扩展工作文档
+    function ModifyDocInnerHTML(shortCodeList) {
+        var shortCodes = shortCodeList.join(',');
+        function GetFileType(fileType) {
+            if (fileType == "Excel") {
+                return "file-xls";
+            } else if (fileType == "Word") {
+                return "file-word";
+            } else if (fileType == "PDF") {
+                return "file-pdf";
+            } else {
+                return "file";
+            }
+        }
+        cnabsAjax("文档处理", "/DesignProduct/GetTaskDocumentList", { shortCode: shortCodes }, function (data) {
+            var amstr = "";
+            if (data.Data != null && data.Data.length > 0) {
+                amstr += "<div>";
+                amstr += "<table class='operationTable hover' style=\"width:100%;margin-bottom:10px\">";
+                amstr += "<tr class='toolbar_document_dialog'><th>文件类型</th><th>文件名</th><th>操作</th></tr>";
+                for (var i = 0; i < data.Data.length; i++) {
+                    var row = data.Data[i];
+                    var pngName = GetFileType(row.FileType);
+                    amstr += "<tr class='checkListView'>";
+                    amstr += "<td class='text-center'><em style=\"cursor: pointer;color:#ffc446;\" class='ui-icon ui-icon-" + pngName + " smallImageSize'></em></td>";
+                    amstr += "<td class='text-center'>" + row.Name + "</td>";
+                    amstr += "<td class='text-center'>"; 
+                    amstr += "<span onclick=\"editDocument(\'" + row.Name + "\',\'" + row.FileType + "\',";
+                    amstr += "" + row.AutoGenerate + ",\'" + row.DocumentType + "\',\'" + row.NamingRule + "\',\'" + row.PatternType + "\'," + row.AutoConfig + ")\"";
+                    amstr += " class='editDocumentBtn cnabs_green'>编辑</span>"
+                    amstr += "<span onclick=\"deleteDocument(\'" + row.Name + "\')\" class='deleteDocumentBtn cnabs_red'>删除</span>";
+                    amstr += "</td></tr>";
+                }
+                amstr += "</table>";
+                amstr += "</div>";
+            }
+            else {
+                amstr += "<table class='operationTable hover' style=\"width:100%;margin-bottom:10px\">";
+                amstr += "<tr class='toolbar_document_dialog'><th>文件类型</th><th>文件名</th><th>操作</th></tr>";
+                amstr += "<tr><td colspan='3' style=\"text-align:center;font-size:18px;width:100%\" >暂无文件</td></tr>";
+                amstr += "</table>";
+            }
+            documentListTableView.innerHTML = amstr;
+
+            cnabsDlg('modifyDocument', '修改扩展工作文档', 'auto', 'auto')
+        })
+    }
+
+    //修改工作要点-dialogHTML
+    function ModifyCheckListHtml(shortCodeList) {
+        var shortCodes = shortCodeList.join(',');
+        cnabsAjax("获取检查项", "/DesignProduct/GetTaskCheckList", { shortCode: shortCodes }, function (data) {
+            var html = "";
+            if (data.Data != null && data.Data.CheckGroups.length > 0) {
+                //根据工作要求分组遍历
+                for (var i = 0; i < data.Data.CheckGroups.length; i++) {
+                    var checkItemGroup = data.Data.CheckGroups[i];
+                    var serialNum = 0;
+                    html += "<div>";
+                    html += "<table class='operationTable hover' style=\"width:100%;margin-bottom:10px\">";
+                    html += "<div class='text-left'>" + checkItemGroup.GroupName + "</div>";
+                    html += "<tr class='toolbar_CheckList_dialog'><th>序号</th><th>项目名称</th><th>状态</th><th>操作</th></tr>";
+
+                    //遍历每一组工作要求下面的检查项
+                    for (var j = 0; j < checkItemGroup.CheckItems.length; j++) {
+                        var row = checkItemGroup.CheckItems[j];
+                        html += "<tr class='checkListView'>";
+                        html += "<td class='text-center'>" + (serialNum += 1) + "</td>";
+                        html += "<td class='text-center'>" + row.Name + "</td>";
+                        html += "<td class='text-center'>" + TaskExCheckType(row.CheckStatus) + "</td>";
+                        html += "<td class='text-center'>" + "<em style=\"cursor: pointer;color:#ffc446;\" class='ui-icon ui-icon-trash smallImageSize' onclick=\"deleteCheckList(\'" + row.Name + "\',\'" + checkItemGroup.GroupName + "\')\"></em>" + "</td>";
+                        html += "</tr>";
+                    }
+                    html += "</table>";
+                    html += "</div>";
+                }
+            }
+            else {
+                html += "<table class='operationTable hover' style=\"width:100%;margin-bottom:10px\">";
+                html += "<tr class='toolbar_CheckList_dialog'><th>序号</th><th>项目名称</th><th>状态</th><th>操作</th></tr>";
+                html += "<tr><td colspan='4' style=\"text-align:center;font-size:18px;width:100%\" >暂无工作要点</td></tr>";
+                html += "</table>";
+            }
+            checkListTableView.innerHTML = html;
+
+            cnabsDlg('CheckListTable', '修改工作要点', 'auto', 'auto');
+        })
+    }
+
+    //修改确认账户余额类型--配置账户余额指定账户类型和对比方式
+    function btnExtensionRecyclingPaymentDateModify(shortCode) {
+        var dialogValue = {
+            comparisonModes: null,
+            accountType: null
+        }
+        cnabsAjaxSync("获取当前工作账户余额的对比方式", "/DesignProduct/GetTaskExAccountComparisonModes", { shortCode: shortCode.join(',') }, function (data) {
+            if (data != null) {
+                dialogValue.comparisonModes = data.CompareSign;
+                dialogValue.accountType = data.AccountType;
+            }
+        })
+        var dialogInnerHtml = [{
+                title: "金额类型",
+                type: "label",
+                elementId: "amountType",
+                value: "回收款总额"
+            },{
+            title: "比较方式",
+            type: "select",
+            elementId: "comparisonModes",
+            value: dialogValue.comparisonModes == null ? "GreateThanEqual" : dialogValue.comparisonModes,
+            OptionArray: [
+                ["NotCompare", "不比较"],
+                ["Equal", "等于"],
+                ["NotEqual", "不等于"],
+                ["GreaterThan", "大于"],
+                ["LessThan", "小于"],
+                ["GreateThanEqual", "大于等于"],
+                ["LessThanEqual", "小于等于"]
+            ]
+        },
+        {
+            title: "账户类型",
+            type: "select",
+            elementId: "accountType",
+            value: dialogValue.accountType == null ? "专项计划账户" : dialogValue.accountType,
+            OptionArray: [
+                ["专项计划账户"],
+                ["回款账户"],
+                ["募集账户"],
+                ["监管账户"],
+                ["登记机构账户"],
+                ["投资者账户"],
+                ["托管机构账户"],
+                ["原始权益人账户"],
+            ]
+        }
+        ]
+        var taskCount = shortCode.length;
+        var message = taskCount > 1 ? "将对当前所选择的" + taskCount + "个工作的账户对比方式进行统一配置。" : null;
+
+        cnabsAutoDlgYesNo(dialogInnerHtml, '配置账户对比方式', function (uiValue) {
+            var params = {
+                shortCode: shortCode.join(','),
+                comparisonModes: uiValue.comparisonModes,
+                accountTypeText: uiValue.accountType
+            }
+
+            var TaskNameIdDeadlineState = GetTaskNameIdDeadlineState(currentShortCodes);
+            $("#TaskNameIdDeallineState").html(TaskNameIdDeadlineState);
+            cnabsDlgYesNo('divTaskNameIdDeallineState', '配置账户对比方式', function () {
+                cnabsAjax('配置账户余额对比方式', '/DesignProduct/ConfigAccountComparisonModes', params, function () {
+
+                })
+            })
+        }, message)
+    }
+
+    function translateComparisonModesToSign(sign) {
+        switch (sign) {
+            case "NotCompare":
+                return "不比较";
+            case "Equal":
+                return "=";
+            case "NotEqual":
+                return "!=";
+            case "GreaterThan":
+                return ">";
+            case "LessThan":
+                return "<";
+            case "GreateThanEqual":
+                return ">=";
+            case "LessThanEqual":
+                return "<=";
+            default:
+        }
+    }
+
+    $("#btnChangeCheckItemTypeView").change(function () {
+        var btnValue = $("#btnChangeCheckItemTypeView")[0].value;
+        btnChangeCheckItemView(btnValue)
+    })
+
+    function btnChangeCheckItemView(btnValue) {
+        $("#divAddCheckItem").empty();
+        if (btnValue == "oldGroup") {
+            var groupNames = GetCheckListGroupNames();
+            if (groupNames.length == 0) {
+                controlsAddTaskExCheckListOldGroup[0].OptionArray = [["", "无"]];
+            } else {
+                controlsAddTaskExCheckListOldGroup[0].OptionArray = groupNames;
+            }
+            autoDivModifyCheckList.init(controlsAddTaskExCheckListOldGroup);
+        }
+        if (btnValue == "newGroup") {
+            autoDivModifyCheckList.init(controlsAddTaskExCheckListNewGroup);
+        }
+    }
+
+    function GetCheckListGroupNames() {
+        var groupNames = [];
+        cnabsAjaxSync("获取检查项", "/DesignProduct/GetTaskCheckList", { shortCode: currentShortCodes.join(',') }, function (data) {
+            if (data.Data != null && data.Data.CheckGroups.length > 0) {
+                for (var i = 0; i < data.Data.CheckGroups.length; i++) {
+                    var groupName = data.Data.CheckGroups[i].GroupName;
+                    groupNames.push(groupName);
+                }
+            }
+        })
+        return groupNames;
+    }
+
+    //修改工作文档dialog中增加CheckList事件
+    function btnAddTaskExtensionCheckList() {
+        var btnValue = $("#btnChangeCheckItemTypeView")[0].value;
+        btnChangeCheckItemView(btnValue);
+
+        $("#modifyCheckListMessage").innerHTML = "您将对当前所选择的" + currentShortCodes.length + "个工作进行修改。";
+
+        cnabsDlgYesNo('addCheckItem', '增加工作要点', function () {
+            var params = {
+                shortCode: currentShortCodes.join(","),
+                groupName: "",
+                checkItemName: ""
+            };
+            if ($("#btnChangeCheckItemTypeView")[0].value == "oldGroup") {
+                if (!autoDivModifyCheckList.validate(controlsAddTaskExCheckListOldGroup, true)) {
+                    return false;
+                }
+                params.groupName = autoDivModifyCheckList.getUIValue().oldGroupName;
+                params.checkItemName = autoDivModifyCheckList.getUIValue().oldCheckItemName;
+            } else {
+                if (!autoDivModifyCheckList.validate(controlsAddTaskExCheckListNewGroup, true)) {
+                    return false;
+                }
+                params.groupName = autoDivModifyCheckList.getUIValue().newGroupName;
+                params.checkItemName = autoDivModifyCheckList.getUIValue().newCheckItemName;
+            }
+
+            var TaskNameIdDeadlineState = GetTaskNameIdDeadlineState(currentShortCodes);
+            $("#TaskNameIdDeallineState").html(TaskNameIdDeadlineState);
+            cnabsDlgYesNo('divTaskNameIdDeallineState', '增加工作要点', function () {
+                cnabsAjaxSync('增加工作要点', '/DesignProduct/AddTaskExtensionCheckList', params, function () {
+                    cnabsMsgSuccess('工作要点增加成功');
+                });
+
+                setTimeout(ModifyCheckListHtml(currentShortCodes), 3000);
+            });
+        }, 'auto');
+    }
+
+    //修改工作文档dialog中移除单个CheckList事件
+    function deleteCheckList(checkItemName, groupName) {
+        $("#removeMessage")[0].innerHTML = "确认删除检查项[" + checkItemName + "]?";
+        cnabsDlgYesNo('divRemove', '删除检查项', function () {
+            cnabsAjax("删除检查项", "/DesignProduct/DeleteExtensionCheckItem", {
+                shortCode: currentShortCodes.join(','),
+                checkItemName: checkItemName,
+                groupName: groupName
+            }, function (data) {
+                setTimeout(ModifyCheckListHtml(currentShortCodes), 3000);
+            })
+        }, 'auto', 'auto')
+    }
+
+    //修改工作文档dialog中移除CheckList分组事件
+    function btnDeleteTaskExCheckListGroup() {
+        var groupNames = GetCheckListGroupNames();
+
+        if (groupNames.length == 0) {
+            cnabsAlert("当前工作没有可删除的检查项分组。");
+            return;
+        }
+        var controls = [{
+            title: "分组名称",
+            type: "select",
+            elementId: "selectText",
+            value: "",
+            OptionArray: groupNames
+        }];
+        cnabsAutoDlgYesNo(controls, '删除检查项分组', function (uiValue) {
+            $("#removeMessage")[0].innerHTML = "确认删除检查项分组[" + uiValue.selectText + "]里的所有检查项?";
+            cnabsDlgYesNo('divRemove', '删除检查项分组', function () {
+                cnabsAjax("删除检查项分组", "/DesignProduct/DeleteExtensionCheckItemGroup", {
+                    shortCode: currentShortCodes.join(','),
+                    groupName: uiValue.selectText
+                }, function (data) {
+                    setTimeout(ModifyCheckListHtml(currentShortCodes), 3000);
+                })
+            }, 'auto', 'auto')
+        })
+
+    }
+
+    //校正一个工作的开始、截止时间
+    function correctionTaskTime(taskName, shortCode, startTime, endTime, year) {
+        $("#removeMessage")[0].innerHTML = "是否根据新的测算时间修改工作[" + taskName + "] [" + shortCode + "]的工作时间？点击[确定]后，将该工作的[开始时间] [截止时间]修改为正确的时间。";
+        cnabsDlgYesNo('divRemove', '校正工作时间', function () {
+            cnabsAjaxSync("校正工作时间", "/DesignProduct/CorrectTaskTime", {
+                shortCode: shortCode,
+                startTime: startTime,
+                endTime: endTime
+            }, function (data) {
+                cnabsMsgSuccess("工作[" + taskName + "] [" + shortCode + "]的开始、截止时间校正成功");
+            })
+            UpdateErrorTaskTableHtml(year);
+        })
+    }
+
+    //一键校正-按钮
+    $("#correctErrorTasks").click(function () {
+        var checkYear = $("#correctErrorTasks").attr("checkYear");
+        var correctTaskCount = $("#correctErrorTasks").attr("correctTaskCount");
+        $("#removeMessage")[0].innerHTML = "是否一键校正所有时间不正确的工作时间？点击[确定]，将会对" + correctTaskCount + "个工作进行修改。";
+        if (correctTaskCount == 0) {
+            return cnabsAlert(checkYear + "年没有可校正的工作。");
+        }
+        cnabsDlgYesNo('divRemove', '一键校正', function () {
+            cnabsAjaxSync('年度工作日期检查', '/DesignProduct/CorrectAllTaskTime', {
+                projectGuid: '@Model.Project.Guid',
+                year: (isNaN(checkYear) ? 0 : checkYear)
+            }, function (data) {
+                cnabsMsgSuccess("一键校正成功，共校正了" + data + "个工作");
+            })
+            UpdateErrorTaskTableHtml(checkYear);
+        })
+    })
+
+    function GetUniqueYears() {
+        var uniqueYears = [];
+        $(".EditTask_taskTableTr").each(function (i) {
+            var startTimeOfYear = $(this)[0].children[3].innerHTML.substr(0, 4);
+            var endTimeOfYear = $(this)[0].children[4].innerHTML.substr(0, 4);
+
+            if (startTimeOfYear != "-" && uniqueYears.indexOf(startTimeOfYear) < 0) {
+                uniqueYears.push(startTimeOfYear);
+            }
+            if (uniqueYears.indexOf(endTimeOfYear) < 0) {
+                uniqueYears.push(endTimeOfYear);
+            }
+        })
+
+        return uniqueYears;
+    }
+
+    //年度工作日期检查
+    $("#btnCheckAnnualTime").click(function () {
+
+        var uniqueYears = GetUniqueYears();
+        if (uniqueYears.length == 0) {
+            if (GetAllShortCodes().length == 0) {
+                return cnabsAlert("当前产品没有工作，无法进行年度工作日期检查。");
+            }
+            else {
+                return cnabsAlert("无法从当前产品中获取年度信息。");
+            }
+        }
+        else {
+            uniqueYears.splice(0, 0, "所有");
+            var controls = [{
+                title: "检查年份",
+                type: "select",
+                elementId: "selectText",
+                value: "",
+                OptionArray: uniqueYears
+            }];
+
+            cnabsAutoDlgYesNo(controls, '年度工作日期检查', function (uiValue) {
+                $("#correctErrorTasks").attr("checkYear", uiValue.selectText);
+                CheckAnnualTaskResultHtml(uiValue.selectText);
+            })
+        }
+    })
+
+    function UpdateErrorTaskTableHtml(year) {
+        cnabsAjax('年度工作日期检查', '/DesignProduct/CheckAnnualTime', {
+            projectGuid: '@Model.Project.Guid',
+            year: (isNaN(year) ? 0 : year)
+        }, function (value) {
+            if (value.length == 0) {
+                errorTaskListView.innerHTML = "";
+                $("#errorTaskTable").dialog("close");
+                UpdateTaskView();
+            } else {
+                ErrorTaskTableHtml(value, year);
+                cnabsDlgDragStop('errorTaskTable', '检查结果', 'auto', 1150);
+            }
+        })
+    }
+
+    function CheckAnnualTaskResultHtml(year) {
+        cnabsAjax('年度工作日期检查', '/DesignProduct/CheckAnnualTime', {
+            projectGuid: '@Model.Project.Guid',
+            year: (isNaN(year) ? 0 : year)
+        }, function (value) {
+            if (value.length == 0) {
+                cnabsMsgSuccess((isNaN(year) ? "全部" : year + "年") + "工作日期检查成功,没有发现错误。");
+            } else {
+                ErrorTaskTableHtml(value, year);
+                cnabsDlgDragStop('errorTaskTable', '检查结果', 'auto', 1150);
+            }
+        })
+    }
+
+    function ErrorTaskTableHtml(value, year) {
+        function timeTd(time, isRight) {
+            time = ChangeDateFormat(time);
+            if (isRight) {
+                return "<td class='text-center'>" + time + "</td>";
+            }
+            else {
+                return "<td class='text-center cnabs_red'>" + time + "</td>";
+            }
+        }
+        var html = "<tr class='toolbar_dialog'><th>序号</th><th>工作名称</th><th>工作代码</th><th>开始时间</th><th>正确开始时间</th><th>截止时间</th><th>正确截止时间</th><th>错误原因</th><th>操作</th></tr>";
+        var exceptionTask = [];
+        var serialNum = 0;
+        for (var i = 0; i < value.length; i++) {
+            var row = value[i];
+            var isExceptionTask = row.ErrorType == "TaskRepeat";
+
+            if (isExceptionTask) {
+                exceptionTask.push(row);
+            } else {
+                var shortCode = row.ErrorTask.ShortCode;
+                html += "<tr class='errorTaskListView'>";
+                html += "<td>" + (serialNum += 1) + "</td>";
+                html += "<td class='text-center'><a target=\"_blank\" href=\"/Task?shortCode=" + shortCode + "\">" + row.ErrorTask.Description + "</a></td>";
+                html += "<td class='text-center'><a target=\"_blank\" href=\"/Task?shortCode=" + shortCode + "\">" + shortCode + "</a></td>";
+
+                var isStartTimeRight = row.StartTime == row.ErrorTask.StartTime;
+                var isEndTimeRight = row.EndTime == row.ErrorTask.EndTime;
+
+                html += timeTd(row.ErrorTask.StartTime, isStartTimeRight)
+                    + timeTd(row.StartTime, isStartTimeRight)
+                    + timeTd(row.ErrorTask.EndTime, isEndTimeRight)
+                    + timeTd(row.EndTime, isEndTimeRight);
+                html += "<td class='text-center'>" + ErrorTaskType(row.ErrorType) + "</td>";
+                html += "<td class='text-center'><a style=\"color:#ffc446;\"><span onclick=\"correctionTaskTime('" +
+                    row.ErrorTask.Description + "','" +
+                    shortCode + "','" +
+                    ChangeDateFormat(row.StartTime) + "','" +
+                    ChangeDateFormat(row.EndTime) + "','" +
+                    year + "')\">校正</span></a></td></tr>";
+            }
+        }
+        $("#correctErrorTasks").attr("correctTaskCount", serialNum);
+
+        if (exceptionTask.length > 0) {
+            for (var i = 0; i < exceptionTask.length; i++) {
+                var row = exceptionTask[i];
+                var shortCode = row.ErrorTask.ShortCode;
+                html += "<tr class='errorTaskListView exceptionTask' style=\"display:none\" >";
+                html += "<td>" + (serialNum += 1) + "</td>";
+                html += "<td class='text-center'><a class='cnabs_red' target=\"_blank\" href=\"/Task?shortCode=" + shortCode + "\">" + row.ErrorTask.Description + "</a></td>";
+                html += "<td class='text-center'><a class='cnabs_red' target=\"_blank\" href=\"/Task?shortCode=" + shortCode + "\">" + shortCode + "</a></td>";
+
+                html += timeTd(row.ErrorTask.StartTime, true)
+                    + timeTd(row.StartTime, true)
+                    + timeTd(row.ErrorTask.EndTime, true)
+                    + timeTd(row.EndTime, true);
+                html += "<td class='text-center'>" + ErrorTaskType(row.ErrorType) + "</td>";
+                html += "<td></td></tr>";
+            }
+        }
+        var exceptionTaskInformation = "";
+        if (exceptionTask.length > 0) {
+            exceptionTaskInformation = "，其中包括" + exceptionTask.length + "个异常工作，无法检查与校正";
+            html += "<tr><td id='table_button' colspan='9' align='left'><span id='expandExceptionTaskBtn' onclick='expandExceptionTask()' class=\"buttonText left\" style=\"margin-right:15px;\">展开异常工作列表</span></td></tr>";
+            isExpanding = false;
+        }
+        document.getElementById("checkInformation").innerHTML = isNaN(year) ?
+            "全部工作日期检查结果：共有" + value.length + "个工作发生错误" + exceptionTaskInformation + "。"
+            : year + "年工作日期检查结果：共有" + value.length + "个工作发生错误" + exceptionTaskInformation + "。";
+        errorTaskListView.innerHTML = html;
+        if (exceptionTask.length > 0) {
+            document.getElementById("table_button").style.background = "#47423C";
+        }
+        UpdateTaskView();
+    }
+
+
+</script>
+

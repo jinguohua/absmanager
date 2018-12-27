@@ -1,0 +1,31 @@
+@import "../../styles/theme/default.less";
+.ant-message {
+  .anticon {
+    font-size: 18px;
+    top: 1px;
+    margin-right: 12px;
+  }
+  .ant-message-notice-content {
+    border-radius: 2px;
+    background: @abs-message-bg;
+    border: 1px solid @abs-message-border-color;
+    box-shadow: 0 4px 8px 0 @abs-message-box-shadow-color;
+    color: @abs-message-color;
+    min-width: 309px;
+    text-align: left;
+  }
+  .abs-message-div-icon{
+    position: relative;
+    display: inline-block;
+    span {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: @abs-white-font-color;
+      display: inline-block;
+      border-radius: 50%;
+    }
+  }
+}

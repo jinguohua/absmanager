@@ -1,0 +1,178 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DesignDocumentViewModel
+@using ChineseAbs.ABSManagementSite.Models
+@using ChineseAbs.ABSManagementSite.Common
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/pagewalkthrough/jquery.pagewalkthrough.css">
+    <style type="text/css">
+        a {
+            color: #ffc446;
+            text-decoration: none;
+            outline: none;
+        }
+    </style>
+}
+
+@Scripts.Render("~/bundles/angular")
+<link rel="stylesheet" type="text/css" href="~/Content/fancytree/ui.fancytree.css">
+<script src="~/Scripts/jquery.fancytree.min.js"></script>
+
+@section scripts{
+    <script>
+        BindingElementActive(4, 2, 0);
+    </script>
+
+    <script type="text/javascript">
+        //function CreateTree(node) {
+        //    return '<ul>' + CreateNode(node) + '</ul>'
+        //}
+
+        //function CreateNode(node) {
+        //    var li = "<li>" + node.Info.Name + node.Info.Value;
+        //    if (node.Nodes != null && node.Nodes.length != 0) {
+        //        li += '<ul>';
+        //        $.each(node.Nodes, function () {
+        //            li += CreateNode(this);
+        //        });
+        //        li += '</ul>';
+        //    }
+        //    li += "</li>";
+        //    return li;
+        //}
+        //
+        //$(function () {
+        //    cnabsAjax('文档结构显示', '/DesignDocument/GetJsonData', {}, function (data) {
+        //        var ul = CreateTree(data.Tree.Root);
+        //        $("#tree").append(ul);
+        //        $("#tree").fancytree({
+        //            clickFolderMode: 3,
+        //            icons: false,
+        //        });
+        //    });
+        //});
+
+
+        var uploadAndDownloadTemplate = angular.module('templateManage', []);
+        uploadAndDownloadTemplate.controller('templateManageCtrl', function ($scope, $http) {
+            cnabsAjax("获取产品", "/DesignDocument/GetProjectsNameAndGuid", {}, function (data) {
+                $scope.projects = data;
+                var projectGuid = cnabsGetUrlParam('projectGuid');
+                if (projectGuid != null) {
+                    $.each(data, function (index, item) {
+                        if (item.guid == projectGuid) {
+                            $scope.selectedProject = data[index];
+                        }
+                    })
+                } else {
+                    $scope.selectedProject = data[0];
+                }
+
+                updateMenuLinkByProject($scope.selectedProject.guid);
+
+                $scope.GetTemplates();
+                $scope.$apply();
+            })
+
+            $scope.projectChange = function () {
+                $scope.GetTemplates();
+
+                updateMenuLinkByProject($scope.selectedProject.guid);
+            }
+
+            $scope.GetTemplates = function () {
+                var param = { projectGuid: $scope.selectedProject.guid };
+                cnabsAjaxSync('获取模板', '/DesignDocument/GetTemplate', param, function (data) {
+                    $scope.Templates = data;
+                    $.each(data, function (index, item) {
+                        if (item.status == 'Exist') {
+                            item.controlDownloadBtnColor = { color: '#ffc446', cursor: 'pointer' };
+                        } else {
+                            item.controlDownloadBtnColor = { color: '#c8c8c8' };
+                        }
+                    });
+
+                });
+            }
+
+            $scope.uploadTemplate = function (projectGuid, templateFileName) {
+                var param = { projectGuid: projectGuid, templateFileName: templateFileName };
+                cnabsDlgAjaxUploadWord2007('上传文件', '/DesignDocument/UploadTemplate', param, function (data) {
+                    var msg = '上传文件成功, 共添加了' + data + '个文件';
+                    cnabsMsgSuccess(msg, true);
+                });
+            }
+
+            $scope.downloadTemplate = function (projectGuid, templateFileName, status) {
+                if (status == 'Exist') {
+                    var param = {
+                        projectGuid: projectGuid,
+                        templateFileName: templateFileName
+                    }
+
+                    window.location.href = '/DesignDocument/DownLoadTemplate?projectGuid=' + projectGuid
+                        + '&templateFileName=' + templateFileName;
+                }
+            }
+
+        })
+    </script>
+}
+
+<div class="tablecloth" style="padding-bottom:1px;">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/DesignProduct">设计产品</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">文档模板</span>
+    </header>
+
+    @*<div id="tree"></div>*@
+
+    <div ng-app="templateManage" ng-controller="templateManageCtrl">
+        <div style="margin:10px 0px 10px 10px;height:20px;">
+            <span class="fixedColor">选择产品：</span>
+            <select ng-change="projectChange()" ng-model="selectedProject" ng-options="x.name for x in projects" style="width:159px;"></select>
+        </div>
+
+        <div style="overflow:hidden;">
+            <div class="label left">模板列表</div>
+        </div>
+        <div class="panel">
+            <table class="operationTable" style="width:100%;margin-top:0px;">
+                <tr>
+                    <td class="text-left">模板名称</td>
+                    <td class="text-center">上传</td>
+                    <td class="text-center">下载</td>
+                </tr>
+                <tr ng-repeat="eachTemplate in Templates" ng-cloak>
+                    <td>
+                        <em class="ui-icon ui-icon-file-word smallImageSize left" style="color: #ffc446;"></em>
+                        <span class="left" style="margin-left:5px;">{{eachTemplate.templateFileName}}</span>
+                    </td>
+                    <td class="text-center" style="width:60px;">
+                        <a style="outline:none; color:#ffc446;">
+                            <span ng-click="uploadTemplate(selectedProject.guid,eachTemplate.templateFileName)" class="ui-icon ui-icon-upload smallImageSize"></span>
+                        </a>
+                    </td>
+                    <td class="text-center" style="width:60px;">
+                        <span ng-click="downloadTemplate(selectedProject.guid,eachTemplate.templateFileName,eachTemplate.status)" class="ui-icon ui-icon-download smallImageSize" ng-style="eachTemplate.controlDownloadBtnColor"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

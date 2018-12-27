@@ -1,0 +1,1106 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/lodash")
+
+
+@section styles{
+    <style>
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            BindingElementActive(4, 2, 7);
+
+            cnabsRegisterUIPending('/Simulation/Run', '#cashFlowTables', '现金流正在测算中');
+            cnabsRegisterAjaxLock('/Simulation/Run', true, '现金流测算');
+            $("#ckIsCompare").next().click(function () {
+                if ($("#ckIsCompare").is(":checked")) {
+                    $("#ckIsCompare").attr("checked", false);
+                }
+                else {
+                    $("#ckIsCompare").prop("checked", true);
+                }
+            })
+        });
+
+
+        function CnabsTable(rows, cells) {
+            if (rows != null) {
+                this.rows = rows;
+
+                var convertEqualToColumnName = function (column) {
+                    return {
+                        value: column,
+                        resultOfComparison: 'equalTo'
+                    };
+                };
+
+                var array = Object.keys(this.rows[0]);
+                var result = [];
+                $.each(array, function (index, item) {
+                    result.push(convertEqualToColumnName(item));
+                });
+                this.columns = result;
+
+                this.cells = this.extractCells();
+            } else if (cells != undefined && cells != null) {
+                this.cells = cells;
+            }
+        }
+
+        CnabsTable.prototype = {
+            findCell: function (rowKey, column) {
+                var resultCell = null;
+                this.eachCell(function (cell) {
+                    if (cell.rowKey == rowKey
+                        && cell.column == column) {
+                        resultCell = cell;
+                        return false;
+                    }
+                });
+                return resultCell;
+            },
+
+            eachCell: function (callback) {
+                for (var i = 0; i < this.cells.length; ++i) {
+                    for (var j = 0; j < this.cells[i].length; ++j) {
+                        var ret = callback(this.cells[i][j]);
+                        if (ret != undefined && !ret) {
+                            return;
+                        }
+                    }
+                }
+            },
+
+            extractCells: function () {
+                var rows = this.rows;
+                var columns = this.columns;
+                var newData = new Array();
+
+                var rowKeyArray = new Array();
+
+                $.each(rows, function (indexOfRow, valueOfRow) {
+                    var newRow = new Array();
+
+                    var category = valueOfRow[columns[0].value];
+                    var name = valueOfRow[columns[1].value];
+
+                    ////////////////////////////////////////////////////////////
+                    //定义每行row的key = category + "^#^" + name + sequence
+                    //当category和name出现重复行时，sequence按序加一
+                    var separator = "^#^";
+                    var rowKey = category + separator + name;
+                    
+                    var seq = 1;
+                    while (true) {
+                        var findNewRowKey = true;
+                        $.each(rowKeyArray, function() {
+                            if (this == rowKey + separator + seq) {
+                                findNewRowKey = false;
+                                ++seq;
+                                return false;
+                            }
+                        });
+                        if (findNewRowKey) {
+                            break;
+                        }
+                    }
+                    rowKeyArray.push(rowKey + separator + seq);
+                    ////////////////////////////////////////////////////////////
+
+                    $.each(columns, function (indexOfColumn, valueOfColumn) {
+                        var cell = {
+                            rowKey: rowKey + separator + seq,
+                            category: category,
+                            name: name,
+                            column: valueOfColumn.value,
+                            value: valueOfRow[valueOfColumn.value],
+                            preValue: '',
+                            resultOfComparison: "equalTo"
+                        };
+
+                        newRow.push(cell);
+                    });
+
+                    newData.push(newRow);
+                });
+                return newData;
+            },
+            formatByCategory : function () {
+                var rows = this.cells;
+                var columns = this.columns;
+                var prevRow = rows[0];
+                var names = new Array();
+
+                var isFirstCategory = false;
+                for (var i = 1; i < rows.length; ++i) {
+                    var row = rows[i];
+                    var categoryOfRow = row[0].value;
+                    var categoryOfPrevRow = prevRow[0].value;
+                    var nameOfRow = row[1].value;
+                    row.isFirstCategory = false;
+
+                    if (categoryOfRow == categoryOfPrevRow && names.indexOf(nameOfRow) == -1) {
+                        if (prevRow.rowSpan == undefined) {
+                            prevRow.rowSpan = 1;
+                        }
+
+                        prevRow.rowSpan += 1;
+
+                        if (!isFirstCategory) {
+                            prevRow.isFirstCategory = true;
+                            isFirstCategory = true;
+                        }
+
+                        row.rowSpan = 0;
+                    }
+                    else {
+                        names = new Array();
+                        prevRow = row;
+                    }
+
+                    names.push(nameOfRow);
+                }
+            }
+        }
+
+
+        var userapp = angular.module('simulation', []);
+        userapp.controller('simulationCtrl', function ($scope, $http) {
+
+            $scope.onlyShowHasModelProjects = true;
+
+            $scope.clearModelInfo = function () {
+                $scope.hasEvents = true;
+                $scope.events = [];
+                $scope.variables = [];
+                $("#divCashFlowTables").css("display", "none");
+            }
+
+            $scope.onload = function (url) {
+                $scope.clearModelInfo();
+                cnabsAjax("获取产品", url, { projectType: '存续期' }, function (data) {
+                    $scope.projects = data;
+                    $scope.$apply();
+                    var projectGuid = cnabsGetUrlParam('projectGuid');
+                    if (projectGuid != null) {
+                        $.each(data, function (index, item) {
+                            if (item.guid == projectGuid) {
+                                $scope.selectedProject = data[index]
+                            }
+                        })
+                    } else {
+                        $scope.selectedProject = data[0]
+                    }
+
+                    $scope.getAsOfDateList();
+
+                    updateMenuLinkByProject($scope.selectedProject.guid);
+
+                    $scope.$apply();
+                })
+            }
+            $scope.onload("/Simulation/GetProjectsHasDealModel");
+
+            $scope.screeningProjects = function () {
+                if ($scope.onlyShowHasModelProjects) {
+                    $scope.onload("/Simulation/GetProjectsHasDealModel");
+                } else {
+                    $scope.onload("/MyProjects/GetProjects");
+                    $scope.onlyShowHasModelProjects = false;
+                }
+            }
+            $scope.projectChange = function () {
+                updateMenuLinkByProject($scope.selectedProject.guid);
+               // $("#ckIsCompare").attr("checked", false)
+                $scope.getAsOfDateList();
+                $scope.prevAndCurrentTables = {};
+            }
+
+            $scope.getAsOfDateList = function () {
+                $scope.asOfDateList = [];
+                $scope.clearModelInfo();
+                cnabsAjax("获取模型", "/Simulation/GetAsOfDateList", { projectGuid: $scope.selectedProject.guid }, function (data) {
+                    $scope.asOfDateList = data;
+                    if (data.length) {
+                        $scope.selectedAsOfDate = data[0];
+                        $scope.getModelInfo();
+                    }
+                    $scope.$apply();
+                });
+            }
+
+            $scope.asOfDateChange = function () {
+                $scope.clearModelInfo();
+                if ($scope.asOfDateList.length) {
+                    $scope.getModelInfo();
+                }
+                $scope.prevAndCurrentTables = {};
+            }
+            $scope.getModelInfo = function () {
+                var params = {
+                    projectGuid: $scope.selectedProject.guid,
+                    asOfDate: $scope.selectedAsOfDate.AsOfDate
+                };
+                if ($scope.selectedProject.guid == $scope.selectedAsOfDate.ProjectGuid) {
+                    cnabsAjax("获取模型信息", "/Simulation/GetModelInfo", params, function (data) {
+                        if (data.triggerItems.length) {
+                            $scope.events = data.triggerItems;
+                        } else {
+                            $scope.events = []
+                            $scope.hasEvents = false;
+                        }
+                        data.variables.splice(0, 0, { description: "CDR", name: "CDR", value: "0" });
+                        data.variables.splice(1, 0, { description: "CPR", name: "CPR", value: "0" });
+                        $scope.variables = data.variables;
+                        $scope.changeProject = true;
+                        $scope.$apply();
+                    })
+                }
+
+            }
+
+            $scope.checkVariables = function (variables) {
+                var hasError = false;
+                $.each($scope.variables, function () {
+                    if ((this.name == "CDR" || this.name == "CPR") && (!cnabsIsFloat(this.value) || this.value < 0 || this.value > 1)) {
+                        this.errorMsg = '请输入0~1的数字';
+                        this.isValid = false;
+                        hasError = true;
+                    }
+                    else if (this.name != "CDR" && this.name != "CDR " && (!cnabsIsFloat(this.value) || this.value < 0)) {
+                        this.errorMsg = '请输入非负合法数字';
+                        this.isValid = false;
+                        hasError = true;
+                    } else {
+                        this.errorMsg = '';
+                        this.isValid = true;
+                    }
+                });
+
+                return hasError;
+            }
+
+            var preCfTable = null;
+            var preAcfTable = null;
+
+            $scope.exportCashflowTable = function () {
+                var params = $scope.currCalculateVariable;
+
+                if ($scope.currentSelectedLabel == 'securities') {
+                    cnabsAjaxDownloadFile('导出证券端现金流表', '/Simulation/GetCashflowFile', params);
+                } else {
+                    cnabsAjaxDownloadFile('导出资产端现金流表', '/Simulation/GetAssetCashflowFile', params);
+                }
+            }
+
+            $scope.exportCompareResultTable = function () {
+                if ($scope.currentSelectedLabel == 'securities') {
+                    if ($scope.prevAndCurrentTables.prevCfTable == undefined
+                        || !$scope.isCompareCalculateResult
+                        || $scope.prevAndCurrentTables.prevCfTable == $scope.prevAndCurrentTables.currCfTable) {
+                        cnabsAjax('导出证券端现金流表', '/Simulation/GetCashflowFile', {
+                            tableJson: $scope.prevAndCurrentTables.currCfTable
+                        }, function (guid) {
+                            cnabsDownloadURL('/Download/Index?guid=' + guid);
+                        });
+                    } else {
+                        cnabsAjax('导出证券端现金流表对比测算结果', '/Simulation/GetCashflowCompareResultFile', {
+                            prevTableJson: $scope.prevAndCurrentTables.prevCfTable,
+                            currTableJson: $scope.prevAndCurrentTables.currCfTable
+                        }, function (guid) {
+                            cnabsDownloadURL('/Download/Index?guid=' + guid);
+                        });
+                    }
+                } else {
+                    if ($scope.prevAndCurrentTables.prevCfTable == undefined
+                        || !$scope.isCompareCalculateResult
+                        || $scope.prevAndCurrentTables.prevACfTable == $scope.prevAndCurrentTables.currACfTable) {
+                        cnabsAjax('导出资产端现金流表', '/Simulation/GetAssetCashflowFile', {
+                            tableJson: $scope.prevAndCurrentTables.currACfTable
+                        }, function (guid) {
+                            cnabsDownloadURL('/Download/Index?guid=' + guid);
+                        });
+                    } else {
+                        cnabsAjax('导出资产端现金流表对比测算结果', '/Simulation/GetAssetCashflowCompareResultFile', {
+                            prevTableJson: $scope.prevAndCurrentTables.prevACfTable,
+                            currTableJson: $scope.prevAndCurrentTables.currACfTable
+                        }, function (guid) {
+                            cnabsDownloadURL('/Download/Index?guid=' + guid);
+                        });
+                    }
+                }
+            }
+
+            $scope.isCompareCalculateResult = false;
+
+            $scope.getPrevAndCurrTableInfo = function (cfTable, acfTable) {
+                $scope.isCompareCalculateResult = false;
+                if ($("#ckIsCompare").is(":checked")) {
+                    $scope.isCompareCalculateResult = true;
+                }
+                if ($scope.prevAndCurrentTables.currCfTable == undefined
+                    && $scope.prevAndCurrentTables.currACfTable == undefined
+                    || !$("#ckIsCompare").is(":checked")) {
+                    $scope.prevAndCurrentTables.currCfTable = JSON.stringify(cfTable);
+                    $scope.prevAndCurrentTables.currACfTable = JSON.stringify(acfTable);
+                } else {
+                    $scope.prevAndCurrentTables.prevCfTable = $scope.prevAndCurrentTables.currCfTable;
+                    $scope.prevAndCurrentTables.currCfTable = JSON.stringify(cfTable);
+
+                    $scope.prevAndCurrentTables.prevACfTable = $scope.prevAndCurrentTables.currACfTable;
+                    $scope.prevAndCurrentTables.currACfTable = JSON.stringify(acfTable);
+                }
+            }
+
+            $scope.prevAndCurrentTables = {};
+            $scope.currCalculateVariable = {};
+            $scope.currentSelectedLabel = 'securities';
+
+            $scope.simulationCashFlow = function () {
+                if (!$scope.asOfDateList.length) {
+                    cnabsMsgError("测算失败：无选中模型！")
+                    $("#divCashFlowTables").css("display", "none");
+                    return
+                }
+
+                //事件列表的值
+                var EventsInfo = "";
+                if ($scope.events != undefined) {
+                    $.each($scope.events, function (index, item) {
+                        EventsInfo += item.key + "^" + item.value;
+                        if (index != $scope.events.length - 1) {
+                            EventsInfo += "|"
+                        }
+                    })
+                }
+                //可修改变量列表的值
+                var Variables = "";
+                if ($scope.variables != undefined) {
+                    if ($scope.checkVariables($scope.variables)) {
+                        return
+                    }
+                    $.each($scope.variables, function (index, item) {
+                        Variables += item.name + "^" + item.value;
+                        if (index != $scope.variables.length - 1) {
+                            Variables += "|"
+                        }
+                    })
+                }
+
+                $("#divCashFlowTables").css("display", "block");
+                var params = {
+                    projectGuid: $scope.selectedProject.guid,
+                    asOfDate: $scope.selectedAsOfDate.AsOfDate,
+                    triggerOption: EventsInfo,
+                    variables: Variables,
+                };
+
+                $scope.currCalculateVariable = params;
+                $(".divTable").scrollLeft(0);
+
+                cnabsAjax("现金流测算", "/Simulation/Run", params, function (data) {
+                    
+                    $("#divInFrontOfTable").css('display', 'none');
+                    var obj = eval(data)[0];
+
+                    $scope.getPrevAndCurrTableInfo(obj.cashflow, obj.assetCashflow);
+
+                    var cfTable = new CnabsTable(obj.cashflow);
+                    var acfTable = new CnabsTable(obj.assetCashflow);
+                    cfTable.formatByCategory();
+                    acfTable.formatByCategory();
+
+                    $scope.mergeCfTable = cfTable;
+                    $scope.mergeAcfTable = acfTable;
+
+                    if (!$scope.changeProject && $("#ckIsCompare").is(":checked")) {
+                        $scope.mergeCfTable = $scope.mergeCurrentTableAndPreviousTable(cfTable, preCfTable);
+                        $scope.mergeCfTable.formatByCategory();
+
+                        $scope.mergeAcfTable = $scope.mergeCurrentTableAndPreviousTable(acfTable, preAcfTable);
+                        $scope.mergeAcfTable.formatByCategory();
+                        $("#divInFrontOfTable").css('display', 'block');
+                    }
+
+                    preCfTable = cfTable;
+                    preAcfTable = acfTable;
+
+                    //控制最大显示行数
+                    $scope.maxDisplayAssetCount = 100;
+                    $scope.totalAssetCount = 0;
+
+                    $scope.hideRowIndexBegin = 0;
+                    $scope.hideRowIndexEnd = 0;
+
+                    var beginHide = false;
+                    $.each($scope.mergeAcfTable.cells, function () {
+                        if (!beginHide) {
+                            $scope.hideRowIndexBegin++;
+                        }
+
+                        if (this[1].name == "合计") {
+                            $scope.totalAssetCount++;
+                            if ($scope.totalAssetCount >= $scope.maxDisplayAssetCount) {
+                                beginHide = true;
+                            }
+                        }
+                    });
+                    $scope.hideRowIndexEnd = $scope.mergeAcfTable.cells.length;
+
+                    $scope.changeProject = false;
+                    $scope.isShowAssetAmountTip = false;
+                    if ($scope.totalAssetCount > $scope.maxDisplayAssetCount) {
+                        $scope.isShowAssetAmountTip = true;
+                    }
+
+                    $scope.$apply();
+
+                    $scope.$apply(function () {
+                        if ($("#ckIsCompare").is(":checked")) {
+                            $(".cnabs_circle_green").show();
+                            $(".cnabs_circle_red").show();
+                            $(".infoTable").each(function () {
+                                // alert($(this).find(".cnabs_circle_green").length)
+                                if ($(this).find(".cnabs_circle_green").length <= 0 && $(this).find(".cnabs_circle_red").length <= 0) {
+                                    //  $(this).find(".span_null").hide();
+                                }
+                                else {
+                                    var colsCount = $(this).find("tr").eq(0).find("th").length;
+                                    for (var col = 1; col < colsCount; col++) {
+                                        var row;
+                                        for (row = 1; row < $(this).find("tr").length; row++) {
+                                            var tablecell = $(this).find("tr").eq(row).find("td").eq(col);
+                                            if ($(this).find("tr").eq(row).find("td").length < colsCount) {
+                                                tablecell = $(this).find("tr").eq(row).find("td").eq(col - 1);//默认只有一列合并单元格
+                                            }
+                                            if (tablecell.find(".cnabs_circle_green").length > 0 || tablecell.find(".cnabs_circle_red").length > 0) {
+                                                break;
+                                            }
+
+                                        }
+                                        if (row == $(this).find("tr").length) {
+                                            var colindex = col;
+                                            $(this).find("tr").each(function () {
+                                                if ($(this).find("td").length < colsCount) {
+                                                    colindex = col - 1;
+                                                }
+
+                                                //   $(this).find("td").eq(colindex).find(".span_null").hide();
+                                            })
+                                        }
+
+                                    }
+
+
+                                }
+                            });
+
+                            $(".div_number").hover(function () {
+                                if (($("#cashFlowTables").width() + $("#cashFlowTables").offset().left) - ($(this).offset().left + $(this).width()) > 0) {
+                                    if ($(this).find(".cnabs_circle_green").length > 0 || $(this).find(".cnabs_circle_red").length > 0)
+                                        var hidinp = $(this).find(":input").val().split("&");
+
+                                    if (hidinp != undefined && hidinp != null)
+                                    {
+                                        var nowvalue = parseFloat(hidinp[0].replace(/,/g, ""));
+                                        var oldvalue = parseFloat(hidinp[1].replace(/,/g, ""));
+                                        strIncreaseOrDecrease = nowvalue < oldvalue ? "减少" : "增加";
+                                        colorstr = nowvalue < oldvalue ? 'cnabs_green' : 'cnabs_red';
+                                        var popdiv = '<div class="popdiv"><span class="span_popTitle cnabs_brown">上次测算：</span>' + hidinp[1] + '<span class="span_popTitle ' + colorstr + '">' + strIncreaseOrDecrease + '：</span>' + formatNum(Math.abs(parseFloat(nowvalue) - parseFloat(oldvalue)).toFixed(2)) + '</div>';
+                                        $(body).append(popdiv);
+                                        $(".popdiv").css({ top: $(this).offset().top + 1 + "px", left: $(this).offset().left + $(this).width() + 5 + "px" });
+                                    }
+                                }
+                            }, function () {
+                                $(".popdiv").remove();
+                            })
+
+                        }
+                        else {
+                            $scope.hideFeatures();
+                        }
+
+
+                    });
+                    
+                })
+            }
+
+            $scope.hideFeatures = function () {
+                $(".cnabs_circle_green").hide();
+                $(".cnabs_circle_red").hide();
+                $(".span_null").hide();
+                $(".topLine").hide();
+                $(".text-grey").hide();
+                $(".text-blue").hide();
+            }
+
+            $scope.initMergeTable = function (rowNames, columnNames) {
+                return $scope.convertArray(rowNames, function (rowName) {
+                    var newRow = $scope.convertArray(columnNames, function (columnName) {
+                        return {
+                            rowKey: rowName.rowKey,
+                            category: rowName.category,
+                            name: rowName.name,
+                            column: columnName.value,
+                            value: 'null',
+                            preValue: '',
+                            resultOfComparison: "equalTo",
+                        };
+                    })
+                    return newRow;
+                });
+            }
+
+            $scope.mergeRowNames = function (currentRows, previousRows) {
+                var convertRowName = function (row) {
+                    return {
+                        category: row[0].value,
+                        name: row[1].value,
+                        rowKey: row[1].rowKey,
+                    };
+                };
+
+                var rowNames = $scope.convertArray(currentRows, convertRowName);
+                var prevRowNames = $scope.convertArray(previousRows, convertRowName);
+                var filterPrewRowNames = _.filter(prevRowNames, function(rowName){
+                    _.find(rowNames, function (x) { return x.rowKey == rowName.rowKey; }) == undefined;
+                });
+
+                return rowNames.concat(filterPrewRowNames);
+            }
+
+            $scope.convertArray = function (array, convertFunc) {
+                var result = [];
+                $.each(array, function (index, element) {
+                    result.push(convertFunc(element));
+                });
+
+                return result;
+            }
+
+            $scope.modifyResultOfComparison = function (dateArray, prevDateArray, resultOfComparison) {
+                var dateArrayClone = _.cloneDeep(dateArray);
+                var diffDateArray = _.differenceBy(dateArrayClone, prevDateArray, 'value');
+                $.each(diffDateArray, function (index, item) {
+                    item.resultOfComparison = resultOfComparison;
+                });
+                return diffDateArray;
+            }
+
+            $scope.mergeColumnNames = function (columnNames, previousColumns) {
+                var dateArray = [];
+                var prevDateArray = [];
+
+                previousColumns = $scope.modifyResultOfComparison(previousColumns, [], 'equalTo');
+                dateArray = _.slice(columnNames, 2, columnNames.length);
+                prevDateArray = _.slice(previousColumns, 2, previousColumns.length);
+
+                var equalToDateArray = _.differenceBy(dateArray, _.differenceBy(dateArray, prevDateArray, 'value'), 'value');
+                var diffDateArray = $scope.modifyResultOfComparison(dateArray, prevDateArray, 'add');
+                var diffPrevDateArray = $scope.modifyResultOfComparison(prevDateArray, dateArray, 'remove');
+
+                diffDateArray = diffDateArray.concat(diffPrevDateArray, equalToDateArray);
+
+                diffDateArray = _.sortBy(diffDateArray, function (x) { return x.value; });
+
+                var allColumnNames = _.slice(columnNames, 0, 2);
+                allColumnNames = allColumnNames.concat(diffDateArray);
+                return allColumnNames;
+            }
+
+            $scope.insertCurrentTableToMergeTable = function (mergeTable, currentTable) {
+                mergeTable.eachCell(function (cell) {
+                    var currentCell = currentTable.findCell(cell.rowKey, cell.column);
+                    if (currentCell != null) {
+                        cell.value = currentCell.value;
+                    }
+                });
+            }
+
+            $scope.insertPreviousTableToMergeTable = function (mergeTable, previousTable) {
+                mergeTable.eachCell(function (currentCell) {
+                    currentCell.resultOfComparison = 'equalTo';
+
+                    var previousCell = previousTable.findCell(currentCell.rowKey, currentCell.column);
+                    
+                    if (previousCell == null) {
+                        currentCell.resultOfComparison = 'add';
+                    }
+
+                    if (previousCell != null && currentCell.value == 'null') {
+                        currentCell.value = previousCell.value;
+                        currentCell.resultOfComparison = 'remove';
+                    }
+
+                    if (previousCell != null && currentCell.value != 'null') {
+                        currentCell.preValue = previousCell.value;
+                        if (cnabsIsFloat(currentCell.value) && cnabsIsFloat(previousCell.value)) {
+                            var previousValue = cnabsParseFloat(previousCell.value);
+                            var currentValue = cnabsParseFloat(currentCell.value);
+
+                            if (currentValue < previousValue) {
+                                currentCell.resultOfComparison = 'lessThan';
+                            }
+                            else if (currentValue > previousValue) {
+                                currentCell.resultOfComparison = 'greaterThan';
+                            }
+                        }
+                    }
+                });
+            }
+
+            $scope.mergeCurrentTableAndPreviousTable = function (currentTable, previousTable)
+            {
+                //RowName取并集
+                var rowNames = $scope.mergeRowNames(currentTable.cells, previousTable.cells);
+                //ColumnName取并集
+                var columnNames = $scope.mergeColumnNames(currentTable.columns, previousTable.columns);
+
+                //根据rowNames，和columnNames初始化Table
+                var mergeCells = $scope.initMergeTable(rowNames, columnNames);
+
+                var mergeTable = new CnabsTable(null, mergeCells);
+
+                $scope.insertCurrentTableToMergeTable(mergeTable, currentTable);
+
+                $scope.insertPreviousTableToMergeTable(mergeTable, previousTable);
+
+                mergeTable.columns = columnNames;
+                return mergeTable;
+            }
+
+            $scope.controlTdBackgroundColorAndWidth = {
+                "backgroundColor": "#514C44",
+                'min-width': '100px',
+                'white-space': 'normal',
+                'word-break': 'normal',
+                'border-bottom-width': '1px',
+            }
+
+            $scope.customBorderWidth = {
+                'border-top-width': '1px',
+            }
+
+            $scope.switchCashFlowTable = function (label) {
+                $scope.currentSelectedLabel = label;
+                if (label == 'securities') {
+                    $("#assetLabel").removeClass("cnabs_btn_tab_selected");
+                    $("#securitiesLabel").addClass("cnabs_btn_tab_selected");
+                    $("#assetTable").css('display', 'none');
+                    $("#securitiesTable").css('display', 'block');
+                } else {
+                    $("#securitiesLabel").removeClass("cnabs_btn_tab_selected");
+                    $("#assetLabel").addClass("cnabs_btn_tab_selected");
+                    $("#assetTable").css('display', 'block');
+                    $("#securitiesTable").css('display', 'none');
+                }
+            }
+        })
+
+        function formatNum(strNum) {
+            if (strNum.length <= 3) {
+                return strNum;
+            }
+            if (!/^(\+|-)?(\d+)(\.\d+)?$/.test(strNum)) {
+                return strNum;
+            }
+            var a = RegExp.$1, b = RegExp.$2, c = RegExp.$3;
+            var re = new RegExp();
+            re.compile("(\\d)(\\d{3})(,|$)");
+            while (re.test(b)) {
+                b = b.replace(re, "$1,$2$3");
+            }
+            return a + "" + b + "" + c;
+        }
+
+
+    </script>
+}
+<style>
+    .divSimulation {
+        padding: 10px 20px;
+    }
+
+    .divSimulation .selectProject {
+        margin: 0px 0px 10px 0px;
+        height: 20px;
+        float: left;
+    }
+
+    .divSimulation .selectProject span, .divSimulation .selectModel span {
+        font-size: 16px;
+    }
+
+    .divSimulation .selectProject select, .divSimulation .selectModel select {
+        width: 239px;
+    }
+
+    .divSimulation .selectModel {
+        margin: 0px 0px 10px 20px;
+        height: 20px;
+        float: left;
+    }
+
+    .divSimulation .eventsList, .divSimulation .modifiableVariableList {
+        padding: 10px 20px 20px 20px;
+        background-color: #4f4a43;
+    }
+
+    .eventInfo, .modifiableVariable {
+        margin-top: 10px;
+        overflow: hidden;
+    }
+
+    .eventInfo span, .modifiableVariable span {
+        float: left;
+        height: 28px;
+        max-width: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        line-height: 28px;
+    }
+
+    .modifiableVariable input {
+        float: left;
+        height: 24px;
+        margin-left: 15px;
+        width: 206px;
+    }
+
+    .eventInfo select {
+        float: left;
+        width: 206px;
+        height: 26px;
+        margin-left: 15px;
+    }
+
+    .selectProjectModel {
+        overflow: hidden;
+    }
+
+    .modifiableVariable .variablesValidMessage {
+        padding-left: 5px;
+        max-width: 200px;
+        text-align: left;
+    }
+
+    .divSimulation div.label {
+        margin-left: 0px;
+        margin-top: 10px;
+        margin-bottom: 2px;
+    }
+
+    .btn_export {
+        float: right;
+        cursor: pointer;
+        height: 24px;
+        line-height: 24px;
+        padding: 0px 8px;
+        border-radius: 3px;
+        background-color: #8064a2;
+        margin-right: 20px;
+        margin-top: 9px;
+    }
+
+    .btn_export:hover {
+        background-color: #8b6daf;
+    }
+
+    .divTable {
+        width: 1008px;
+        overflow: auto;
+        margin-left: 20px;
+        margin-top: 10px;
+        word-break: keep-all;
+        white-space: nowrap;
+    }
+
+    .divSimulationBtn {
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    #cashFlowTables table.infoTable tr td, #cashFlowTables table.infoTable tr th {
+        height: auto;
+    }
+
+    #cashFlowTables table.infoTable td:first-child, #cashFlowTables table.infoTable th:first-child {
+        padding-left: 2px;
+    }
+
+    #cashFlowTables table.infoTable td:last-child, #cashFlowTables table.infoTable th:last-child {
+        padding-right: 2px;
+    }
+
+    input[type=checkbox].showHasModelProjects {
+        cursor: pointer;
+        float: left;
+        margin-top: 5px;
+    }
+
+    .showHasModelProjectsText {
+        color: #B7AFA5;
+        cursor: pointer;
+        margin-top: 2px;
+        float: left;
+    }
+
+    .divShowHasModelProjects {
+        overflow: hidden;
+        float: right;
+    }
+
+    .divCashFlowTables {
+        padding: 5px 0px 20px 0px;
+    }
+    .topLine {
+        padding-left:20px;
+        display:none;
+        overflow: hidden;
+        height:12px;
+        line-height:12px;
+    }
+
+    .text-grey {
+        color: #A4A4A4;
+    }
+
+    .text-blue {
+        color: #B2D5FF;
+    }
+
+    .topPlusSign {
+        background: url('../../Images/plusSign.png') no-repeat;
+        width:8px;
+        height: 8px;
+        margin-right: 5px;
+        margin-top:2px;
+        display: inline-block;
+        
+    }
+    .topMinusSign {
+        background: url('../../Images/minusSign.png') no-repeat;
+        width:8px;
+        height:2px;
+        margin-right: 5px;
+        margin-top:5px;
+        display: inline-block;
+    }
+    .topText {
+        display:inline-block;     
+        font-size:12px;
+        margin-right: 30px;
+
+    }
+    .plusSign {
+        background: url('../../Images/plusSign.png') no-repeat;
+        width:8px;
+        height: 8px;
+        margin-bottom:1px;
+        padding-right:1px;
+        display: inline-block;
+        
+    }
+    .minusSign {
+        background: url('../../Images/minusSign.png') no-repeat;
+        width:8px;
+        height:2px;
+        margin-bottom:4px;
+        padding-right:1px;
+        display: inline-block;
+    }
+
+    .noSign {
+        width:8px;
+        height:13px;
+        padding-right:1px;
+        display: inline-block;
+    }
+
+    .popdiv {
+        position: absolute;
+        z-index: 9999;
+        background-color: #3D3833;
+        padding: 4px 18px 4px 10px;
+        border-top: 3px solid #847C71;
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    .popdiv .span_popTitle{
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .span_null {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 5px;
+    }
+    .assetAmountTip{
+      color:#b7afa5;
+      height:24px;
+      line-height:24px;
+      margin-bottom:8px;
+    }        
+</style>
+<div class="tablecloth" style="padding-bottom:0px;">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow" href="/Simulate">现金流测算</span>
+    </header>
+    <div ng-app="simulation" ng-controller="simulationCtrl">
+        <div class="divSimulation">
+            <div class="selectProjectModel">
+                <div class="selectProject" style="overflow:hidden;">
+                    <span class="fixedColor left">产品：</span>
+                    <select class="left" ng-change="projectChange()" ng-model="selectedProject" ng-options="x.name for x in projects"></select>
+                </div>
+                <div class="selectModel" style="overflow:hidden;">
+                    <span class="fixedColor left">模型：</span>
+                    <select class="left" ng-change="asOfDateChange()" ng-model="selectedAsOfDate" ng-options="'第' + x.Sequence + '期 ' + x.PaymentDay for x in asOfDateList"></select>
+                </div>
+                <div class="divShowHasModelProjects">
+                    <input id="showHasModelProjects" class="showHasModelProjects" type="checkbox" ng-model="onlyShowHasModelProjects" ng-change="screeningProjects()" />
+                    <label for="showHasModelProjects" class="showHasModelProjectsText">只显示有模型的产品</label>
+                </div>
+            </div>
+            <div class="label">事件列表</div>
+            <div class="eventsList">
+                <div ng-hide="hasEvents" style="margin-top:10px;">当前产品的该模型下暂无事件。</div>
+                <div class="eventInfo" ng-repeat="event in events" ng-cloak>
+                    <span title="{{event.name}}">{{event.name}}</span>
+                    <select id="{{event.key}}" ng-model="$parent.events[$index].value">
+                        <option value="Auto">系统计算</option>
+                        <option value="Trigger">触发</option>
+                        <option value="NotTrigger">不触发</option>
+                    </select>
+                </div>
+            </div>
+            <div class="label" style="margin-top:15px;">可修改变量</div>
+            <div class="modifiableVariableList">
+                <div class="modifiableVariable" ng-repeat="variable in variables" ng-cloak>
+                    <div class="left" style="overflow:hidden;width:140px;">
+                        <span title="{{variable.description}}">{{variable.description}}</span>
+                        <span ng-if="variable.description!='CDR'&&variable.description!='CPR'" style="max-width:40px;">（元）</span>
+                    </div> 
+                    <input placeholder="{{($index == 0 || $index == 1) ? '0-1之间的数值':'非负数' }}" ng-model="$parent.variables[$index].value" type="text" name="name" />
+                    <span class="variablesValidMessage cnabs_red" ng-show="!variable.isValid">{{variable.errorMsg}}</span>
+                </div>
+            </div>
+            <div class="divSimulationBtn">
+                <span class="cnabs_btn_purple" ng-click="simulationCashFlow()">测算</span>
+            </div>
+        </div>
+        <div class="divCashFlowTables" id="divCashFlowTables" style="display:none;">
+            <div style="height:40px;border-bottom:1px solid #4f4a43;">
+                <div id="securitiesLabel" class="cnabs_btn_tab cnabs_btn_tab_selected" style="margin-left:20px;" ng-click="switchCashFlowTable('securities')">
+                    证券端现金流
+                </div>
+                <div id="assetLabel" class="cnabs_btn_tab" style="margin-left:10px;" ng-click="switchCashFlowTable('asset')">
+                    资产端现金流
+                </div>
+                @*<div class="btn_export" ng-click="exportCashflowTable()">导出现金流表</div>*@
+                <div class="btn_export" ng-click="exportCompareResultTable()">导出</div>
+                <span style="float: right; margin-right: 20px; margin-top: 13px;">
+                    <input type="checkbox" id="ckIsCompare" checked="checked" />
+                    <span class="showHasModelProjectsText" style="float:none">对比测算结果</span>
+                </span>
+            </div>         
+            <div id="cashFlowTables" style="margin-top: 10px;">
+
+                <div id="divInFrontOfTable" class="topLine">
+                    <span class="cnabs_circle_red left" style="margin-top:2px;"></span>
+                    <span class="topText left">比之前增加</span>
+                    <span class="cnabs_circle_green left" style="margin-top:2px;"></span>
+                    <span class="topText left">比之前减少</span>
+                    <span class="topPlusSign left"></span>
+                    <span class="topText left">新增的数据</span>
+                    <div class="topMinusSign left"></div>
+                    <span class="topText left">移除的数据</span>
+                </div>
+
+                <div id="securitiesTable" class="divTable cnabs_scrollbar">
+                    <table class="infoTable hover" style="margin-top:0px;" ng-cloak>
+                        <tr>
+                            <th ng-repeat="column in mergeCfTable.columns">
+                                <div style="padding-right:0px;" class="{{column.resultOfComparison == 'equalTo' ? 'noSign': (column.resultOfComparison == 'remove'?'minusSign':'plusSign')}} ">
+                                </div>
+                                <div style="display:inline-block;" class="{{column.resultOfComparison == 'equalTo' ? '':(column.resultOfComparison == 'remove'?'text-grey':'text-blue')}}">
+                                    {{column.value}}
+                                </div>
+                            </th>
+                        </tr>
+                        <tr ng-repeat="row in mergeCfTable.cells">
+                            <td rowspan="{{$index == 0 ? row.rowSpan : 1}}"
+                                @*class="{{($index == 0||$index == 1)? 'text-center':'text-right'}}"*@
+                                class="{{($index == 0||$index == 1)? 'text-center':'text-right'}}"
+                                ng-repeat="column in mergeCfTable.columns"
+                                ng-if="row.rowSpan != 0 || $index != 0"
+                                ng-style="$index == 0 ?controlTdBackgroundColorAndWidth:(row.rowSpan != 0 && !row.isFirstCategory ? customBorderWidth : null)">
+                                <div class="div_number">
+                                    <input type="hidden" style="display:inline-block;" value="{{row[$index].value}}&{{row[$index].preValue}} " />
+                                    <div class="{{$index == 0 || $index == 1? (row[$index].resultOfComparison == 'equalTo' ? 'noSign': (row[$index].resultOfComparison == 'remove'?'minusSign':'plusSign')):''}}">
+                                    </div>
+                                    <div style="font-size:14px;display:inline-block" class="{{row[$index].resultOfComparison == 'equalTo' || row[$index].resultOfComparison == 'greaterThan' || row[$index].resultOfComparison == 'lessThan' ? '':(row[$index].resultOfComparison == 'remove'?'text-grey':'text-blue')}}">
+                                        {{row[$index].value}}
+                                        <span class="{{row[$index].resultOfComparison == 'equalTo' || row[$index].resultOfComparison == 'remove' || row[$index].resultOfComparison == 'add' ? 'span_null' : (row[$index].resultOfComparison == 'lessThan' ? 'cnabs_circle_green' : 'cnabs_circle_red')}}"></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="assetTable" class="divTable cnabs_scrollbar" style="display:none;">
+                    <div class="assetAmountTip" ng-show="isShowAssetAmountTip">该产品共包含<span style="color:#fff;"> {{totalAssetCount}} </span>笔资产，显示前<span style="color:#fff;"> {{maxDisplayAssetCount}} </span>笔资产</div>
+                    <table class="infoTable hover" style="margin-top:0px;" ng-cloak>
+                        <tr>
+                            <th ng-repeat="column in mergeAcfTable.columns">
+                                <div style="padding-right:0px;" class="{{column.resultOfComparison == 'equalTo' ? 'noSign': (column.resultOfComparison == 'remove'?'minusSign':'plusSign')}} ">
+                                </div>
+                                <div style="display:inline-block;" class="{{column.resultOfComparison == 'equalTo' ? '':(column.resultOfComparison == 'remove'?'text-grey':'text-blue')}}">
+                                    {{column.value}}
+                                </div>
+                            </th>
+                        </tr>
+                        <tr ng-repeat="row in mergeAcfTable.cells"
+                            ng-if="$index < hideRowIndexBegin || $index >= hideRowIndexEnd">
+                            <td rowspan="{{$index == 0 ? row.rowSpan : 1}}"
+                                class="{{($index == 0||$index == 1)? 'text-center':'text-right'}}"
+                                ng-repeat="column in mergeAcfTable.columns"
+                                ng-if="row.rowSpan != 0 || $index != 0"
+                                ng-style="$index == 0 ?controlTdBackgroundColorAndWidth:(row.rowSpan != 0 && !row.isFirstCategory ? customBorderWidth : null)">
+                                <div class="div_number">
+                                    <input type="hidden" style="display:inline-block;" value="{{row[$index].value}}&{{row[$index].preValue}} " />
+                                    <div class="{{$index == 0 || $index == 1? (row[$index].resultOfComparison == 'equalTo' ? 'noSign': (row[$index].resultOfComparison == 'remove'?'minusSign':'plusSign')):''}}">
+                                    </div>
+                                    <div style="font-size:14px;display:inline-block;" class="{{row[$index].resultOfComparison == 'equalTo' || row[$index].resultOfComparison == 'greaterThan' || row[$index].resultOfComparison == 'lessThan' ? '':(row[$index].resultOfComparison == 'remove'?'text-grey':'text-blue')}}">
+                                        {{row[$index].value}}
+                                        <span class="{{row[$index].resultOfComparison == 'equalTo' || row[$index].resultOfComparison == 'remove' || row[$index].resultOfComparison == 'add' ? 'span_null' : (row[$index].resultOfComparison == 'lessThan' ? 'cnabs_circle_green' : 'cnabs_circle_red')}}"></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

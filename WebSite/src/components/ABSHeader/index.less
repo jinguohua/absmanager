@@ -1,0 +1,26 @@
+@import "../../styles/theme/default.less";
+
+.abs-header{
+	width:100%;
+	height: 60px;
+	z-index: 100;
+	background-color: @abs-header-bg-color;
+	border-bottom:1px solid @abs-header-border-color;
+	display: flex;
+	.abs-header-logo {
+		padding: 14px 20px;
+		img {
+			width: 107px;
+		}
+	}
+	.abs-menu {
+		margin-left: 28px;
+	}
+	.abs-header-right {
+		flex: 1;
+    min-width: 480px;
+		.abs-person,.abs-search,.abs-follow,.abs-notice,.abs-feedback {
+				float: right;
+		}
+	}
+}

@@ -1,0 +1,38 @@
+@import '../../../../../styles/theme/default.less';
+
+.deal-infomation {
+  flex: 1;
+  min-width: @min-screen-width - @sidebar-content-width - @basic-info-right-content-width;
+}
+
+.deal-info-basic {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.deal-info-image {
+  min-height: 400px;
+  &-left {
+    min-height: 400px;
+  }
+  &-right {
+    .abs-chart{
+      height: 400px;
+    }
+  }
+  &-title {
+    color: #FFE2B2;
+    font-size: 18px;
+    text-align: center;
+    padding-bottom: 20px;
+  }
+}
+
+.draw-result {
+  display: flex;
+  justify-content: start;
+  &-chart {
+    height: 400px;
+  }
+}

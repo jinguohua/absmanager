@@ -1,0 +1,20 @@
+.ui-datepicker .ui-datepicker-prev {
+    color: white;
+}
+.ui-datepicker .ui-datepicker-next {
+    color: white;
+}
+.ui-datepicker .ui-datepicker-prev-hover{
+    background:#3b3732;
+    border-color:#3b3732;
+} 
+.ui-datepicker .ui-datepicker-next-hover{
+    background:#3b3732;
+    border-color:#3b3732;
+} 
+.ui-state-hover .ui-icon{
+    background:#3b3732;
+}
+.ui-datepicker th{
+    padding:.7em .3em!important;
+}

@@ -1,0 +1,503 @@
+﻿@model ABS.ABSManagementSite.Models.DealModelViewModel
+@using ChineseAbs.ABSManagementSite.Helpers
+@using ABS.Core
+
+<div class="module module-notes">
+    <table class="bordered" style="width:642px;">
+        <thead>
+            <tr>
+                <th colspan="7" class="module-title">
+                    @Html.DisplayNameFor(r => r.Notes)
+                    <img src="~/Images/Icons/pass.png" class="data-checked" />
+                    <img src="~/Images/Icons/error.png" class="data-failed" />
+                </th>
+            </tr>
+            <tr>
+                <td colspan="7" style="height:30px;">
+                    <span style="margin-right:5PX;">证券总金额(万)</span>
+                    @Html.TextBoxFor(m => m.Notes.TotalBalance, new { Value = Model.Notes.TotalBalance, @class = "" })
+                </td>
+            </tr>
+            @if (Model.ModelStatus != EProjectStatus.Optimizing)
+            {
+                <tr>
+                    <th style="width:55px;">偿付顺序</th>
+                    <th>名称</th>
+                    <th>本金占比</th>
+                    <th>利率</th>
+                    <th>描述</th>
+                    <th colspan="2">操作</th>
+                </tr>
+            }
+        </thead>
+        <tbody class="notes">
+            @if (Model.ModelStatus == EProjectStatus.Optimizing)
+            {
+                <tr><td class="align-center">自动测算中...</td></tr>
+            }
+            else if (Model.Notes.NoteList != null && Model.Notes.NoteList.Count > 0)
+            {
+                for (int i = 0; i < Model.Notes.NoteList.Count; i++)
+                {
+                    <tr class="note align-center">
+                        <td class="note-ordinal">@Model.Notes.NoteList[i].PaymentOrdinal</td>
+                        <td class="note-name align-center">@Model.Notes.NoteList[i].Name</td>
+                        <td class="note-notional align-center">
+                            @if (Model.Notes.NoteList[i].Notional.HasValue)
+                            {
+                                <span>
+                                    @(String.Format("{0:P2}", Model.Notes.NoteList[i].Notional))
+                                </span>
+                            }
+                        </td>
+                        <td class="note-rate align-center">
+                            @if (Model.Notes.NoteList[i].IsFixed && Model.Notes.NoteList[i].FixedRate.HasValue)
+                            {
+                                <span>@String.Format("{0:P2}", Model.Notes.NoteList[i].FixedRate)</span>
+                            }
+                            else
+                            {
+                                <span>
+                                    基准
+                                    @((Model.Notes.NoteList[i].Spread < 0 ? "- " : "+ ")
+                                            + string.Format("{0:P2}", Model.Notes.NoteList[i].Spread / 10000).Replace("-", ""))
+                                </span>
+                            }
+                        </td>
+                        <td class="note-description align-center">@Model.Notes.NoteList[i].Description</td>
+                        <td><input type="button" class="button-remove-note switchOn" data-subscript="@i" value="删除" /></td>
+                        <td><input type="button" class="button-edit-note switchOn" data-subscript="@i" value="修改" /></td>
+                    </tr>
+                    <tr class="note-full">
+                        <th>修改></th>
+                        <td colspan="6">
+                            <table class="inner">
+                                <tr>
+                                    <td style="width:75px;">@Html.LabelFor(r => r.Notes.NoteList[i].Name, new { @class = "lbl-note-full-Name" })</td>
+                                    <td style="width:230px;">
+                                        @Html.TextBoxFor(r => r.Notes.NoteList[i].Name, new { @class = "note-full-Name", placeholder = "字母数字或下划线,非纯数字" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].Description, new { @class = "lbl-note-full-Description" })</td>
+                                    <td>@Html.TextBoxFor(r => r.Notes.NoteList[i].Description, new { @class = "note-full-Description" })</td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].Notional, new { @class = "lbl-note-full-Notional" })</td>
+                                    <td>@Html.TextBoxFor(r => r.Notes.NoteList[i].Notional, new { @class = "note-full-Notional number", Value = string.Format("{0:0.########}", Model.Notes.NoteList[i].Notional) })</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].ExpectedMaturityDate, new { @class = "lbl-note-full-ExpectedMaturityDate" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(r => r.Notes.NoteList[i].ExpectedMaturityDate,
+                                        new
+                                        {
+                                            @class = "note-full-ExpectedMaturityDate date",
+                                            Value = string.Format("{0:yyyy-MM-dd}", Model.Notes.NoteList[i].ExpectedMaturityDate),
+                                            placeholder = "(选填)"
+                                        })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        @Html.CheckBoxFor(r => r.Notes.NoteList[i].HasAmortizationSchedule, new { @class = "note-full-HasAmortizationSchedule" })
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].HasAmortizationSchedule, new { @class = "lbl-note-full-HasAmortizationSchedule" })
+                                    </td>
+                                </tr>
+                                <tr class="hasAmortizationSchedule">
+                                    <td>&nbsp;</td>
+                                    <td colspan="2">
+                                        <table class="inner">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">摊还时间表</th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:205px;">日期</td>
+                                                    <td>金额</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="amort-schedule">
+                                                @if (Model.Notes.NoteList[i].AmortizationSchedule != null && Model.Notes.NoteList[i].AmortizationSchedule.Count() > 0)
+                                                {
+                                                    for (int j = 0; j < Model.Notes.NoteList[i].AmortizationSchedule.Count(); j++)
+                                                    {
+                                                        <tr class="amort-schedule-item">
+                                                            <td>
+                                                                @Html.TextBoxFor(r => r.Notes.NoteList[i].AmortizationSchedule.Dates[j],
+                                                                    new
+                                                                    {
+                                                                        Value = string.Format("{0:yyyy-MM-dd}", Model.Notes.NoteList[i].AmortizationSchedule.Dates[j]),
+                                                                        @class = "date amort-schedule-item-Dates"
+                                                                    })
+                                                            </td>
+                                                            <td>
+                                                                @Html.TextBoxFor(r => r.Notes.NoteList[i].AmortizationSchedule.Values[j],
+                                                             new { @class = "amort-schedule-item-Values number" })
+                                                            </td>
+                                                            <td>
+                                                                <input type="button" onclick="removeAmortSchedule(this)" data-parent-subscript="@i" data-subscript="@j" value="-" />
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <input class="button-add-amort-schedule" type="button" data-parent-subscript="@i" value="+" />
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        @Html.CheckBoxFor(r => r.Notes.NoteList[i].IsEquity, new { @class = "note-full-IsEquity" })
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].IsEquity, new { @class = "lbl-note-full-IsEquity" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        @Html.CheckBoxFor(r => r.Notes.NoteList[i].IsFixed, new { @class = "note-full-IsFixed" })
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].IsFixed, new { @class = "lbl-note-full-IsFixed" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        @Html.CheckBoxFor(r => r.Notes.NoteList[i].HasUnpaidInterest, new { @class = "note-full-HasUnpaidInterest" })
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].HasUnpaidInterest, new { @class = "lbl-note-full-HasUnpaidInterest" })
+                                    </td>
+                                    <td class="hasUnpaidInterest">
+                                        @Html.CheckBoxFor(r => r.Notes.NoteList[i].HasInterestOnUnpaidInterest,
+                                            new { @class = "note-full-HasInterestOnUnpaidInterest" })
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].HasInterestOnUnpaidInterest, new { @class = "lbl-note-full-HasInterestOnUnpaidInterest" })
+                                    </td>
+                                </tr>
+                                <tr class="floatingRate">
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].FloatingIndex, new { @class = "lbl-note-full-FloatingIndex" })</td>
+                                    <td>
+                                        @Html.DropDownListFor(r => r.Notes.NoteList[i].FloatingIndex, new List<SelectListItem>(){
+                                           new SelectListItem(){
+                                               Value="",Text="-请选择-"
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNS012M",Text="一年期存款利率",
+                                               Selected=("CNS012M"==Model.Notes.NoteList[i].FloatingIndex)
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNS003Y",Text="三年期存款利率",
+                                               Selected=("CNS003Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNS005Y",Text="五年期存款利率",
+                                               Selected=("CNS005Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNS010Y",Text="十年期存款利率",
+                                               Selected=("CNS010Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNL012M",Text="一年期贷款利率",
+                                               Selected=("CNL012M"==Model.Notes.NoteList[i].FloatingIndex)
+                                           },
+                                            new SelectListItem(){
+                                               Value="CNL003Y",Text="三年期贷款利率",
+                                               Selected=("CNL003Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           }
+                                           ,
+                                            new SelectListItem(){
+                                               Value="CNL005Y",Text="五年期贷款利率",
+                                               Selected=("CNL005Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           }
+                                           ,
+                                            new SelectListItem(){
+                                               Value="CNL010Y",Text="十年期贷款利率",
+                                               Selected=("CNL010Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           }
+                                           ,
+                                            new SelectListItem(){
+                                               Value="CNHL005Y",Text="五年期公积金贷款利率",
+                                               Selected=("CNL005Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           }
+                                           ,
+                                            new SelectListItem(){
+                                               Value="CNHL010Y",Text="十年期公积金贷款利率",
+                                               Selected=("CNL010Y"==Model.Notes.NoteList[i].FloatingIndex)
+                                           }
+                                       }, new { @class = "note-full-FloatingIndex" })
+                                    </td>
+                                </tr>
+                                <tr class="floatingRate">
+                                    <td>
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].Spread, new { @class = "lbl-note-full-Spread" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(r => r.Notes.NoteList[i].Spread, new { @class = "note-full-Spread number small-value" })
+                                    </td>
+                                </tr>
+                                <tr class="fixedRate">
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].FixedRate, new { @class = "lbl-note-full-FixedRate" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(r => r.Notes.NoteList[i].FixedRate, new { @class = "note-full-FixedRate number small-value" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].AccrualMethod, new { @class = "lbl-note-full-AccrualMethod" })</td>
+                                    <td>
+                                        @Html.DropDownListFor(r => r.Notes.NoteList[i].AccrualMethod,
+                                        MyEnumConvertor.ConvertToSelectList(typeof(EAccrualMethod), Model.Notes.NoteList[i].AccrualMethod.ToString()),
+                                        new { @class = "note-full-AccrualMethod" })
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(r => r.Notes.NoteList[i].UnAdjustedAccrualPeriods,
+                                            new { @class = "note-full-UnAdjustedAccrualPeriods" })
+                                        @Html.LabelFor(r => r.Notes.NoteList[i].UnAdjustedAccrualPeriods, new { @class = "lbl-note-full-UnAdjustedAccrualPeriods" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(r => r.Notes.NoteList[i].PaymentOrdinal, new { @class = "lbl-note-full-PaymentOrdinal" })</td>
+                                    <td>
+                                        @Html.DropDownListFor(r => r.Notes.NoteList[i].PaymentOrdinal,
+                                        ABS.ABSManagementSite.Models.DealModelViewModel.GetOrdinalSelectList(10,
+                                        Model.Notes.NoteList[i].PaymentOrdinal.ToString(), 10, 5),
+                                        new { @class = "note-full-PaymentOrdinal" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    @if (Model.ModelStatus == EProjectStatus.Optimizing)
+                    {
+                        <span class="switchOn" id="btnCancelCalculation" style="margin-left:5px;">取消自动测算</span>
+                    }
+                    else
+                    {
+                        <span class="switchOn" id="btnAddNote" style="margin-left:5px;padding:2px 10px;">添加</span>
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <table style="display:none;">
+        <tbody id="template_note">
+            <tr class="note align-center">
+                <td class="note-ordinal"></td>
+                <td class="note-name"></td>
+                <td class="note-notional numeric"></td>
+                <td class="note-rate"></td>
+                <td class="note-description"></td>
+                <td><input type="button" class="button-remove-note switchOn" value="删除" /></td>
+                <td><input type="button" class="button-edit-note switchOn" value="完成" /></td>
+            </tr>
+            <tr class="note-full">
+                <th>修改></th>
+                <td colspan="6">
+                    <table class="inner">
+                        <tbody>
+                            <tr>
+                                <td style="width:85px;"><label for="" class="lbl-note-full-Name">名称</label></td>
+                                <td style="width:230px;"><input class="note-full-Name" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-note-full-Description">描述</label></td>
+                                <td><input class="note-full-Description" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-note-full-Notional">本金占比</label></td>
+                                <td><input class="note-full-Notional number" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td><label for="" class="lbl-note-full-ExpectedMaturityDate">预计到期日</label></td>
+                                <td>
+                                    <input class="note-full-ExpectedMaturityDate date" placeholder="(选填)" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="note-full-HasAmortizationSchedule" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-note-full-HasAmortizationSchedule">是否摊还</label>
+                                </td>
+                            </tr>
+                            <tr class="hasAmortizationSchedule">
+                                <td>&nbsp;</td>
+                                <td colspan="2">
+                                    <table class="inner">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="3">摊还时间表</th>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:205px;">日期</td>
+                                                <td>金额</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="amort-schedule"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <input type="button" onclick="addAmortSchedule(this)" value="+" />
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="note-full-IsEquity" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-note-full-IsEquity">次级证券</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="note-full-IsFixed" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-note-full-IsFixed">固定利率</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="note-full-HasUnpaidInterest" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-note-full-HasUnpaidInterest">记录逾期利息</label>
+                                </td>
+                                <td class="hasUnpaidInterest">
+                                    <input type="checkbox" class="note-full-HasInterestOnUnpaidInterest" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-note-full-HasInterestOnUnpaidInterest">逾期利息计息</label>
+                                </td>
+                            </tr>
+                            <tr class="floatingRate">
+                                <td><label for="" class="lbl-note-full-FloatingIndex">基准利率</label></td>
+                                <td>
+                                    <select class="note-full-FloatingIndex">
+                                        <option value="">-请选择-</option>
+                                        <option name="CNS012M" value="CNS012M">一年期存款利率</option>
+                                        <option name="CNS003Y" value="CNS003Y">三年期存款利率</option>
+                                        <option name="CNS005Y" value="CNS005Y">五年期存款利率</option>
+                                        <option name="CNS010Y" value="CNS010Y">十年期存款利率</option>
+                                        <option name="CNL012M" value="CNL012M">一年期贷款利率</option>
+                                        <option name="CNL003Y" value="CNL003Y">三年期贷款利率</option>
+                                        <option name="CNL005Y" value="CNL005Y">五年期贷款利率</option>
+                                        <option name="CNL010Y" value="CNL010Y">十年期贷款利率</option>
+                                        <option name="CNHL005Y" value="CNHL005Y">五年期公积金贷款利率</option>
+                                        <option name="CNHL010Y" value="CNHL010Y">十年期公积金贷款利率</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="floatingRate">
+                                <td>
+                                    <label for="" class="lbl-note-full-Spread">利差(bps)</label>
+                                </td>
+                                <td>
+                                    <input class="note-full-Spread number small-value" type="text" />
+                                </td>
+                            </tr>
+                            <tr class="fixedRate">
+                                <td><label for="" class="lbl-note-full-FixedRate">利率</label></td>
+                                <td>
+                                    <input class="note-full-FixedRate number small-value" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-note-full-AccrualMethod">计日天数</label></td>
+                                <td>
+                                    @Html.DropDownList("AccrualMethod", MyEnumConvertor.ConvertToSelectList(typeof(EAccrualMethod), "Act_365"),
+                                        new { @class = "note-full-AccrualMethod" })
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="note-full-UnAdjustedAccrualPeriods" checked value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-note-full-UnAdjustedAccrualPeriods">计息期不调整</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-note-full-PaymentOrdinal">偿付顺序</label></td>
+                                <td>
+                                    @Html.DropDownList("PaymentOrdinal", ABS.ABSManagementSite.Models.DealModelViewModel.GetOrdinalSelectList(10, "", 10, 5),
+                                        new { @class = "note-full-PaymentOrdinal" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="display:none;">
+        <tbody id="template_amort_schedule_item">
+            <tr class="amort-schedule-item">
+                <td><input class="amort-schedule-item-Dates date" type="text" /></td>
+                <td><input class="amort-schedule-item-Values number" type="text" /></td>
+                <td><input class="button-remove-amort-schedule" type="button" value="-" /></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".bordered .note-full-IsFixed").each(function () {
+            nChangeVisibility($(this), "IsFixed");
+        });
+        $(".bordered .note-full-HasAmortizationSchedule").each(function () {
+            nChangeVisibility($(this), "HasAmortizationSchedule");
+        });
+        $(".bordered .note-full-HasUnpaidInterest").each(function () {
+            nChangeVisibility($(this), "HasUnpaidInterest");
+        });
+        $(document).on("change", ".note-full-IsFixed", function () {
+            nChangeVisibility($(this), "IsFixed");
+        });
+        $(document).on("change", ".note-full-HasAmortizationSchedule", function () {
+            nChangeVisibility($(this), "HasAmortizationSchedule");
+        });
+        $(document).on("change", ".note-full-HasUnpaidInterest", function () {
+            nChangeVisibility($(this), "HasUnpaidInterest");
+        });
+
+        $("input[name$=Notional]").change(function () {
+            if (!String.IsNullOrEmpty($(this).val()))
+            {
+                if (parseFloat($(this).val()) > 1) {
+                    $(this).css({"border": "2px solid red","transition": "all 0.5s"});
+                }
+                else {
+                    $(this).css({ "border": "", "transition": "" });
+                }
+            }
+        });
+
+        drawNoteStructure(@Model.CreditEnhancement.OriginalAPB);
+
+        $(document).on("change", ".module-notes input,.module-notes select", function () {
+            if ($(this).hasClass("note-full-Notional") && $(this).val() != null) {
+                var f = parseFloat($(this).val());
+                $(this).val(f);
+            }
+            nCheckData();
+        });
+    });
+</script>

@@ -1,0 +1,88 @@
+﻿@model ABS.ABSManagementSite.Models.DealModelViewModel
+@using ChineseAbs.ABSManagementSite.Controllers
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "模型设置";
+    ViewBag.ProjectName = Model.ModelName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    @*<link rel="stylesheet" type="text/css" href="~/Content/jquery-ui.css">*@
+}
+@section scripts{
+    @Scripts.Render("~/bundles/modeling")
+}
+
+@using (Html.BeginForm("Modeling", "MyModels", FormMethod.Post,
+    new { @class = "form-horizontal modeling", role = "form", id = "formModeling", autocomplete = "off", style = "margin-top: -15px;" }))
+{
+    @Html.HiddenFor(r => r.Guid)
+    @Html.HiddenFor(r => r.ModelStatus)
+    @Html.HiddenFor(r => r.IsInfoComplete)
+    @Html.HiddenFor(r => r.ModelName)
+    @Html.HiddenFor(r => r.CreditEnhancement.OriginalAPB)
+
+    <div class="modeling-guide">
+        <div style="height:10px;"></div>
+        <div style="padding:10px 0 0 0;" class="name-width width-limited">
+            <span>模型名称：</span>
+            <span style="padding-left:2px; color:#FFC446;" title="@Model.ModelName">@Model.ModelName</span>
+        </div>
+        <ul>
+            <li><input type="button" id="btnSave" class="switchOn" value="保存模型" style="width:120px;" /></li>
+            <li><div style="height:5px;"></div></li>
+            <li><input type="button" id="btnShowWaterfall" class="switchOn" style="width:120px;" value="查看偿付模型" /></li>
+            <li><div style="height:5px;"></div></li>
+            <li><input type="button" id="btnChangeTooltipVisibility" class="switchOn" style="width:120px;" value="关闭提示" /></li>
+        </ul>
+        <br />
+        <span>小贴士：</span>
+        <ul class="tips">
+            <li>红色标记的项目为必填项</li>
+            <li>请及时保存您所填写的模型信息</li>
+            <li>已保存的信息会在再次修改时自动加载</li>
+            <li>填写的模型信息（包括费用和证券设置）只有在点击保存或查看按钮后才会保存</li>
+        </ul>
+        <div style="margin-top:20px;">
+            <p>证券结构</p>
+            <div id="noteStructure" class="note-structure-table"></div>
+        </div>
+    </div>
+    <div class="tablecloth">
+        <div class="alert module">
+            @if (IsPost)
+            {
+                <p>错误：</p>
+                @Html.ValidationSummary()
+            }
+        </div>
+        <div style="margin-left: 100px; padding: 10px 0;">
+            @Html.Partial("_BasicInfo")
+            @Html.Partial("_CollateralRule")
+            @Html.Partial("_Fees")
+            @*@Html.Partial("_Schedule")*@
+            @Html.Partial("_Notes")
+            @Html.Partial("_CreditEnhancement")
+            @Html.Partial("_FileManage")
+
+        </div>
+    </div>
+    <div id="divWaterfall">
+        <div id="chtWaterfall" style="width: 1000px; margin: 0 auto; position: relative;">
+            <div style="">
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<script type="text/javascript">
+    $(function () {
+        checkStatus();
+
+        $(".date").datepicker({
+            format: "yyyy-mm-dd"
+        });
+    });
+</script>

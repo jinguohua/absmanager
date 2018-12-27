@@ -1,0 +1,35 @@
+@import '../../styles/theme/default.less';
+
+.abs-ant-icon {
+    display: inline-block;
+    position: relative;
+
+    .anticon {
+      position: relative;
+      z-index: 1;
+    }
+
+    .abs-ant-icon-bg {
+      position: absolute;
+      z-index: 0;
+      background-color: @abs-ant-icon-bg;
+      display: inline-block;
+      width: 80%;
+      height: 80%;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+    }
+
+    .abs-ant-icon-s {
+      font-size: @abs-ant-icon-size-s;
+    }
+
+    .abs-ant-icon-m {
+      font-size: @abs-ant-icon-size-m;
+    }
+    
+    .abs-ant-icon-l {
+      font-size: @abs-ant-icon-size-l;
+    }
+}

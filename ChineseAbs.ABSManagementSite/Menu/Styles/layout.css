@@ -1,0 +1,530 @@
+﻿@charset "UTF-8";
+/**
+ * 
+ * @authors cnabs (developers@sail-fs.com)
+ * @date    2016-10-21 14:37:05
+ * @version $1.0.1$
+ */
+body {
+    margin: 0px;
+    font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+    color: white;
+    font-size: 13px;
+    background-color: #655E56;
+}
+
+#container {
+    min-width: 1050px;
+}
+
+#header {
+    height: 65px;
+    background-color: #212121;
+    background-image: url("../Images/headerbg.png");
+    background-repeat: repeat-x;
+}
+
+#mid {
+    background-image: url("../Images/bg1.png");
+    background-repeat: repeat-x;
+    min-height: 700px;
+}
+
+.footer {
+    height: 250px;
+    background: none repeat scroll 0px 0px;
+    color: #B7AFA5;
+    padding-top: 0px;
+}
+
+.center {
+    width: 1050px;
+    margin: 0 auto;
+}
+
+#divProductName {
+    width: 300px;
+    background-image: url("../Images/productnamebg.png");
+    height: 63px;
+    float: left;
+}
+
+.logo-img {
+    float: left;
+    border-style: none;
+    width: 40px;
+    margin: 15px;
+}
+
+#divHeaderInfo {
+    height: 63px;
+    background-image: url("../Images/menuTop.png");
+    background-repeat: no-repeat;
+    width: 720px;
+    float: right;
+    text-align: right;
+}
+
+#divMenuStrip {
+    width: 100%;
+    height: 65px;
+    background: #443F39;
+}
+
+.pagewidth {
+    margin: 0px auto;
+    width: 1050px;
+    padding: 0px;
+}
+
+.float {
+    float: left;
+    display: inline;
+    width: 1050px;
+    background-color: #47423C;
+}
+
+.footer .title {
+    height: 30px;
+    padding-bottom: 15px;
+    margin-top: 25px;
+}
+
+.footer .subtitle {
+    font-size: 16px;
+}
+
+.footer .icon {
+    padding-top: 6px;
+}
+
+.footer li {
+    height: 32px;
+}
+
+.w120 {
+    width: 120px;
+    padding-left: 2px;
+}
+
+.w50 {
+    width: 50px;
+}
+
+.w55 {
+    width: 55px;
+}
+
+.w60 {
+    width: 60px;
+}
+
+#footer {
+    text-align: center;
+    padding: 10px;
+    height: 30px;
+}
+
+.tablecloth {
+    background-color: #3B3831;
+    min-height: 750px;
+    width: 1050px;
+}
+
+ol, ul {
+    list-style: outside none none;
+}
+
+a:link, a:hover, a:visited, a:active {
+    color: #FFC446;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a.a-state:link, a.a-state:visited {
+    color: #B7AFA5;
+}
+
+a.a-state:hover, a.a-state:active {
+    color: #FFC446;
+    cursor: pointer;
+}
+
+.comment {
+    color: #B7AFA5;
+    font-size: 10px;
+}
+
+.linkColor {
+    color: #FFC446;
+    cursor: pointer;
+}
+
+.fixedColor {
+    color: #B7AFA5;
+}
+
+.backColor {
+    background-color: #3B3831;
+}
+
+.pnlColor {
+    background-color: #47423C;
+}
+
+.alterColor {
+    background-color: #514C44;
+}
+
+.btnColor {
+    background-color: #5C554D;
+}
+
+.waterMelonColor {
+    background-color: #f45b5b;
+}
+
+.darkCyanColor {
+    background-color: #2b908f;
+}
+
+.forestGreenColor {
+    background-color: #55BF3B;
+}
+
+.greyAutumnColor {
+    background-color: #D8C46C;
+}
+
+.steelBlueColor {
+    background-color: #7798BF;
+}
+
+.hotPinkColor {
+    background-color: #FF1495;
+}
+
+.lightLimeColor {
+    background-color: #37FF14;
+}
+
+.orchidColor {
+    background-color: #eeaaee;
+}
+
+.aquaColor {
+    background-color: #00FFFF;
+}
+
+.label {
+    font-size: 16px;
+    line-height: 30px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.panel {
+    background-color: #47423C;
+    height: 99%;
+    margin: 10px;
+    padding: 5px;
+}
+
+.clear {
+    clear: both;
+}
+
+table.fixedTable, table.infoTable, table.operationTable {
+    font-size: 13px;
+    border-collapse: collapse;
+    margin: 10px 0;
+    min-width: 61.8%;
+}
+
+    table.fixedTable tr:first-child td,
+    table.infoTable tr th, table.operationTable tr th {
+        color: #B7AFA5;
+    }
+
+    table.infoTable tr th,
+    table.infoTable tr td {
+        border-collapse: collapse;
+        border: 1px solid #666;
+        vertical-align: middle;
+        padding: 2px 2px;
+    }
+
+    table.operationTable tr th,
+    table.operationTable tr td {
+        vertical-align: middle;
+        padding: 4px;
+        height: 22px;
+    }
+
+    table.operationTable.hover tr:not(:first-child):hover {
+        background-color: #666;
+    }
+
+.truncate {
+    text-overflow: ellipsis;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-style: none;
+}
+
+
+table.fixedTable tr td {
+    vertical-align: top;
+    padding: 4px;
+    height: 22px;
+}
+
+table.fixedTable tr:nth-child(even),
+table.infoTable tr:nth-child(even),
+table.operationTable tr:nth-child(even) {
+    background-color: #514C44;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+ul li {
+    list-style-type: none;
+    display: block;
+    text-align: left;
+}
+
+select {
+    background-color: #fff;
+    outline: none;
+    min-height: 20px;
+}
+
+    select option {
+        background-color: #47423C;
+        color: #fff;
+        border-color: none;
+        outline: none;
+        vertical-align: middle;
+    }
+
+input[type="text"], textarea, 
+input[type="password"], input[type="number"] {
+    background-color: #fff;
+    outline: none;
+    /*min-width: 120px;*/
+    /*min-height: 20px;*/
+    border-width: 1px;
+}
+
+#paging-number {
+    min-width: 10px;
+    width: 20px;
+}
+
+.map-site {
+    text-align: left;
+    line-height: 27px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.navigator {
+    width: 1050px;
+    height: 27px;
+    background-color: #3B3831;
+}
+
+.searchBar {
+    float: right; 
+    height: 27px; 
+    margin-right: 8px;
+}
+
+.placeholder {
+    background-color: #3B3831;
+}
+
+input[type="checkbox"], input[type="radio"],
+ {
+    vertical-align: middle;
+    margin: 3px;
+}
+
+.button {
+    border-style: none;
+    color: #B7AFA5;
+    cursor: pointer;
+    font-size: 13px;
+    background-color: #5C554D;
+    height: 22px;
+    outline: none;
+    max-width: 120px;
+    min-width: 30px;
+}
+
+.Button {
+    border-style: none;
+    color: #B7AFA5;
+    cursor: pointer;
+    font-size: 13px;
+    background-color: #5C554D;
+    height: 22px;
+    outline: none;
+}
+
+    .button.button-tab-selected, .button.button-tab-selected:hover,
+    .button.button-tab-selected.disabled,
+    .button.button-tab-selected.disabled:hover,
+    .button.button-tab-selected.disabled:focus,
+    .button.button-tab-selected.disabled:active {
+        background-color: #4682b4;
+        color: #fff;
+    }
+
+    .button:hover, .button.button-tab,
+    .button.button-tab.disabled,
+    .button.button-tab.disabled:hover,
+    .button.button-tab.disabled:focus,
+    .button.button-tab.disabled:active {
+        background-color: #d3d3d3;
+        color: black;
+    }
+
+        .button.disabled, .Button.disabled, .button.button-tab.disabled, .button.button-tab-selected.disabled {
+            cursor: not-allowed;
+        }
+
+            .button.disabled,
+            .Button.disabled,
+            .button.disabled:hover,
+            .button.disabled:focus,
+            .button.disabled:active {
+                color: #B7AFA5;
+                background-color: #5C554D;
+            }
+
+.span-switch {
+    background-color: #7798bf;
+    color: #fff;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.navIcon {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    /*position: relative;*/
+}
+
+.navigator-title {
+    display: none;
+    font-size:1.2em;
+    padding-top:3px;
+}
+
+.iconStyle {
+    padding: 10px;
+}
+
+.agree {
+    margin-bottom: 0;
+}
+
+.agreement :first-child {
+    margin: 5px 0 10px 0;
+}
+
+.feedback-text {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    background-color: #514C44;
+    text-align: left;
+    /*overflow: hidden;*/
+    color: #FFF;
+    font-size: 16px;
+}
+
+.protocol_text {
+    width: 660px;
+    height: 250px;
+    margin: auto;
+    text-align: left;
+    overflow: auto;
+    font-size: 16px;
+}
+
+i.fitSize.icon {
+    line-height: 1;
+    vertical-align: middle;
+    font-size: 3.5em;
+}
+
+.fixed {
+    background-color: #2c2c2c;
+}
+
+.more-custom-menu table td {
+    cursor: pointer;
+}
+
+.more-custom-menu table td.disabled {
+    color: grey;
+}
+
+.my-custom-menu>span.selected {
+    color: #4682b4;
+    background-color: transparent;
+}
+
+.my-custom-menu>span {
+    cursor: pointer;
+}
+
+.my-custom-menu-operation button {
+    margin: 5px;
+}
+
+.wid-100 {
+    width: 100%;
+}
+
+.wid-25 {
+    width: 24%;
+}
+
+.wid-75 {
+    width: 74%;
+}
+
+.inline-ele {
+    display: inline-block;
+}
+
+.right-float {
+    float: right;
+}
+
+.left-float {
+    float: left;
+}
+
+.Hide {
+    display: none;
+}

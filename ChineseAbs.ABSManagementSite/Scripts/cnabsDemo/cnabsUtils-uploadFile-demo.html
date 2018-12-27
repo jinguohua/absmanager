@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>上传文件demo</title>
+
+    <link href="../../Content/iconfont/iconfont.css" rel="stylesheet" />
+    <link href="../../Content/Site.css" rel="stylesheet" />
+    <link href="../../Content/cnabsUtils/jquery-ui.icon-font.css" rel="stylesheet" />
+    <link href="../../Content/cnabsUtils/jquery-ui.css" rel="stylesheet" />
+    <link href="../../Content/alertify/alertify.css" rel="stylesheet" />
+    <link href="../../Content/alertify/themes/semantic.css" rel="stylesheet" />
+    <link href="../../Content/cnabsMenu/index.css" rel="stylesheet" />
+    <link href="../../Content/cnabsUtils/cnabsUtils.css" rel="stylesheet" />
+    <link href="../../Content/cnabsUtils/layout.css" rel="stylesheet" />
+    <link href="../../Content/icon.css" rel="stylesheet" />
+
+    <link href="../../Content/cnabsUtils/cnabsUtils-uploadFile.css" rel="stylesheet" />
+
+    <link href="../../Content/pagewalkthrough/jquery.pagewalkthrough.css" rel="stylesheet" />
+    <link href="../../Content/glDatePicker.default.css" rel="stylesheet" />
+    <link href="../jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+    <link href="../../Content/cnabsUtils/cnabs-jquery-ui-datepick.css" rel="stylesheet" />
+
+    <script src="../modernizr-2.6.2.js"></script>
+    <script src="../jquery-1.12.1.js"></script>
+    <script src="../jquery-3.0.0.js"></script>
+    <script src="../alertify.js"></script>
+    <script src="../cnabsMenu/megamenu.js"></script>
+
+    <script src="../cnabsUtils/cnabsUtils.js"></script>
+    <script src="../cnabsUtils/cnabsUtils.core.js"></script>
+    <script src="../highchart-dark/highcharts.js"></script>
+    <script src="../highchart-dark/lib.chart.js"></script>
+    <script src="../highchart-dark/theme.js"></script>
+    <script src="../jquery-ui-1.12.1.js"></script>
+    <script src="../jquery.timeago.js"></script>
+    <script src="../jquery.timeago.zh-CN.js"></script>
+    <script src="../angular.min.js"></script>    
+
+    <script src="../cnabsUtils/cnabs-jquery-ui-datepick.js"></script>
+      
+    <script src="../cnabsUtils/cnabsUtils-uploadFile.js"></script>  
+    <style>        
+    </style>
+   
+</head>
+<body>
+    <!--<button onclick="selectUploadFile()">上传文件</button>-->
+    <a style="outline:none; color:#ffc446;">
+        <text class="ui-icon ui-icon-download smallImageSize" onclick="selectUploadFile()"></text>
+    </a>
+</body>
+</html>
+<script>
+    function selectUploadFile() {
+        cnabsUploadFile('上传文件Demo', 'zip', '64', '3', function (data) {
+            //上传的文件列表
+            var filesArray = data;            
+        });
+    }
+</script>

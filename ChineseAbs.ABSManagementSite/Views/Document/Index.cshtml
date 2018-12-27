@@ -1,0 +1,597 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DocumentManagerViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style type="text/css">
+        a {
+            color: #ffc446;
+            text-decoration: none;
+            outline:none;
+        }
+        ul.toolkit-list {
+            height:22px;
+            margin:10px 20px;
+            padding: 0;
+        }
+        .emptySecurityTip{
+            margin:auto;text-align:center;height:30px;line-height:30px;
+        }
+        .emptySecurityTip:hover{
+            background:#666;
+        }
+        ul.toolkit-list > li {
+            margin:0px 25px 10px 0px;
+        }
+        .toolkit-list .toolkit-item {
+            display: inline;
+            float: left;
+        }
+        .fr {
+            float:right!important;
+        }
+        .toolkit-list .toolkit-item.last {
+            margin-right: 0px;
+        }
+        .font-weight{
+            font-weight: bold;
+        }
+        .txt-overflow {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        table.fixedTable th, table.fixedTable tr td {
+            vertical-align: middle;
+            padding: 4px;
+            height: 22px;
+            text-align: left;
+        }
+
+        .documentListTable td:nth-of-type(1),.documentListTable th:nth-of-type(1) {
+            width: 267px;
+            min-width: 267px;
+            max-width: 267px;
+        }
+
+        .documentListTable td:nth-of-type(2),.documentListTable th:nth-of-type(2) {
+            width: 127px;
+            min-width: 127px;
+            max-width: 127px;
+            padding-left:10px;
+        }
+
+        .documentListTable td:nth-of-type(3),.documentListTable th:nth-of-type(3) {
+            width: 79px;
+            min-width: 79px;
+            max-width: 79px;
+        }
+
+        .documentListTable td:nth-of-type(4),.documentListTable th:nth-of-type(4) {
+            width: 188px;
+            min-width: 188px;
+            max-width: 188px;
+        }
+
+        .documentListTable td:nth-of-type(5), .documentListTable th:nth-of-type(5) {
+            width: 149px;
+            min-width: 149px;
+            max-width: 149px;
+        }
+
+        .documentListTable td:nth-of-type(6), .documentListTable th:nth-of-type(6) {
+            width: 137px;
+            min-width: 137px;
+            max-width: 137px;
+        }
+
+        .documentLogTable td:nth-of-type(1), .documentLogTable th:nth-of-type(1) {
+            width: 181px;
+            min-width: 181px;
+            max-width: 181px;
+        }
+
+        .documentLogTable td:nth-of-type(2), .documentLogTable th:nth-of-type(2) {
+            width: 644px;
+            min-width: 644px;
+            max-width: 644px;
+        }
+
+        .documentLogTable td:nth-of-type(3), .documentLogTable th:nth-of-type(3) {
+            width: 129px;
+            min-width: 129px;
+            max-width: 129px;
+            padding-left: 10px;
+        }
+
+        .documentHistoryTable td:nth-of-type(1), .documentHistoryTable th:nth-of-type(1) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+        .documentHistoryTable td:nth-of-type(2), .documentHistoryTable th:nth-of-type(2) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+        .documentHistoryTable td:nth-of-type(3), .documentHistoryTable th:nth-of-type(3) {
+            width: 165px;
+            min-width: 165px;
+            max-width: 165px;
+        }
+        .documentHistoryTable td:nth-of-type(4), .documentHistoryTable th:nth-of-type(4) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+        .documentHistoryTable td:nth-of-type(5), .documentHistoryTable th:nth-of-type(5) {
+            width: 275px;
+            min-width: 275px;
+            max-width: 275px;
+        }
+        .documentHistoryTable td:nth-of-type(6), .documentHistoryTable th:nth-of-type(6) {
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
+            padding-left:10px;
+        }
+        /*解决上传新文档input框变成黄色的问题*/
+        input:-webkit-autofill {
+            box-shadow: 0 0 0px 1000px white inset;
+        }
+    </style>
+}
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/jqueryForm")
+@Scripts.Render("~/bundles/fileDownload")
+
+@section scripts{
+    <script>
+        BindingElementActive(4, 2, 3);
+    </script>
+}
+<div class="tablecloth" style="padding-bottom:1px;">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">文档管理</span>
+    </header>
+    <div class="cnabs_div_v2">
+        <div ng-app="documentManage" ng-controller="documentManageCtrl" ng-cloak>
+            <div ng-show="ViewModel.Projects.length <= 0" style="margin:auto;text-align:center;height:30px;line-height:30px;font-size: large">
+                暂无相关产品，请联系管理员创建产品！
+            </div>
+            <div ng-show="ViewModel.Projects.length > 0">
+                <ul class="toolkit-list" style="margin:0;">
+                    <li class="toolkit-item">
+                        <span class="fixedColor">选择产品：</span>
+                        <select ng-model="project" ng-options="project.ProjectName for project in ViewModel.Projects track by project.ProjectGuid" ng-change="projectChange()"></select>
+                    </li>
+                    <li class="toolkit-item">
+                        <span class="fixedColor">文档类型筛选：</span>
+                        <select ng-change="documentTypeChange()" ng-model="documentType" ng-options="type.TypeName for type in ViewModel.DocumentTypes track by type.TypeId"></select>
+                    </li>
+                    <li class="fr toolkit-item last">                        
+                        <div class="cnabs_btn" id="uploadButton" ng-click="showUploadNewDocument()">上传新文档</div>
+                    </li>
+                </ul>
+                <div class="cnabs_label_v2 cnabs_v2_margin">
+                    <div>文档列表</div>
+                </div>
+                <div>
+                    <table ng-cloak class="table_v2 alone hover cnabs_v2_margin documentListTable" style="width:100%;table-layout:fixed">
+                        <tbody>
+                            <tr>
+                                <th class="text-left">文档名称</th>
+                                <th class="text-left">文档类型</th>
+                                <th class="text-left">版本号</th>
+                                <th class="text-left">更新时间</th>
+                                <th class="text-left">更新人</th>
+                                <th class="text-left">操作</th>
+                            </tr>
+                            <tr ng-repeat="document in documents | filter:filterType">
+                                <td class="cnabs_ellipsis"><span title="{{document.DocumentName}}">{{document.DocumentName}}</span></td>
+                                <td class="text-left">{{document.DocumentTypeName}}</td>
+                                <td class="text-left">{{"V" + document.Version }}</td>
+                                <td class="text-left">{{document.UploadTime}}</td>
+                                <td class="text-left">{{document.Username}}</td>
+                                <td class="text-left">
+                                    <a ng-click="downloadFile(document.DocumentId)">下载</a> |
+                                    <a href="javascript:void(0)" ng-click="showUploadDocumentNewVersion(document)">上传</a> |
+                                    <a href="javascript:void(0)" ng-click="showDocumentHistory(document.DocumentName)">历史版本</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-if="project.ProjectGuid !== 'default'">
+                        <div class="emptySecurityTip" ng-show="documents.length == 0 ? false : (documents | filter:filterType).length == 0">
+                            <span>该产品暂无'{{documentType.TypeName}}'类文档</span>
+                        </div>
+                        <div class="emptySecurityTip" ng-show="documents.length == 0">
+                            <span>该产品暂无相关文档，点击右上角 '上传新文档' 按钮可上传新文档</span>
+                        </div>
+                    </div>
+                    <!--Dialog begin-->
+                    <div id="documentHistoryVersion" style="display: none; font-size: 13px;">
+                        <span class="fixedColor" style="display: inline-block">当前文档：</span>
+                        <div id="documentName" style="display: inline-block">
+
+                        </div>
+                        @*<span id="documentName" style="word-wrap: break-word;display: block"></span>*@
+                        <table ng-cloak class="table_v2 hover cnabs_v2_margin documentHistoryTable">
+                            <tbody>
+                                <tr>
+                                    <th class="text-left">文档类型</th>
+                                    <th class="text-left">版本号</th>
+                                    <th class="text-left">更新时间</th>
+                                    <th class="text-left">更新人</th>
+                                    <th class="text-left">备注</th>
+                                    <th class="text-left">操作</th>
+                                </tr>
+                                <tr ng-repeat="document in documentsHistory">
+                                    <td class="text-left">{{document.DocumentTypeName}}</td>
+                                    <td class="text-left">{{"V" + document.Version}}</td>
+                                    <td class="text-left">{{document.UploadTime}}</td>
+                                    <td class="text-left">{{document.Username}}</td>
+                                    <td class="text-left cnabs_ellipsis" title="{{document.Comment}}" style="word-break:break-all">{{document.Comment}}</td>
+                                    <td class="text-left"><a class="cnabs_yellow" style="outline:none;" href="/Document/DownloadDocument?documentId={{document.DocumentId}}">下载</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="showUploadNewDocument" style="display:none; font-size:13px;">
+                        <form id="form1" action="/Document/UploadDocument" enctype="multipart/form-data" method="post" style="margin-left:35px;">
+                            <input type="hidden" name="projectGuid" value="{{project.ProjectGuid}}" />
+                            <p>
+                                <span class="fixedColor">文档名称：</span>
+                                <input type="text" name="documentName" id="form1_DocumentName" style="width:212px;margin-left:26px;" />
+                            </p>
+                            <p>
+                                <span class="fixedColor">选择文档：</span>
+                                <input style="margin-left:26px;" type="file" name="file" id="form1_File" />
+                            </p>
+                            <p>
+                                <span class="fixedColor">选择文档类型：</span>
+                                <select id="form1_documentType" name="documentType">
+                                    <option value="">请选择文档类型：</option>
+                                    <option ng-repeat="type in types" value="{{type.TypeId}}">{{type.TypeName}}</option>
+                                </select>
+                            </p>
+                            <span class="fixedColor">文档备注：</span>
+                            <textarea name="comment" style="width:88%;height:80px;resize:none;margin-top:5px" placeholder="请填写文档备注" maxlength="100"></textarea><br />
+                            <div id="form1Tip" class="cnabs_red" style="display:none;float:left;"></div>
+                        </form>
+                    </div>
+                    <div id="showUploadDocumentNewVersion" style="display:none; font-size:13px;">
+                        <form id="form2" action="/Document/UploadDocument" enctype="multipart/form-data" method="post" style="margin-left:35px;">
+                            <input type="hidden" name="projectGuid" value="{{project.ProjectGuid}}" />
+                            <input type="text" name="documentName" id="form2_DocumentName" style="display:none" />
+                            <input type="text" name="documentType" id="form2_DocumentTypeId" style="display:none" />
+                            <p style="margin-top:13px;">
+                                <span class="fixedColor">文档名称：</span>
+                                <span id="existDocumentName" style="word-wrap: break-word;display: block"></span>
+                            </p>
+                            <p>
+                                <span class="fixedColor">文档类型：</span>
+                                <span id="existDocumentTypeName"></span>
+                            </p>
+                            <p>
+                                <span class="fixedColor">选择文档：</span>
+                                <input type="file" style="outline:none;" name="file" id="form2_File" />
+                            </p>
+                            <span class="fixedColor">文档备注：</span>
+                            <textarea name="comment" style="width:90%;height:80px;resize:none;margin-top:5px" placeholder="请填写文档备注" maxlength="100"></textarea>
+                            <div id="form2Tip" class="cnabs_red" style="display:none;float:left;"></div>
+                        </form>
+                    </div>
+                    <!--Dialog end-->
+                </div>
+                <div ng-show="documents.length > 0">
+                    <div class="cnabs_label_v2 cnabs_v2_margin">文档操作日志</div>
+                    <div>
+                        <div id="operationLog">
+                            <div id="am_operation" class="am_operation" style="height:370px;">
+                                <table ng-cloak class="table_v2 alone hover cnabs_v2_margin documentLogTable" style="table-layout:fixed;width:100%;">
+                                    <tr>
+                                        <th class="text-left">操作时间</th>
+                                        <th class="text-left">内容</th>
+                                        <th class="text-left">操作人</th>
+                                    </tr>
+                                    <tr ng-repeat="operationLog in projectDocumentsOperationLogs">
+                                        <td>{{operationLog.Timestamp}}</td>
+                                        <td class="cnabs_ellipsis"><text title="{{operationLog.Content}}">{{operationLog.Content}}</text></td>
+                                        <td>{{operationLog.Operator}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="show_more" class="cnabs_yellow" style="cursor:pointer; width:120px;margin-left:4px;margin-top:10px;" ng-show="showOperation" ng-click="showMoreLog()">{{showLogOperation}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $('#showUploadNewDocument').on('keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            e.preventDefault();
+        }
+    });
+    var userapp = angular.module('documentManage', []);
+    userapp.controller('documentManageCtrl', function ($scope, $http) {
+        $scope.ViewModel = @Html.Raw(@Json.Encode(Model));
+
+        $scope.projectChange = function() 
+        {
+            $scope.documentType = $scope.ViewModel.DocumentTypes[0];
+            $scope.filterType = {};
+            getDocuments();
+            getLogs();
+            updateMenuLinkByProject($scope.project.ProjectGuid);
+        };
+        
+        if ($scope.ViewModel.Projects.length <= 0) {
+            return;
+        }
+
+        $scope.downloadFile = function(documentId) {
+            $.fileDownload("/Document/DownloadDocument?documentId=" + documentId).done(function () {
+                getLogs();
+                $scope.$apply();
+            }).fail(function () {
+                alertify.error("服务器异常，下载失败！");
+            });
+        };
+
+        $scope.documentTypeChange = function() {
+            if ($scope.project.ProjectGuid === "default") return;
+
+            if ($scope.documentType.TypeId === "default")
+            {
+                $scope.filterType = {};
+            }
+            else
+            {
+                $scope.filterType = { DocumentTypeId : $scope.documentType.TypeId}
+            }
+        };
+
+        $scope.showDocumentHistory = function (documentName) 
+        {
+            document.getElementById('documentName').innerText = documentName;
+            $.ajax({
+                url: "/Document/GetDocumentHistoryVersion",
+                data: { projectGuid: $scope.project.ProjectGuid, documentName: documentName},
+                cache: false,
+                success: function (response) {
+                    $scope.documentsHistory = response;
+                    $scope.$apply();
+                    cnabsDlg("documentHistoryVersion", "历史版本", 500, 900);
+                }
+            });
+        };
+
+        $scope.showUploadNewDocument = function () 
+        {
+            if ($scope.project.ProjectGuid == "default")
+            {
+                alertify.error("请选择产品!");
+                return;
+            }
+
+            document.getElementById('form1Tip').style.display = "none";
+            $('#form1').resetForm();
+            $('#form1_projectGuid').val($scope.project.ProjectGuid);
+            $scope.types = [];
+            angular.forEach($scope.ViewModel.DocumentTypes, function(item) {
+                if (item.TypeId !== "default") {
+                    $scope.types.push(item);
+                }
+            });
+
+            cnabsDlgYesNo("showUploadNewDocument", "上传新文档", function() {
+                var documentName = $('#form1_DocumentName').val();
+                var documentType = $('#form1_documentType').val();
+                var file = document.getElementById('form1_File');
+                
+
+                if ($scope.project.ProjectGuid == "default") {
+                    document.getElementById('form1Tip').innerText = "请在文档管理页面选择产品";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                } else if (!documentName) {
+                    document.getElementById('form1Tip').innerText = "请填写文档名称";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                } else if (!checkFileNameValid(documentName)) {
+                    document.getElementById('form1Tip').innerText = "文档名称包含非法字符";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                } else if (documentName.length > 100) {
+                    document.getElementById('form1Tip').innerText = "文档名称应不大于100字符";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                }
+                else if (!file.value) {
+                    document.getElementById('form1Tip').innerText = "请选择你要上传的文档";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                } else if (!documentType) {
+                    document.getElementById('form1Tip').innerText = "请选择文档类型";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                } else if (file.files[0].size > 10 * 1024 * 1024) {
+                    document.getElementById('form1Tip').innerText = "上传的文档不得超过10M大小";
+                    document.getElementById('form1Tip').style.display = "inline";
+                    return false;
+                } else {
+                    $('#form1').ajaxSubmit({
+                        success: function(res) {
+                            if (res.IsSuccess) {
+                                alertify.success("上传成功");
+                                $scope.documents = res.Data;
+                                getLogs();
+                                $scope.$apply();
+                            } else {
+                                alertify.error(res.ErrMsg);
+                            }
+                        }
+                    });
+                }
+            }, 'auto', 405);
+        };
+
+        function checkFileNameValid(fileName) {
+            var invalidChars = "\"<>|\0\b\t\n\v\f\r:*?\\/";
+
+            for (var i = 0; i < invalidChars.length; i++) {
+                if (fileName.indexOf(invalidChars.charAt(i)) >= 0) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        $scope.showUploadDocumentNewVersion = function (latestdocument)
+        {
+            document.getElementById('form2Tip').style.display = "none";
+            $('#form2').resetForm();
+            document.getElementById('existDocumentName').innerText = latestdocument.DocumentName;
+            document.getElementById('existDocumentTypeName').innerText = latestdocument.DocumentTypeName;
+            $('#form2_DocumentName').val(latestdocument.DocumentName);
+            $('#form2_DocumentTypeId').val(latestdocument.DocumentTypeId);
+
+            cnabsDlgYesNo("showUploadDocumentNewVersion", "上传文档新版本", function () 
+            {
+                var file = document.getElementById('form2_File');
+
+                if ($scope.project.ProjectGuid == "default")
+                {
+                    document.getElementById('form2Tip').innerText = "请在文档管理页面选择产品";
+                    document.getElementById('form2Tip').style.display = "inline";
+                    return false;
+                } else if (!file.value)
+                {
+                    document.getElementById('form2Tip').innerText = "请选择你要上传的文档";
+                    document.getElementById('form2Tip').style.display = "inline";
+                    return false;
+                } else if (file.files[0].size > 10 * 1024 * 1024) {
+                    document.getElementById('form2Tip').innerText = "上传的文档过大，请上传小于10M的文档大小";
+                    document.getElementById('form2Tip').style.display = "inline";
+                    return false;
+                } else {
+                    $('#form2').ajaxSubmit({
+                        success: function (data) {
+                            $('#showUploadDocumentNewVersion').dialog("close");
+                            alertify.success("上传成功");
+                            $('#form2').resetForm();
+                            getDocuments();
+                            getLogs();
+                            $scope.$apply();
+                        },
+                        error: function (xhr, status, errorThrown) {
+                            $('#showUploadDocumentNewVersion').dialog("close");
+                            alertify.error("服务器异常，上传失败！");
+                        }
+                    });
+                }
+            }, "auto", 430);
+        };
+
+        $scope.UpdateDocumentOperationLogs = function () 
+        {
+            if ($scope.selectedProject)
+            {
+                var url = "/Document/GetProjectDocumentOperationLog?projectGuid=" + $scope.selectedProject.ProjectGuid;
+                $.ajax({
+                    url: url,
+                    async: false,
+                    success: function (data) {
+                        $scope.projectDocumentsOperationLogs = eval(data);
+                        angular.forEach($scope.projectDocumentsOperationLogs, function (item) {
+                            item.TimeStamp = new Date(parseInt(item.TimeStamp.replace(/\D/igm, ""))).Format("yyyy-MM-dd hh:mm:ss");
+                        });
+
+                        if ($scope.projectDocumentsOperationLogs.length > 10) {
+                            document.getElementById('show_more').style.display = "block";
+                        }
+                        else {
+                            document.getElementById('show_more').style.display = "none";
+                        }
+                        $scope.isShowMoreLog = true;
+                    }
+                });
+            }
+            else
+            {
+                $scope.projectDocumentsOperationLogs = [];
+                document.getElementById('show_more').style.display = "none";
+            }
+            $scope.showLog = $scope.projectDocumentsOperationLogs.length > 0;
+        };
+
+        function getLogs()
+        {
+            $.ajax({
+                url: "/Document/GetProjectDocumentOperationLog",
+                data: { "projectGuid" : $scope.project.ProjectGuid },
+                cache: false,
+                success: function (response) {
+                    $scope.projectDocumentsOperationLogs = response;
+                    $scope.showLog = $scope.projectDocumentsOperationLogs.length > 0;
+                    $scope.showOperation = $scope.projectDocumentsOperationLogs.length > 10;
+                    if ($scope.showOperation) $scope.showLogOperation = "展开查看更多日志";
+                    $scope.$apply();
+                    document.getElementById('am_operation').style.height = "370px";
+                }
+            });
+        }
+
+        function getDocuments()
+        {
+            $.ajax({
+                url: "/Document/GetAllDocumentsByProjectGuid",
+                cache: false,
+                data: { "projectGuid" : $scope.project.ProjectGuid },
+                success: function (response) {
+                    $scope.documents = response;
+                    $scope.$apply();
+                }
+            });
+        }
+
+        $scope.showMoreLog = function () 
+        {
+            document.getElementById('am_operation').style.height = $scope.showLogOperation === "展开查看更多日志" ? "auto" : "370px";
+            $scope.showLogOperation = $scope.showLogOperation === "展开查看更多日志" ? "收起日志" : "展开查看更多日志";
+        };
+
+        $scope.project = $scope.ViewModel.Projects[0];
+
+        //避免多次调用$scope.projectChange();
+        //两次相同请求（参数不同），异步返回时，可能出现所选project和显示project不一致的问题
+        if(cnabsGetUrlParam('projectGuid')!=null){
+            angular.forEach($scope.ViewModel.Projects, function(project) {
+                if (project.Selected) {
+                    $scope.project = project;
+                    $scope.projectChange();
+                }
+            });
+        }else{
+            $scope.projectChange();
+        }
+
+        angular.forEach($scope.ViewModel.DocumentTypes, function(type) {
+            if (type.Selected) {
+                $scope.documentType = type;
+            }
+        });
+    });
+</script>
+</div>

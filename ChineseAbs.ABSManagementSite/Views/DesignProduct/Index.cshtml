@@ -1,0 +1,425 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DesignProjectViewModel
+
+@using ChineseAbs.ABSManagement.Utils;
+@using ChineseAbs.ABSManagementSite.Common;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+<style type="text/css">
+    .ModelTableTr_sameBackground {
+        border-bottom: 1px solid #666;
+        padding-top: 20px;
+        padding-bottom:20px;
+    }
+
+    .ModelTableHeader span:nth-of-type(1), .ModelTableTr_sameBackground span:nth-of-type(1) {
+        width: 200px;
+    }
+
+    .ModelTableHeader span:nth-of-type(2), .ModelTableTr_sameBackground span:nth-of-type(2) {
+        width: 160px;
+    }
+
+    .ModelTableHeader span:nth-of-type(3), .ModelTableTr_sameBackground span:nth-of-type(3) {
+        text-align:center;
+        width: 60px;
+    }
+    
+    .ModelTableHeader span:nth-of-type(4), .ModelTableTr_sameBackground span:nth-of-type(4) {
+        text-align:center;
+        width: 60px;
+    }
+    
+    .ModelTableHeader span:nth-of-type(5), .ModelTableTr_sameBackground span:nth-of-type(5) {
+        text-align:center;
+        width: 60px;
+    }
+    
+    .ModelTableHeader span:nth-of-type(6), .ModelTableTr_sameBackground span:nth-of-type(6) {
+        text-align:center;
+        width: 60px;
+    }
+
+    .ModelTableHeader span:nth-of-type(7), .ModelTableTr_sameBackground span:nth-of-type(7) {
+        text-align:center;
+        width: 60px;
+    }
+
+    .ModelTableHeader span:nth-of-type(8), .ModelTableTr_sameBackground span:nth-of-type(8) {
+        text-align:center;
+        width: 60px;
+    }
+
+    .ModelTableHeader span:nth-of-type(9), .ModelTableTr_sameBackground span:nth-of-type(9) {
+        width: 170px;
+        margin-left:20px;
+    }
+    .selectInitProjectMethods{
+        width:272px;border-bottom:1px solid #ccc;position:relative;color:#B7AFA5; margin:10px 0px 20px 50px;
+    }
+    .selectInitProjectMethods .InitProjectMethod{
+         width:120px;height:30px;line-height:30px; text-align:center;cursor:pointer;
+    }
+    .selectInitProjectMethods .InitProjectByYMLLabel{
+        margin-left: 32px;
+    }
+    .selectedInitProjectMethod{
+        color:#ffc446;
+    }
+    .InitProjectMethodBottomLine{
+        position:absolute;bottom:-1.5px;height:2px;width:130px;background-color:#ffc446;
+    }
+</style>
+}
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">设计产品</span>
+    </header>
+    <div class="am_panel">
+        <div class="am_section am_font">
+            <div class="tableTitleBox">
+                <div class="tableTitle fixedColor">产品列表</div>
+                @if (Model.HasCreateProductAuthority)
+                {
+                    <div class="addButton floatRight" id="createNewProduct">
+                        <a style="outline:none; color:#ffc446;">
+                            <span class="ui-icon ui-icon-plusthick smallImageSize left buttonImage"></span>
+                            <span class="left"> 创建产品 </span>
+                        </a>
+                    </div>
+                }
+            </div>
+            <div>
+                <header class="ModelTableHeader">
+                    <span>产品名称</span>
+                    <span>所属机构</span>
+                    <span>编辑模型</span>
+                    <span>修改工作</span>
+                    <span>文档模板</span>
+                    <span>CNABS</span>
+                    <span>删除产品</span>
+                    <span>创建者</span>
+                    <span>创建时间</span>
+                </header>
+                <div class="ModelTableBody">
+                    @foreach (var project in Model.Projects)
+                    {
+                        <div class="ModelTableTr_sameBackground">
+                            <span>
+                                <a target="_blank" href="../../Schedule?projectGuid=@project.ProjectGuid" style="color: #ffc446;font-size:16px;"><text>@project.ProjectName  </text></a>
+                            </span>
+                            <span>@Toolkit.ToString(project.EnterpriseName)</span>
+                            <span>
+                                @if (project.HasModifyModelAuthority)
+                                {
+                                    <a target="_blank" href="DesignProduct/EditModel?projectGuid=@project.ProjectGuid">
+                                        <text class="ui-icon ui-icon-calculator-b smallImageSize"></text>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <em class="ui-icon ui-icon-calculator-b smallImageSize disabledColor"></em>
+                                }
+                            </span>
+
+                            @if (project.HasModifyTaskAuthority)
+                            {
+                                <span>
+                                    <a target="_blank" href="DesignProduct/EditTask?projectGuid=@project.ProjectGuid">
+                                        <text class="ui-icon ui-icon-bullets smallImageSize"></text>
+                                    </a>
+                                </span>
+                                <span>
+                                    <a target="_blank" style="color:#ffc446;" href="/DesignDocument?projectGuid=@project.ProjectGuid">
+                                        <text class="ui-icon ui-icon-document smallImageSize"></text>
+                                    </a>
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    <em class="ui-icon ui-icon-bullets smallImageSize disabledColor"></em>
+                                </span>
+                                <span>
+                                    <em class="ui-icon ui-icon-document smallImageSize disabledColor"></em>
+                                </span>
+                            }
+                            <span>
+                                <a target="_blank" style="color:#ffc446;" href="http://cn-abs.com/Deal/DealInformation.aspx?dealid=@project.CnabsDealId">
+                                    <em class="ui-icon ui-icon-news smallImageSize"></em>
+                                </a>
+                            </span>
+                            <span>
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-trash smallImageSize" onclick='deleteProject("@project.ProjectGuid", "@project.ProjectName")'></text>
+                                </a>
+                            </span>
+                            <span>
+                                @Toolkit.ToString(project.CreateUserName)
+                            </span>
+                            <span>
+                                @Toolkit.DateTimeToString(project.CreateTime)
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divCreateNewProduct" style="overflow:inherit;">
+        @if (!CommUtils.IsLocalDeployed())
+        {
+            <div class="selectInitProjectMethods">
+                <div style="overflow:hidden;">
+                    <div id="InitProjectByYMLLabel" class="left InitProjectByYMLLabel InitProjectMethod selectedInitProjectMethod">
+                        通过YML创建
+                    </div>
+                    <div id="InitProjectByModelLabel" class="left InitProjectByModelLabel InitProjectMethod">
+                        通过模型创建
+                    </div>
+                </div>
+                <div id="InitProjectMethodBottomLine" class="InitProjectMethodBottomLine"></div>
+            </div>
+        }
+        <div style="margin-left:50px;">
+            <div class="cnabs_dialog_content_everyline">
+                <span class="cnabs_dialog_content_title">产品名称</span>
+                <div class="left">
+                    <input type="text" id="newProjectName" class="cnabs_dialog_input_wid">
+                </div>
+            </div>
+            <div class="cnabs_dialog_content_everyline" id="InitProjectByModel">
+                <span class="cnabs_dialog_content_title">选择模型</span>
+                <div class="left">
+                    <input class="am_search_task_input cnabs_dialog_input_wid"
+                           onclick="autoComplete.start(event)"
+                           onkeyup="autoComplete.start(event)"
+                           id="selectCnabsDeal"
+                           placeholder="请输入模型名称"
+                           style="background-color:#fff;height:18px;" />
+                    <div id="auto"></div>
+                </div>
+            </div>
+            <div class="cnabs_dialog_content_everyline" id="InitProjectByYML" style="display:none;">
+                <span class="cnabs_dialog_content_title">选择YML</span>
+                <div class="left">
+                    <input class="cnabs_dialog_input_wid" type="file" name="file" id="inputUploadYML" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script>
+    $(function () {
+        BindingElementActive(4, 2, 0);
+    });
+
+    $("#selectCnabsDeal").blur(
+        function () {
+            if (!autoComplete.isFocused()) {
+               autoComplete.hide();
+            }
+        }
+    );
+    var Bind = function (object, fun) {
+        return function () {
+            return fun.apply(object, arguments);
+        }
+    }
+
+    function deleteProject(projectGuid, projectName) {
+        var msg = '确认删除产品[' + projectName + ']?'
+        cnabsAutoDlgYesNo(null, '删除产品', function () {
+            cnabsAjax('删除产品', '/DesignProduct/RemoveProject', { projectGuid: projectGuid }, function () {
+                cnabsMsgSuccess('产品 [' + projectName + '] 删除成功', true);
+            });
+        }, msg);
+    }
+
+    function getAllCnabsDeals() {
+        cnabsAjax("获取CNABS deal信息", '/DesignProduct/GetAllCnabsDeals', {}, function(data){
+            var values = new Array();
+            $.each(data, function (i, item) {
+                var obj = new Object();
+                obj.id = item.id;
+                obj.keys = [item.nameCN, item.nameEN, item.nameJC];
+                obj.text = item.nameCN;
+                values.push(obj);
+            });
+
+            autoComplete.value_arr = values;
+        });
+    }
+
+    var autoComplete = new CnabsAutoComplete('selectCnabsDeal', 'auto', []);
+    getAllCnabsDeals();//刷新页面时，加载当前权限内的所有CnabsDeals
+
+    $("#createNewProduct").click(function () {
+        //var inputUploadYML = document.getElementById("inputUploadYML");
+        //inputUploadYML.value = '';
+        //inputUploadYML.type = '';
+        //inputUploadYML.type = 'file';
+        //$("#newProjectName").val('');
+        //$("#selectCnabsDeal").val('');
+        $("#newProjectName").val('');
+        if ($('#selectCnabsDeal').length) {
+            $("#selectCnabsDeal").val('');
+        }
+        if ($('#inputUploadYML').length) {
+            var inputUploadYML = document.getElementById("inputUploadYML");
+            inputUploadYML.value = '';
+            inputUploadYML.type = '';
+            inputUploadYML.type = 'file';
+        }
+        //cnabsDlgYesNo('divCreateNewProduct', '创建产品', function () {
+        //    var name = $("#newProjectName").val();
+        //    if (!name) {
+        //        cnabsAlert("请输入产品名称");
+        //        return false;
+        //    }
+        //    if (name.length > 30) {
+        //        cnabsAlert("产品名称不能超过30个字符");
+        //        return false;
+        //    }
+        //    var invalidCharList = "/\\:*?\"<>|";
+        //    for (var i = 0; i < name.length; i++) {
+        //        if (invalidCharList.indexOf(name[i]) >= 0) {
+        //            cnabsAlert("产品名称不能包含特殊字符/\\:*?\"<>|");
+        //            return false;
+        //        }
+        //    }
+        //    if ($('#selectCnabsDeal').length) {
+        //        var cnabsDealId = autoComplete.getIdByText($("#selectCnabsDeal").val());
+        //        if (!cnabsDealId) {
+        //            cnabsAlert("请选择模型");
+        //            return false;
+        //        }
+        //    };
+        //    if ($('#inputUploadYML').length)
+        //    {
+        //        var inputUploadYML = document.getElementById("inputUploadYML");
+        //        var fileCount = inputUploadYML.files.length;
+        //        if (fileCount < 1) {
+        //            cnabsAlert("请选择YML文件");
+        //            return false;
+        //        };
+        //        if (fileCount > 1) {
+        //            cnabsAlert("只能选择一个YML文件");
+        //            return false;
+        //        };
+        //    }
+        //    var formData = new FormData();
+        //    for (var i = 0; i < fileCount; ++i) {
+        //        var file = inputUploadYML.files[i];
+        //        formData.append("ymlFile", file);
+        //    }
+
+        //    formData.append("name", name);
+        //    formData.append("cnabsDealId", cnabsDealId);
+
+        //    cnabsAlert("正在创建产品，请稍候...");
+
+        //    cnabsAjaxUploadFile('创建产品', '/DesignProduct/CreateProject', formData, function () {
+        //        cnabsMsgSuccess('产品创建成功', true);
+        //    });
+        //}, 250, 400)
+        SelectInitProjectMethod('YML');
+        cnabsDlgYesNo('divCreateNewProduct', '创建产品', function () {
+            var name = $("#newProjectName").val();
+            var cnabsDealId = autoComplete.getIdByText($("#selectCnabsDeal").val());
+            if (!name) {
+                cnabsAlert("请输入产品名称");
+                return;
+            }
+
+            if (name.length > 30) {
+                cnabsAlert("产品名称不能超过30个字符");
+                return false;
+            }
+
+            var fileCount = inputUploadYML.files.length;
+            if ($(".selectedInitProjectMethod").length > 0) {
+                if ($(".selectedInitProjectMethod")[0].id.indexOf('YML') != -1 && fileCount < 1) {
+                    cnabsAlert("请选择YML文件");
+                    return false;
+                }
+                if ($(".selectedInitProjectMethod")[0].id.indexOf('Model') != -1 && !cnabsDealId) {
+                    cnabsAlert("请选择模型");
+                    return false;
+                }
+            } else {
+                if (fileCount < 1) {
+                    cnabsAlert("请选择YML文件");
+                    return false;
+                }
+            }
+            
+
+            if (cnabsDealId && fileCount > 0) {
+                cnabsAlert("模型或YML文件不能同时指定");
+                return;
+            }
+
+            if (fileCount > 1) {
+                cnabsAlert("只能选择一个YML文件");
+                return;
+            }
+
+            var formData = new FormData();
+            for (var i = 0; i < fileCount; ++i) {
+                var file = inputUploadYML.files[i];
+                formData.append("ymlFile", file);
+            }
+
+            formData.append("name", name);
+            formData.append("cnabsDealId", cnabsDealId);
+
+            cnabsAlert("正在创建产品，请稍候...");
+
+            cnabsAjaxUploadFile('创建产品', '/DesignProduct/CreateProject', formData, function () {
+                cnabsMsgSuccess('产品创建成功', true);
+            });
+        }, 250, 400);
+    })
+    function SelectInitProjectMethod(method) {
+        if (method == 'YML') {
+            $('#InitProjectMethodBottomLine').css({ 'transform': 'translateX(0px)', 'transition-duration': '0.5s' })
+            $('#InitProjectByYMLLabel').addClass('selectedInitProjectMethod');
+            $('#InitProjectByModelLabel').removeClass('selectedInitProjectMethod');
+            $("#InitProjectByModel").css('display', 'none');
+            $("#InitProjectByYML").css('display', 'block');
+        } else if (method == 'model') {
+            $('#InitProjectMethodBottomLine').css({ 'transform': 'translateX(142px)', 'transition-duration': '0.5s' })
+            $('#InitProjectByYMLLabel').removeClass('selectedInitProjectMethod');
+            $('#InitProjectByModelLabel').addClass('selectedInitProjectMethod');
+            $("#InitProjectByModel").css('display', 'block');
+            $("#InitProjectByYML").css('display', 'none');
+        }
+    }
+    $('#InitProjectByYMLLabel').click(function () {
+        SelectInitProjectMethod('YML');
+    })
+    $('#InitProjectByModelLabel').click(function () {
+        SelectInitProjectMethod('model');
+    })
+
+</script>
+}

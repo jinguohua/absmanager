@@ -1,0 +1,29 @@
+@import '../../styles/theme/default.less';
+
+.abs-label-value {
+  overflow: hidden;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  &-multi-line {
+    align-items: flex-start;
+    .abs-label-value-content {
+      margin-top: -2px;
+    }
+  }
+  &-title {
+    font-size: @font-m;
+    line-height: @font-m;
+    color: @abs-label-value-title-color;
+    margin-left: 0;
+    margin-right: 12px;
+    margin-bottom: 0;
+    margin-top: 0;
+    min-width: 100px;
+  }
+  &-content {
+    font-size: @font-m;
+    // line-height: @font-m;
+    margin: 0;
+  }
+}

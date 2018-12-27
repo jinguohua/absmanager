@@ -1,0 +1,13 @@
+本文件包含的所有css均控制存续期全局。
+
+1、cnabsUtils.css控制模糊搜索下拉框样式以及自动生成dialog内容的样式；
+
+2、jquery-ui.css控制dialog样式；
+
+3、jquery-ui.icon-font.css控制存续期中出现的黄色可操作图标样式（来源http://mkkeck.github.io/jquery-ui-iconfont/）
+
+4、layout.css控制存续期框架样式，与cn-abs样式统一；
+
+5、bootstrap-datepicker.css控制选择日期的输入框样式；
+
+6、change-Timepicker-ui.css修改Timepicker（既可以选日期又可以选时分秒）输入框样式；

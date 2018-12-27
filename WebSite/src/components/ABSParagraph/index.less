@@ -1,0 +1,16 @@
+@import "../../styles/theme/default.less";
+
+.abs-paragraph {
+  font-size: @font-m;
+  line-height: 24px;
+  letter-spacing: 0.41px;
+  color: @white-1;
+}
+.abs-paragraph-group {
+  .abs-paragraph {
+    margin-bottom: 22px;
+  }
+  p.abs-paragraph:nth-last-of-type(1) {
+    margin-bottom: 0px;
+  }
+}

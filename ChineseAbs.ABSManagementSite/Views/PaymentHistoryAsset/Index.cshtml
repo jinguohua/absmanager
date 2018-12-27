@@ -1,0 +1,975 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.AssetCashflowDatasetViewModel
+@using ChineseAbs.ABSManagementSite.Common;
+@using ChineseAbs.ABSManagement.LogicModels;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>   
+    .AssetCashflowTableHeader th:nth-of-type(1), .AssetCashflowTableTr td:nth-of-type(1) {
+        text-align: left;
+        width: 30px;      
+        max-width:30px;  
+        min-width:30px;                    
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(2), .AssetCashflowTableTr td:nth-of-type(2) {
+        text-align: left;
+        width: 270px;
+        max-width:270px;
+        min-width:270px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(3), .AssetCashflowTableTr td:nth-of-type(3){
+        text-align: right;
+        width: 100px;
+        max-width:100px;
+        min-width:100px;
+        padding-left:10px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(4) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(5) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(6) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(7) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+     
+    .AssetCashflowTableTr td:nth-of-type(4) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+
+    .AssetCashflowTableTr td:nth-of-type(5) {
+        text-align: right;
+        width: 105px;
+        max-width:105px;
+        min-width:105px;
+    }
+
+    .AssetCashflowTableTr td:nth-of-type(6) {
+        text-align: right;
+        width: 100px;
+        max-width:100px;
+        min-width:100px;
+    }
+
+    .AssetCashflowTableTr td:nth-of-type(7) {
+        text-align: right;
+        width: 105px;
+        max-width:105px;
+        min-width:105px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(8) {
+        text-align: left;
+        padding-left:10px;
+        width: 55px;
+        max-width:55px;
+        min-width:55px;
+    }
+
+    .AssetCashflowTableTr td:nth-of-type(8) {
+        text-align: left;
+        padding-left:20px;
+        width: 45px;
+        max-width:45px;
+        min-width:45px;
+    }
+
+    .AssetCashflowTableHeader th:nth-of-type(9) {
+        text-align: left;
+        width: 50px;
+        max-width:50px;
+        min-width:50px;
+    }
+
+    .AssetCashflowTableTr td:nth-of-type(9) {
+        text-align: left;
+        padding-left:10px;
+        width: 40px;
+        max-width:40px;
+        min-width:40px;
+    }
+
+    .EditHistoryTableHeader th:nth-of-type(1) {
+        text-align: left;
+        width: 40px;
+    }
+
+    .EditHistoryTableHeader th:nth-of-type(2) {
+        text-align: left;
+        width: 100px;
+    }
+
+    .EditHistoryTableHeader th:nth-of-type(3) {
+        text-align: right;
+        width: 130px;
+    }
+
+    .EditHistoryTableHeader th:nth-of-type(4),.EditHistoryTableTr td:nth-of-type(4) {
+        text-align: left;
+        width: 100px;
+        padding-left:50px;
+    }
+    .EditHistoryTableTr td:nth-of-type(1) {
+        text-align:left;
+        width: 40px;
+    }
+    .EditHistoryTableTr td:nth-of-type(2) {
+        text-align:left;
+        width: 100px;
+    }
+
+    .EditHistoryTableTr td:nth-of-type(3) {
+        text-align: right;
+        width: 130px;
+    }    
+
+    .EditHistoryTableHeader th:nth-of-type(5), .EditHistoryTableTr td:nth-of-type(5) {
+        text-align: left;
+        width: 120px;
+    }
+
+    .EditHistoryTableHeader th:nth-of-type(6), .EditHistoryTableTr td:nth-of-type(6) {
+        text-align: left;
+        width: 160px;
+    }    
+
+    .DivEdit dt {
+        padding-top: 0px;
+    }
+
+        .DivEdit dt span {
+            margin-left: 20px;
+            margin-top: 3px;
+        }
+
+    .DivEdit dd {
+        margin-left: 90px;
+        margin-top: 5px;
+    }
+
+    .DivEditWarningIcon {
+        font-size: 14px;
+        color: rgb(255, 102, 102);
+    }
+
+    .DivEditWarningText {
+        color: #ff6666;
+        font-size: 14px;
+    }
+
+    .DivEditInput {
+        width: 92%;
+        outline: none;
+    }
+
+    .SimulateButton {
+        margin-left: 5px;
+        height: 19px;
+    }
+    .inputAmount {
+        width: 100px;
+    }
+    .imageColorRed{
+        color:#b7afa5;
+        font-size:14px;
+    }
+    #divAdvancedPayment .smallImageSize{
+        margin-left:5px;
+        cursor:pointer;
+    }
+    .divOperationTip{
+        position:relative;
+        cursor:pointer;
+    }
+    .operationTip{
+        position:absolute;
+        display:none;
+        border:1px solid #666;
+        background: #47423C;
+        width:200px;
+        z-index:1000;
+        color:#B7AFA5;
+        padding:3px;
+    }
+    .projectNamePrompt_div {
+        overflow: hidden;
+        height: 22px;
+        line-height: 22px;       
+    }
+</style>
+<div class="tablecloth" style="overflow:hidden">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/PaymentHistory/?viewType=assetCashflow&projectGuid=@Model.ProjectGuid">偿付历史</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">资产端明细</span>
+    </header>
+    <div class="cnabs_div_v2">
+        <div id="selector">
+            <div class="projectNamePrompt_div">
+                <span class="currentProject">当前产品：</span>
+                <span id="currentProjectName" class="currentProjectName"></span>
+            </div>
+
+
+            <section class="cnabs_v2_margin">
+                <span class="fixedColor">偿付日期：</span>
+                <select id="selectPaymentDay" name="selectPaymentDay">
+
+                    @foreach (var paymentDate in Model.ValidPaymentDays)
+                    {
+                        var index = Model.AllPaymentDays.IndexOf(paymentDate);
+                        var key = paymentDate.ToString("yyyyMMdd");
+
+                        var prefix = index < 0 ? "-" : "第" + (index + 1).ToString() + "期 ";
+                        var value = prefix + Toolkit.DateToString(paymentDate);
+                        if (Model.AssetDataset.PaymentDay == paymentDate)
+                        {
+                            <option value="@key" selected="selected">@value</option>
+                        }
+                        else
+                        {
+                            <option value="@key">@value</option>
+                        }
+                    }
+                </select>
+            </section>
+        </div>
+
+        <div class="cnabs_v2_margin" style="overflow:hidden;">
+            <span class="cnabs_label_v2">资产端明细</span>
+            @*<div style="float:right;display:block;margin-top:5px;">
+                    <input id="btnPredictionCashflow" style="margin-right:10px;width:110px;text-align:center" class="button" type="button" onclick='predictionCashflow()' value="重计算现金流" />
+                </div>*@
+        </div>
+
+        <div style="overflow:hidden;">
+            <table class="table_v2 alone hover cnabs_v2_margin" id="taskTable" style="width:100%;">
+                <tbody id="taskTablebody">
+                    <tr class="AssetCashflowTableHeader">
+                        <th>序号</th>
+                        <th>名称</th>
+                        <th>期初本金</th>
+                        <th>本金收入</th>
+                        <th>期末剩余本金</th>
+                        <th>利息收入</th>
+                        <th>*合计</th>
+                        <th>提前偿付</th>
+                        @*<th>违约</th>*@
+                        <th>修改记录</th>
+                    </tr>
+                    @if (Model == null || Model.AssetDataset == null || Model.AssetDataset.Assets == null || Model.AssetDataset.Assets.Count == 0)
+                    {
+                        <tr><td colspan="9" style="text-align:center;font-size:18px">暂无偿付信息</td></tr>
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Model.AssetDataset.Assets.Count; ++i)
+                        {
+                            var asset = Model.AssetDataset.Assets[i];
+                            var sumMoney = asset.Interest + asset.Principal;
+                            <tr class="AssetCashflowTableTr">
+                                <td>@(i + 1)</td>
+                                <td style="overflow:hidden;">
+                                    <a class="cnabs_yellow cnabs_ellipsis left" style="width:283px;" title="@asset.Name" onclick='showCollateralAssetInfo(@asset.AssetId)'>@asset.Name</a>
+                                </td>
+                                <td>
+                                    @((asset.Principal + asset.PrincipalBalance).ToString("n2"))
+                                </td>
+                                <td>
+                                    @asset.Principal.ToString("n2")
+                                </td>
+                                <td>
+                                    @asset.PrincipalBalance.ToString("n2")
+                                </td>
+                                <td>
+                                    @asset.Interest.ToString("n2")
+                                </td>
+                                <td>
+                                    @asset.SumMoney.ToString("n2")
+                                </td>
+                                @if (asset.AmortizationType == AmortizationType.UserDefined
+                                    //|| asset.AmortizationType == AmortizationType.EqualPrin
+                                    //|| asset.AmortizationType == AmortizationType.EqualPmt
+                                )
+                                {
+                                    <td>
+                                        <a class="cnabs_yellow" style="outline:none;">
+                                            <text class="ui-icon ui-icon-carat-2-w smallImageSize" onclick='prepay(@asset.AssetId , "@asset.Name","@asset.AmortizationType")'></text>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="ui-icon-view-list" style="font-size: 17px; color: rgb(248, 182, 72);cursor:pointer;" onclick='showAsset(@asset.AssetId)'></span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <em class="ui-icon ui-icon-carat-2-w smallImageSize " style="color: rgb(183, 175, 165);"></em>
+                                    </td>
+                                    <td>
+                                        <em class="ui-icon ui-icon-view-list smallImageSize " style="color: rgb(183, 175, 165);"></em>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="comment cnabs_v2_margin">*合计=利息+本金</div>
+        </div>
+    </div>
+</div>
+
+<!--Dialog begin-->
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divEditPaymentHistoryAssetCashflow">
+        <dl class="DivEdit">
+            <dt class="np-title"><span>名称</span></dt>
+            <dd class="np-detail">
+                <div class="np-input" style="margin-bottom:2px;padding-bottom:20px">
+                    <input type="text" id="assetName" class="DivEditInput" disabled="disabled">
+                </div>
+            </dd>
+            <dt class="np-title"><span>本金</span></dt>
+            <dd class="np-detail">
+                <div class="np-input" style="margin-bottom:2px;">
+                    <input type="text" id="inputPrincipal" class="DivEditInput">
+                </div>
+                <div id="warningPrincipal" style="display:block;visibility:hidden">
+                    <span class="ui-icon-notice DivEditWarningIcon"></span>
+                    <span class="DivEditWarningText">本金必须为数值格式</span>
+                </div>
+            </dd>
+            <dt class="np-title"><span>利息</span></dt>
+            <dd class="np-detail">
+                <div class="np-input" style="margin-bottom:2px;">
+                    <input type="text" id="inputInterest" class="DivEditInput">
+                </div>
+                <div id="warningInterest" style="display:block;visibility:hidden">
+                    <span class="ui-icon-notice DivEditWarningIcon"></span>
+                    <span class="DivEditWarningText">利息必须为数值格式</span>
+                </div>
+            </dd>
+
+            <dt class="np-title"><span>操作说明</span></dt>
+            <dd class="np-detail" style="margin-left:90px;margin-top:10px;">
+                <div class="np-input">
+                    <textarea id="inputComment" style="width:92%;height:100px;resize:none;" placeholder="此处填写操作说明"></textarea>
+                </div>
+                <div id="warningComment" style="display:block;visibility:hidden">
+                    <span class="ui-icon-notice DivEditWarningIcon"></span>
+                    <span class="DivEditWarningText">操作说明不能为空</span>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divShowEditHistory">
+        <table class="table_v2 hover cnabs_v2_margin" id="taskTable" style="width:100%;table-layout:fixed;word-wrap:break-word;white-space:nowrap">
+            <tbody id="editHistoryTablebody">
+                <tr class="EditHistoryTableHeader">
+                    <th>序号</th>
+                    <th>本金</th>
+                    <th>利息</th>
+                    <th>合计</th>
+                    <th>修改人</th>
+                    <th>修改时间</th>
+                    @*<th>操作说明</th>*@
+                </tr>
+                <tr class="EditHistoryTableTr">
+                    <td>1</td>
+                    <td>234567</td>
+                    <td>2145</td>
+                    <td>who</td>
+                    <td>time</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divAdvancedPayment">
+        <div id="divAdvancedPaymentinfor"></div>
+        <div style="color:#B7AFA5;margin-top:12px;">
+            <span>偿付计划</span>
+            <span id="divDifferenceTooptip cnabs_red" style="margin-left:15px;display:none;">
+                <span class="ui-icon-alert cnabs_dialog_oPromptImage"></span>
+                <span id="differenceTooptip"></span>
+            </span>
+        </div>
+        <div id="divAdvancedPaymentTable" class="cnabs_scrollbar" style="max-height:200px;overflow-y:auto;margin-top:10px;">
+            <table class="table_v2 hover cnabs_v2_margin" style="width:100%; margin-top:0px;">
+                <tbody id="prepayTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="module scenario" style="display:none; margin-left: 10px;">
+    <div id="divCollateralAssetInfo">
+        <table>
+            <tr>
+                <td class="fixedColor" style="width:80px">资产名称</td>
+                <td style="width: 450px" colspan="3">
+                    <span id="assetInfo_SecurityName">资产名称</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="fixedColor" style="width:80px">偿付方式</td>
+                <td style="width:100px">
+                    <span id="assetInfo_PaymentMethod">偿付方式</span>
+                </td>
+                <td class="fixedColor" style="width:80px">偿付频率</td>
+                <td style="width: 100px">
+                    <span id="assetInfo_PaymentFrequency">偿付频率</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="fixedColor" id="assetInfo_RateTitle">固定/浮动利率</td>
+                <td>
+                    <span id="assetInfo_RateValue">固定/浮动利率</span>
+                </td>
+                <td class="fixedColor">计息天数</td>
+                <td>
+                    <span id="assetInfo_AccrualMethod">计息天数</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="fixedColor">预计到期日</td>
+                <td>
+                    <span id="assetInfo_LegalMaturityDate">预计到期日</span>
+                </td>
+                <td class="fixedColor">到期日前一支付日</td>
+                <td>
+                    <span id="assetInfo_PenultimateDate">到期日前一支付日</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="fixedColor">地区</td>
+                <td>
+                    <span id="assetInfo_Region">地区</span>
+                </td>
+                <td class="fixedColor">评级</td>
+                <td>
+                    <span id="assetInfo_ChineseRating">评级</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div class='operationTip'></div>
+<!--Dialog end-->
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+
+<script>
+    var currentAssetId = -1;
+    var autoDiv = null;
+
+    var controls = [
+        {
+            title: "偿付日期",
+            type: "date",
+            elementId: "advancedPaymentDate",
+            placeHolder: "请填写提前偿付日期",
+            limit: {
+                "type": "dateISO"//判断日期格式必须为YYYY-MM-DD
+            }
+        }, {
+            title: "偿付金额",
+            type: "text",
+            elementId: "advancedPaymentAmount",
+            placeHolder: "请填写提前偿付金额",
+            limit: {
+                type: "number",
+                isDigit: false,//判断是否为整数;
+                min: 0
+            }
+        }, {
+            title: "分配方式",
+            type: "select",
+            elementId: "advancedPaymentAllocation",
+            OptionArray: [["CurrentToLast", "日期最近优先"], ["LastToCurrent", "日期最远优先"], ["Custom", "自定义"]]//所有option值
+        }
+    ];
+    $(function () {
+        BindingElementActive(4, 2, 5);
+
+        cnabsRegisterAjaxLock('/PaymentHistoryAsset/CalculatePrepayAmortizationByAsset', true, '偿付分配测算');
+        cnabsRegisterUIPending('/PaymentHistoryAsset/CalculatePrepayAmortizationByAsset', '#divAdvancedPaymentTable', '偿付分配测算进行中');
+
+        var projectGuid = cnabsGetUrlParam('projectGuid');
+        cnabsAjax("获取产品名称", "/PaymentHistory/GetProjectNameByGuid", { projectGuid: projectGuid }, function (projectName) {
+            $("#currentProjectName").html(projectName);
+        });
+
+        var paymentDay = cnabsGetUrlParam('paymentDay');
+        $("#currentPaymentDay").html(paymentDay);
+
+        updateMenuLinkByProject(projectGuid);
+
+        $("#selectPaymentDay").change(function () {
+            var paymentDay = $("#selectPaymentDay").val();
+            var url = location.protocol + "//" + location.host + location.pathname;
+            location.href = url + "?projectGuid=" + '@Model.ProjectGuid' + "&paymentDay=" + paymentDay;
+        });
+    });
+    function CheckCustomAmount() {
+        var totalDifference = 0;
+        var prepayAmount = $('#advancedPaymentAmount').val();
+        for (var i = 0; i < $('#prepayTableBody .tdCustomAmount').length; i++) {
+            var val = ($('#prepayTableBody .tdCustomAmount')[i].attributes["diff"].value);
+            var everyDifference = cnabsParseFloat(val);
+            totalDifference += everyDifference;
+        };
+        if ((totalDifference + cnabsParseFloat(prepayAmount)).toFixed(6) > 0) {
+            $("#divDifferenceTooptip").css("display", "inline");
+            $("#differenceTooptip").html("您已超出" + Math.abs(totalDifference + cnabsParseFloat(prepayAmount)).toFixed(2) + "元！");
+            return false;
+        }
+        if ((totalDifference + cnabsParseFloat(prepayAmount)).toFixed(6) < 0) {
+            $("#divDifferenceTooptip").css("display", "inline");
+            $("#differenceTooptip").html("您还剩" + Math.abs(totalDifference + cnabsParseFloat(prepayAmount)).toFixed(2) + "元未支配！");
+            return false;
+        }
+        return true;
+    }
+
+    function simulate(assetId) {
+        var prepayDate = $('#advancedPaymentDate').val();
+        prepayDate = prepayDate.replace(/-/g, "");
+
+        var prepayAmount = $('#advancedPaymentAmount').val();
+        var distributionType = $('#advancedPaymentAllocation').val();
+
+        var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+
+        var projectGuid = cnabsGetUrlParam('projectGuid');
+        var params = {
+            projectGuid: projectGuid, paymentDate: paymentDate, assetId: assetId,
+            prepayDate: prepayDate, money: prepayAmount, distributionType: distributionType
+        };
+        $("#divDifferenceTooptip").css("display", "none");
+        if (!autoDiv.validate(controls, true)) {
+            return false;
+        };
+        if (distributionType == 'Custom') {
+            var detail = getDistributionDetail();
+            params.distributionDetail = detail;
+
+            cnabsAjaxSync("偿付分配测算", "/PaymentHistoryAsset/CheckPrepayDateByAsset", params, function () { });
+            CheckCustomAmount()
+            return false;
+        }
+
+        cnabsAjax("偿付分配测算", "/PaymentHistoryAsset/CalculatePrepayAmortizationByAsset", params, function (data) {
+            var html = '<tr class="advancedPaymentTheader"><th class="text-left" style="text-align: center;">日期</th><th class="text-left" style="text-align: center;">金额</th></tr>';
+            $.each(data, function () {
+                html += '<tr>';
+                html += '<td style="text-align: center;">';
+                html += this.ReductionDate.substr(0, 4)
+                    + '-' + this.ReductionDate.substr(4, 2)
+                    + '-' + this.ReductionDate.substr(6, 2);
+                html += '</td>';
+                html += '<td style="text-align: right;padding-right: 40px;">';
+                html += this.ReductionAmount;
+                html += '</td>';
+                html += '</tr>';
+            });
+            $('#prepayTableBody').html(html);
+        });
+    }
+
+    function getDistributionDetail() {
+        var detail = '';
+        $.each($('.tdCustomDate'), function (index) {
+            var date = this.textContent;
+            detail += date.replace(/-/g, "");
+            detail += '|';
+            var amount = $('.tdCustomAmount')[index].value;
+            detail += amount;
+            detail += ';';
+        });
+        return detail;
+    }
+
+    function showAsset(assetId) {
+        var projectGuid = '@Model.ProjectGuid';
+        var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+        var params = {
+            projectGuid: projectGuid, paymentDate: paymentDate, assetId: assetId
+        };
+        cnabsAjaxSync('获取提前偿付历史记录', '/PaymentHistoryAsset/GetPrepaymentHistory', params, function (data) {
+            var header = '<tr class=\"EditHistoryTableHeader\">';
+            var columns = ['序号', '提前偿付时间', '金额', '分配方式', '修改人', '修改时间'];
+            $.each(columns, function (i, val) {
+                header += '<th>' + val + '</th>';
+            });
+            header += '</tr>';
+
+            var body = '';
+            var td = function (val) {
+                return '<td>' + val + '</td>';
+            }
+            $.each(data, function (i, val) {
+                body += '<tr class=\"EditHistoryTableTr\">';
+                body += td(i + 1);
+                body += td(val.PrepayTime);
+                body += td(val.PrepayAmount);
+                body += td(val.DistributionType);
+                body += td(val.TimeStampUserName);
+                body += td(val.TimeStamp);
+                //body += td(val.Comment);
+                body += '</tr>';
+            });
+
+            $("#editHistoryTablebody").html(header + body);
+            cnabsDlgOk('divShowEditHistory', '提前偿付历史记录', null, 420, 860);
+        });
+    }
+
+    @*function predictionCashflow() {
+        var projectGuid = '@Model.ProjectGuid';
+        var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+
+        cnabsAlert("正在重计算现金流，请稍候...");
+        var params = {
+            projectGuid: projectGuid, paymentDate: paymentDate
+        };
+        cnabsAjax('重计算现金流', '/PaymentHistory/PredictionCashflow', params, function () {
+            cnabsMsgSuccess('重计算现金流成功', true);
+        });
+    }*@
+
+
+    function showCollateralAssetInfo(assetId) {
+        var projectGuid = '@Model.ProjectGuid';
+        var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+        var params = {
+            projectGuid: projectGuid, paymentDate: paymentDate, assetId: assetId
+        };
+
+        cnabsAjaxSync("获取资产信息", "/DealModel/GetAssetInfo", params, function (data) {
+            var selectElement = function (id) {
+                return "#divCollateralAssetInfo #assetInfo_" + id;
+            };
+
+            var updateElementValue = function (id, value) {
+                id = selectElement(id);
+                $(id).text(value);
+            };
+
+            updateElementValue('SecurityName', data.SecurityName);
+            
+            var paymentMethod = paymentMethodInChinese(data.PaymentMethod);
+            updateElementValue('PaymentMethod', paymentMethod);
+
+            var paymentFrequency = paymentFrequencyInChinese(data.PaymentFrequency);
+            updateElementValue('PaymentFrequency', paymentFrequency);
+
+            updateElementValue('AccrualMethod', data.AccrualMethod);
+            updateElementValue('LegalMaturityDate', data.LegalMaturityDate);
+
+            if (data.IsFloating) {
+                $("#assetInfo_RateTitle").text('利率公式');
+                if (data.CouponSpread > 0) {
+                    updateElementValue('RateValue', data.FloatingIndexCode + cnabsParseFloat((data.CouponSpread * 100).toFixed(3)) + '%');
+                } else if (data.CouponSpread < 0) {
+                    updateElementValue('RateValue', data.FloatingIndexCode - cnabsParseFloat((data.CouponSpread * 100).toFixed(3)) + '%');
+                } else {
+                    updateElementValue('RateValue', data.FloatingIndexCode);
+                }
+            } else {
+                $("#assetInfo_RateTitle").text('固定利率');
+                updateElementValue('RateValue', cnabsParseFloat((data.AllInRate * 100).toFixed(3)) + '%');
+            }
+
+            updateElementValue('PenultimateDate', data.PenultimateDate);
+
+            updateElementValue('FloatingIndexCode', data.FloatingIndexCode);
+            updateElementValue('FloatingIndexCode', data.FloatingIndexCode);
+
+            updateElementValue('Region', data.Region);
+            updateElementValue('ChineseRating', data.ChineseRating);
+
+            cnabsDlgOk('divCollateralAssetInfo', "资产信息", null, 'auto', 'auto');
+        });
+    }
+
+    function prepay(assetId, assetName, amortizationType) {
+        currentAssetId = assetId;
+        var amortizationType = amortizationType;
+        var projectGuid = '@Model.ProjectGuid';
+        var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+        var params = {
+            projectGuid: projectGuid, paymentDate: paymentDate, assetId: assetId
+        };
+        if (amortizationType == "UserDefined") {
+            controls[2].OptionArray = [["CurrentToLast", "日期最近优先"], ["LastToCurrent", "日期最远优先"], ["Custom", "自定义"]];
+        } else if (amortizationType == "EqualPmt") {
+            controls[2].OptionArray = [["EqualPmt", "等额本息"], ["Custom", "自定义"]];
+        } else if (amortizationType == "EqualPrin") {
+            controls[2].OptionArray = [["EqualPrin", "等额本金"], ["Custom", "自定义"]];
+        } else if (amortizationType == "SingleAmortization") {
+            controls[2].OptionArray = [["SingleAmortization", "到期一次偿清"], ["Custom", "自定义"]];
+        }
+        autoDiv = new CnabsAutoDiv("divAdvancedPaymentinfor");
+        autoDiv.init(controls);//填充dialog
+
+        bindFunction(amortizationType);
+        $('#advancedPaymentAllocation').css('width', '153px');
+        $("#advancedPaymentDate").after('<div class="divOperationTip" id="divDateTip" style="display:inline-block;"><em class="ui-icon ui-icon-help smallImageSize imageColorRed"></em></div>')
+        $("#advancedPaymentAmount").after('<div class="divOperationTip" id="divAmountTip" style="display:inline-block;"><em class="ui-icon ui-icon-help smallImageSize imageColorRed"></em></div>')
+        $("#advancedPaymentAllocation").after('<input id="btnSimulate" class="button SimulateButton" type="button" value="测算" onclick="simulate(' + assetId + ')" >')
+        $("#btnSimulate").after('<div class="divOperationTip" id="divAllocationTip" style="display:inline-block;"><em class="ui-icon ui-icon-help smallImageSize imageColorRed"></em></div>')
+        initPrepayDlg(amortizationType);
+        $("#divDifferenceTooptip").css("display", "none");
+        cnabsDlgYesNo('divAdvancedPayment', '提前偿付', function () {
+            if (!autoDiv.validate(controls, true)) {
+                return false;
+            };
+            var distributionType = $('#advancedPaymentAllocation').val();
+            if (distributionType == 'Custom' && !CheckCustomAmount()) {
+                return false;
+            }
+
+            var errorMsgValidateCustomAmount = '';
+            $.each($('.tdCustomDate'), function (index) {
+                var date = this.textContent;
+                var amount = $('.tdCustomAmount')[index].value;
+                if (!cnabsIsFloat(amount)) {
+                    if (errorMsgValidateCustomAmount.length != 0) {
+                        errorMsgValidateCustomAmount += ', ';
+                    }
+                    errorMsgValidateCustomAmount += date;
+                }
+            });
+            if (errorMsgValidateCustomAmount.length != 0) {
+                cnabsMsgError('日期' + errorMsgValidateCustomAmount + '中的自定义金额不是数字格式。');
+                return false;
+            }
+
+            var prepayDate = $('#advancedPaymentDate').val();
+            prepayDate = prepayDate.replace(/-/g, "");
+            var prepayAmount = $('#advancedPaymentAmount').val();
+            var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+            var distributionDetail = '';
+
+            if (distributionType == 'Custom') {
+                var detail = getDistributionDetail();
+                distributionDetail = detail;
+            }
+
+            var projectGuid = cnabsGetUrlParam('projectGuid');
+            var params = {
+                projectGuid: projectGuid, paymentDate: paymentDate, assetId: assetId,
+                prepayDate: prepayDate, money: prepayAmount, distributionType: distributionType,
+                distributionDetail: distributionDetail
+            };
+
+            var success = false;
+            cnabsAjaxSync("提前偿付", "/PaymentHistoryAsset/PrepayAmortizationByAsset", params, function () {
+                success = true;
+                cnabsMsgSuccess("提前偿付添加成功", true);
+            });
+
+            return success;
+        }, 'auto', 'auto')
+    }
+
+    function editAsset(assetId, assetName, principal, interest) {
+        $("#assetName").val(assetName);
+        $("#inputPrincipal").val(principal);
+        $("#inputInterest").val(interest);
+
+        cnabsDlgYesNo('divEditPaymentHistoryAssetCashflow', '编辑资产', function () {
+            var newPrincipal = $("#inputPrincipal").val();
+            var newInterest = $("#inputInterest").val();
+            var comment = $("#inputComment").val();
+            var projectGuid = '@Model.ProjectGuid';
+            var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+
+            $('#warningPrincipal').css('visibility', 'hidden');
+            $('#warningInterest').css('visibility', 'hidden');
+            $('#warningComment').css('visibility', 'hidden');
+
+            if (!cnabsIsFloat(newPrincipal)) {
+                $('#warningPrincipal').css('visibility', 'visible');
+                return false;
+            }
+
+            if (!cnabsIsFloat(newInterest)) {
+                $('#warningInterest').css('visibility', 'visible');
+                return false;
+            }
+
+            if (comment.length == 0) {
+                $('#warningComment').css('visibility', 'visible');
+                return false;
+            }
+
+            cnabsAlert("正在更新资产信息，请稍候...");
+            var params = {
+                projectGuid: projectGuid, paymentDate: paymentDate, assetId: assetId,
+                principal: cnabsParseFloat(newPrincipal), interest: newInterest, comment: comment
+            };
+            cnabsAjax('更新资产信息', '/PaymentHistory/UpdatePaymentHistoryAssetCashflow', params, function () {
+                cnabsMsgSuccess('资产信息更新成功', true);
+            });
+        }, 420, 400);
+    }
+
+    function initPrepayDlg(amortizationType) {
+        var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+        var projectGuid = cnabsGetUrlParam('projectGuid');
+        var params = {
+            projectGuid: projectGuid, paymentDate: paymentDate, assetId: currentAssetId
+        };
+        $('#prepayTableBody').html("正在加载中，请稍候...");
+        cnabsAjax("测试偿付分配", "/PaymentHistoryAsset/GetAmortizationByAsset", params, function (data) {
+            function AdvancedPaymentExplanation(dateTip, amountTip, allocationTip) {
+                $(".divOperationTip").hover(
+                   function () {
+                       var div = $(document).find("div.operationTip");
+                       if ($(this)[0].id == "divDateTip") {
+                           $("div.operationTip").html(dateTip);
+                       } else if ($(this)[0].id == "divAmountTip") {
+                           $("div.operationTip").html(amountTip)
+                       } else if ($(this)[0].id == "divAllocationTip") {
+                           $("div.operationTip").html(allocationTip)
+                       }
+                       div.css("top", $(this).offset().top);
+                       div.css("left", $(this).offset().left + $(this).width() + 5);
+                       div.show();
+                   },
+                   function () {
+                       $(document).find("div.operationTip").hide();
+                   }
+               );
+            }
+            var AmortizationType = amortizationType;
+            if (AmortizationType == "UserDefined") {
+                AdvancedPaymentExplanation("提前偿付日期必填", "提前偿付金额必填", "提前偿付金额的分配方式说明：</br>1、日期最近优先：距离提前偿付日期最近偿付日优先偿还；</br>2、日期最远优先：距离提前偿付日期最远偿付日优先偿还；</br>3、自定义：用户自定义分配提前偿付金额。")
+            } else if (AmortizationType == "EqualPmt") {
+                AdvancedPaymentExplanation("提前偿付日期必填", "提前偿付金额必填", "提前偿付金额的分配方式说明：</br>1、等额本息：提前偿付日期之后的预测现金流将以（本金-提前偿还金额）做等额本息的重新计算；</br>2、自定义：用户自定义分配提前偿付金额。")
+            } else if (AmortizationType == "EqualPrin") {
+                AdvancedPaymentExplanation("提前偿付日期必填", "提前偿付金额必填", "提前偿付金额的分配方式说明：</br>1、等额本金：提前偿付日期之后的预测现金流将以（本金-提前偿还金额）做等额本金的重新计算；</br>2、自定义：用户自定义分配提前偿付金额。")
+            } else if (AmortizationType == "SingleAmortization") {
+                AdvancedPaymentExplanation("提前偿付日期必填", "提前偿付金额必填", "提前偿付金额的分配方式说明：</br>1、到期一次偿清：法定到期日偿还金额为（本金-提前偿还金额）；</br>2、自定义：用户自定义分配提前偿付金额。")
+            }
+
+            var html = '<tr class="advancedPaymentTheader"><th class="text-left" style="text-align: center;">日期</th><th class="text-left" style="text-align: center;">金额</th></tr>';
+            $.each(data, function () {
+                html += '<tr>';
+                //if (this.InCurrentDataset) {
+                //html += '<td style="text-align: center;color:#ff6d10">';
+                //}
+                //else {
+                html += '<td style="text-align: center;">';
+                //}
+                html += this.ReductionDate.substr(0, 4)
+                    + '-' + this.ReductionDate.substr(4, 2)
+                    + '-' + this.ReductionDate.substr(6, 2);
+                html += '</td>';
+
+                //if (this.InCurrentDataset) {
+                //html += '<td style="text-align: right;padding-right: 40px;color:#ff6d10">';
+                //}
+                //else {
+                html += '<td style="text-align: right;padding-right: 40px;">';
+                //}
+
+                html += this.ReductionAmount;
+                html += '</td>';
+                html += '</tr>';
+            });
+            $('#prepayTableBody').html(html);
+        });
+    }
+
+    function bindFunction(amortizationType) {
+        $('#advancedPaymentAllocation').change(function () {
+            if ($('#advancedPaymentAllocation').val() == 'Custom') {
+                var projectGuid = '@Model.ProjectGuid';
+                var paymentDate = '@Model.AssetDataset.PaymentDay.ToString("yyyyMMdd")';
+
+                var params = {
+                    projectGuid: projectGuid, paymentDate: paymentDate, assetId: currentAssetId
+                };
+
+                cnabsAjaxSync('获取偿付计划', '/PaymentHistoryAsset/GetAmortizationByAsset', params, function (data) {
+                    var header = '<tr>';
+                    var columns = ['日期', '金额'];
+                    $.each(columns, function (i, val) {
+                        header += '<th class="text-left" style="text-align: center;">' + val + '</th>';
+                    });
+                    header += '</tr>';
+
+                    var body = '';
+
+                    var tdDate = function (val) {
+                        val = val.substr(0, 4) + '-' + val.substr(4, 2) + '-' + val.substr(6, 2);
+                        return '<td class="tdCustomDate" style="text-align: center;">' + val + '</td>';
+                    }
+                    var tdAmount = function (val) {
+                        return '<td><input class="tdCustomAmount everyAmount" style="width:100px;text-align:right;" type="text" diff=0 preval="' + val + '" value="' + val + '"></td>';
+                    }
+                    $.each(data, function (i, val) {
+                        body += '<tr>';
+                        body += tdDate(val.ReductionDate);
+                        body += tdAmount(val.ReductionAmount);
+                        body += '</tr>';
+                    });
+                    $("#prepayTableBody").html(header + body);
+                    $("#prepayTableBody .everyAmount").each(function (i) {
+                        $(this).blur(function () {
+                            var differenceAmount = cnabsParseFloat($(this).val()) - cnabsParseFloat($(this).attr("preval"));
+                            $(this).attr("diff", differenceAmount)
+                        })
+                    });
+                });
+            }
+            else {
+                initPrepayDlg(amortizationType);
+            }
+        });
+    }
+</script>

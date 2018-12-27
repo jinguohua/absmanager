@@ -1,0 +1,160 @@
+﻿@model ABS.ABSManagementSite.Models.DealModelViewModel
+@using ChineseAbs.ABSManagementSite.Helpers
+@using ABS.Core
+
+<div class="module creditenhancement">
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th colspan="4" class="module-title">
+                    @Html.DisplayNameFor(r => r.CreditEnhancement)
+                    <img src="~/Images/Icons/pass.png" class="data-checked" />
+                    <img src="~/Images/Icons/error.png" class="data-failed" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th style="width:100px;">违约事件</th>
+                <td class="noEod" style="width:160px;">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasEod, new { @class = "HasEod" })
+                    @Html.LabelFor(r => r.CreditEnhancement.HasEod)
+                </td>
+                <td class="hasEod" colspan="2">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.EodCanCure)
+                    @Html.LabelFor(r => r.CreditEnhancement.EodCanCure)
+                </td>
+
+            </tr>
+
+            <tr class="hasEod">
+                <td colspan="2">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.LiquidateWhenEod)
+                    @Html.LabelFor(r => r.CreditEnhancement.LiquidateWhenEod)
+                </td>
+            </tr>
+            <tr class="hasEod">
+                <td>@Html.LabelFor(r => r.CreditEnhancement.EodCheckCondition)</td>
+                <td>@Html.DropDownListFor(r => r.CreditEnhancement.EodCheckCondition, MyEnumConvertor.ConvertToSelectList(typeof(EEodCheckCondition), Model.CreditEnhancement.EodCheckCondition.HasValue ? Model.CreditEnhancement.EodCheckCondition.ToString() : ""))</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasEodExpectedMaturityTurbo)
+                    @Html.LabelFor(r => r.CreditEnhancement.HasEodExpectedMaturityTurbo)
+                </td>
+            </tr>
+            <tr>
+                <th>担保</th>
+                <td class="noGuarantee" colspan="3">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasGuarantee, new { @class = "HasGuarantee" })
+                    @Html.LabelFor(r => r.CreditEnhancement.HasGuarantee)
+                </td>
+            </tr>
+            <tr>
+                <th>支付</th>
+                <td class="noDeficiencyPayment">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasDeficiencyPayment, new { @class = "HasDeficiencyPayment" })
+                    @Html.LabelFor(r => r.CreditEnhancement.HasDeficiencyPayment)
+                </td>
+                <td colspan="2" class="hasDeficiencyPayment">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.UseLeaseMarginAsDeficiencyPayment, new { @class = "UseLeaseMarginAsDeficiencyPayment" })
+                    @Html.LabelFor(r => r.CreditEnhancement.UseLeaseMarginAsDeficiencyPayment)
+                </td>
+            </tr>
+            <tr class="hasDeficiencyPayment">
+                <td>
+                    @Html.LabelFor(r => r.CreditEnhancement.DeficiencyPaymentSequence)
+                </td>
+                <td>
+                    @Html.DropDownListFor(r => r.CreditEnhancement.DeficiencyPaymentSequence, Model.CreditEnhancement.PaymentSequences)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.PayWaterfallByCombinedProceeds, new { @class = "PayWaterfallByCombinedProceeds" })
+                    @Html.LabelFor(r => r.CreditEnhancement.PayWaterfallByCombinedProceeds)
+                </td>
+            </tr>
+            <tr>
+                <th>加速清偿</th>
+                <td class="noCumlossTurbo">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasCumlossTurbo, new { @class = "HasCumlossTurbo" })
+                    @Html.LabelFor(r => r.CreditEnhancement.HasCumlossTurbo)
+                </td>
+                <td class="hasCumlossTurbo">@Html.LabelFor(r => r.CreditEnhancement.CumlossTurboBasisType)</td>
+                <td class="hasCumlossTurbo">
+                    @Html.DropDownListFor(r => r.CreditEnhancement.CumlossTurboBasisType, Model.CreditEnhancement.BasisTypes)
+                </td>
+            </tr>
+            <tr class="hasCumlossTurbo">
+                <td>@Html.LabelFor(r => r.CreditEnhancement.CumlossTurboThreshold)</td>
+                <td>@Html.TextBoxFor(r => r.CreditEnhancement.CumlossTurboThreshold, new { @class = "number small-value" })</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasNoteExpectedMaturityTurbo)
+                    @Html.LabelFor(r => r.CreditEnhancement.HasNoteExpectedMaturityTurbo)
+                </td>
+            </tr>
+            <tr>
+                <th>储备金账户</th>
+                <td class="noRiskReserve">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.HasRiskReserve, new { @class = "HasRiskReserve" })
+                    @Html.LabelFor(r => r.CreditEnhancement.HasRiskReserve)
+                </td>
+                <td class="hasRiskReserve">@Html.LabelFor(r => r.CreditEnhancement.RiskReserveCap)</td>
+                <td class="hasRiskReserve">@Html.TextBoxFor(r => r.CreditEnhancement.RiskReserveCap, new { @class = "number" })</td>
+            </tr>
+            <tr class="hasRiskReserve">
+                <td>@Html.LabelFor(r => r.CreditEnhancement.RiskReserveInterestRate)</td>
+                <td>
+                    @Html.TextBoxFor(r => r.CreditEnhancement.RiskReserveInterestRate, new { @class = "small-value" })
+                </td>
+            </tr>
+            <tr class="hasRiskReserve">
+                <td>
+                    @Html.LabelFor(r => r.CreditEnhancement.RiskReserveInitValue)
+                </td>
+                <td>
+                    @Html.TextBoxFor(r => r.CreditEnhancement.RiskReserveInitValue, new { @class = "number", placeholder = "(选填)" })
+                </td>
+            </tr>
+            <tr class="hasRiskReserve">
+                <td colspan="2">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.RiskReserveForSeniorOnly)
+                    @Html.LabelFor(r => r.CreditEnhancement.RiskReserveForSeniorOnly)
+                </td>
+            </tr>
+            <tr>
+                <th>超额收益</th>
+                <td colspan="3">
+                    @Html.CheckBoxFor(r => r.CreditEnhancement.PaySubResidualInterestBeforeOtherNotesPaidOff, new { @class = "PaySubResidualInterestBeforeOtherNotesPaidOff" })
+                    @Html.LabelFor(r => r.CreditEnhancement.PaySubResidualInterestBeforeOtherNotesPaidOff)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ceChangeVisibility($(".HasRiskReserve").prop("checked"), "HasRiskReserve");
+        ceChangeVisibility($(".HasCumlossTurbo").prop("checked"), "HasCumlossTurbo");
+        ceChangeVisibility($(".HasEod").prop("checked"), "HasEod");
+        ceChangeVisibility($(".HasDeficiencyPayment").prop("checked"), "HasDeficiencyPayment");
+        $(".HasRiskReserve").change(function () {
+            ceChangeVisibility($(this).prop("checked"), "HasRiskReserve");
+        });
+        $(".HasCumlossTurbo").change(function () {
+            ceChangeVisibility($(this).prop("checked"), "HasCumlossTurbo");
+        });
+        $(".HasEod").change(function () {
+            ceChangeVisibility($(this).prop("checked"), "HasEod");
+        });
+        $(".HasDeficiencyPayment").change(function () {
+            ceChangeVisibility($(this).prop("checked"), "HasDeficiencyPayment");
+        });
+        $(".creditenhancement input,.creditenhancement select").change(function () {
+            ceCheckData();
+        });
+    });
+</script>

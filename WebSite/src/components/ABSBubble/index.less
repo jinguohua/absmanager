@@ -1,0 +1,19 @@
+@import "../../styles/theme/default.less";
+.ant-tooltip {
+  max-width: initial;
+  .ant-tooltip-inner {
+    padding: 12px;
+    background: rgba(33,38,45,0.98);
+    border-radius: 2px;
+    // border: 1px solid @abs-bubble-border;
+  }
+}
+.ant-tooltip-placement-top .ant-tooltip-arrow, 
+.ant-tooltip-placement-topLeft .ant-tooltip-arrow, 
+.ant-tooltip-placement-topRight .ant-tooltip-arrow,
+.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow,
+.ant-tooltip-placement-bottomRight .ant-tooltip-arrow,  {
+  border-top-color: rgba(33,38,45,0.98);
+  border-bottom-color: rgba(33,38,45,0.98);
+  bottom: 4px;
+}

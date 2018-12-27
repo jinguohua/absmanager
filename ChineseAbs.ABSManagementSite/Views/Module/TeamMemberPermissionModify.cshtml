@@ -1,0 +1,255 @@
+﻿<style>
+    .changeHeight {
+        height: 270px;
+    }
+    .join_project {
+        margin-top: 14px;        
+        font-size:12px;
+        height:16px;
+        width:48px;
+        cursor:pointer;        
+        margin-right:11px;
+    }
+    .absent {
+        margin-top: 13px;
+        margin-left: 11px;        
+        font-size: 14px;
+        color: #999999;        
+    }
+    
+</style>
+<div modifypermisssion id="teamMemberPermission" class="teamMemberAddDiv">
+    <div class="selectedLeftDiv left">
+        <div class="selectedGroup_title">
+            <div class="selected_all_div">
+                <input id="selectedAllForModify" checked="{{selectAllCk}}" type="checkbox" ng-change="selectAllGroupsPermission(selectAll)" ng-model="selectAll" class="checkbox_style left" />
+                <div class="selected_all"><label class="cnabs_pointer" for="selectedAllForModify">全选</label></div>
+            </div>
+            <div class="selectedGroup">组列表</div>
+            <div class="group_list" ng-repeat="userGroup in userAllGroupObj">
+                <input id="userGroupListId({{$index}})" type="checkbox" class="left checkbox_style" ng-change="checkedGroupPermission()" ng-model="userAllGroupObj[$index].isChecked" />
+                <div class="group_name cnabs_ellipsis" style="width:84px" title="(userGroup.name)">
+                    <label class="cnabs_pointer" for="userGroupListId({{$index}})">{{userGroup.name}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vertical_border_div left"></div>
+    <div class="selectedRightDiv left">
+        <div class="selected_members">
+            <div class="selected_members_count">项目成员数：{{allUserInfo.TeamMembers.length}}个  已选择：{{modifiableTeamMemberPermission.length}}个</div>
+            <ul class="select_member_ul">
+                <li class="team_member_div left" ng-repeat="teamMember in allUserInfo.TeamMembers" ng-click="checkedByDivModifyPermission($index)">
+                    <div class="avatar_member" style="background-image:url({{teamMember.AvatarPath}});"></div>
+                    <div class="left">
+                        <div class="username_member cnabs_ellipsis" style="width:70px" ng-mouseover="loadProfile(teamMember.UserName)"
+                             title="{{showProfile(teamMember.UserName)}}">
+                            <label class="cnabs_pointer">{{teamMember.RealName}}</label>
+                        </div>
+                        <div class="realname_member">
+                            <label class="cnabs_pointer">
+                                {{(teamMember.Permission.Read ? '读 ' : '') + (teamMember.Permission.Write ? '写 ' : '') + (teamMember.Permission.Execute ? '执行 ' : '')}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="right checkbox_style_div">
+                        <input type="checkbox" class="checkbox_style" ng-click="stopPropagation($event)" ng-change="selectedMemberCountPermission()" ng-model="(allUserInfo.TeamMembers)[$index].isChecked" />
+                    </div>
+                </li>
+                <li class="team_member_div left" ng-repeat="teamMembers in isNotTeamMemberOfUserArr">
+                    <div class="avatar_member" style="background-image:url({{teamMembers.AvatarPath}});"></div>
+                    <div class="left">
+                        <div class="absent cnabs_ellipsis" style="width:50px;" ng-mouseover="loadProfile(teamMembers.userName)" title="{{showProfile(teamMembers.userName)}}">{{teamMembers.realName}}</div>
+                        <div class="realname_member">-</div>
+                    </div>
+                    <div class="right join_project cnabs_green" ng-click="addUserBeTeamMember(teamMembers.userName)">
+                        加入项目
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="horizontal_border_div"></div>
+        <div class="authority_bottom_div">
+            <div class="left authority_bottom">
+                <div class="edit_checkbox_div left">
+                    <label class="cnabs_pointer" for="editPermission">编辑权限</label>
+                </div>
+                <input type="checkbox" class="checkbox_style" ng-model="editPermissioin" id="editPermission" />
+            </div>
+            <div class="left authority_bottom">
+                <div class="execute_checkbox_div left"><label class="cnabs_pointer" for="executePermission">执行权限</label></div>
+                <input type="checkbox" class="checkbox_style" ng-model="executePermission" id="executePermission" />
+            </div>
+        </div>
+        <div class="left confirm_error_prompt_div">
+            <div class="error_msg cnabs_red cnabs_none">* 请选择成员进行操作</div>
+        </div>
+    </div>
+</div>
+<script>
+    angular.module('DashBoard').directive('modifypermisssion', function (userHelper) {
+        return {
+            restrict: 'A',
+            link: function ($scope, element, attrs) {
+
+                //添加用户为项目成员
+                $scope.addUserBeTeamMember = function (userName) {
+                    $scope.modifiableTeamMemberPermission = [];
+                    var permissions = ['Read'];
+                    var param = {
+                        projectSeriesGuid: $scope.projectSeriesGuid,
+                        userNames: userName,
+                        permissions: permissions
+                    };
+                    $scope.addOneOrMoreTeamMember(param);
+                    $scope.getUserAllGroupInfo();                                        
+                }
+
+                //勾选组之后获取组里面相应的项目成员
+                $scope.getCorrespondingTeamMember = function (groupGuid) {
+                    $scope.isTeamMemberOfGroupUserPermission = [];
+                    var param = {
+                        projectSeriesGuid: $scope.projectSeriesGuid,
+                        userGroupGuid: groupGuid
+                    };
+                    cnabsAjax("获取相应组下面的项目成员的人员", "/TeamMember/GetTeamMembersOfUserGroup", param, function (data) {
+                        $.each(data.UserGroupUsers, function (index, item) {
+                            if (item.IsTeamMemberOfUserGroup == true) {
+                                $scope.isTeamMemberOfGroupUserPermission.push(item);
+                            }
+                        })
+                        $scope.confirmFinalSelectedMember($scope.isTeamMemberOfGroupUserPermission);
+                        $scope.$apply();
+                    })
+                }
+
+                $scope.confirmFinalSelectedMember = function (data) {                    
+                    $.each(data, function (index, item) {
+                        $.each($scope.allUserInfo.TeamMembers, function (index, itemArr) {
+                            if (item.UserName == itemArr.UserName && !itemArr.isChecked) {
+                                itemArr.isChecked = true;
+                                $scope.modifiableTeamMemberPermission.push(itemArr);
+                            }
+                        })
+                    })                   
+                }
+
+                //初始化，所有项目成员的复选框
+                $scope.initAllTeamMemberCheckbox = function () {
+                    $.each($scope.allUserInfo.TeamMembers, function (index, item) {
+                        item.isChecked = false;
+                    })
+                }
+
+                //编辑项目成员的权限
+                $scope.editMoreTeamMemberPermission = function (projectSeriesGuid) {
+                    $scope.projectSeriesGuid = projectSeriesGuid;
+                    $scope.initAllTeamMemberCheckbox();
+                    $scope.getUserAllGroupInfo();
+                    $scope.notTeamMemberPermission = [];
+                    $scope.modifiableTeamMemberPermission = [];
+                    $scope.editPermissioin = false;
+                    $scope.executePermission = false;
+                    $scope.selectAll = false;
+                    var modifyPermissionUserNamesArr = [];
+                    var modifyPermissionUserNamesString = "";
+                    var modifyPermissionArr = ["Read"];
+                    var modifyPermissionString = "";
+                    var dialogWidth = 779;
+                    var allAmount = 0;
+
+                    $scope.notTeamMemberPermission = userHelper.getUserToTeamMember();
+                    allAmount = $scope.allUserInfo.TeamMembers.length + $scope.notTeamMemberPermission.length;
+                    if (allAmount > 12) {
+                        $("#teamMemberPermission .select_member_ul").addClass("cnabs_scrollbar");
+                        $("#teamMemberPermission .select_member_ul").css("height", "278px");
+                        $("#teamMemberPermission .horizontal_border_div").css("width", "637px");
+                        $("#teamMemberPermission .selected_members").css("width", "637px");
+                        dialogWidth = 799;
+                    } else {
+                        $("#teamMemberPermission .select_member_ul").css("height", "auto");
+                        $("#teamMemberPermission .horizontal_border_div").css("width", "612px");
+                        $("#teamMemberPermission .selected_members").css("width", "612px");
+                        dialogWidth = 779;
+                    }
+                    $("#teamMemberPermission .error_msg").removeClass("cnabs_block");
+                    $("#teamMemberPermission .error_msg").addClass("cnabs_none");
+                    cnabsDlgYesNo('teamMemberPermission', '编辑成员权限', function () {                        
+                        $.each($scope.allUserInfo.TeamMembers, function (index, item) {                            
+                            if (item.isChecked == true) {
+                                modifyPermissionUserNamesArr.push(item.UserName);                                
+                            }
+                        })
+                        if (modifyPermissionUserNamesArr.length > 0) {
+                            modifyPermissionUserNamesString = modifyPermissionUserNamesArr.join(",");
+                            //对勾选的项目成员进行权限的修改
+
+                            if ($("#editPermission").is(":checked")) {
+                                modifyPermissionArr.push("Write");
+                            }
+                            if ($("#executePermission").is(":checked")) {
+                                modifyPermissionArr.push("Execute");
+                            }
+                            modifyPermissionString = modifyPermissionArr.join("|");
+                            param = {
+                                projectSeriesGuid: projectSeriesGuid,
+                                userNames: modifyPermissionUserNamesString,
+                                permissions: modifyPermissionString
+                            };
+                            cnabsAjax("批量修改项目成员的权限", "/TeamMember/ModifyTeamMembersPermission", param, function (data) {
+                                $scope.GetAllUserInfo();
+                                $scope.$apply();
+                            })
+                        } else {
+                            $("#teamMemberPermission .error_msg").removeClass("cnabs_none");
+                            $("#teamMemberPermission .error_msg").addClass("cnabs_block");
+                            return false;
+                        }
+                    }, 508, dialogWidth)
+                }
+
+                //确认勾选组
+                $scope.checkedGroupPermission = function () {
+                    $scope.checkGroupPermissionArr = [];
+                    $scope.modifiableTeamMemberPermission = [];                    
+                    $scope.initAllTeamMemberCheckbox();
+                    //拿到选中的组                    
+                    $.each($scope.userAllGroupObj, function (index, item) {
+                        if (item.isChecked == true) {
+                            $scope.checkGroupPermissionArr.push(item);
+                            $scope.getCorrespondingTeamMember(item.guid);                            
+                        }
+                    })
+                    $scope.selectAll = $scope.checkGroupPermissionArr.length == $scope.userAllGroupObj.length;
+                }
+
+                //勾选组别
+                $scope.selectAllGroupsPermission = function (isChecked) {
+                    $scope.selectAllGroups(isChecked);
+                    $scope.checkedGroupPermission();
+                }
+
+                //勾选成员
+                $scope.selectedMemberCountPermission = function () {
+                    $scope.modifiableTeamMemberPermission = [];
+                    $.each($scope.allUserInfo.TeamMembers, function (index, item) {
+                        if (item.isChecked) {
+                            $scope.modifiableTeamMemberPermission.push(item);
+                        }
+                    })
+                }
+
+                $scope.checkedByDivModifyPermission= function (index) {
+                    var ischecked = $scope.allUserInfo.TeamMembers[index].isChecked;
+                    if (!ischecked) {
+                        $scope.allUserInfo.TeamMembers[index].isChecked = true;
+                    }
+                    else {
+                        $scope.allUserInfo.TeamMembers[index].isChecked = false;
+                    }
+                    $scope.selectedMemberCountPermission();
+                }
+            }
+        }
+    })
+</script>

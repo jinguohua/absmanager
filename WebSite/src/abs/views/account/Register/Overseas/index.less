@@ -1,0 +1,33 @@
+@import "../../../../../styles/theme/default.less";
+.abs-overseas{
+  &-tooltip {
+    &-title {
+      color: @abs-overseas-tooltip-title-color;
+      margin-bottom: 14px;
+    }
+    &-content {
+        margin-right: 50px;
+    }
+  }
+  &-upload {
+    margin-top: 20px;
+    .abs-upload-div .ant-upload.ant-upload-select-picture-card {
+      width: 420px;
+    }
+    .abs-upload-div {
+      .ant-upload-list  {
+        &-item {
+          width: 420px;
+          height: 120px;
+          margin: 0;
+        }
+      }
+    }
+    &-errorMsg {
+      height: 28px;
+      line-height: 28px;
+      display: block;
+      color: @abs-overseas-errorMsg-color;
+    }
+  }
+}

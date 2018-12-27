@@ -1,0 +1,13 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-danger">服务器错误.</h1>
+<h2 class="text-danger">错误信息如下：.</h2>
+<h2 class="text-danger">@Model.Exception.Message</h2>
+<h2 class="text-danger">StackTrace：.</h2>
+<h2 class="text-danger">@Model.Exception.StackTrace</h2>
+

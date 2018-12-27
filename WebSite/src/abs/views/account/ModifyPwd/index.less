@@ -1,0 +1,71 @@
+@import "../../../../styles/theme/default.less";
+.modify-password {
+  // background-color: aqua;
+  .old-password {
+    display: flex;
+    flex-direction: row;
+   
+  }
+  .new-password {
+    display: flex;
+    flex-direction: row;
+   
+  }
+  .repeat-password {
+    display: flex;
+    flex-direction: row;
+   
+  }
+  .title-view {
+    width: 80px;
+    color: @blue-3;
+    font-size: @font-m;
+    margin-right: 12px;
+    margin-top: 10px;
+  }
+  .abs-input {
+    margin-bottom: 1px;
+  }
+  &-form {
+    .ant-form-item {
+      margin-bottom: 14px;
+    }
+    .form-item-submit {
+      margin-top: 28px;
+    }
+    .form-item-captcha {
+      width: 420px;
+      margin: 0 auto;
+      input {
+        width: 324px;
+      }
+      .ant-input-group-addon {
+        padding: 0;
+        color: #fff;
+        border: none;
+      }
+    }
+    .abs-input {
+      margin: 0;
+      i {
+        color: #999;
+      }
+    }
+  }
+  .ant-form-item {
+    margin-bottom: 1px;
+  }
+  .has-error .ant-form-explain,
+  .has-error .ant-form-split {
+    color: #f5222d;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .button-view {
+    margin-top: 20px;
+    justify-content: space-between;
+    width: 240px;
+    display: flex;
+  }
+}

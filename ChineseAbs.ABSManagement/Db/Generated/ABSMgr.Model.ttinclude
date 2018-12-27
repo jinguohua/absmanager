@@ -1,0 +1,67 @@
+<# if (GeneratePocos) { #><#
+foreach(Table tbl in from t in tables where !t.Ignore select t)
+{
+#><# if (GenereateAllTable || GenereateTableModelNames.Contains(tbl.Name)) { var newTableName = ConvertUnderlineName(tbl.Name);#>
+using ABSMgrConn;
+using System;
+
+namespace ChineseAbs.ABSManagement.Models<#= string.IsNullOrEmpty(GenereateTableModelFolderName) ? string.Empty : ("." + GenereateTableModelFolderName) #>
+{
+    public class <#= tbl.Name #> : BaseModel<<#= tbl.ClassName #>>
+    {
+        public <#= tbl.Name #>()
+        {
+
+        }
+
+        public <#= tbl.Name #>(<#= tbl.ClassName #> obj)
+            : base(obj)
+        {
+
+        }
+<#var columns = from c in tbl.Columns where
+			 !c.Ignore
+			 && !GenereateTableModelBuildInFieldNames.Any(x => (tbl.Name + x) == ConvertPascalName(c.PropertyName)
+				|| x == ConvertPascalName(c.PropertyName))
+			 select c;
+foreach(Column col in columns)
+{#>
+        public <#=col.PropertyType #><#=CheckNullable(col)#> <#=ConvertPascalName(col.PropertyName) #> { get; set; }
+<# } #>
+
+        public override <#= tbl.ClassName #> GetTableObject()
+        {
+            var obj = new <#= tbl.ClassName #>();
+            obj.<#= newTableName #>_id = Id;
+            obj.<#= newTableName #>_guid = Guid;
+<#foreach(Column col in columns){#>
+            obj.<#= col.PropertyName + " = " + ConvertPascalName(col.PropertyName) + ";" #>
+<#}#>
+            obj.create_time = CreateTime;
+            obj.create_user_name = CreateUserName;
+            obj.last_modify_time = LastModifyTime;
+            obj.last_modify_user_name = LastModifyUserName;
+            obj.record_status_id = (int)RecordStatus;
+
+            return obj;
+        }
+
+        public override void FromTableObject(<#= tbl.ClassName #> obj)
+        {
+            Id = obj.<#= newTableName #>_id;
+            Guid = obj.<#= newTableName #>_guid;
+<#foreach(Column col in columns){#>
+            <#= ConvertPascalName(col.PropertyName) + " = obj." + col.PropertyName + ";" #>
+<#}#>
+            CreateTime = obj.create_time;
+            CreateUserName = obj.create_user_name;
+            LastModifyTime = obj.last_modify_time;
+            LastModifyUserName = obj.last_modify_user_name;
+            RecordStatus = (RecordStatus)obj.record_status_id;
+        }
+    }
+}
+<# SaveModelFile(tbl.Name + ".cs"); #>
+<#}#>
+<#}#>
+<#}#>

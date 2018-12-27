@@ -1,0 +1,586 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8F725429-CF98-4153-A769-0597C805EB09}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ABS.ABSManagement</RootNamespace>
+    <AssemblyName>ABS.ABSManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>be9abc78</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Words, Version=10.5.0.0, Culture=neutral, PublicKeyToken=fa9a48344f15a022, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO17, Version=1.0.6345.19973, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO17.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO23, Version=1.0.6345.19891, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO23.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO3, Version=1.0.6345.19891, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO3.dll</HintPath>
+    </Reference>
+    <Reference Include="ChineseAbs.AnalyzerLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\ChineseAbs.AnalyzerLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="ChineseAbs.CommonLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\ChineseAbs.CommonLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="ChineseAbs.Logic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\ChineseAbs.Logic.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ImageProcessor, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\\packages\ImageProcessor.2.5.4\lib\net45\ImageProcessor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\\packages\NPOI.2.3.0\lib\net40\NPOI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\\packages\NPOI.2.3.0\lib\net40\NPOI.OOXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Core, Version=1.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Core.1.1.9\lib\SAFS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Core.Permissions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Core.Permissions.1.2.2\lib\SAFS.Core.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Utility, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Utility.1.1.0\lib\SAFS.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DBAdapter\Manager\AssetDefault\AssetDefaultManager.cs" />
+    <Compile Include="DBAdapter\Manager\AssetDefault\AssetDefaultSetManager.cs" />
+    <Compile Include="DBAdapter\Manager\Base\BaseModelManager.cs" />
+    <Compile Include="DBAdapter\Manager\Cache\CacheAcfAssetReceiveManager.cs" />
+    <Compile Include="DBAdapter\Manager\Cache\CacheAcfReceiveManager.cs" />
+    <Compile Include="DBAdapter\Manager\CashflowVariableManager.cs" />
+    <Compile Include="DBAdapter\Manager\DealModel\AssetCashflowVariableManager.cs" />
+    <Compile Include="DBAdapter\Manager\DealModel\DealModelSettingManager.cs" />
+    <Compile Include="DBAdapter\Manager\DMS\DMSDurationManagementPlatformManager.cs" />
+    <Compile Include="DBAdapter\Manager\DMS\DMSProjectLogManager.cs" />
+    <Compile Include="DBAdapter\Manager\DMS\DMSTaskManager.cs" />
+    <Compile Include="DBAdapter\Manager\DocumentManagementSystem\DMSFileSeriesTemplateManager.cs" />
+    <Compile Include="DBAdapter\Manager\EditModelCSVManager.cs" />
+    <Compile Include="DBAdapter\Manager\Permission\DownloadFileAuthorityManager.cs" />
+    <Compile Include="DBAdapter\Manager\Email\EmailContextManager.cs" />
+    <Compile Include="DBAdapter\Manager\Email\EmailFromToManager.cs" />
+    <Compile Include="DBAdapter\Manager\InterestRateAdjustment\InterestRateAdjustmentManager.cs" />
+    <Compile Include="DBAdapter\Manager\InterestRateAdjustment\InterestRateAdjustmentSetManager.cs" />
+    <Compile Include="DBAdapter\Manager\Issue\IssueConnectionTasksManager.cs" />
+    <Compile Include="DBAdapter\Manager\MessageReminding\MessageRemindingManager.cs" />
+    <Compile Include="DBAdapter\Manager\MessageReminding\NegativeNewsManager.cs" />
+    <Compile Include="DBAdapter\Manager\OverrideSingleAsset\OverrideSingleAssetInterestManager.cs" />
+    <Compile Include="DBAdapter\Manager\OverrideSingleAsset\OverrideSingleAssetPrincipalBalanceManager.cs" />
+    <Compile Include="DBAdapter\Manager\OverrideSingleAsset\OverrideSingleAssetPrincipalManager.cs" />
+    <Compile Include="DBAdapter\Manager\Prepayment\PrepaymentManager.cs" />
+    <Compile Include="DBAdapter\Manager\Prepayment\PrepaymentSetManager.cs" />
+    <Compile Include="DBAdapter\Manager\TaskPeriodManager.cs" />
+    <Compile Include="DBAdapter\Manager\User\TeamAdminManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\MetaTaskManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeOriginCustomInputManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeOriginLoopManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeOriginManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeOriginMetaTaskManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeOriginTaskSelfTimeManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeRuleConditionShiftManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeRuleManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeRulePeriodSequenceManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeRuleShiftManager.cs" />
+    <Compile Include="DBAdapter\Manager\TimeRuleManager\TimeSeriesManager.cs" />
+    <Compile Include="DBAdapter\Manager\User\UserGroupManager.cs" />
+    <Compile Include="DBAdapter\Manager\User\UserGroupMapManager.cs" />
+    <Compile Include="DBAdapter\Manager\User\UserActionHabitsManager.cs" />
+    <Compile Include="Framework\LazyConstruct.cs" />
+    <Compile Include="Framework\Platform.cs" />
+    <Compile Include="DBAdapter\Manager\AccountManager.cs" />
+    <Compile Include="DBAdapter\Manager\AgendaManager.cs" />
+    <Compile Include="AssetModifier\AssetEvent\AssetEventPrepayment.cs" />
+    <Compile Include="AssetModifier\AssetEvent\AssetEventBase.cs" />
+    <Compile Include="AssetModifier\AssetModifier.cs" />
+    <Compile Include="DBAdapter\Manager\AuthorityManager.cs" />
+    <Compile Include="DBAdapter\Manager\BaseManager.cs" />
+    <Compile Include="Chart\DataSeries.cs" />
+    <Compile Include="Chart\Vector.cs" />
+    <Compile Include="DBAdapter\Manager\ContactManager.cs" />
+    <Compile Include="DBAdapter\Manager\DatasetManager.cs" />
+    <Compile Include="DBAdapter\DBAdapter.cs" />
+    <Compile Include="DBAdapter\Manager\DocumentManagementSystem\DMSFileManager.cs" />
+    <Compile Include="DBAdapter\Manager\DocumentManagementSystem\DMSFileSeriesManager.cs" />
+    <Compile Include="DBAdapter\Manager\DocumentManagementSystem\DMSFolderManager.cs" />
+    <Compile Include="DBAdapter\Manager\DocumentManagementSystem\DMSManager.cs" />
+    <Compile Include="Db\Generated\Database.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\PetaPoco.cs" />
+    <Compile Include="Db\VwAccountApplication.cs" />
+    <Compile Include="Db\VwDeal.cs" />
+    <Compile Include="Db\VwEnterpriseApplication.cs" />
+    <Compile Include="Db\VwNote.cs" />
+    <Compile Include="Db\VwPaymentDates.cs" />
+    <Compile Include="Db\VwProject.cs" />
+    <Compile Include="Db\VwProjectAuthority.cs" />
+    <Compile Include="Db\VwUserEnterprise.cs" />
+    <Compile Include="Db\VwUserProfile.cs" />
+    <Compile Include="DocumentFactory\DocumentFactory.cs" />
+    <Compile Include="DocumentFactory\DocumentMakerBase.cs" />
+    <Compile Include="DocumentFactory\Maker\CashInterestRateConfirmFormMaker.cs" />
+    <Compile Include="DocumentFactory\Maker\Demo\DemoJianYuanReportMaker.cs" />
+    <Compile Include="DocumentFactory\Maker\IncomeDistributionReportMaker.cs" />
+    <Compile Include="DocumentFactory\Maker\InterestPaymentPlanApplicationMaker.cs" />
+    <Compile Include="DocumentFactory\Maker\SpecialPlanTransferInstructionMaker.cs" />
+    <Compile Include="DBAdapter\Manager\DocumentManager.cs" />
+    <Compile Include="DBAdapter\Manager\FileManager.cs" />
+    <Compile Include="Framework\User.cs" />
+    <Compile Include="DBAdapter\Manager\ImageManager.cs" />
+    <Compile Include="DBAdapter\Manager\InvestmentManager.cs" />
+    <Compile Include="DBAdapter\Manager\Issue\IssueActivityManager.cs" />
+    <Compile Include="DBAdapter\Manager\Issue\IssueManager.cs" />
+    <Compile Include="DBAdapter\Manager\LocalDeployedManager.cs" />
+    <Compile Include="LocalRepository\Core\RepositoryElement.cs" />
+    <Compile Include="LocalRepository\Repository.cs" />
+    <Compile Include="LocalRepository\RepositoryFile.cs" />
+    <Compile Include="LocalRepository\RepositoryImage.cs" />
+    <Compile Include="Loggers\LoggerContact.cs" />
+    <Compile Include="Loggers\LoggerDocument.cs" />
+    <Compile Include="Loggers\LoggerGeneric.cs" />
+    <Compile Include="Loggers\LoggerNewsKeyWords.cs" />
+    <Compile Include="Loggers\LoggerReminder.cs" />
+    <Compile Include="Loggers\LoggerRemindSetting.cs" />
+    <Compile Include="LogicModels\ActionHabits\EditAssetCashflow.cs" />
+    <Compile Include="LogicModels\ActionHabits\EditPrincipal.cs" />
+    <Compile Include="LogicModels\ActionHabits\EditPrincipalBalance.cs" />
+    <Compile Include="LogicModels\AssetLogicModel.cs" />
+    <Compile Include="LogicModels\Authority\AuthorityLogicModel.cs" />
+    <Compile Include="LogicModels\Authority\DownloadFileAuthorityLogicModel.cs" />
+    <Compile Include="LogicModels\BaseLogicModel.cs" />
+    <Compile Include="LogicModels\BasicPeriodLogicModel.cs" />
+    <Compile Include="LogicModels\DealModel\AmortizationLogicModel.cs" />
+    <Compile Include="LogicModels\DealModel\AssetOverrideSetting.cs" />
+    <Compile Include="LogicModels\DealModel\DealModelFolerInfo.cs" />
+    <Compile Include="LogicModels\DealModel\DealLogicModel.cs" />
+    <Compile Include="LogicModels\DocumentManagementSystem\DMSFileLogicModel.cs" />
+    <Compile Include="LogicModels\DocumentManagementSystem\DMSFolderLogicModel.cs" />
+    <Compile Include="LogicModels\DocumentManagementSystem\DMSLogicModel.cs" />
+    <Compile Include="LogicModels\DatasetLogicModel.cs" />
+    <Compile Include="LogicModels\DealScheduleLogicModel.cs" />
+    <Compile Include="LogicModels\DatasetScheduleLogicModel.cs" />
+    <Compile Include="LogicModels\OverrideSingleAsset\OverrideSingleAssetLogicModel.cs" />
+    <Compile Include="LogicModels\PermissionLogicModel.cs" />
+    <Compile Include="LogicModels\ProjectActivityLogicModel.cs" />
+    <Compile Include="LogicModels\ProjectLogicModel.cs" />
+    <Compile Include="LogicModels\ProjectSeriesLogicModel.cs" />
+    <Compile Include="LogicModels\SimulationLogicModel.cs" />
+    <Compile Include="LogicModels\TaskGroupLogicModel.cs" />
+    <Compile Include="LogicModels\TaskLogicModel.cs" />
+    <Compile Include="LogicModels\Team\TeamerLogicModel.cs" />
+    <Compile Include="LogicModels\Team\TeamLogicModel.cs" />
+    <Compile Include="LogicModels\ActionHabits\ActionHabitsLogicModel.cs" />
+    <Compile Include="Models\Agenda.cs" />
+    <Compile Include="Models\AssetCashflowHistory.cs" />
+    <Compile Include="Models\AssetPaymentInfo.cs" />
+    <Compile Include="Models\AssetPrepaymentHistory.cs" />
+    <Compile Include="Models\AuthedAccount.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Cache\CacheAcfAssetReceive.cs" />
+    <Compile Include="Models\Cache\CacheAcfReceive.cs" />
+    <Compile Include="Models\CalendarData.cs" />
+    <Compile Include="Models\CashflowVariable.cs" />
+    <Compile Include="Models\Dataset.cs" />
+    <Compile Include="Models\DatasetModel\AmortizationSchedule.cs" />
+    <Compile Include="Models\DatasetModel\AmortizationScheduleRecord.cs" />
+    <Compile Include="Models\DatasetModel\CollateralCsv.cs" />
+    <Compile Include="Models\DatasetModel\CollateralCsvRecord.cs" />
+    <Compile Include="Models\DatasetModel\FutureVariablesCsv.cs" />
+    <Compile Include="Models\DatasetModel\InterestRateReset.cs" />
+    <Compile Include="Models\DatasetModel\InterestRateResetRecord.cs" />
+    <Compile Include="Models\DatasetModel\PromisedCashflowRecord.cs" />
+    <Compile Include="Models\DatasetModel\ReinvestmentCsv.cs" />
+    <Compile Include="Models\DatasetModel\VariablesCsv.cs" />
+    <Compile Include="Models\DatasetModel\VariablesCsvRecord.cs" />
+    <Compile Include="Models\DealModel\AssetCashflowVariable.cs" />
+    <Compile Include="Models\DealModel\AssetDefault.cs" />
+    <Compile Include="Models\DealModel\AssetDefaultSet.cs" />
+    <Compile Include="Models\DealModel\DealModelSetting.cs" />
+    <Compile Include="Models\DealModel\InterestRateAdjustment.cs" />
+    <Compile Include="Models\DealModel\InterestRateAdjustmentSet.cs" />
+    <Compile Include="Models\DatasetModel\PromisedCashflowCsv.cs" />
+    <Compile Include="Models\DMSModel\DMSDurationManagementPlatform.cs" />
+    <Compile Include="Models\DMSModel\DMSProjectLog.cs" />
+    <Compile Include="Models\DMSModel\DMSTask.cs" />
+    <Compile Include="Models\DocumentManagementSystem\DMSFileSeriesTemplate.cs" />
+    <Compile Include="Models\EditModelCSV.cs" />
+    <Compile Include="Models\Email\EmailContext.cs" />
+    <Compile Include="Models\Email\EmailFromTo.cs" />
+    <Compile Include="Models\IssueConnectionTasks.cs" />
+    <Compile Include="Models\MessageReminding\MessageReminding.cs" />
+    <Compile Include="Models\DealModel\Prepayment.cs" />
+    <Compile Include="Models\DealModel\PrepaymentSet.cs" />
+    <Compile Include="Models\DocumentManagementSystem\DMS.cs" />
+    <Compile Include="Models\DocumentManagementSystem\DMSFile.cs" />
+    <Compile Include="Models\DocumentManagementSystem\DMSFileSeries.cs" />
+    <Compile Include="Models\DocumentManagementSystem\DMSFolder.cs" />
+    <Compile Include="Models\DocumentType.cs" />
+    <Compile Include="Models\DownloadFileAuthority.cs" />
+    <Compile Include="Models\EditProductAuthority.cs" />
+    <Compile Include="Models\EnterpriseInfo.cs" />
+    <Compile Include="Models\Investment.cs" />
+    <Compile Include="Models\Issue.cs" />
+    <Compile Include="Models\IssueActivity.cs" />
+    <Compile Include="Models\IssueActivityFile.cs" />
+    <Compile Include="Models\IssueActivityImage.cs" />
+    <Compile Include="Models\LocalDeployedUserProfile.cs" />
+    <Compile Include="Models\LockMenu.cs" />
+    <Compile Include="Models\NewsSetting.cs" />
+    <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\NoteData.cs" />
+    <Compile Include="Models\NoteResults.cs" />
+    <Compile Include="Models\OverrideSingleAsset\OverrideSingleAssetInterest.cs" />
+    <Compile Include="Models\OverrideSingleAsset\OverrideSingleAssetPrincipal.cs" />
+    <Compile Include="Models\OverrideSingleAsset\OverrideSingleAssetPrincipalBalance.cs" />
+    <Compile Include="Models\Permission.cs" />
+    <Compile Include="Models\ProjectActivity.cs" />
+    <Compile Include="Models\ProjectAuthority.cs" />
+    <Compile Include="Models\ProjectSeries.cs" />
+    <Compile Include="Models\Reminders.cs" />
+    <Compile Include="Models\MessageReminding\NegativeNews.cs" />
+    <Compile Include="Models\RemindSettings.cs" />
+    <Compile Include="Models\Repository\File.cs" />
+    <Compile Include="Models\Repository\Image.cs" />
+    <Compile Include="Models\TaskGroup.cs" />
+    <Compile Include="Models\TaskPeriod.cs" />
+    <Compile Include="Models\TeamAdmin.cs" />
+    <Compile Include="Models\TeamMember.cs" />
+    <Compile Include="Models\TemplateTime.cs" />
+    <Compile Include="Models\TemplateWork.cs" />
+    <Compile Include="Models\TemplateWorkTime.cs" />
+    <Compile Include="Models\TemplateWorkTimeRule.cs" />
+    <Compile Include="Models\TimeRuleModel\MetaTask.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeOrigin.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeOriginCustomInput.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeOriginLoop.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeOriginMetaTask.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeOriginTaskSelfTime.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeRule.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeRuleConditionShift.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeRulePeriodSequence.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeRuleShift.cs" />
+    <Compile Include="Models\TimeRuleModel\TimeSeries.cs" />
+    <Compile Include="Models\UserGroup.cs" />
+    <Compile Include="Models\UserGroupMap.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\UserVisitLog.cs" />
+    <Compile Include="Models\User\UserActionHabits.cs" />
+    <Compile Include="DBAdapter\Manager\MonitorManager.cs" />
+    <Compile Include="Loggers\LoggerTransaction.cs" />
+    <Compile Include="DBAdapter\Manager\ModelManager.cs" />
+    <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\NewsRecord.cs" />
+    <Compile Include="Models\Contacts.cs" />
+    <Compile Include="Models\TaskExtension.cs" />
+    <Compile Include="Object\AssetCashflowElementData.cs" />
+    <Compile Include="Object\CashflowElementData.cs" />
+    <Compile Include="Pattern\CashInterestRateConfirmForm.cs" />
+    <Compile Include="Pattern\Demo\DemoJianYuanReport.cs" />
+    <Compile Include="Pattern\IncomeDistributionReport.cs" />
+    <Compile Include="Pattern\InterestPaymentPlanApplication.cs" />
+    <Compile Include="Pattern\DocumentPattern.cs" />
+    <Compile Include="Pattern\TaskPattern.cs" />
+    <Compile Include="Pattern\TemplateTaskPattern.cs" />
+    <Compile Include="Pattern\TemplateTimePattern.cs" />
+    <Compile Include="DBAdapter\Manager\PaymentHistoryManager.cs" />
+    <Compile Include="DBAdapter\Manager\Permission\PermissionManager.cs" />
+    <Compile Include="DBAdapter\Manager\ProjectActivityManager.cs" />
+    <Compile Include="DBAdapter\Manager\ProjectSeriesManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DBAdapter\Manager\ReminderManager.cs" />
+    <Compile Include="DBAdapter\Manager\NewsManager.cs" />
+    <Compile Include="DBAdapter\Manager\RemindSettingManager.cs" />
+    <Compile Include="ResourcePool\ResourcePool.cs" />
+    <Compile Include="DBAdapter\Manager\Permission\SuperUserManager.cs" />
+    <Compile Include="DBAdapter\Manager\TaskGroupManager.cs" />
+    <Compile Include="DBAdapter\Manager\User\TeamMemberManager.cs" />
+    <Compile Include="TimeFactory\TimeSeriesFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TimeFactory\TimeStep.cs" />
+    <Compile Include="TimeFactory\Transform\ITransform.cs" />
+    <Compile Include="TimeFactory\Transform\RuleConditionShift.cs" />
+    <Compile Include="TimeFactory\Transform\RuleDistinct.cs" />
+    <Compile Include="TimeFactory\Transform\RulePeriodSequence.cs" />
+    <Compile Include="TimeFactory\Transform\RuleShift.cs" />
+    <Compile Include="DBAdapter\Manager\TransactionManager.cs" />
+    <Compile Include="DBAdapter\Manager\UserVisitLogManager.cs" />
+    <Compile Include="Utils\ActionUtils.cs" />
+    <Compile Include="Utils\DealModelUtils.cs" />
+    <Compile Include="Utils\ValidateUtils.cs" />
+    <Compile Include="Utils\CacheUtils.cs" />
+    <Compile Include="Utils\Cache\BaseCache.cs" />
+    <Compile Include="Utils\DatasetTable\DsRow.cs" />
+    <Compile Include="Utils\Demo\DemoJianYuanUtils.cs" />
+    <Compile Include="Utils\Document\ComparisonUtil.cs" />
+    <Compile Include="Utils\Document\ExcelUtils.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\Cell.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\CellRangeStyle.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\CellRangeStyleTaskStatus.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\CellRangeRule.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\ICellRangeStyle.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\Sheet.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\SheetStyle.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\StyleFactory.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\CellStylePattern.cs" />
+    <Compile Include="Utils\Document\Excel\Structure\Workbook.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellCustomValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellDateValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellEmailValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellNumberValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellPercentageValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellTelValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\CellTextValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ColumnComparison.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ColumnJudge.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ExcelValidationItem.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ExcelValidation.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ICellComparison.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ICellJudge.cs" />
+    <Compile Include="Utils\Document\Excel\Validation\ICellValidation.cs" />
+    <Compile Include="Utils\Document\Excel\CellRange.cs" />
+    <Compile Include="Utils\Document\PdfUtils.cs" />
+    <Compile Include="Utils\DatasetTable\DsTable.cs" />
+    <Compile Include="Utils\ICache.cs" />
+    <Compile Include="Utils\Cache\MultiLoaderCache.cs" />
+    <Compile Include="Utils\Cache\SingleLoaderCache.cs" />
+    <Compile Include="Utils\CommUtils.cs" />
+    <Compile Include="Loggers\AbstractLogger.cs" />
+    <Compile Include="Loggers\LoggerAccount.cs" />
+    <Compile Include="Loggers\LoggerUserLogin.cs" />
+    <Compile Include="Loggers\LoggerUserLogout.cs" />
+    <Compile Include="Models\Accounts.cs" />
+    <Compile Include="Models\BaseDataContainer.cs" />
+    <Compile Include="Models\Models.cs" />
+    <Compile Include="Models\Page.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectTypes.cs" />
+    <Compile Include="Models\TaskComments.cs" />
+    <Compile Include="Models\TaskModules.cs" />
+    <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\TaskStatusHistory.cs" />
+    <Compile Include="Models\Template.cs" />
+    <Compile Include="Models\TemplateTask.cs" />
+    <Compile Include="Models\UserInfo.cs" />
+    <Compile Include="Models\UserLogs.cs" />
+    <Compile Include="Models\UsersInProject.cs" />
+    <Compile Include="Pattern\RentProspectiveArriveAccountInfoList.cs" />
+    <Compile Include="Pattern\SpecialPlanAllocationInstruction.cs" />
+    <Compile Include="Pattern\SpecialPlanTransferInstruction.cs" />
+    <Compile Include="Pattern\TransferInstructionAuthorizationLetter.cs" />
+    <Compile Include="Pattern\TrusteeshipReport.cs" />
+    <Compile Include="DBAdapter\Manager\ProjectManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\TaskContainer.cs" />
+    <Compile Include="DBAdapter\Manager\TaskManager.cs" />
+    <Compile Include="DBAdapter\Manager\TemplateManager.cs" />
+    <Compile Include="Utils\CalendarCache.cs" />
+    <Compile Include="Utils\DateUtils.cs" />
+    <Compile Include="Utils\DbUtils.cs" />
+    <Compile Include="Utils\DocFileInfo.cs" />
+    <Compile Include="Utils\ExpressionUtils.cs" />
+    <Compile Include="Utils\ExtensionUtils.cs" />
+    <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\ImageUtils.cs" />
+    <Compile Include="Utils\InterestRateUtils.cs" />
+    <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\Md5Utils.cs" />
+    <Compile Include="Utils\NancyMockUtils.cs" />
+    <Compile Include="Utils\NancyUtils.cs" />
+    <Compile Include="Utils\Page\PageInfo.cs" />
+    <Compile Include="Utils\Page\PageUtils.cs" />
+    <Compile Include="Utils\ParallelUtils.cs" />
+    <Compile Include="Utils\RsaUtils.cs" />
+    <Compile Include="Utils\ShortCodeUtils.cs" />
+    <Compile Include="Utils\SysUtils.cs" />
+    <Compile Include="Utils\TranslateUtils.cs" />
+    <Compile Include="Utils\TreeUtils\Node.cs" />
+    <Compile Include="Utils\TreeUtils\Tree.cs" />
+    <Compile Include="Utils\UserProfileLoader.cs" />
+    <Compile Include="Utils\WebConfigUtils.cs" />
+    <Compile Include="Utils\ZipUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Db\Generated\ABSMgr.Model.ttinclude" />
+    <None Include="Db\Generated\ABSMgr.ModelManager.ttinclude" />
+    <None Include="Db\Generated\Database.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Database.cs</LastGenOutput>
+    </None>
+    <None Include="Db\Generated\PetaPoco.Core.ttinclude" />
+    <None Include="Db\Generated\PetaPoco.Generator.ttinclude" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\Aspose.Words.lic" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ABS.Core\ABS.Core.csproj">
+      <Project>{e101b76c-12f8-4bc1-a2c4-438aad19262e}</Project>
+      <Name>ABS.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,959 @@
+﻿@using ChineseAbs.ABSManagement.Utils;
+@using ChineseAbs.ABSManagementSite.Common;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    @Scripts.Render("~/bundles/angular")
+    <link rel="stylesheet" type="text/css" href="~/Content/pagewalkthrough/jquery.pagewalkthrough.css">
+    <link rel="stylesheet" href="~/Content/glDatePicker.default.css" type="text/css" />
+    @Styles.Render("~/Content/cnabsDatepick")
+    @Scripts.Render("~/bundles/cnabsDatepick")
+    @Styles.Render("~/Content/handsontable")
+    @Scripts.Render("~/bundles/handsontable")
+
+    <style type="text/css">
+        .EditModelTable th:nth-of-type(1), .EditModelTable tr td:nth-of-type(1) {
+            width: 60px;
+        }
+
+        .EditModelTable th:nth-of-type(2), .EditModelTable tr td:nth-of-type(2) {
+            width: 260px;
+        }
+
+        .EditModelTable th:nth-of-type(3), .EditModelTable tr td:nth-of-type(3) {
+            width: 260px;
+        }
+
+        .EditModelTable th:nth-of-type(4), .EditModelTable tr td:nth-of-type(4) {
+            width: 85px;
+        }
+
+        .EditModelTable th:nth-of-type(5), .EditModelTable tr td:nth-of-type(5) {
+            width: 85px;
+        }
+
+        .EditModelTable th:nth-of-type(6), .EditModelTable tr td:nth-of-type(6) {
+            width: 85px;
+        }
+
+        .EditModelTable th:nth-of-type(7), .EditModelTable tr td:nth-of-type(7) {
+            width: 85px;
+        }
+
+        .EditModelTable th:nth-of-type(8), .EditModelTable tr td:nth-of-type(8) {
+            width: 70px;
+        }
+
+
+        .divSave {
+            display: inline-block;
+            width: 90%;
+        }
+
+        .divSave div {
+            margin-bottom: 10px;
+            margin-top: 0;
+            margin-right: 10px;
+        }
+
+        .divHistory {
+            height: 89%;
+            border: 1px solid #4f4a44;
+            border-top: none;
+            width: 300px;
+            position: absolute;
+            z-index: 1000;
+            top: 45px;
+            right: 0px;
+            background-color: #37342d;
+            overflow: auto;
+        }
+
+        .historyItemDiv {
+            height: 40px;
+            line-height: 40px;
+            padding-left: 30px;
+            cursor: pointer;
+            color: #B7AFA5;
+        }
+
+        .historyItemDiv:hover, .clickColr {
+            color: #ffc444;
+        }
+
+
+        .historyLine {
+            width: 2px;
+            position: absolute;
+            background-color: #ffc444;
+            top: 10px;
+            left: 10px;
+        }
+
+        .divSignImg {
+            position: absolute;
+            top: 10px;
+        }
+
+        .divSignImg img {
+            width: 24px;
+        }
+        /*jquery ui dialog样式重写start*/
+        .closeDiv {
+            font-size: 22px;
+            float: right;
+            font-weight: 200;
+            width: 26px;
+            text-align: center;
+        }
+
+        .dialogHeader {
+            border-width: 0;
+            height: 26px;
+            line-height: 26px;
+            background-color: #615d54;
+            font-weight: 100;
+            font-size: 16px;
+        }
+
+        .dialogClose {
+            line-height: 30px !important;
+            font-size: 30px !important;
+            width: 30px !important;
+            height: 30px !important;
+            margin-top: -15px !important;
+            padding: 0 6px 0 0 !important;
+            color: #f2f0f0;
+            font-weight: lighter !important;
+            background: none !important;
+            text-indent: 0;
+            border: none !important;
+        }
+        /*jquery ui dialog样式重写end*/
+
+        /*handsontable样式重写start*/
+        .wtSpreader {
+            color: #2b2b2b;
+        }
+
+        .wtHolder {
+            /*height: 100% !important;*/
+        }
+
+
+        .ht_clone_left, .ht_clone_top_left_corner {
+            width: 100%;
+        }
+
+        .ht_clone_top {
+            width: 100%;
+        }
+
+        .handsontable th {
+            background-color: #524d47;
+            height: 30px;
+            vertical-align: middle;
+            color: white;
+            border-top: 1px solid #746c61 !important;
+            border-right-width: 0;
+            border-bottom-width: 0;
+        }
+
+        .handsontable tr:nth-of-type(2n) td {
+            background-color: #36332e;
+            height: 30px;
+            vertical-align: middle;
+            color: white;
+            border-top: 1px solid #746c61;
+            border-bottom-width: 0;
+            border-right: 1px solid #746c61;
+        }
+
+        .handsontable tr:nth-of-type(2n+1) td {
+            background-color: #413e37;
+            height: 30px;
+            vertical-align: middle;
+            color: white;
+            border-top: 1px solid #746c61;
+            border-bottom-width: 0;
+            border-right: 1px solid #746c61;
+        }
+
+        .handsontable thead tr th:not(:first-of-type) {
+            border-right: 1px solid #746c61 !important;
+        }
+
+        .handsontable th:first-child, .handsontable th:nth-child(2), .handsontable td:first-of-type, .handsontable .htNoFrame + th, .handsontable .htNoFrame + td {
+            border-left: 1px solid #746c61 !important;
+        }
+
+        .htCore tr:last-of-type td, .htCore tr:last-of-type th {
+            border-bottom: 1px solid #746c61;
+        }
+
+        .handsontable tbody th.ht__highlight, .handsontable thead th.ht__highlight {
+            background-color: #736C62;
+        }
+
+        .htCore tr td:not(:first-of-type):not(:nth-of-type(2)) {
+            text-align: right;
+        }
+
+        .htMenu tr td:first-of-type, .htMenu tr:nth-of-type(1) td {
+            border: none !important;
+        }
+
+        .htMenu tr td:not(.htDisabled), .htMenu tr:nth-of-type(1) td:not(.htDisabled) {
+            background-color: #FFFFFF !important;
+            color: #333333 !important;
+        }
+
+        .htContextMenu table.htCore {
+            border-bottom: none;
+            border-right: none;
+        }
+
+
+        .htMenu tr td:not(.htDisabled):hover, .htMenu tr td:not(.htDisabled):first-of-type:hover {
+            background: #D8D8D8 !important;
+        }
+
+        .htDisabled {
+            background-color: #FFFFFF !important;
+        }
+
+        .handsontableInput {
+            line-height: 30px;
+        }
+
+        .htBorders .wtBorder {
+            /*background-color:#0094ff !important;*/
+        }
+
+        .handsontable td.area {
+            background: -moz-linear-gradient(top, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.1)), color-stop(100%,rgba(255,255,255,0.1)));
+            background: -webkit-linear-gradient(top, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%);
+            background: -o-linear-gradient(top, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%);
+            background: -ms-linear-gradient(top, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#57b5d1ff', endColorstr='#57b5d1ff',GradientType=0 );
+            background-color: #fff;
+        }
+        /*handsontable样式重写end*/
+
+        /*juery ui tab 样式重写start*/
+        .ui-state-default {
+            background: #4f4a44 !important;
+            border-color: #4f4a44 !important;
+            border-top: 2px solid #4f4a44 !important;
+        }
+
+        .ui-state-hover a {
+            color: #B7AFA5 !important;
+        }
+
+        .ui-tabs a {
+            outline: none;
+        }
+
+        .ui-tabs-active {
+            border-top: 2px solid #ffc444 !important;
+            background: none !important;
+            border-bottom: 1px solid #37342d !important;
+            padding-bottom: 0 !important;
+        }
+
+        .ui-tabs-active a {
+            color: #ffc444 !important;
+        }
+
+        .ui-tabs-nav {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            background: none;
+            border-bottom: 1px solid #4f4a44;
+        }
+
+        .ui-tabs {
+            background: #37342d;
+            border: none !important;
+        }
+
+        .ui-tabs-anchor {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        .ui-tab {
+            height: 36px;
+            line-height: 36px;
+        }
+
+        .ui-tabs .ui-tabs-nav li {
+            margin-left: 6px !important;
+        }
+
+        .ui-tabs-nav li:first-of-type {
+            margin-left: 15px !important;
+        }
+
+        .ui-tabs-panel {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+        /*juery ui tab 样式重写end*/
+
+        #divEditCsvOnline {
+            padding: 15px 0;
+            background-color: #37342d;
+            overflow: hidden;
+        }
+
+        .signTr {
+            color: #FFC446 !important;
+            /*border: 1px solid #FFC446;*/
+        }
+
+        .removeSignTr {
+            color: red;
+        }
+    </style>
+}
+
+<script>
+    var signDiffRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+        $(td).removeClass("htDimmed");
+        $(td).addClass("signTr");
+    };
+
+    var RemoveSignDiffRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        $(td).removeClass("signTr");
+        $(td).addClass("htDimmed");
+    };
+
+    function showDiffColr(index) {
+        $(".divHandson").eq(index).find(".removeSignTr").addClass("signTr");
+        $(".divHandson").eq(index).find(".removeSignTr").removeClass("removeSignTr");
+    };
+
+    function shutDiffColr(index) {
+        $(".divHandson").eq(index).find(".signTr").addClass("removeSignTr");
+        $(".divHandson").eq(index).find(".signTr").removeClass("signTr");
+    }
+
+
+
+
+
+    BindingElementActive(4, 2, 0);
+
+    var editModel = angular.module('editModel', []);
+    editModel.controller('editModelCtrl', function ($scope, $http) {
+
+        $scope.projectGuid = cnabsGetUrlParam('projectGuid');
+        var param = { projectGuid: $scope.projectGuid };
+        cnabsAjax("获取产品名称", "/DesignProduct/GetProjectName", param, function (data) {
+            $scope.projectName = data;
+            $scope.$apply();
+        });
+
+        $scope.GetModels = function () {
+            cnabsAjax("获取模型", '/DesignProduct/GetModels', param, function (data) {
+                $scope.datasets = data.datasets;
+                $scope.enablePredictMode = data.enablePredictMode;
+                $scope.switchModelText = $scope.enablePredictMode ? "切换到当期模式" : "切换到预测模式";
+                $scope.$apply();
+            });
+        }
+
+        $scope.switchModelText = "切换到当期模式";
+        $scope.GetModels();
+
+        $scope.uploadYml = function () {
+            cnabsDlgYesNo('divUploadYml', '上传script.yml文件', function () {
+                var inputUploadYML = document.getElementById("inputUploadYML");
+                var fileCount = inputUploadYML.files.length;
+
+                if (fileCount < 1) {
+                    cnabsAlert("请选择YML文件");
+                    return false;
+                }
+                if (fileCount > 1) {
+                    cnabsAlert("只能选择一个YML文件");
+                    return;
+                }
+                var formData = new FormData();
+                for (var i = 0; i < fileCount; ++i) {
+                    var file = inputUploadYML.files[i];
+                    formData.append("ymlFile", file);
+                }
+
+                formData.append("name", name);
+                formData.append("projectGuid", $scope.projectGuid);
+                cnabsAjaxUploadFile("上传yml文件", '/DesignProduct/UpdateYml', formData, function (data) {
+                    cnabsMsgSuccess("上传Script.yml成功");
+                });
+            }, 150, 400);
+        };
+
+        $scope.downloadYml = function () {
+            cnabsAjax("下载yml文件", '/DesignProduct/DownloadYml', param, function (guid) {
+                if (guid != "") {
+                    cnabsDownloadURL('/Download/Index?guid=' + guid);
+                }
+                else {
+                    cnabsMsgError("文件不存在");
+                }
+            });
+        };
+
+        $scope.CreateDataset = function () {
+            var controls = [
+                {
+                    title: "封包日",
+                    type: "date",
+                    elementId: "asOfDate",
+                    value: "",
+                    placeHolder: "例如：2016-02-02",
+                    limit: {
+                        "type": "dateISO"//判断日期格式必须为YYYY-MM-DD
+                    }
+                },
+                {
+                    title: "支付日",
+                    type: "date",
+                    elementId: "paymentDate",
+                    value: "",
+                    placeHolder: "例如：2016-03-15",
+                    limit: {
+                        "type": "dateISO"//判断日期格式必须为YYYY-MM-DD
+                    }
+                }];
+
+            function formatDateParam(date) {
+                return date.replace(/-/g, '').replace(/\//g, '');
+            }
+
+            cnabsAutoDlgYesNo(controls, '创建模型', function (uiValue) {
+                var param = {
+                    projectGuid: $scope.projectGuid,
+                    asOfDate: formatDateParam(uiValue.asOfDate),
+                    paymentDate: formatDateParam(uiValue.paymentDate)
+                };
+                cnabsAjax('创建模型', '/DesignProduct/CreateDataset', param, function (data) {
+                    $scope.GetModels();
+                });
+            });
+        }
+
+        $scope.UploadModel = function (asOfDate) {
+            var param = {
+                projectGuid: $scope.projectGuid,
+                asOfDate: asOfDate
+            };
+            cnabsDlgAjaxUploadZip('上传文件', '/DesignProduct/UploadModel', param, function (data) {
+                $scope.GetModels();
+                cnabsMsgSuccess("上传模型成功");
+            });
+        }
+
+
+        $scope.DownloadModel = function (asOfDate) {
+            window.location.href = '/DesignProduct/DownloadModel?projectGuid=' + $scope.projectGuid
+                + '&asOfDate=' + asOfDate;
+        }
+
+        $scope.DeleteModel = function (projectGuid, asOfDate) {
+            var projectName = $scope.projectName;
+            var msg = "确定删除产品[" + projectName + "]中的封包日[" + asOfDate + "]？";
+
+            cnabsAutoDlgYesNo(null, '删除模型', function () {
+                cnabsAjax('删除模型', '/DesignProduct/DeleteDataset', { projectGuid: projectGuid, asOfDate: asOfDate }, function () {
+                    $scope.GetModels();
+                });
+            }, msg);
+        }
+
+        $scope.GenerateNextModel = function (projectGuid, asOfDate) {
+            var projectName = $scope.projectName;
+            var msg = "确定在产品[" + projectName + "]中根据封包日[" + asOfDate + "]生成下一期模型？";
+
+            cnabsAutoDlgYesNo(null, '生成模型', function () {
+
+                var uiPending = new CnabsUIPending('.classRow', '模型生成中', '#divTable');
+                uiPending.process();
+
+                cnabsAjax('生成模型', '/DesignProduct/GenerateNextDataset', { projectGuid: projectGuid, asOfDate: asOfDate }, function () {
+                    $scope.GetModels();
+                    uiPending.done();
+                    cnabsMsgSuccess("生成模型成功");
+                }, function (data) {
+                    uiPending.done();
+                    cnabsAlertMore('生成模型失败：' + data.Value.Message, data.Value.StackTrace);
+                });
+            }, msg);
+        }
+
+        $scope.SaveCsv = function (event, index, csvItemId) {
+            var param = {
+                dataList: handson[index].getData(),
+                projectGuid: $scope.projectGuid,
+                asOfDate: $scope.asOfDate,
+                csvItemId: csvItemId,
+                title: "",
+                comment: ""
+            };
+            cnabsAjax('保存Csv数据', '/DesignProduct/SaveCsvData', param, function (data) {
+                if (data == 0) {
+                    cnabsMsgSuccess("和上一版本比较，没有修改");
+                }
+                else {
+                    cnabsMsgSuccess("保存成功");
+                    $scope.hasHistoty[index] = true;
+                    $scope.historyBtnHtml[index] = "查看历史";
+                    $scope.getHistory(index, csvItemId);
+                }
+            });
+        };
+        $scope.historys = [];
+        $scope.historyShow = [];
+
+        $scope.showOrShutDiff = function (index, csvItemId) {
+            if ($scope.showDiffBtnHtml[index].indexOf("关闭") >= 0) {
+                $scope.showDiffBtnHtml[index] = "打开" + diffhtml;
+                shutDiffColr(index);
+            }
+            else {
+                $scope.showDiffBtnHtml[index] = "关闭" + diffhtml;
+                showDiffColr(index);
+            }
+        }
+
+
+        $scope.getHistory = function (index, csvItemId) {
+            var param = {
+                csvType: csvItemId,
+                projectGuid: $scope.projectGuid,
+                asOfDate: $scope.asOfDate,
+            };
+            cnabsAjax('查看历史', '/DesignProduct/GetHistoryEditInfo', param, function (data) {
+                $scope.historys[index] = data;
+                $scope.historyShow[index] = true;
+                $scope.showDiff[index] = true;
+                if ($scope.historyBtnHtml[index] == "查看历史") {
+
+                    $scope.historyBtnHtml[index] = "关闭历史";
+                    $scope.showDiffBtnHtml[index] = "关闭" + diffhtml;
+                    $scope.historyShow[index] = true;
+                    $scope.$apply();
+
+                    $(".divHistory").eq(index).find(".historyItemDiv").eq(0).addClass("clickColr");
+                    var historyItemHei = $(".historyItemDiv").height();
+                    var h = (data.length - 1) * historyItemHei;
+                    $(".historyLine").eq(index).height(h)
+                    $(".historyLine").eq(index).css("top", historyItemHei / 2);
+                }
+                else {
+                    $scope.historyBtnHtml[index] = "查看历史";
+                    $scope.historyShow[index] = false;
+                    $scope.showDiffBtnHtml[index] = "打开" + diffhtml;
+                    $scope.$apply();
+
+
+                }
+                $scope.showHistory(data[0].guid, csvItemId, index, 0);
+                cnabsInitTimeAgo();
+            });
+        };
+
+        //设置宽度
+        $scope.ChangeHandsonWidth = function (index, shortWidth) {
+            var originData = handson[index].getData();
+            handson[index].destroy();
+            var containner = document.getElementById($scope.csvItems[index].Id).getElementsByClassName("divHandson")[0];
+            var ResetHandson = $scope.setHandson(containner, originData, shortWidth);
+            handson[index] = ResetHandson;
+        }
+
+        var changesRowAllArr = [];
+        var changesRowIndArr = [];
+        $scope.showHistory = function (guid, csvItemId, tagIndex, index) {
+            changesRowIndArr = [];
+            var param = {
+                projectGuid: $scope.projectGuid,
+                csvItemId: csvItemId,
+                asOfDate: $scope.asOfDate,
+                guid: guid,
+            };
+            cnabsAjax('查看详细历史记录', '/DesignProduct/GetHistoryByGuid', param, function (data) {
+                var containner = document.getElementById($scope.csvItems[tagIndex].Id).getElementsByClassName("divHandson")[0];
+                var dataArr = eval(data.handsonData);
+                var changesArr = data.changes;
+                if (changesArr != null) {
+                    for (var i = 0; i < dataArr.length; i++) {
+                        for (var j = 0; j < changesArr.length; j++) {
+                            if (dataArr[i].join(",") == changesArr[j].ItemArray.join(",")) {
+                                changesRowIndArr.push(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+                changesRowAllArr[tagIndex] = changesRowIndArr;
+                handson[tagIndex].destroy();
+                var shortWidth = $scope.historyBtnHtml[tagIndex].indexOf("查看") >= 0 ? false : true;
+                var historyHandson = $scope.setHandsonWithDiffColor(containner, dataArr, shortWidth, changesRowIndArr, tagIndex);
+                $scope.showOrShutDiffByTagIndex(tagIndex);
+
+                handson[tagIndex] = historyHandson;
+                var historyItemHei = $(".historyItemDiv").height();
+                $(".divSignImg").eq(tagIndex).css("top", index * historyItemHei + (historyItemHei - 24) / 2);
+                $(".divHistory").eq(tagIndex).find(".clickColr").removeClass("clickColr");
+                $(".divHistory").eq(tagIndex).find(".historyItemDiv").eq(index).addClass("clickColr");
+
+                $scope.$apply();
+            });
+        }
+
+        var hasInitTabs = false;
+        var handson = [];
+        var dialogWidth = getViewportInfoWidth() * 0.9;
+        var dialogHeight = getViewportInfoHeight() * 0.9;
+
+        $scope.setHandson = function (containner, data, shortWidth) {
+            var handsonItem = new Handsontable(containner, {
+                data: data,
+                minSpareRows: 1,
+                rowHeaders: true,
+                colHeaders: true,
+                contextMenu: true,
+                manualColumnResize: true,
+                manualRowResize: true,
+                fixedRowsTop: 1,
+                fixedColumnsLeft: 2,
+                contextMenu: ['row_above', 'row_below', 'col_left', 'col_right', 'remove_row', 'remove_col', 'undo', 'redo'],
+                height: dialogHeight - 170,
+                width: function () {
+                    if (shortWidth == true) {
+                        return dialogWidth - 320;
+                    }
+                    else {
+                        return dialogWidth - 22;
+                    }
+                }
+            });
+            return handsonItem;
+        };
+
+
+        $scope.setHandsonWithDiffColor = function (containner, data, shortWidth, changesRowIndArr, tagIndex) {
+            var handsonItem = new Handsontable(containner, {
+                data: data,
+                minSpareRows: 1,
+                rowHeaders: true,
+                colHeaders: true,
+                contextMenu: true,
+                manualColumnResize: true,
+                manualRowResize: true,
+                fixedRowsTop: 1,
+                fixedColumnsLeft: 2,
+                contextMenu: ['row_above', 'row_below', 'col_left', 'col_right', 'remove_row', 'remove_col', 'undo', 'redo'],
+                height: dialogHeight - 170,
+                width: function () {
+                    if (shortWidth == true) {
+                        return dialogWidth - 320;
+                    }
+                    else {
+                        return dialogWidth - 22;
+                    }
+                },
+                cells: function (row, col, prop) {
+                    var cellProperties = {};
+
+                    if (changesRowIndArr.indexOf(row) >= 0) {
+                        cellProperties.renderer = signDiffRenderer;
+                    }
+                    return cellProperties;
+                },
+                afterRender: function () {
+                    $scope.showOrShutDiffByTagIndex(tagIndex);
+                },
+
+            });
+            return handsonItem;
+        };
+
+        $scope.showOrShutDiffByTagIndex = function (tagIndex) {
+            if ($scope.showDiffBtnHtml[tagIndex].indexOf("关闭") >= 0) {
+                showDiffColr(tagIndex);
+            }
+            else {
+                shutDiffColr(tagIndex);
+            }
+        }
+
+
+        $scope.hasHistoty = [];
+        $scope.historyBtnHtml = [];
+        $scope.showDiff = [];
+        $scope.showDiffBtnHtml = [];
+        var diffhtml = "显示与上期不同";
+        $scope.EditCsvOnline = function (projectGuid, asOfDate) {
+            handson = [];
+
+            $scope.hasHistoty = [];
+            $scope.historyBtnHtml = [];
+            $scope.showDiff = [];
+            $scope.showDiffBtnHtml = [];
+            var diffhtml = "显示与上期不同";
+            $scope.historys = [];
+            $scope.historyShow = [];
+
+
+            var param = { projectGuid: projectGuid, asOfDate: asOfDate };
+            $scope.projectGuid = projectGuid;
+            $scope.asOfDate = asOfDate;
+            cnabsAjax("获取csv", "/DesignProduct/GetCsvFiles", param, function (data) {
+                $scope.csvItems = data;
+                if (data.length == 0) { cnabsMsgSuccess("没有模型文件"); return; };
+                $scope.$apply();
+                var dlg = $("#divEditCsvOnline").dialog({
+                    title: "编辑csv文件",
+                    closeOnEscape: true,
+                    height: dialogHeight,
+                    width: dialogWidth,
+                    resizable: false,
+                    modal: true,
+                    position: { my: "center center", at: "center center" },
+                    open: function (event, ui) {
+                        var dialogHead = $("#divEditCsvOnline").prev();
+                        dialogHead.addClass("dialogHeader");
+                        dialogHead.find(".ui-button").html("×");
+                        dialogHead.find(".ui-button").addClass("dialogClose")
+                        $("#divEditCsvOnline").parent().css({
+                            "padding": 0,
+                        });
+
+                    }
+                });
+                $("#divEditCsvOnline").dialog();
+
+                //  cnabsDlgDragStop('divEditCsvOnline', '在线编辑csv文件', getViewportInfoHeight() * 0.9, getViewportInfoWidth() * 0.9);
+
+                if (hasInitTabs) {
+                    $("#tabs").tabs("destroy");
+                }
+                $("#tabs").tabs({
+                    create: function (event, ui) {
+                        hasInitTabs = true;
+                        $("#divEditCsvOnline").show();
+                    },
+                    activate: function (event, ui) {
+                    }
+                });
+                for (var i = 0; i < $scope.csvItems.length; i++) {
+                    var containner = document.getElementById($scope.csvItems[i].Id).getElementsByClassName("divHandson")[0];
+                    var handsonItem = $scope.setHandson(containner, eval($scope.csvItems[i].DataJson), false);
+
+                    handson.push(handsonItem);
+                    $scope.hasHistoty.push($scope.csvItems[i].hasHistory);
+                    $scope.historyBtnHtml.push("查看历史");
+                    $scope.showDiffBtnHtml.push("关闭" + diffhtml);
+
+
+                    //ResizeHandsonTable();
+                    $scope.$apply();
+                    function ResizeHandsonTable() {
+                        //$(".ht_clone_top").width(dialogWidth - 35);
+                        //$(".ht_clone_top >div").width(dialogWidth - 35);
+                        //$(".ht_clone_left").height(dialogHeight - 180);
+                        //$(".ht_clone_left >div").height(dialogHeight - 180);
+                    }
+
+                }
+            })
+
+        };
+
+        $scope.UpdateDealModelSetting = function (projectGuid) {
+
+            var uiPending = new CnabsUIPending('.classRow', '模式切换中', '#divTable');
+            uiPending.process();
+
+            var enablePredict = !$scope.enablePredictMode;
+            var config = { projectGuid: $scope.projectGuid, enablePredict: enablePredict };
+            cnabsAjax('设置偿付期', '/Deal/UpdateDealModelSetting', config, function () {
+                $scope.GetModels();
+                uiPending.done();
+            }, function () {
+                uiPending.done();
+                cnabsAlertMore('切换模式失败：' + data.Value.Message, data.Value.StackTrace);
+            });
+        };
+
+        //设置第一行格式
+        $scope.firstRowRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+            td.style.fontWeight = 'bold';
+            td.style.color = 'green';
+            td.style.background = '#CEC';
+        };
+    })
+
+    function getViewportInfoWidth() {
+        var w = (window.innerWidth) ? window.innerWidth : (document.documentElement && document.documentElement.clientWidth) ? document.documentElement.clientWidth : document.body.offsetWidth;
+        return w;
+    }
+    function getViewportInfoHeight() {
+        var h = (window.innerHeight) ? window.innerHeight : (document.documentElement && document.documentElement.clientHeight) ? document.documentElement.clientHeight : document.body.offsetHeight;
+        return h;
+    }
+</script>
+
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/DesignProduct">设计产品</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow" href="">编辑模型</span>
+    </header>
+    <div ng-app="editModel" ng-controller="editModelCtrl">
+
+        <div class="am_panel">
+            <div class="am_section am_font">
+                <div class="projectNamePrompt">
+                    <span style="float:left; padding-left:10px;padding-right:10px;">
+                        <a href="/DesignProduct" target="_blank">产品管理</a>
+                    </span>
+                    
+                    <span class="currentProject"> > </span>
+                    <a ng-cloak target="_blank" href="../../Schedule?projectGuid={{projectGuid}}" style="color:#ffc446;"><span class="currentProjectName">{{projectName}}</span></a>
+                </div>
+                <div class="tableTitleBox">
+                    <div class="tableTitle fixedColor">模型列表</div>
+                    <div class="addButton floatRight">
+                        <a style="outline:none; color:#ffc446;">
+                            <span id="btnCreateDataset" class="ui-icon ui-icon-plusthick smallImageSize left buttonImage" ng-click="CreateDataset()"></span>
+                            <span id="txtCreateDataset" class="buttonText" ng-click="CreateDataset()"> 创建模型 </span>
+                        </a>
+                    </div>
+                    <div class="addButton floatRight" style="margin-right:10px">
+                        <a style="outline:none; color:#ffc446;" ng-click="downloadYml()"><text style="margin-top:-3px;" class="ui-icon ui-icon-download smallImageSize"></text>下载Script.yml</a>
+                    </div>
+                    <div class="addButton floatRight" style="margin-right:10px">
+                        <a style="outline:none; color:#ffc446;" ng-click="uploadYml()"><text style="margin-top:-3px;" class="ui-icon ui-icon-upload smallImageSize"></text>上传Script.yml</a>
+                    </div>
+                    <div class="addButton floatRight" style="margin-right:10px">
+                        <a style="outline:none; color:#ffc446;" ng-click="UpdateDealModelSetting()">
+                            <text style="margin-top:-3px;" class="ui-icon ui-icon-settings smallImageSize">
+                            </text>
+                            {{switchModelText}}
+                        </a>
+                    </div>
+
+                </div>
+                <table id="divTable" class="operationTable hover EditModelTable" style="width:100%;">
+                    <tbody>
+                        <tr>
+                            <th>期数</th>
+                            <th>封包日</th>
+                            <th>支付日</th>
+                            <th>上传</th>
+                            <th>下载</th>
+                            <th>删除</th>
+                            <th>生成下期模型</th>
+                            <th>编辑</th>
+                        </tr>
+                        <tr class="classRow" ng-repeat="eachDataset in datasets" ng-cloak>
+                            <td class="text-center">第{{eachDataset.sequence}}期</td>
+                            <td class="text-center">
+                                {{eachDataset.asOfDate|limitTo:4}}-{{eachDataset.asOfDate|limitTo:2:4}}-{{eachDataset.asOfDate|limitTo:-2}}
+                            </td>
+                            <td class="text-center">{{eachDataset.paymentDate}}</td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-upload smallImageSize" ng-click="UploadModel(eachDataset.asOfDate)"></text>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-download smallImageSize" ng-click="DownloadModel(eachDataset.asOfDate)"></text>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-trash smallImageSize" ng-click="DeleteModel(projectGuid, eachDataset.asOfDate)"></text>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-vcs-branch smallImageSize" ng-click="GenerateNextModel(projectGuid, eachDataset.asOfDate)"></text>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a style="outline:none; color:#ffc446;">
+                                    <text class="ui-icon ui-icon-edit smallImageSize" ng-click="EditCsvOnline(projectGuid,eachDataset.asOfDate)"></text>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*jquery ui 插件之tab*@
+        <div id="divEditCsvOnline" style="display:none">
+            <div id="tabs">
+
+                <ul>
+                    <li ng-repeat="csvItem in csvItems" ng-cloak on-finish-render-filters="CsvBind"><a href="#{{csvItem.Id}}">{{csvItem.Title}}</a></li>
+                </ul>
+                <div ng-repeat="csvItem in csvItems" ng-cloak id="{{csvItem.Id}}">
+                    <div class="divSave">
+                        <div class="cnabs_btn left" ng-click="SaveCsv($event,$index,csvItem.Id)" id="btnSave_{{$index}}">保存</div>
+                        <div class="cnabs_btn left" ng-show="hasHistoty[$index]" ng-click="getHistory($index,csvItem.Id)" id="btnHistory_{{$index}}">{{historyBtnHtml[$index]}}</div>
+                        <div class="cnabs_btn left" ng-show="showDiff[$index]" ng-click="showOrShutDiff($index,csvItem.Id)" id="btnshowDiff_{{$index}}">{{showDiffBtnHtml[$index]}}</div>
+                    </div>
+                    <div class="divHandson" style="width:100%"></div>
+                    <div class="divHistory" ng-show="historyShow[$index]">
+                        <div class="historyLine" style="width:2px;height:200px"></div>
+                        <div class="divSignImg"><img src="~/Images/flag11.png" /></div>
+                        <div>
+                            <div class="historyItemDiv" ng-repeat="history in historys[$index]" ng-click="showHistory(history.guid,history.type,$parent.$index,$index)">
+                                <span>由 {{history.createUser}} 更新于</span>
+                                <abbr class="timeago" title="{{history.createtime}}">{{history.createtime}}</abbr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div id="divUploadYml" style="overflow:inherit;display:none; ">
+        <div>
+            <span class="cnabs_dialog_content_title">选择YML</span>
+            <div class="left">
+                <input class="cnabs_dialog_input_wid" type="file" name="file" id="inputUploadYML" />
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,58 @@
+@import "../../styles/theme/default.less";
+
+.abs-upload-div {
+  .ant-upload {
+    background-color: @abs-upload-bg;
+    .ant-upload-text {
+      color: @abs-white-font-color;
+    }
+  }
+  .ant-upload {
+    &.ant-upload-select-picture-card {
+      width: 320px;
+      height: 120px;
+      border: 1px dashed @abs-upload-hover-div-color;
+      background-color: @abs-upload-bg;
+      border-radius: 0;
+      &:hover {
+        border: 1px dashed @abs-upload-hover-color;
+      }
+      &:hover .abs-ant-icon svg,
+      &:hover .ant-upload-text{
+        color: @abs-upload-hover-color;
+      }
+    }
+    .abs-ant-icon {
+      margin-bottom: 10px;
+      & svg {
+        color: @abs-white-font-color;
+      }
+    }
+  }
+  .ant-upload-list {
+    .ant-upload-list-item {
+      width: 320px;
+      height: 120px;
+      border: 1px solid @abs-upload-hover-div-color;
+    }
+  }
+  width: 320px;
+  height: 120px;
+}
+
+.anticon.anticon-plus:first-child svg,.anticon.anticon-delete:first-child svg {
+  width: 18px;
+  height: 18px;
+}
+
+.anticon.anticon-eye-o {
+  display: none;
+}
+
+.ant-upload-list-item.ant-upload-list-item-error:hover .anticon.anticon-delete {
+  background-color: @grey-16;
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  padding-top: 12px
+}

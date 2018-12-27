@@ -1,0 +1,666 @@
+﻿<style>
+    .cf_reminder {
+        float: left;
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .variablesValidMessage {
+        padding-left: 5px;
+        width: 200px;
+        text-align: left;
+        display: none;
+    }
+
+    .Cashflow_btn {
+        float: right;
+        cursor: pointer;
+        padding: 0px 10px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        background: #8064a2;
+        border-radius: 2px;
+        font-size: 14px;
+        color: #fff !important;
+        margin-left: 0px;
+    }
+
+        .Cashflow_btn:hover {
+            background-color: #8b6daf;
+        }
+
+    .span_unit {
+        height: 24px;
+        line-height: 24px;
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
+    .result {
+        border-collapse: collapse;
+    }
+
+        .result td {
+            padding-bottom: 5px;
+        }
+
+    #divCashflow table.infoTable tr th, #divCashflow table.infoTable tr td {
+        height: 0px;
+    }
+
+    .asset_lineMargin {
+        height: 28px;
+        line-height: 28px;
+    }
+
+        .asset_lineMargin span {
+            width: 150px;
+        }
+
+        .asset_lineMargin input {
+            width: 165px;
+            margin-top: 3px;
+        }
+
+        .asset_lineMargin .cnabs_prompt {
+            margin-top: 2px;
+            width: auto;
+        }
+
+    .divDashboardExCashflow .div_labels {
+        height: 40px;
+        width: 1008px;
+        border-bottom: 1px solid #68625b;
+        margin-left: -20px;
+    }
+
+    .partCashflowlabels .cnabs_btn_tab_v2 {
+        min-width: 65px;
+    }
+
+    .divDashboardExCashflow .partCashflowlabels .cnabs_btn_tab_selected {
+        border-bottom-color: #47423C;
+        min-width: 65px;
+    }
+
+    .divPartCFTable {
+        width: 969px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .divDashboardExCashflow .divInfoTable {
+        float: left;
+        max-width: 969px;
+        overflow: auto;
+        max-height: 593px;
+    }
+
+    .divPartCFTable .divInfoTable .infoTable {
+        width: auto;
+        margin-top: 0px;
+    }
+
+    .divPartCFTable .infoTable td {
+        text-align: right;
+        border-color: #736C62;
+        width: 123px;
+        min-width: 123px;
+        max-width: 123px;
+    }
+
+    .divPartCFTable .infoTable td:nth-of-type(1) {
+        text-align: left;
+    }
+
+    .partCashflowlabels .cnabs_btn_tab_v2 {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .divInfoTable_first {
+        max-width: 969px;
+        overflow: auto;
+        max-height: 297px;
+        margin-bottom: 10px;
+    }
+
+    .divFeePayable {
+        background-color: #4f4a43;
+        height: 38px;
+        line-height: 38px;
+        padding-left: 20px;
+        border: 1px solid #736C62;
+        text-align: left;
+    }
+
+    .currPeriodCashflowInfoList_false {
+        margin-top: 0px;
+        position: absolute;
+        left: 0px;
+        right: 10px;
+    }
+
+    .currPeriodCashflowInfoList td {
+        width: 128px;
+    }
+
+    .infoTable_event td:nth-of-type(3) {
+        padding-left: 20px;
+    }
+    #divCashflowView {
+        margin-top:10px;        
+    }
+</style>
+<div ng-controller="DashboardExCashflow" class="cnabs_div_v2 divDashboardExCashflow">
+    <div class="seletectdiv seletectdivHorizon ">
+        <span>产&nbsp;&nbsp;&nbsp;品</span>
+        <select ng-change="projectChange(projectInfo.selectedItem.guid)" ng-model="projectInfo.selectedItem" ng-options="x.name for x in projectInfo.items;"></select>
+        <span>偿付期</span>
+        <select ng-model="selectedPaymentDay" ng-change="paymentDayChange(selectedPaymentDay)">
+            @*<option selected="selected" value="">所有</option>*@
+            <option ng-repeat="x in  paymentDays" value="{{x.PaymentDay}}">{{x.IsCurrentPaymentDay?"当期 ":"第 "+x.Sequence+" 期"}}   {{x.PaymentDay}}</option>
+        </select>
+
+        <div style="width:30px;height:30px; margin-top:20px; float:right;display:block; ">
+            <a target="_blank" href="/DesignProduct/EditModel?projectGuid=8433283a-6d64-4c8c-90ff-7dc5cbce0510">
+                <span style="width:30px; height:30px; color: #FFC446;" class="ui-icon ui-icon-pencil  right"></span>
+            </a>
+        </div>
+
+    </div>
+    <div id="divCFErrorMessage" class="cnabs_panel_v2 cnabs_div_v2 cnabs_error_message" ng-show="cashFlowRequest=='error'"></div>
+    <div class="cnabs_panel_v2 cnabs_div_v2" id="divCashflowView" ng-show="cashFlowRequest=='success'">
+        <div class="title fixedColor" style="line-height:42px;">本金和利息</div>
+        <div class="cnabs_overhide asset_lineMargin">
+            <span class="left asset_title">资产池当期本金（元）</span>
+            <span id="assetSumCapital" class="left">{{InterestPricipalInfo.CurrentPricipalCollection}}</span>
+            <div class="left cnabs_prompt" ng-if="InterestPricipalInfo.CurrentPricipalCollection==InterestPricipalInfo.PredictPricipalCollection" style="background-image:url(../../Images/Common/prompt.png);">
+                <span>系统预测当期本金：</span>
+                <span>{{InterestPricipalInfo.PredictPricipalCollection}}</span>
+            </div>
+            <div class="left cnabs_prompt" ng-if="InterestPricipalInfo.CurrentPricipalCollection!=InterestPricipalInfo.PredictPricipalCollection" style="background-image:url(../../Images/Common/error.png);">
+                <span>系统预测当期本金：</span>
+                <span>{{InterestPricipalInfo.PredictPricipalCollection}}</span>
+            </div>
+        </div>
+        <div class="cnabs_overhide asset_lineMargin">
+            <span class="left asset_title">资产池当期利息（元）</span>
+            <span  id="assetSumInterest" class="left">{{InterestPricipalInfo.CurrentInterestCollection}}</span>
+            <div class="left cnabs_prompt" ng-if="InterestPricipalInfo.CurrentInterestCollection==InterestPricipalInfo.PredictInterestCollection" style="background-image:url(../../Images/Common/prompt.png);">
+                <span>系统预测当期利息：</span>
+                <span>{{InterestPricipalInfo.PredictInterestCollection}}</span>
+            </div>
+            <div class="left cnabs_prompt" ng-if="InterestPricipalInfo.CurrentInterestCollection!=InterestPricipalInfo.PredictInterestCollection" style="background-image:url(../../Images/Common/error.png);">
+                <span>系统预测当期利息：</span>
+                <span>{{InterestPricipalInfo.PredictInterestCollection}}</span>
+            </div>
+        </div>
+
+        <div class="title fixedColor" style="line-height:42px;">可修改变量</div>
+        <div class="cnabs_overhide asset_lineMargin" ng-repeat="variable in OverridableVariables">
+            <span class="left asset_title">{{variable.CnName}}（元）</span>
+            <input id="{{variable.EnName}}" class="left cf_variable_value" type="text" name="name" value="{{variable.Value}}" />
+            <span id="{{variable.EnName+$index}}" class="variablesValidMessage cnabs_red">请填写非负合法数字</span>
+        </div>
+        <div id="btnGetCashflow" ng-click="calculateCashflowAgain()" class="left cnabs_btn_purple cnabs_pointer" style="margin-top:10px;margin-bottom:26px;margin-left:150px;">重新计算现金流</div>
+        <table class="result" ng-cloak>
+            <tbody>
+                <tr class="text-left" ng-show="testFailRemind != ''">
+                    <td><span class="cf_reminder cnabs_red">{{testFailRemind}}</span></td>
+                </tr>
+                <tr ng-show="cashFlowView=='all'">
+                    <td style="padding-top:11px; padding-right:24px;">
+                        <span class="left fixedColor cf_items" style="font-weight:bold; height:24px; line-height:24px;">预测证券现金流</span>
+                        <span class="cnabs_btn right" style="margin-left:10px;" ng-click="changeCashFlowView('part')">切换到分类显示</span>
+                        <span class="cnabs_btn right" style="margin-right:10px;" id="btnExportCashflowTable" ng-click="exportCashflowTable()">导出现金流表</span>
+                        <span class="right fixedColor span_unit">单位：元</span>
+                    </td>
+                </tr>
+                <tr ng-show="cashFlowView=='part'">
+                    <td style="padding-bottom:1px;">
+                        <div class="div_labels partCashflowlabels" >
+                            <div class="cnabs_btn_tab_v2 cnabs_btn_tab_selected" style="margin-left:20px;" ng-click="switchCFLabels($event,'ProductCashflow')">
+                                产品现金流
+                            </div>
+                            <div class="cnabs_btn_tab_v2" style="margin-left:10px;" ng-click="switchCFLabels($event,'SecuritiesCashflow')">
+                                证券现金流
+                            </div>
+                            <div class="cnabs_btn_tab_v2" style="margin-left:10px;" ng-click="switchCFLabels($event,'AssetPool')">
+                                资产池
+                            </div>
+                            <div class="cnabs_btn_tab_v2" style="margin-left:10px;" ng-click="switchCFLabels($event,'Cost')">
+                                费用
+                            </div>
+                            <div class="cnabs_btn_tab_v2" style="margin-left:10px;" ng-click="switchCFLabels($event,'Account')">
+                                账户
+                            </div>
+                            <div class="cnabs_btn_tab_v2" style="margin-left:10px;" ng-click="switchCFLabels($event,'Event')">
+                                触发事件
+                            </div>
+                            <span class="cnabs_btn right" style="margin-left:10px;margin-right:21px;" ng-click="changeCashFlowView('all')">切换到全部显示</span>
+                            <span class="right fixedColor span_unit">单位：元</span>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div ng-show="cashFlowView=='all'" id="cashflowTable" class="handson" style="margin-left:-20px; margin-top:10px;"></div>
+                        <div ng-show="cashFlowView=='part'">
+                            <div class="divPartCFTable" ng-show="selectedCFLabel=='ProductCashflow'">
+                                <div class="text-left currentDate">
+                                    <span>偿付期：</span>
+                                    <span>{{cashFlowInfo_partView.CurrentPaymentDate}}</span>
+                                </div>
+                                <div style="position:relative;">
+                                    <div class="divInfoTable_first cnabs_scrollbar">
+                                        <table class="infoTable currPeriodCashflowInfoList" id="currPeriodCashflowInfoList_true" style="width:100%;margin-top:0px;">
+                                            <tr>
+                                                <td ng-repeat=" columnName in cashFlowInfo_partView.HomePageHeader">
+                                                    {{columnName}}
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat="x in cashFlowInfo_partView.CurrPeriodCashflowInfoList">
+                                                <td>{{x.RowName}}</td>
+                                                <td ng-repeat="y in x.Values">
+                                                    {{y.Value}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="divFeePayable cnabs_overhide" ng-cloak>
+                                    <span class="left" style="width:131px;">中证登手续费应付：</span>
+                                    <span class="left" style="padding-left:2px;">{{cashFlowInfo_partView.FeePayable==null?'-':cashFlowInfo_partView.FeePayable}}</span>
+                                </div>
+                                <div class="divInfoTable_first cnabs_scrollbar" style="margin-top:10px;">
+                                    <table class="infoTable infoTable_event" style="width:100%;margin-top:0px;">
+                                        <tr ng-repeat="x in cashFlowInfo_partView.CashflowEventListArray">
+                                            <td ng-repeat="y in x track by $index" style="text-align:left;">
+                                                <span ng-if="y=='发生'" class="cnabs_red">{{y}}</span>
+                                                <span ng-if="y!='发生'">{{y}}</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divPartCFTable" ng-show="selectedCFLabel=='SecuritiesCashflow'">
+                                <div class="cnabs_overhide" style="margin-bottom:18px;">
+                                    <span class="left" style="line-height:24px;">选择证券</span>
+                                    <select class="left" style="margin-left:10px;height:22px;" ng-model="SecuritiesName" ng-change="changeSecuritiesTable()">
+                                        <option ng-repeat="x in cashFlowInfo_partView.SecurityCashflowList" value="{{x.TableName}}">{{x.TableName}}</option>
+                                    </select>
+                                </div>
+                                <div class="divInfoTable cnabs_scrollbar">
+                                    <table class="infoTable">
+                                        <tr>
+                                            <td ng-repeat=" columnName in cashFlowInfo_partView.SecurityCashflowHeader">
+                                                {{columnName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="x in SecurityCashflowList">
+                                            <td>{{x.RowName}}</td>
+                                            <td ng-repeat="y in x.Values">
+                                                {{y.Value}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divPartCFTable" ng-show="selectedCFLabel=='AssetPool'">
+                                <div class="divInfoTable cnabs_scrollbar">
+                                    <table class="infoTable">
+                                        <tr>
+                                            <td ng-repeat=" columnName in cashFlowInfo_partView.AssetPoolHeader">
+                                                {{columnName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="x in cashFlowInfo_partView.AssetPoolList">
+                                            <td>{{x.RowName}}</td>
+                                            <td ng-repeat="y in x.Values">
+                                                {{y.Value}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divPartCFTable" ng-show="selectedCFLabel=='Cost'">
+                                <div class="divInfoTable cnabs_scrollbar">
+                                    <table class="infoTable">
+                                        <tr>
+                                            <td ng-repeat=" columnName in cashFlowInfo_partView.CostHeader">
+                                                {{columnName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="x in cashFlowInfo_partView.CostList">
+                                            <td>{{x.RowName}}</td>
+                                            <td ng-repeat="y in x.Values">
+                                                {{y.Value}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divPartCFTable" ng-show="selectedCFLabel=='Account'">
+                                <div class="divInfoTable cnabs_scrollbar">
+                                    <table class="infoTable">
+                                        <tr>
+                                            <td ng-repeat=" columnName in cashFlowInfo_partView.AccountHeader">
+                                                {{columnName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="x in cashFlowInfo_partView.AccountList">
+                                            <td>{{x.RowName}}</td>
+                                            <td ng-repeat="y in x.Values">
+                                                {{y.Value}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divPartCFTable" ng-show="selectedCFLabel=='Event'">
+                                <div class="divInfoTable cnabs_scrollbar">
+                                    <table class="infoTable">
+                                        <tr>
+                                            <td ng-repeat=" columnName in cashFlowInfo_partView.TriggerEventHeader">
+                                                {{columnName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="x in cashFlowInfo_partView.TriggerEventList">
+                                            <td>{{x.RowName}}</td>
+                                            <td ng-repeat="y in x.Values">
+                                                <span ng-if="y.Value=='FAIL'||y.Value=='fail'" class="cnabs_red">发生</span>
+                                                <span ng-if="y.Value!='FAIL'&&y.Value!='fail'">未发生</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function cashflowDeclareHandson(chart, data) {
+        var container = document.querySelector("#" + chart);
+        var handsontable = new Handsontable(container, {
+            width: 1010,
+            height: data.dataResult.length * 33 > 780 ? 780 : data.dataResult.length * 33 + 57,
+            colHeaders: data.colHeader,
+            data: data.dataResult,
+            columns: data.colHeader,
+            filters: false,
+            columnSorting: false,
+            sortIndicator: true,
+            autoColumnSize: true,
+            manualColumnResize: true,
+            readOnly: true,
+            wordWrap: false,
+            copyable: false,
+            manualColumnMove: true,
+            renderAllRows: false,
+            //fixedColumnsLeft: 2,
+            //fixedRowsBottom: 1,
+            multiSelect: false,
+            fillHandle: false,
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                var visualRowIndex = this.instance.toVisualRow(row);
+                var visualColIndex = this.instance.toVisualColumn(col);
+                if (visualColIndex != 0 && visualColIndex != 1) {
+                    cellProperties.className = 'htRight';
+                } else {
+                    cellProperties.className = 'htCenter';
+                }
+                cellProperties.width = 128;
+                if (visualColIndex == 1) {
+                    cellProperties.width = 120;
+                }
+                if (visualColIndex == 0) {
+                    cellProperties.width = 90;
+                    cellProperties.className = 'htCenter cnabs_whiteSpace';
+                }
+                return cellProperties;
+            },
+            mergeCells: data.mergeCellsInfo,
+            viewportColumnRenderingOffset: 100,
+            //maxRows: data.dataResult.length,
+            //maxColumns: data.colHeader.length,
+            beforeKeyDown: function (e) {
+                if (e.keyCode === 8 || e.keyCode === 46) {
+                    Handsontable.Dom.stopImmediatePropagation(e);
+                }
+            }
+        });
+        return handsontable;
+    }
+    var handsonCF;
+    var jsonValue = '';
+
+    angular.module('ProductDashboard').controller('DashboardExCashflow', function ($scope, $rootScope, avatarHelper, projectHelper, locationURL) {
+        $rootScope.$on("UpdateDashboardExCashflow", function (event, projectGuid, paymentDay) {
+            $scope.projectInfo = projectHelper.reload(projectGuid);
+            $scope.paymentDays = $scope.projectInfo.paymentDays;
+
+            if (cnabsHasContent(projectGuid)) {
+                projectGuid = $scope.projectInfo.selectedItem.guid;
+            }
+            if (cnabsHasContent(paymentDay)) {
+                $scope.selectedPaymentDay = paymentDay;
+            }
+            else {
+                $scope.nullPaymentDay();
+            }
+            $scope.ReloadPage();
+        });
+
+        $scope.ReloadPage = function (projectGuid, paymentDay) {
+            $scope.testFailRemind = '';
+            if ($scope.cashFlowView == "part") {
+                $scope.getCashFlowInfo();
+            } else {
+                $scope.getCashflow();
+            }
+
+        }
+
+        $scope.nullPaymentDay = function () {
+            if ($scope.paymentDays.length != 0) {
+                $scope.selectedPaymentDay = $scope.paymentDays[0].PaymentDay;
+                locationURL.setURLHash("paymentDay", $scope.selectedPaymentDay);
+            }
+        };
+
+        $scope.projectChange = function (projectGuid) {
+            //$rootScope.$emit("UpdateCurrentProjectGuid", projectGuid);
+            locationURL.setURLHash("projectGuid", projectGuid);
+
+            $scope.paymentDays = projectHelper.GetPaymentDays(projectGuid);
+            $scope.selectedPaymentDay = null;
+            $scope.nullPaymentDay();
+            $scope.ReloadPage();
+            $scope.isFirstLoadCompleteCashFlowTable = true;
+        }
+
+        $scope.paymentDayChange = function (paymentDay) {
+            locationURL.setURLHash("paymentDay", paymentDay);
+            $scope.ReloadPage();
+            $scope.isFirstLoadCompleteCashFlowTable = true;
+        }
+
+        $scope.InterestPricipalInfo = {
+            CurrentInterestCollection: 0.0,
+            CurrentPricipalCollection: 0.0,
+            PredictInterestCollection: 0.0,
+            PredictPricipalCollection: 0.0
+        };
+        $scope.OverridableVariables = {};
+
+        $scope.testFailRemind = '';
+        $scope.cashFlowView = 'part';
+        $scope.selectedCFLabel = 'ProductCashflow';
+        $scope.switchCFLabels = function (event, label) {
+            var event = event || window.event;
+            $scope.selectedCFLabel = label;
+            for (var i = 0; i < $('.partCashflowlabels .cnabs_btn_tab_v2').length; i++) {
+                if ($('.partCashflowlabels .cnabs_btn_tab_v2')[i] == event.target) {
+                    $($('.partCashflowlabels .cnabs_btn_tab_v2')[i]).prop('class', 'cnabs_btn_tab_v2 cnabs_btn_tab_selected')
+                } else {
+                    $($('.partCashflowlabels .cnabs_btn_tab_v2')[i]).prop('class', 'cnabs_btn_tab_v2')
+                }
+            }
+        }
+
+        $scope.isFirstLoadCompleteCashFlowTable = true;
+        $scope.changeCashFlowView = function (viewType) {
+            $scope.cashFlowView = viewType;
+            if ($scope.isFirstLoadCompleteCashFlowTable == true) {
+                $scope.ReloadPage();
+                $scope.isFirstLoadCompleteCashFlowTable = false;
+            }
+        }
+
+        $scope.changeSecuritiesTable = function () {
+            $.each($scope.cashFlowInfo_partView.SecurityCashflowList, function (index, item) {
+                if (item.TableName == $scope.SecuritiesName) {
+                    $scope.SecurityCashflowList = item.DataList;
+                }
+            })
+        }
+        $scope.controlTableThWidth = function (x) {
+            $('#' + x + '_false').width($("#" + x + '_true').width())
+        }
+
+        $scope.calculateCashflowAgain = function () {
+            $scope.isFirstLoadCompleteCashFlowTable = true;
+            jsonValue = '';
+            var list = $(".cf_variable_value");
+            var values = new Array();
+
+            var hasError = false;
+            for (var i = 0; i < list.length; i++) {
+                var errorMsg = $("#" + list[i].id + i);
+                if (!cnabsIsFloat(list[i].value) || list[i].value < 0) {
+                    errorMsg.css("display", "inline");
+                    hasError = true;
+                } else {
+                    errorMsg.css("display", "none");
+                }
+                values.push("{ \"Name\":\"" + list[i].id + "\", \"Value\":\"" + list[i].value + "\"}");
+            }
+
+            if (!hasError) {
+                jsonValue = "[" + values.join(",") + "]";
+                var params = {
+                    varList: jsonValue,
+                    projectGuid: $scope.projectInfo.selectedItem.guid,
+                    paymentDay: $scope.selectedPaymentDay
+                };
+                cnabsAjax("重新计算现金流", '/ProductDashboard/SaveVariables', params, function () {
+                    alertify.success("正在重新计算现金流...");
+                    //$("#formTask").submit();
+                    $scope.ReloadPage();
+                });
+            }
+        }
+
+        $scope.getCashFlowInfo = function () {
+            cnabsInitObject($scope.cashFlowInfo_partView);
+            cnabsInitObject($scope.InterestPricipalInfo);
+            $scope.OverridableVariables = {};
+            $("#divCFErrorMessage").html('');
+            $scope.SecuritiesName = '';
+            $scope.SecurityCashflowList = [];
+
+            cnabsAjax("获取现金流信息", '/ProductDashboard/GetCashflowDetailDataTable', {
+                projectGuid: $scope.projectInfo.selectedItem.guid,
+                paymentDay: $scope.selectedPaymentDay
+            }, function (data) {
+                if (!data.isError) {
+                    data.CashflowEventListArray = [];
+                    if (data.CashflowEventList != undefined && data.CashflowEventList.length % 2 == 1) {
+                        data.CashflowEventList.push({ "EventKey": "-", "EventValue": "-" })
+                    };
+                    $.each(data.CashflowEventList, function (index, item) {
+                        if (index % 2 == 0) {
+                            var array = [];
+                            array.push(data.CashflowEventList[index].EventKey);
+                            array.push(eventPassOrFailInChinese(data.CashflowEventList[index].EventValue));
+                            array.push(data.CashflowEventList[index + 1].EventKey);
+                            array.push(eventPassOrFailInChinese(data.CashflowEventList[index + 1].EventValue));
+                            data.CashflowEventListArray.push(array);
+                        }
+                    })
+
+                    $scope.cashFlowInfo_partView = data;
+                    $scope.InterestPricipalInfo.PredictInterestCollection = data.PredictInterestCollection;
+                    $scope.InterestPricipalInfo.PredictPricipalCollection = data.PredictPricipalCollection;
+                    $scope.InterestPricipalInfo.CurrentInterestCollection = data.CurrentInterestCollection;
+                    $scope.InterestPricipalInfo.CurrentPricipalCollection = data.CurrentPricipalCollection;
+                    $scope.OverridableVariables = data.OverridableVariables;
+                    $scope.testFailRemind = data.TestFailRemind;
+                    if (data.SecurityCashflowList.length) {
+                        $scope.SecuritiesName = data.SecurityCashflowList[0].TableName;
+                        $scope.changeSecuritiesTable()
+                    }
+                    $scope.controlTableThWidth('currPeriodCashflowInfoList');
+                    $scope.cashFlowRequest = 'success';
+                    $scope.$apply();
+                } else {
+                    $scope.cashFlowRequest = 'error';
+                    $scope.$apply();
+                    $("#divCFErrorMessage").html(data.errorMessage);
+                }
+            });
+        }
+
+        $scope.getCashflow = function () {
+            $scope.cashFlowRequest = 'process';
+            cnabsInitObject($scope.InterestPricipalInfo);
+            $scope.OverridableVariables = {};
+            $("#cashflowTable").html('');
+            $("#divCFErrorMessage").html('');
+
+            cnabsAjax('获取资产池现金流表', '/ProductDashboard/GetCashflowDataTable', {
+                projectGuid: $scope.projectInfo.selectedItem.guid,
+                paymentDay: $scope.selectedPaymentDay
+            }, function (data) {
+                $("#cashflowTable").html('');
+                clearHandson(handsonCF);
+                if (!data.isError) {
+                    var Data = data;
+                    $scope.InterestPricipalInfo.PredictInterestCollection = data.PredictInterestCollection;
+                    $scope.InterestPricipalInfo.PredictPricipalCollection = data.PredictPricipalCollection;
+                    $scope.InterestPricipalInfo.CurrentInterestCollection = data.CurrentInterestCollection;
+                    $scope.InterestPricipalInfo.CurrentPricipalCollection = data.CurrentPricipalCollection;
+                    $scope.OverridableVariables = data.OverridableVariables;
+                    $scope.testFailRemind = data.TestFailRemind;
+                    $scope.cashFlowRequest = 'success';
+                    $scope.$apply();
+                    handsonCF = cashflowDeclareHandson("cashflowTable", Data);
+                } else {
+                    $scope.cashFlowRequest = 'error';
+                    $scope.$apply();
+                    $("#divCFErrorMessage").html(data.errorMessage);
+                }
+            })
+        }
+
+        $scope.exportCashflowTable = function () {
+            cnabsAjaxDownloadFile("导出现金流表", '/Deal/GetCashflowFile/', {
+                projectGuid: $scope.projectInfo.selectedItem.guid,
+                paymentDay: $scope.selectedPaymentDay
+            });
+        }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Cashflow") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+    })
+</script>

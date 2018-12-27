@@ -1,0 +1,181 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.ConfigurationViewModel
+<style>
+    #tblWarn tr td:first-child:hover {
+        cursor: pointer;
+    }
+</style>
+<div class="cnabs_label">新闻监控配置</div>
+<div class="cnabs_panel">
+    <label id="lbKeyWords" style="display:none">@Model.NewsSetting.KeyWords</label>
+    <label id="lbRemindTime" style="display:none">@Model.RemindSettings.Frequency</label>
+    <label id="lbRemindType" style="display:none">@Model.RemindSettings.RemindType</label>    
+    <div class="panel-body">
+        @if (Model.NewsSetting.Range.ToString().ToLower().Trim() == "all")
+        {
+            <input type="radio" name="radio" value="negative" /><span id="sNage" style="cursor:pointer">仅相关负面新闻</span>
+            <input type="radio" name="radio" value="all" checked="checked" /><span id="sAll" style="cursor:pointer">全部相关新闻</span>
+        }
+        else
+        {
+            <input type="radio" name="radio" value="negative" checked="checked" /><span id="sNage" style="cursor:pointer">仅相关负面新闻</span>
+            <input type="radio" name="radio" value="all" /><span id="sAll" style="cursor:pointer">全部相关新闻</span>
+        }
+        <br />
+        <div>
+            <span style="vertical-align:top">相关机构名称配置：</span>
+            <textarea id="txtNewsKeyWord" placeholder="请输入机构名称，多个机构请用逗号隔开" style="width:320px;"></textarea>
+            <input type="button" id="btnNewsKeyWord" class="button" style="margin-left: 10px;vertical-align:top; height:27px;" value="确 定" />
+            <br />
+            <span class="comment" style="margin-left:120px;">* 例如：XXX银行，阿里</span>
+        </div>
+    </div>
+</div>
+
+<div class="cnabs_label">提醒列表配置</div>
+<div class="cnabs_panel">   
+    <div class="panel-body">
+        <span id="spRowId" style="display:none">@Model.RemindSettings.RowId</span>
+
+        使用自动提醒：
+        <select id="autoRemind" name="autoRemind">
+            @if (Model.RemindSettings.AutoRemind.ToString().Trim().ToLower() == "true")
+            {
+                <option value="true" selected="selected">是</option>
+                <option value="false">否</option>
+            }
+            else
+            {
+                <option value="true">是</option>
+                <option value="false" selected="selected">否</option>
+            }
+        </select>
+        &nbsp;&nbsp;
+
+        <span id="spFre">提前提醒时间：</span>
+        @*@Html.DropDownList("FrequencyList")*@
+        <select id="FrequencyList" name="FrequencyList">
+            <option value="" selected="selected">-请选择-</option>
+            <option value="12">半天</option>
+            <option value="24">一天</option>
+            <option value="48">两天</option>
+            <option value="72">三天</option>
+            <option value="120">五天</option>
+            <option value="168">一周</option>
+            <option value="336">两周</option>
+        </select>
+        &nbsp;&nbsp;
+        <span id="spRem"> 提醒方式：</span>
+        @Html.DropDownList("RemindTypeList")
+        &nbsp;&nbsp;
+        <br /><br />
+        每周一发工作汇总提醒邮件吗：
+        <select id="remindDaily" name="remindDaily">
+            @if (Model.RemindSettings.RemindDaily.ToString().Trim().ToLower() == "true")
+            {
+                <option value="true" selected="selected">是</option>
+                <option value="false">否</option>
+            }
+            else
+            {
+                <option value="true">是</option>
+                <option value="false" selected="selected">否</option>
+            }
+        </select>
+        &nbsp;&nbsp;
+        <input type="button" id="btnSaveRemindSetting" value="确 定" class="button" />
+        <br /><br />
+        用户名：
+        @*<input type="text" id="txtUserInfo" placeholder="请输入用户名/邮箱/手机号" style="width:320px;" />*@
+        @Html.DropDownList("AuthedAccountList")
+        <input type="button" id="btnSearch" class="button" style="margin-left: 10px; height:27px;" value="查 询" />
+        <input type="button" id="btnChange" class="button" style="margin-left: 10px; height:27px;" value="查看已有列表" />
+        <div>
+            <table id="tblWarn" class="operationTable hover" style="width:100%">
+                <thead>
+                    <tr class="fixedColor">
+                        <td>操作</td>
+                        <td style="display:none;">提醒人编号</td>
+                        <td style="display:none;">产品编号</td>
+                        <td style="display:none;">用户Id</td>
+                        <td>用户名</td>
+                        <td>真实姓名</td>
+                        <td>公司名称</td>
+                        <td>部门名称</td>
+                        <td>邮箱</td>
+                        <td>电话</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="display:none">
+                        <td>
+                            <span>X</span>
+                        </td>
+                        <td style="display:none;" name="reminderId"></td>
+                        <td style="display:none;"></td>
+                        <td style="display:none;"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @for (int i=0; i < Model.ReminderList.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <span>X</span>
+                            </td>
+                            <td style="display:none;" name="reminderId">@Model.ReminderList[i].ReminderId</td>
+                            <td style="display:none;">@Model.ReminderList[i].ProjectId</td>
+                            <td style="display:none;">@Model.ReminderList[i].UserId</td>
+                            <td>@Model.ReminderList[i].UserName</td>
+                            <td>@Model.ReminderList[i].Name</td>
+                            <td>@Model.ReminderList[i].Company</td>
+                            <td>@Model.ReminderList[i].Department</td>
+                            <td>@Model.ReminderList[i].Email</td>
+                            <td>@Model.ReminderList[i].CellPhone</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        initKeyWords();
+        initRemindSetting();
+        showSettingByAutoRemind($("#autoRemind").val());
+    });
+
+    function initKeyWords() {
+        var value = $("#lbKeyWords").html();
+        $("#txtNewsKeyWord").val(value);
+    }
+
+    function initRemindSetting() {
+        var frequency = $("#lbRemindTime").html();
+        var type = $("#lbRemindType").html();
+        initSelect("FrequencyList", frequency);
+        initSelect("RemindTypeList", type);
+        //var optionsF = document.getElementById("FrequencyList");
+        //var optionsT = document.getElementById("RemindTypeList");
+
+    }
+
+    function initSelect(selectId, data) {
+        var options = document.getElementById(selectId);
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value == data) {
+                options[i].selected = true;
+            } else {
+                options[i].selected = false;
+            }
+        }
+    }
+
+</script>
+
+

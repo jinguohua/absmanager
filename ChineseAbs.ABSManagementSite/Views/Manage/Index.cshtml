@@ -1,0 +1,466 @@
+﻿
+@using ChineseAbs.ABSManagementSite.Common
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+	<style type="text/css">
+		tr {
+			text-align: center;
+		}
+	</style>
+}
+
+@section scripts{
+	<script>
+		$(document).ready(function () {
+			BindingElementActive(4, 2, 9);
+		});
+
+	</script>
+}
+
+@Scripts.Render("~/bundles/angular")
+<script src="~/Scripts/paulkinzett-toolbar/jquery.toolbar.js"></script>
+<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+<link href="~/Content/paulkinzett-toolbar/jquery.toolbar.css" rel="stylesheet" />
+<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.fancytree.min.js"></script>
+<link href="~/Scripts/select2.min.css" rel="stylesheet" />
+<script src="~/Scripts/select2.min.js"></script>
+<style>
+	.LocalDeployedManage {
+		overflow: hidden;
+		padding: 10px 20px 10px;
+	}
+
+	input[type='text'], input[type='password'], #role {
+		padding-left: 10px;
+		border: none;
+		width: 191px;
+		height: 26px;
+		border-radius: 2px;
+	}
+
+	.select2-selection {
+		min-height: 26px !important;
+	}
+
+	.select2-dropdown, .select2-selection, .select2-results__options, .select2-search__field {
+		width: 200px !important;
+		color: black;
+		font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+	}
+
+	.cnabs_dialog_content_title {
+		height: 28px;
+		line-height: 28px;
+	}
+
+	.LocalDeployedManage .changeCollaborativePersonBtn {
+		float: left;
+		background: #FFC446;
+		color: black;
+		text-align: center;
+		border-radius: 3px;
+		padding: 3px 12px;
+		cursor: pointer;
+	}
+
+	.LocalDeployedManage .personIncharge, .LocalDeployedManage .creator {
+		overflow: hidden;
+		margin-bottom: 20px;
+		float: left;
+	}
+
+	.LocalDeployedManage .personPosition {
+		width: 98px;
+		height: 60px;
+		line-height: 60px;
+		padding-left: 22px;
+		background: #625c53;
+		color: #b7afa5;
+		float: left;
+	}
+
+	.LocalDeployedManage .personInfo {
+		overflow: hidden;
+		width: 360px;
+		height: 60px;
+		padding-left: 20px;
+		background: #47423c;
+		float: left;
+	}
+
+		.LocalDeployedManage .personInfo .imgParent {
+			float: left;
+			margin-top: 10px;
+			width: 40px;
+			height: 40px;
+			border-radius: 3px;
+			background-color: #4f4a43;
+			background-size: 40px 40px;
+		}
+
+		.LocalDeployedManage .personInfo .displayName {
+			float: left;
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+
+			.LocalDeployedManage .personInfo .displayName .realName {
+				height: 25px;
+				color: #ffc446;
+			}
+
+			.LocalDeployedManage .personInfo .displayName .userName {
+				color: #b7afa5;
+			}
+
+	.addCollaborativePerson {
+		overflow: hidden;
+		padding: 8px 20px 8px 20px;
+		height: 24px;
+		background: #4f4a43;
+	}
+
+		.addCollaborativePerson div:nth-of-type(1) {
+			color: #b7afa5;
+			float: left;
+			line-height: 24px;
+		}
+
+	.removeUser {
+		float: right;
+		margin-right: 10px;
+		cursor: pointer;
+	}
+
+	.resetUserPassword {
+		float: right;
+		cursor: pointer;
+	}
+
+	ul.collaborativePersons {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		overflow: hidden;
+	}
+
+		ul.collaborativePersons li.personInfo {
+			margin-right: 10px;
+			width: 460px;
+			padding-right: 20px;
+			margin-top: 10px;
+		}
+
+		ul.collaborativePersons li:nth-of-type(2n) {
+			margin-right: 0px;
+		}
+</style>
+
+<script type="text/javascript">
+	var personSettingApp = angular.module('personSetting', []);
+	personSettingApp.controller('personSettingCtrl', function ($scope, $rootScope) {
+		var projectSeriesInfo = [];//存放所有projectSeries的信息
+
+		$scope.allUserInfo = [];
+		$scope.allRoles = [];
+
+		$scope.getAllRoles = function getAllRoles() {
+			cnabsAjax("获取角色", "/Manage/GetRoles", {}, function (data) {
+				$scope.allRoles = data;
+			})
+		};
+		$scope.GetAllUserInfo = function () {
+			cnabsAjax("获取所有用户", "/Manage/GetAllUsers", {}, function (data) {
+				$scope.allUserInfo = data;
+				$scope.$apply();
+			});
+		}
+
+		$scope.ResetUserPassword = function (userName) {
+			var resetUserPasswordControls = [{
+				title: "密码",
+				type: "password",
+				elementId: "password",
+				value: "",
+				placeHolder: "请填写密码",
+				limit: {
+					type: "rangelength",
+					min: "6",
+					max: "30"
+				}
+			}, {
+				title: "确认密码",
+				type: "password",
+				elementId: "repeatPassword",
+				value: "",
+				placeHolder: "请确认密码",
+				limit: {
+					type: "rangelength",
+					min: "6",
+					max: "30"
+				}
+			}
+			]
+
+			cnabsAutoDialog(resetUserPasswordControls, "重置用户[" + userName + "]密码", function (data) {
+				var param = {
+					userName: userName,
+					password: data.password,
+					repeatPassword: data.repeatPassword,
+				};
+				cnabsAjax("重置用户[" + userName + "]密码", "/Manage/ResetUserPassword", param, function (data) {
+					$(".ui-dialog").remove();
+					$scope.GetAllUserInfo();
+					cnabsMsgSuccess('重置用户[' + userName + ']密码成功');
+				})
+			})
+		}
+
+		$scope.DeleteUser = function (userName) {
+			cnabsAutoDlgYesNo(null, "删除用户", function (data) {
+				cnabsAjax("删除用户", "/Manage/DeleteUser", { userName: userName }, function (data) {
+					$scope.GetAllUserInfo();
+				})
+			}, '确认删除用户[' + userName + ']');
+		}
+
+		$scope.UnlockUser = function (userName) {
+			cnabsAutoDlgYesNo(null, "解锁用户", function (data) {
+				cnabsAjax("解锁用户", "/Manage/UnlockUser", { userName: userName }, function (data) {
+					$scope.GetAllUserInfo();
+				})
+			}, '确认解锁用户[' + userName + ']');
+		}
+
+		$scope.SetUserRole = function (userName, setAdmin) {
+			var msg = setAdmin ? '设置为管理员' : '设置为普通用户';
+			cnabsAutoDlgYesNo(null, msg, function (data) {
+				cnabsAjax(msg, "/Manage/SetUserRole", { userName: userName, isAdmin: setAdmin }, function (data) {
+					$scope.GetAllUserInfo();
+				})
+			}, msg + '[' + userName + ']?');
+		}
+
+		$scope.AddUser = function () {
+			var createUserControls = [{
+				title: "用户名",
+				type: "text",
+				elementId: "userName",
+				value: "",
+				placeHolder: "请填写用户名",
+				limit: {
+					type: "rangelength",
+					min: "1",
+					max: "30"
+				}
+			}, {
+				title: "昵称",
+				type: "text",
+				elementId: "nickName",
+				value: "",
+				placeHolder: "昵称",
+				limit: {
+					type: "rangelength",
+					min: "1",
+					max: "30"
+				}
+			}, {
+				title: "密码",
+				type: "password",
+				elementId: "password",
+				value: "",
+				placeHolder: "请填写密码",
+				limit: {
+					type: "rangelength",
+					min: "6",
+					max: "30"
+				}
+			}, {
+				title: "确认密码",
+				type: "password",
+				elementId: "repeatPassword",
+				value: "",
+				placeHolder: "请填写密码",
+				limit: {
+					type: "rangelength",
+					min: "6",
+					max: "30"
+				}
+			}, {
+				title: "角色",
+				type: "multiselect",
+				value: "",
+				elementId: "roles",
+				OptionArray: $scope.allRoles,
+			}, {
+				title: "电子邮箱",
+				type: "text",
+				elementId: "email",
+				value: "",
+				placeHolder: "请填写电子邮箱",
+				limit: {
+					type: "rangelength",
+				}
+			}, {
+				title: "电话号码",
+				type: "text",
+				elementId: "phoneNumber",
+				value: user.phoneNumber,
+				placeHolder: "请填写电话号码",
+				limit: {
+					type: "rangelength",
+				}
+			}]
+
+			cnabsAutoDialog(createUserControls, "增加用户", function (data) {
+				var param = {
+					userName: data.userName,
+					nickName: data.nickName,
+					password: data.password,
+					repeatPassword: data.repeatPassword,
+					roles: $("#roles").val(),
+					email: data.email,
+					phoneNumber: data.phoneNumber
+
+				};
+				cnabsAjax("增加新成员", "/Manage/CreateUser", param, function (result) {
+					$(".cnabs_dialogCloth").dialog("close");
+					$scope.GetAllUserInfo();
+				});
+			})
+			setRoleList("roles");
+		}
+
+		$scope.EditUser = function (user) {
+			var editUserControls = [{
+				title: "用户名",
+				type: "text",
+				elementId: "userName",
+				value: user.userName,
+				placeHolder: "请填写用户名",
+				limit: {
+					type: "rangelength",
+					min: "1",
+					max: "30"
+				}
+			}, {
+				title: "昵称",
+				type: "text",
+				elementId: "nickName",
+				value: user.realName,
+				placeHolder: "昵称",
+				limit: {
+					type: "rangelength",
+					min: "1",
+					max: "30"
+				}
+			}, {
+				title: "角色",
+				type: "multiselect",
+				value: user.roles,
+				elementId: "editroles",
+				OptionArray: $scope.allRoles,
+			}, {
+				title: "电子邮箱",
+				type: "text",
+				elementId: "email",
+				value: user.email,
+				placeHolder: "请填写电子邮箱",
+				limit: {
+					type: "rangelength",
+				}
+			}, {
+				title: "电话号码",
+				type: "text",
+				elementId: "phoneNumber",
+				value: user.phoneNumber,
+				placeHolder: "请填写电话号码",
+				limit: {
+					type: "rangelength",
+				}
+			}]
+
+			cnabsAutoDialog(editUserControls, "编辑用户", function (data) {
+				var param = {
+					id: user.id,
+					userName: data.userName,
+					nickName: data.nickName,
+					email: data.email,
+					roles: $("#editroles").val(),
+					email: data.email,
+					phoneNumber: data.phoneNumber
+				};
+				cnabsAjaxSync("编辑用户", "/Manage/EditUser", param, function (result) {
+					$(".cnabs_dialogCloth").dialog("close");
+					$scope.GetAllUserInfo();
+				})
+			})
+			setRoleList("editroles");
+			$("#editroles").val(user.roles);
+			$("#editroles").select2();
+			 
+		}
+
+		$scope.GetAllUserInfo();
+		$scope.getAllRoles();
+
+		function setRoleList(name) {
+			$("#" + name).select2({
+				tags: false,                          //支持新增，默认为false
+				multiple: true,                      //支持多选，默认为false
+				data: $scope.allRoles,                      //下拉框绑定的数据
+				allowClear: true,                    //支持清空，默认为false
+				placeholder: '请添加或选择角色'      //提示语
+			});
+		}
+	});
+</script>
+
+<div class="tablecloth">
+	<header class="am_site_map_panel">
+		<span class="am_site_map_arrow">当前位置：</span>
+		<a class="am_site_map_label" href="/">解决方案</a>
+		<span class="am_site_map_arrow">></span>
+		<a class="am_site_map_label" href="/">存续期管理平台</a>
+		<span class="am_site_map_arrow">></span>
+		<span class="am_site_map_arrow">人员设置</span>
+	</header>
+	<div ng-app="personSetting">
+		<div ng-controller="personSettingCtrl" class="LocalDeployedManage">
+			<div id="LocalDeployedManage">
+				<div class="addCollaborativePerson">
+					<div>人员列表</div>
+					<div class="cnabs_btn_add" ng-click="AddUser()">增加人员</div>
+				</div>
+				<ul class="collaborativePersons" ng-cloak>
+					<li class="personInfo" style="" ng-repeat="user in allUserInfo">
+						<div class="imgParent" style="background-image:url({{'/Images/avatar/headerDefault.jpg'}});"></div>
+						<div class="displayName" style="width:400px;">
+							<div style="overflow:hidden;">
+								<div class="realName" style="float:left;">{{user.realName}}</div>
+								<div class="resetUserPassword" ng-click="ResetUserPassword(user.userName)">重设密码</div>
+								<div class="removeUser" ng-click="DeleteUser(user.userName)">删除</div>
+								<div class="removeUser" ng-click="EditUser(user)">编辑</div>
+								<div class="removeUser" ng-click="UnlockUser(user.userName)" ng-hide="!user.isLocked">解锁</div>
+								@*<div class="removeUser" ng-click="SetUserRole(user.userName, !user.isAdmin)">{{user.isAdmin ? '设为普通用户' : '设为管理员'}}</div>*@
+							</div>
+							<div style="overflow:hidden;">
+								<div class="userName" style="float:left;">{{user.userName + (user.isLocked ? '(锁定)' : '')}}</div>
+								<div style="float:right;color:#b7afa5;">
+									{{user.roleNames}}
+								</div>
+							</div>
+
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

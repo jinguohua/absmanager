@@ -1,0 +1,128 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+        .am_tbody span {
+            float: left;
+        }
+
+        .am_tbody img {
+            cursor: pointer;
+        }
+
+        .am_tbody .am_tr {
+            overflow: hidden;
+            border-bottom: 1px dotted #666;
+        }
+
+        .am_name {
+            font-size: 20px;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .am_designProject_details, .am_designTemplate_details {
+            overflow: hidden;
+            width: 65%;
+            margin: 30px auto;
+            color: #3B3831;
+            font-weight: bold;
+        }
+
+        .round {
+            width: 75px;
+            height: 55px;
+            padding-top: 20px;
+            border-radius: 50%;
+            background: #ccc;
+            float: left;
+            margin-left: 10px;
+        }
+
+        .am_design_title {
+            height: 80px;
+            font-size: 30px;
+            line-height: 80px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .am_design_details {
+            font-size: 16px;
+            line-height: 30px;
+            text-align: center;
+            color: #999;
+            margin-bottom: 40px;
+        }
+    </style>
+}
+
+@Scripts.Render("~/bundles/angular")
+@section scripts{
+    <script>
+        $(function () {
+            BindingElementActive(4, 2, 0);
+        });
+    </script>
+}
+
+
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow" href="/Design">在线设计</span>
+    </header>
+    <div class="am_design_title">
+        我们可以做什么？
+    </div>
+    <div class="am_design_details">
+        在这里我们可以自定义产品、模板。<br />
+        在您选定的产品中创建工作，增加模型，修改扩展工作类型，修改、增加、删除扩展工作关联文档；<br />
+        同时您对模板可以进行创建模板时间、清空模板时间，导入、导出时间列表等操作。<br />
+    </div>
+    <div ng-app="myApp" ng-controller="myCtrl" style="overflow:auto">
+        <div ng-style="myStyle" ng-repeat="typeMode in typeList">
+            <div>
+                <a ng-href="{{typeMode.classHref}}">
+                    <span class="ui-icon {{typeMode.classIcon}} largeImageSize"></span>
+                </a>
+            </div>
+            <div>
+                <a ng-cloak class="am_name ng-cloak" ng-href="{{typeMode.classHref}}">
+                    {{typeMode.className}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var isSuperUser = '@ViewBag.IsSuperUser';
+    var app = angular.module("myApp", []);
+    app.controller("myCtrl", function ($scope) {
+        $scope.typeList = [{ classIcon: 'ui-icon-box', classHref: '/DesignProduct', className: '设计产品' },
+                           { classIcon: 'ui-icon-addon', classHref: '/DesignTemplate', className: '工作模板' }
+        ];
+
+        if (isSuperUser != 'False') {
+            $scope.typeList.push({ classIcon: 'ui-icon-key', classHref: '/EditProductAuthority', className: '权限管理' });
+        }
+
+        var itemPerRow = Math.min($scope.typeList.length, 4);
+        $scope.myStyle = {
+            "float": "left",
+            "width": 100 / itemPerRow + "%",
+            "text-align": "center",
+        }
+    });
+</script>

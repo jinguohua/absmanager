@@ -1,0 +1,62 @@
+@import "../../styles/theme/default.less";
+
+@abs-switch: abs-switch;
+.abs-switch {
+  .@{abs-switch}-on-m,
+  .@{abs-switch}-off-m  {
+    width: 70px;
+    height: 30px;
+  }
+  .@{abs-switch}-on-s,
+  .@{abs-switch}-off-s  {
+    width: 56px;
+    height: 24px;
+  }
+  .abs-switch-on-m {
+    &.ant-switch-checked {
+      background: @abs-switch-checked-bg;
+    }
+  }
+  .abs-switch-on-m,
+  .abs-switch-off-m {
+    &:after {
+      width: 26px !important;
+      height: 26px !important;
+    }
+  }
+  .abs-switch-on-s {
+    &.ant-switch-checked {
+      &:extend(.abs-switch .abs-switch-on-m.ant-switch-checked);
+    }
+  }
+  .abs-switch-on-s,
+  .abs-switch-off-s {
+    &:after {
+      width: 20px !important;
+      height: 20px !important;
+    }
+  }
+  .ant-switch {
+    background: @abs-switch-bg;
+    &.ant-switch-checked {
+      &.ant-switch-disabled {
+        background: @abs-switch-checked-disabled-bg;
+        &:after {
+          background: @abs-switch-disabled-circle-m;
+        }
+      }
+    }
+    &.ant-switch-disabled {
+      background: @abs-switch-nochecked-disabled-bg;
+      &:after {
+        background: @abs-switch-disabled-circle-s;
+      }
+    }
+    &-loading {
+      opacity: initial;
+    } 
+    &-disabled {
+      &:extend(.ant-switch-loading);
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@import '../../styles/theme/default.less';
+
+.abs-modal-default {
+  .ant-modal-content {
+    background-color: @abs-modal-bgcolor;
+    border-radius: 8px;
+    border: 1px solid @abs-modal-border-color;
+    color: @abs-modal-color;
+  }
+
+  .ant-modal-header {
+    padding: 12px 20px;
+    border-radius: 8px 8px 0 0;
+    background-color: @abs-modal-header-bgcolor;
+    color: @abs-modal-color;
+    border-bottom: 1px solid @abs-modal-border-color;
+    .ant-modal-title {
+      font-size: @abs-modal-size;
+      line-height: @abs-modal-size;
+      color: @abs-modal-color;
+    }
+  }
+  
+  .ant-modal-close-x {
+    width: 44px;
+    height: 40px;
+    line-height: 40px;
+    font-size: @abs-modal-size;
+  }
+  .ant-modal-close {
+    color: @abs-modal-closebtn-color;
+    &:hover {
+      color: @abs-modal-closebtn-hover-color;
+    }
+  }
+
+  .ant-modal-body {
+    padding: 0;
+    .abs-modal-body-scrollbar {
+      padding: 28px 20px 0;
+      // max-height: 560px;
+      height: auto;
+      & > div {
+        padding-bottom: 70px;
+      }
+    }
+    .abs-modal-body-nofooter-scrollbar {
+      padding: 28px 20px 0;
+      max-height: 600px;
+      & > div {
+        padding-bottom: 30px;
+      }
+    }
+    .nopaddingx{
+      padding: 28px 0px;
+    }
+  }
+  
+  .ant-modal-footer {
+    border: 0;
+    padding: 28px 20px 10px;
+    border-radius: 0 0 8px 8px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: @abs-modal-footer-absolute-bg;
+  }
+
+  .abs-btn-gap-left {
+    padding-left: 10px;
+  }
+
+  .abs-btn-gap-right {
+    padding-right: 10px;
+  }
+}

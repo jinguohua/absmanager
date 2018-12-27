@@ -1,0 +1,328 @@
+﻿@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>产品配置</title>
+  <link rel="shortcut icon" href="../../Content/img/demo/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../../Content/vendor/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../../Content/css/abs-manager.css">
+
+    <link rel="stylesheet" href="~/Content/alertify/alertify.css">
+    <link rel="stylesheet" href="~/Content/alertify/themes/semantic.css">
+
+    <script src="../../Content/vendor/jquery/dist/jquery.js"></script>
+    <script src="../../Content/vendor/angular/angular.js"></script>
+    <script src="../../Content/js/demo/abs-manager.js"></script>
+    <script src="/Scripts/cnabsUtils/cnabsUtils.js"></script>
+    <script src="/Scripts/cnabsUtils/cnabsUtils.core.js"></script>
+    <script src="/Scripts/alertify.js"></script>
+</head>
+<body ng-controller="MainCtrl as ctrl">
+<!-- header --> 
+<div class="full-width-container box-shadow-style1">
+  <div class="header-container abs-container">
+    <div class="logo-wrapper">
+       <img src="../../Content/img/demo/logo.jpg" alt="logo">
+    </div>
+    <div class="menu-wrapper">
+      <span>
+          <a style="cursor:pointer"
+             ng-click="showSubMenu($event)"
+             ng-mouseleave="autoHideSubMenu($event)"
+             ng-mouseenter="clearTimer($event)">存续期管理</a>
+
+        <ul ng-mouseleave="autoHideSubMenu($event)"
+            ng-mouseenter="clearTimer($event)">
+            <li>
+                <a href="/Demo/Project">产品列表</a>
+            </li>
+            <li>
+                <a href="/Demo/ImportData">数据导入</a>
+            </li>
+            <li>
+                <a href="/Demo/ExportReport">报告管理</a>
+            </li>
+          <li>
+            <a href="#">产品监控</a>
+          </li>
+        </ul>
+      </span>
+      <span>
+          <a href="/Demo/ConfigProject" class="cur-selected">产品配置</a>
+      </span>
+      <span>
+        <a href="#">产品测算</a>
+      </span>
+    </div>
+  </div>
+</div>
+
+
+<!--目录路径-->
+<div class="full-width-container bgc-DBEBF7">
+  <div class="catalog-container abs-container">
+    <span class="icon icon-home">
+       <img src="../../Content/img/demo/home.png" alt="home">
+        <a href="/Demo/ConfigProject">
+            <mark>
+                产品配置
+            </mark>
+        </a>
+    </span>
+  </div>
+</div>
+
+<div class="auto-show-wrapper">
+
+<!--条件过滤-->
+<div class="abs-container filter-container">
+  <div class="input-selector">
+    <div class="cur-selected" ng-click="showList($event)">建元2016年第一期个人住房抵押贷款证券化信托</div>
+    <ul ng-click="changeSelected($event)">
+      <li>建元2013年第一期个人住房抵押贷款证券化信托</li>
+      <li>建元2014年第一期个人住房抵押贷款证券化信托</li>
+      <li>建元2015年第一期个人住房抵押贷款证券化信托</li>
+    </ul>
+  </div>
+
+  @*<div class="input-selector">
+      <div class="cur-selected" ng-click="showList($event)">第5期</div>
+      <ul ng-click="changeSelected($event)">
+        <li>第6期</li>
+        <li>第7期</li>
+        <li>第8期</li>
+      </ul>
+    </div>*@
+
+  @*<div class="checkbox-item" ng-click="checkItem($event)">
+      <span class="fa fa-square-o"></span>
+      <span>显示当前最新期</span>
+    </div>*@
+</div>
+
+<div class="table-container abs-container">
+ 
+  <div class="table-wrapper">
+    <div class="table-title">报告模板配置</div>
+    <table cellspacing="0">
+      <tr>
+        <th width="30%">模板类型</th>
+        <th width="25%">模板名称</th>
+        <th width="15%">最后修改时间</th>
+        <th width="30%">操作</th>
+      </tr>
+      <tr>
+        <td>
+          <p title="建元2016年第一期个人住房抵押贷款资产支持证券">建元2016年第一期个人住房抵押贷款资产支持证券</p>
+          <p>
+            <small>住房抵押贷款 月付 房贷模板A</small>
+          </p>
+        </td>
+        <td>
+            <p title="建元2016年第一期个人住房抵押贷款资产支持证券">建元2016年第一期个人住房抵押贷款资产支持证券</p>
+            <p>
+                <small>住房抵押贷款 月付 房贷模板A</small>
+            </p>
+        </td>
+        <td>
+          <div class="timeUD">
+            <span>2017.6.12</span>
+            <span>16:39</span>
+          </div>
+        </td>
+        <td>
+          <div class="btn-area">
+            <button class="btn-primary">保存设置</button>
+              <button class="btn-primary" onclick="downloadTemplateFile()">下载模板</button>
+              <button class="btn-primary" ng-click="triggerUploadTemplateFile()">上传模板</button>
+
+
+           </div>
+        </td>
+      </tr>
+      @*<tr>
+        <td>
+          <p>建元2017年第三期个人住房抵押贷款资产支持证券</p>
+          <p>
+            <small>住房抵押贷款 月付 房贷模板A</small>
+          </p>
+        </td>
+        <td>
+          <div class="input-selector">
+            <div class="cur-selected" ng-click="showList($event)">第5期</div>
+            <ul ng-click="changeSelected($event)">
+              <li>第6期</li>
+              <li>第7期</li>
+              <li>第8期</li>
+            </ul>
+          </div>
+        </td>
+        <td>
+          <div class="timeUD">
+            <span>2017.7.18</span>
+            <span>2017.7.28</span>
+          </div>
+        </td>
+        <td>
+          <span class="fail">配置缺失</span>
+        </td>
+        <td>
+          <div class="btn-area">
+            <button class="btn-primary">产品配置</button>
+            <button class="btn-primary" disabled="disabled">数据导入</button>
+            <button class="btn-primary" disabled="disabled">报告管理</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>建元2017年第四期个人住房抵押贷款资产支持证券</p>
+          <p>
+            <small>住房抵押贷款 月付 房贷模板A</small>
+          </p>
+        </td>
+        <td>
+          <div class="input-selector">
+            <div class="cur-selected" ng-click="showList($event)">第5期</div>
+            <ul ng-click="changeSelected($event)">
+              <li>第6期</li>
+              <li>第7期</li>
+              <li>第8期</li>
+            </ul>
+          </div>
+        </td>
+        <td>
+          <div class="timeUD">
+            <span>2017.7.18</span>
+            <span>2017.7.28</span>
+          </div>
+        </td>
+        <td>
+          <span class="warning">已生成</span>
+        </td>
+        <td>
+          <div class="btn-area">
+            <button class="btn-primary">产品配置</button>
+            <button class="btn-primary">数据导入</button>
+            <button class="btn-primary">报告管理</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>建元2017年第五期个人住房抵押贷款资产支持证券</p>
+          <p>
+            <small>住房抵押贷款 月付 房贷模板A</small>
+          </p>
+        </td>
+        <td>
+          <div class="input-selector">
+            <div class="cur-selected" ng-click="showList($event)">第5期</div>
+            <ul ng-click="changeSelected($event)">
+              <li>第6期</li>
+              <li>第7期</li>
+              <li>第8期</li>
+            </ul>
+          </div>
+        </td>
+        <td>
+          <div class="timeUD">
+            <span>2017.7.18</span>
+            <span>2017.7.28</span>
+          </div>
+        </td>
+        <td>
+          <span class="fail">数据错误</span>
+        </td>
+        <td>
+          <div class="btn-area">
+            <button class="btn-primary">产品配置</button>
+            <button class="btn-primary">数据导入</button>
+            <button class="btn-primary" disabled="disabled">报告管理</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>建元2017年第二期个人住房抵押贷款资产支持证券</p>
+          <p>
+            <small>住房抵押贷款 月付 房贷模板A</small>
+          </p>
+        </td>
+        <td>
+          <div class="input-selector">
+            <div class="cur-selected" ng-click="showList($event)">第5期</div>
+            <ul ng-click="changeSelected($event)">
+              <li>第6期</li>
+              <li>第7期</li>
+              <li>第8期</li>
+            </ul>
+          </div>
+        </td>
+        <td>
+          <div class="timeUD">
+            <span>2017.7.18</span>
+            <span>2017.7.28</span>
+          </div>
+        </td>
+        <td>
+          <span >等待数据</span>
+        </td>
+        <td>
+          <div class="btn-area">
+            <button class="btn-primary">产品配置</button>
+            <button class="btn-primary">数据导入</button>
+            <button class="btn-primary" disabled="disabled">报告管理</button>
+          </div>
+        </td>
+      </tr>*@
+    </table>
+  </div>
+</div>
+
+
+  <div class="table-container abs-container margin-top-20">
+    <div class="table-wrapper">
+      <table cellspacing="0">
+        <tr>
+          <th width="55%">模型名称</th>
+          <th width="15%">最后修改时间</th>
+          <th width="30%">操作</th>
+        </tr>
+        <tr data-id="trId1">
+          <td>
+            产品模型配置
+          </td>
+          <td>2017.6.12 17:31</td>
+          <td>
+            <div class="btn-area">
+              <button class="btn-primary" ng-click="triggerUploadModel()">上传模型</button>
+              <button class="btn-primary" onclick="downloadModel()">下载模型</button>
+              <input id="uploadModel" type="file" name="name" value=" " style="display:none" ng-hide="true" onchange="uploadModel()" />
+              <input id="uploadTemplateFile" type="file" name="name" value=" " style="display:none" ng-hide="true" onchange="uploadTemplateFile()" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!--footer-->
+<div class="footer-container abs-container">
+
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+</script>

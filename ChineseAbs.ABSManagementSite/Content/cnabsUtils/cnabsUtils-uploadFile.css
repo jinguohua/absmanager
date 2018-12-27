@@ -1,0 +1,119 @@
+﻿.container {
+    width: 100%;
+    max-width: 463px;
+    text-align: center;
+    margin: 0 auto;
+}
+/*拖拽成功的文件名样式*/
+.is-changing {
+    color: #f7c445;
+}
+/*整个from表单的样式*/
+.box {
+    font-size: 12px;
+    background-color: #332e25;
+    position: relative;
+    padding: 0;
+    width: 463px;
+    height: 160px;
+}
+    /*如果浏览器支持拖拽时，拖拽框的样式*/
+    .box.has-advanced-upload {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border: 1px dashed #7c6c54;
+        border-radius: 3px;
+    }
+    /*拖拽时，虚线框变色*/
+    .box.is-dragover {
+        border-color: #ffc446;
+    }
+
+.box__dragndrop,
+.box__icon {
+    display: none;
+}
+
+.box.has-advanced-upload .box__dragndrop {
+    display: inline;
+}
+
+.box.is-uploading .box__input,
+.box.is-success .box__input,
+.box.is-error .box__input {
+    visibility: hidden;
+}
+
+.box__uploading,
+.box__success,
+.box__error {
+    display: none;
+}
+
+.box.is-uploading .box__uploading,
+.box.is-success .box__success,
+.box.is-error .box__error {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    -webkit-transform: translateY( -50% );
+    transform: translateY( -50% );
+}
+
+.box__input {
+    margin-top: 4px;
+    vertical-align: middle;
+    color: #786952;
+}
+
+.box__uploading {
+    font-style: italic;
+}
+
+.box__success {
+    -webkit-animation: appear-from-inside .25s ease-in-out;
+    animation: appear-from-inside .25s ease-in-out;
+}
+
+.box__restart {
+    font-weight: 700;
+}
+
+    .box__restart:focus,
+    .box__restart:hover {
+        color: #39bfd3;
+    }
+
+.box__file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+    .box__file + label {
+        max-width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+        .box__file + label strong {
+            color: #ffc446;
+        }
+    /*点击选择文件的时候，input框的突出样式*/
+    .box__file:focus + label,
+    .box__file.has-focus + label {
+        outline: 1px dotted #000;
+        outline: -webkit-focus-ring-color auto 5px;
+    }
+/*成功选择或拖拽之后，文件的文件名变色显示*/
+.transcolor {
+    color: #f7c445;
+}

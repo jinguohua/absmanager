@@ -1,0 +1,1355 @@
+﻿
+<style>
+    .divDashboardExProcessParent .lineMargin {
+        overflow: hidden;
+    }
+
+    .eachTaskGroup {
+        width: 266px;
+        text-align: left;
+        background-color: #534d46;
+        height: 53px;
+        position: relative;
+        margin-bottom: 10px;
+        padding-top: 18px;
+        padding-left: 18px;
+        border: 1px solid #37342e;
+        cursor: pointer;
+    }
+
+    .taskTable {
+        float: left;
+        width: 724px;
+        overflow: auto;
+        min-height: 638px;
+    }
+
+    .taskDetailsPanel {
+        overflow: hidden;
+        padding: 10px 20px 10px;
+    }
+
+    .enterTaskPageBtn {
+        float: right;
+    }
+
+    .recentlyLog {
+        margin-top: 29px;
+    }
+
+        .recentlyLog .recentlyLogTitle {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+    .recentlyLogTable td {
+        padding: 2px 10px 2px !important;
+    }
+
+    .btnHide {
+        cursor: pointer;
+    }
+
+    .btnSidebarInDashBoard {
+        color: #FFC446;
+        cursor: pointer;
+    }
+
+    .progressBar {
+        float: right;
+        margin-right: 19px;
+        position: relative;
+        width: 165px;
+        height: 4px;
+        background-color: #3f3a35;
+        margin-top: 7px;
+    }
+
+    .progressBarData {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 4px;
+    }
+
+    .ui.visible.right.sidebar ~ .fixed, .ui.visible.right.sidebar ~ .pusher {
+        transform: translate3d(-326px,0,0);
+        -webkit-transform: translate3d(-326px,0,0);
+    }
+
+    .divDashboardExProcessLeft {
+        width: 100%;
+        overflow: hidden;
+    }
+
+        .divDashboardExProcessLeft .taskGroupLabels {
+            background: #47423c;
+            min-height: 638px;
+            float: left;
+            width: 306px;
+            padding-left: 20px;
+        }
+
+        .divDashboardExProcessLeft .projectSeries {
+            height: 70px;
+            line-height: 70px;
+            overflow: hidden;
+        }
+
+        .divDashboardExProcessLeft .projectSeriesTitle {
+            float: left;
+            color: #b7afa5;
+            font-size: 14px;
+        }
+
+        .divDashboardExProcessLeft .projectSeriesProcess {
+            width: 286px;
+            height: 43px;
+            line-height: 43px;
+            background: #534d46;
+            font-size: 14px;
+        }
+
+        .divDashboardExProcessLeft .projectSeriesProcessTitle {
+            float: left;
+            color: #b7afa5;
+            width: 76px;
+            margin-left: 20px;
+        }
+
+        .divDashboardExProcessLeft .addTaskGroupBtn {
+            cursor: pointer;
+            width: 286px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: #8064a2;
+            border-radius: 3px;
+            background-image: url(../../Images/Common/add.png);
+            background-repeat: no-repeat;
+            background-position: 84px 2px;
+            font-size: 14px;
+        }
+
+            .divDashboardExProcessLeft .addTaskGroupBtn:hover {
+                background-color: #8b6daf;
+            }
+
+    .removeTaskGroupBtn {
+        color: #b7afa5;
+        float: right;
+        margin-right: 19px;
+    }
+
+    .modifyTaskGroupBtn {
+        color: #b7afa5;
+        float: right;
+        margin-right: 15px;
+    }
+
+    .divDashboardExProcessLeft .taskGroupPercent {
+        color: #b7afa5;
+        font-size: 12px;
+        float: left;
+    }
+
+    .divDashboardExProcessLeft .pusher {
+        background-color: #37342e;
+        min-height: 638px
+    }
+
+    .taskInfo .tableValueStyle {
+        word-wrap: break-word;
+        width: 185px;
+    }
+
+    .taskInfo .tablePadding {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .taskTable .taskTableTitle {
+        overflow: hidden;
+        float: left;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .taskTable .createTaskBtn {
+        margin-bottom: 16px;
+    }
+
+    .btnSidebarInDashBoard div {
+        width: 170px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .taskTableInDashBoard {
+        margin: 0px !important;
+        width: 100% !important;
+    }
+
+        .taskTableInDashBoard .taskHandler {
+            width: 43px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .taskTableInDashBoard .editOneTaskBtn {
+            cursor: pointer;
+        }
+
+        .taskTableInDashBoard .deleteOneTaskBtn {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+    .taskInfo .tableTitleStyle {
+        width: 60px;
+        color: #E0E0E3;
+    }
+
+    .operationLogComment {
+        word-wrap: break-word;
+        width: 265px;
+    }
+
+    table.recentlyLogTable tr:nth-child(even) {
+        background-color: #47423C;
+    }
+
+    table.recentlyLogTable tr:nth-child(odd) {
+        background-color: #514C44;
+    }
+
+    .eachTaskGroup .taskGroupName {
+        float: left;
+        width: 160px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .taskBtn {
+        height: 30px;
+        line-height: 30px;
+        padding-left: 15px;
+        padding-right: 15px;
+        border-radius: 2px;
+        color: #000;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .startTaskBtn {
+        background-color: #fff;
+    }
+
+    .finishTaskBtn {
+        background-color: #77ff77;
+        margin-left: 10px;
+    }
+
+    .errorTaskBtn {
+        color: #fff;
+    }
+
+    .taskBtnDisable {
+        background-color: #b4b4b4;
+        color: #e3e3e3;
+        cursor: default;
+    }
+
+    .disableBtnTip {
+        color: #888;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    .taskGroupBtnfloat {
+        float: left;
+        margin-right: 10px;
+        min-width: 46px;
+    }
+
+    .importDescription {
+        color: #999999;
+        height: 30px;
+        line-height: 24px;
+    }
+
+    .importDescDiv {
+        font-size: 12px;
+        margin-top: -10px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .modelExcel {
+        background-image: url(../../Images/Common/excel.png);
+        background-size: 16px 16px;
+        background-repeat: no-repeat;
+        padding-left: 19px;
+        margin-left: 3px;
+        cursor: pointer;
+    }
+
+    #importDialogId {
+        display: none;
+    }
+
+    #uploadNewExcelFile {
+        margin-top: 15px;
+    }
+
+        #uploadNewExcelFile .cnabs_file_picker_preview {
+            width: 469px;
+        }
+    .blockedIssueDiv {
+        margin-top: 20px;
+        font-size: 16px;
+        background-image: url(../../Images/yellowAlert.png);
+        background-repeat: no-repeat;
+        background-position:0px 4px;
+        padding-left:20px;
+    }
+    .blockedIssueTable {
+        font-size:13px;
+        border-collapse:collapse;
+        width:100%;
+    }
+    .blockedName {
+        background-repeat:no-repeat;
+        background-position:0px 3px;
+        padding-left:15px;
+        color:#ffc446;
+        cursor:pointer;
+    }
+</style>
+<link href="~/Content/jquery.gridly.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-gridly/jquery.gridly.js"></script>
+<script type="text/javascript">
+
+    var gLastShowTaskShortCode = null;
+
+    function initEvents(runNow, keepShow) {
+        embedPanel({
+            panel: '#divDashboardExProcessRight',
+            parent: '#divDashboardExProcessParent',//'.taskTable',
+            direction: 'right',
+            toggleButton: '.btnSidebarInDashBoard',
+            hideButton: "#btnHide",
+            onHideButtonClick: function () {
+                gLastShowTaskShortCode = null;
+            },
+            returnScroll: true,
+            // onVisibleCallback: myFunction,
+            backgroundColor: "#47423c",
+        }, runNow, keepShow);
+    }
+
+    $(function () {
+        initEvents(false, false);
+    });
+
+    angular.module('DashBoard').controller('DashboardExProcess', function ($http, $scope, $rootScope, projectSeriesHelper, locationURL) {
+        $scope.loadProfile = cnabsLoadUserInfoTitle;
+        $scope.showProfile = cnabsGetUserInfoTitle;
+
+        $scope.selectedTaskGroup = null;
+
+        $rootScope.$on("UpdateDashboardExProcess", function (event, projectSeriesGuid, MonitorGuid, taskGroupGuid) {
+            if (MonitorGuid != undefined && MonitorGuid.uidChain != undefined) {
+                $scope.ReloadPage(projectSeriesGuid, MonitorGuid.uidChain.taskGroupGuid);
+            }
+            else if (taskGroupGuid != undefined && taskGroupGuid != null) {
+                $scope.ReloadPage(projectSeriesGuid, taskGroupGuid);
+            }
+            else {
+                $scope.ReloadPage(projectSeriesGuid)
+            }
+
+
+            if ($scope.TaskInfoIsShown != undefined && $scope.TaskInfoIsShown) {
+                //切换tab标签时，页面返回初始状态
+                initEvents(true, false);
+                $scope.TaskInfoIsShown = false;
+                gLastShowTaskShortCode = null;
+            }
+        });
+
+        $scope.ReloadPage = function (projectSeriesGuid, taskGroupGuid) {
+            if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            }
+
+            $scope.finishedTaskCount = 0;
+            $scope.taskCount = 0;
+            $scope.percentCompleted = "0.00%";
+
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+
+            $scope.getProjectSeriesProcessInfo($scope.projectSeriesInfo.selectedItem.Guid);
+            $scope.GetTaskGroupList(taskGroupGuid);
+        }
+
+        $scope.GetTaskList = function () {
+            if ($scope.selectedTaskGroup.guid != null) {
+                var param = { taskGroupGuid: $scope.selectedTaskGroup.guid };
+                cnabsAjax("获取工作组下的工作列表", "/TaskGroup/GetTasks", param, function (data) {
+                    $.each(data, function (index, item) {
+                        if (item.personInChargeUserProfile != null) {
+                            item.personInChargeUserName = item.personInChargeUserProfile.UserName;
+                            item.personInChargeRealName = item.personInChargeUserProfile.RealName;
+                        } else {
+                            item.personInChargeUserName = "";
+                            item.personInChargeRealName = "";
+                        };
+                        item.statusColor = cnabsGetColorByTaskStatus(item.status);
+                        item.controlTaskStatus = { "color": item.statusColor };
+                        item.status = cnabsGetChineseStatusByTaskStatus(item.status);
+                        if (item.reminderInfo.Exist) {
+                            if (item.reminderInfo.Messagestatus == "SendOk") {
+                                item.reminderInfo.reminderIconSrc = '../../Images/Common/bell_grey_solid.png';
+                            } else if (item.reminderInfo.Messagestatus == "UnSend") {
+                                item.reminderInfo.reminderIconSrc = '../../Images/Common/bell_yellow_solid.png';
+                            }
+                        } else {
+                            item.reminderInfo.reminderIconSrc = '../../Images/Common/bell_yellow_hollow.png';
+                        }
+                        item.reminderLock = true;
+                        if (item.permission.length >= 2) {
+                            item.reminderLock = false;
+                        }
+                    })
+                    $scope.tasks = eval(data);
+                    $scope.$apply();
+                })
+            } else {
+                $scope.tasks = [];
+            }
+
+        }
+
+        $scope.controlPanelHeight = function (taskTableHeight) {
+            $(".taskTable").height(taskTableHeight);
+            $(".taskTable .pusher").height(taskTableHeight)
+        }
+        var previousSequence = '';
+        var updateSequence = '';
+        $scope.gridly = function () {
+            $('.gridly').gridly({
+                base: 10,
+                gutter: 10,
+                columns: 1,
+                callbacks: { reordering: reordering, reordered: reordered }
+            });
+            function reordering($elements) {
+                previousSequence = '';
+                $.each($elements, function (index, item) {
+                    previousSequence += item.id;
+                    if (index != $elements.length - 1) {
+                        previousSequence += "|";
+                    }
+                })
+            };
+            function reordered($elements, ev) {
+                updateSequence = '';
+                $.each($elements, function (index, item) {
+                    updateSequence += item.id;
+                    if (index != $elements.length - 1) {
+                        updateSequence += "|";
+                    }
+                })
+                if (updateSequence != previousSequence) {
+                    var param = { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid, orderedTaskGroupGuids: updateSequence }
+                    cnabsAjax("获取该产品系列下的工作组", "/TaskGroup/ResetSequence", param, function (data) {
+                    })
+                }
+            };
+
+        }
+        $scope.GetTaskGroupList = function (taskGroupGuid) {
+            $scope.taskGroups = [];
+            $scope.tasks = [];
+            var param = { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid };
+            cnabsAjax("获取该产品系列下的工作组", "/TaskGroup/GetTaskGroupList", param, function (data) {
+                $scope.controlPanelHeight(163 + 83 * data.length);
+                $scope.selectedTaskGroup = null;
+                if (data.length) {
+                    var findTaskGroupGuid = data[0].guid;
+                    if ($scope.selectedTaskGroup != null) {
+                        $.each(data, function () {
+                            if (this.guid == $scope.selectedTaskGroup.guid) {
+                                findTaskGroupGuid = this.guid;
+                            }
+                        });
+                    }
+                    if (taskGroupGuid != undefined) {
+                        $.each(data, function () {
+                            if (this.guid == taskGroupGuid) {
+                                findTaskGroupGuid = this.guid;
+                            }
+                        });
+                    }
+                    $.each(data, function () {
+                        $scope.setTaskGroupStyle(this, this.guid == findTaskGroupGuid);
+                    })
+
+                    $scope.taskGroups = eval(data);
+
+                    $scope.taskGroupChange(findTaskGroupGuid);
+                }
+                $scope.$apply();
+                if (cnabsIsPC()) {
+                    $scope.gridly();
+                }
+            });
+        }
+
+        $scope.setTaskGroupStyle = function (taskGroup, isSelected) {
+            taskGroup.progressBarDataWidth = { 'width': taskGroup.percentCompleted };
+            taskGroup.percentColor = { 'color': "#b7afa5" };
+            if (taskGroup.percentCompleted == "100%") {
+                taskGroup.percentCompleted = '完成';
+                taskGroup.percentColor = { 'color': cnabsGetColorByTaskStatus('完成') };
+            }
+
+            if (isSelected) {
+                taskGroup.controlBackgroundColor = { 'backgroundColor': '#37342e', 'border': '1px solid #37342e', 'color': '#ffc446', 'paddingRight': '20px' };
+            } else {
+                taskGroup.controlBackgroundColor = { 'backgroundColor': '#534d46', 'border': '1px solid #625c53', 'color': '#fff', 'paddingRight': '0px' };
+            }
+        }
+
+        $scope.getProjectSeriesProcessInfo = function (projectSeriesGuid) {
+            if (cnabsHasContent(projectSeriesGuid)) {
+                var params = { projectSeriesGuid: projectSeriesGuid };
+                cnabsAjax('获取产品进度', '/ProjectSeries/GetProjectSeriesProcessInfo', params, function (data) {
+                    $scope.finishedTaskCount = data.finishedTaskCount;
+                    $scope.taskCount = data.taskCount;
+                    $scope.percentCompleted = data.percentCompleted;
+                    $scope.$apply();
+                });
+            }
+        }
+
+        $scope.projectSeriesChange = function (projectSeriesGuid) {
+            $scope.getProjectSeriesProcessInfo(projectSeriesGuid);
+            $scope.GetTaskGroupList();
+            $rootScope.$emit("UpdateCurrentProjectSeriesGuid", projectSeriesGuid);
+        }
+
+        $scope.taskGroupChange = function (taskGroupGuid) {
+            if (updateSequence != previousSequence) {
+                return
+            }
+            $scope.selectedTaskGroup = null;
+            $.each($scope.taskGroups, function () {
+                if (this.guid == taskGroupGuid) {
+                    $scope.selectedTaskGroup = this;
+                }
+            });
+
+            if ($scope.selectedTaskGroup == null) {
+                alert('runtime error : taskGroupChange');
+            }
+
+            $scope.GetTaskList();
+            $.each($(".eachTaskGroup"), function (index, item) {
+                item.style.backgroundColor = '#534d46';
+                item.style.borderColor = '#625c53';
+                item.style.color = '#fff';
+                item.style.paddingRight = '0px';
+                if (item.id == taskGroupGuid) {
+                    item.style.backgroundColor = '#37342e';
+                    item.style.borderColor = '#37342e'
+                    item.style.color = '#ffc446';
+                    item.style.paddingRight = '20px';
+                }
+            })
+            locationURL.setURLHash("taskGroupGuid", taskGroupGuid);
+
+
+        }
+
+        $scope.showTaskInfo = function (task, isEditTask) {
+            if ($scope.TaskInfoIsShown) {
+                var lastShortCode = gLastShowTaskShortCode;
+                if (lastShortCode != task.shortCode && isEditTask) {
+                    return
+                }
+                if (lastShortCode != task.shortCode || isEditTask) {
+                    initEvents(true, true);
+                    $scope.TaskInfoIsShown = true;
+                    gLastShowTaskShortCode = task.shortCode;
+                }
+                else {
+                    initEvents(true, false);
+                    $scope.TaskInfoIsShown = false;
+                    gLastShowTaskShortCode = null;
+                }
+            }
+            else {
+                if (isEditTask) {
+                    return
+                }
+                initEvents(true, true);
+                $scope.TaskInfoIsShown = true;
+                gLastShowTaskShortCode = task.shortCode
+            }
+            $scope.taskExtensionType = task.taskExType;
+            $scope.taskNameInDetails = task.taskName;
+            $scope.shortCodeInDetails = task.shortCode;
+            $scope.getBlockedIssues(task.shortCode);
+            $scope.enterTaskPageLink = "/Task?shortCode=" + task.shortCode;
+            var taskStatusColor = cnabsGetColorByTaskStatus(task.status);
+            $scope.controlTaskStatus = { 'color': taskStatusColor }
+            $scope.taskStatus = task.status;
+            $scope.UpdateBtnStartStopByStatus(task.status)
+            $scope.taskDescription = task.detail;
+            $scope.taskObjective = task.target;
+            $scope.taskPersonInChargeRealName = task.personInChargeRealName;
+            $scope.taskPersonInChargeUserName = task.personInChargeUserName;
+            if (task.taskName != undefined) {
+                cnabsAjax('获取历史操作记录', '/Task/GetTaskStatusHistory', { shortCode: task.shortCode, cachedRecordCount: 0 }, function (data) {
+                    $scope.operationLogs = data;
+                    $scope.$apply();
+
+                    cnabsInitTimeAgo();
+                });
+            } else {
+                $scope.operationLogs = [];
+            }
+        }
+
+        $scope.getBlockedIssues = function (shortCode) {
+            var params = {
+                shortCode: shortCode
+            };
+            cnabsAjax('获取工作的受阻问题', '/Issue/GetIssueInfo', params, function (data) {
+                $scope.blockedIssues = data;
+                $scope.$apply();
+            })
+        }
+
+        $scope.openBlockedIssue = function (issueGuid) {
+            window.open("/Dashboard#/Issue?taskGroupGuid=" + $scope.projectSeriesInfo.selectedItem.Guid + "#issueGuid=" + issueGuid);
+        }
+
+        $scope.createTaskGroup = function (projectSeriesGuid) {
+            var createTaskGroupDialog = [{
+                title: "新组名称",
+                type: "text",
+                elementId: "newTaskGroupName",
+                value: "",
+                placeHolder: "请填写新组名称",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "30"
+                }
+            }, {
+                title: "新组描述",
+                type: "textarea",
+                elementId: "newTaskGroupDescription",
+                value: "",
+                placeHolder: "请填写新组描述",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "500"
+                }
+            }]
+            cnabsAutoDlgYesNo(createTaskGroupDialog, "增加新工作组", function (data) {
+                var param = {
+                    projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                    name: data.newTaskGroupName,
+                    description: data.newTaskGroupDescription
+                };
+
+                cnabsAjax("增加新工作组", "/TaskGroup/NewTaskGroup", param, function (data) {
+                    $scope.GetTaskGroupList(data);
+                    $scope.$apply();
+                });
+            })
+        }
+
+        $scope.removeTaskGroup = function (taskGroupGuid, taskGroupName, event) {
+            if (updateSequence != previousSequence) {
+                return
+            }
+            cnabsStopPropagation(event);
+
+            var msg = '确认删除工作组[' + taskGroupName + ']?' + '<br>工作组下的工作将全部删除';
+            cnabsAutoDlgYesNo(null, '删除工作组', function () {
+                var param = {
+                    projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+                    taskGroupGuid: taskGroupGuid,
+                }
+                cnabsAjax("删除工作组", "/TaskGroup/RemoveTaskGroup", param, function (data) {
+                    $scope.selectedTaskGroup = null;
+                    $scope.ReloadPage($scope.projectSeriesInfo.selectedItem.Guid);
+                    $scope.$apply();
+                });
+            }, msg);
+        }
+
+        $scope.importProcessTable = function () {
+            if (!cnabsHasContent($scope.projectSeriesInfo.selectedItem.CurrentProjectGuid)) {
+                cnabsMsgError("请先创建项目");
+                return;
+            }
+            if ($scope.selectedTaskGroup == null) {
+                cnabsMsgError("请先创建工作组");
+                return;
+            }
+            $scope.selectedFiles = [];
+            $(".importDescDiv").css("margin-top", "-10px");
+            $("#importDialogId").css("display", "block");
+            var filePicker = new CnabsFilePicker();
+            filePicker.init("uploadNewExcelFile", {
+                buttonText: '选择文件',
+                maxFileCount: 1,
+                limitFileTypes: ['xlsx'],
+                onChange: function (files, images) {
+                    $scope.selectedFiles = files[0];
+                    if (files.length == 1) {
+                        $(".importDescDiv").css("margin-top", "10px");
+                    }
+                    if (files.length == 0) {
+                        $(".importDescDiv").css("margin-top", "-10px");
+                    }
+                }
+            })
+            cnabsDlgYesNo('importDialogId', "导入", function () {
+                var formDataImportDocument = new FormData();
+                formDataImportDocument.append("file", $scope.selectedFiles);
+                formDataImportDocument.append("projectSeriesGuid", $scope.projectSeriesInfo.selectedItem.Guid);
+                cnabsAjaxUploadFile("导入工作", "/TaskGroup/ImportTable", formDataImportDocument, function (data) {
+                    var msg = '文件导入成功, 共添加了' + data.taskGroupCount + '条工作组，' + data.taskCount + '条工作';
+                    cnabsMsgSuccess(msg);
+                    $scope.ReloadPage();
+                });
+            }, 'auto', 'auto');
+        }
+
+        $scope.exportProcessTable = function () {
+            var param = {
+                projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid,
+            };
+            cnabsAjax("导出工作列表", "/TaskGroup/ExportTable", param, function (guid) {
+                cnabsDownloadURL('/Download/Index?guid=' + guid);
+            });
+        }
+
+        $scope.modifyTaskGroup = function (taskGroupGuid, event) {
+            if (updateSequence != previousSequence) {
+                return
+            }
+            cnabsStopPropagation(event);
+            var projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            var param = { projectSeriesGuid: projectSeriesGuid };
+            cnabsAjax("获取该产品系列下的工作组", "/TaskGroup/GetTaskGroupList", param, function (data) {
+                $.each(data, function (index, item) {
+                    if (item.guid == taskGroupGuid) {
+                        var modifyTaskGroupInfoInDialog = [{
+                            title: "组的名称",
+                            type: "text",
+                            elementId: "TaskGroupName",
+                            value: item.name,
+                            placeHolder: "请填写工作组新名称",
+                            limit: {
+                                type: "rangelength",
+                                min: "1",
+                                max: "30"
+                            }
+                        }, {
+                            title: "组的描述",
+                            type: "textarea",
+                            elementId: "TaskGroupDescription",
+                            value: item.description,
+                            placeHolder: "请填写工作组新描述",
+                            limit: {
+                                type: "rangelength",
+                                min: "1",
+                                max: "500"
+                            }
+                        }]
+                        cnabsAutoDlgYesNo(modifyTaskGroupInfoInDialog, '修改工作组', function (data) {
+                            var param = {
+                                projectSeriesGuid: projectSeriesGuid,
+                                taskGroupGuid: taskGroupGuid,
+                                name: data.TaskGroupName,
+                                description: data.TaskGroupDescription
+                            }
+
+                            cnabsAjax("修改工作组", "/TaskGroup/ModifyTaskGroup", param, function (data) {
+                                if (data == 1) {
+                                    $scope.GetTaskGroupList();
+                                }
+                                $scope.$apply();
+                            });
+                        })
+                    }
+                })
+            })
+        }
+        $scope.createTask = function () {
+            if (!cnabsHasContent($scope.projectSeriesInfo.selectedItem.CurrentProjectGuid)) {
+                cnabsMsgError("请先创建项目");
+                return;
+            }
+            if ($scope.selectedTaskGroup == null) {
+                cnabsMsgError("请先创建工作组");
+                return;
+            }
+
+            var userOptionArray = [];
+            userOptionArray.push(["", "无"]);
+            cnabsAjaxSync("获取负责人列表", "/Task/GetPersonInCharges", { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid }, function (data) {
+                $.each(data, function (index, item) {
+                    userOptionArray.push([item.UserInfo.UserName, cnabsFormatUserName(item.UserInfo)]);
+                })
+            });
+
+            var newTaskInfoInDialog = [{
+                title: "工作名称",
+                type: "text",
+                elementId: "newTaskName",
+                value: "",
+                placeHolder: "请填写工作名称",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "30"
+                }
+            }, {
+                title: "开始时间",
+                type: "date",
+                elementId: "newTaskStartTime",
+                limit: {
+                    type: "dateISO",//判断日期格式必须为YYYY-MM-DD
+                    required: false//可以为空或者“-”
+                }
+            }, {
+                title: "截止时间",
+                type: "date",
+                elementId: "newTaskEndTime",
+                limit: {
+                    type: "dateISO"//判断日期格式必须为YYYY-MM-DD
+                }
+            }, {
+                title: "扩展类型",
+                type: "select",
+                elementId: "newTaskExtensionType",
+                OptionArray: [["", "无"], ["CheckList", "工作要点检查"], ["DocumentCheckList", "文件整合"]]
+            }, {
+                title: "负责人",
+                type: "select",
+                elementId: "personInCharge",
+                value: userOptionArray[0][0],
+                OptionArray: userOptionArray
+            }, {
+                title: "工作目标",
+                type: "textarea",
+                elementId: "newTaskTarget",
+            }, {
+                title: "工作描述",
+                type: "textarea",
+                elementId: "newTaskDetail",
+            }]
+
+            cnabsAutoDlgYesNo(newTaskInfoInDialog, "增加新工作", function (data) {
+                var param = {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    name: data.newTaskName,
+                    startTime: data.newTaskStartTime,
+                    endTime: data.newTaskEndTime,
+                    taskExtensionType: data.newTaskExtensionType,
+                    taskDetail: data.newTaskDetail,
+                    taskTarget: data.newTaskTarget,
+                    taskGroupGuid: $scope.selectedTaskGroup.guid,
+                    personInCharge: data.personInCharge
+                };
+                var noError = true;
+                cnabsAjaxSync("创建工作", "/Task/CreateTask", param, function (data) {
+                    $scope.ReloadPage($scope.projectSeriesInfo.selectedItem.Guid, $scope.selectedTaskGroup.guid);
+                }, function (data) {
+                    cnabsMsgError(data.Value);
+                    noError = false;
+                })
+                return noError;
+            });
+        }
+        $scope.EditOneTask = function (shortCode, taskName) {
+            var userOptionArray = [];
+            userOptionArray.push(["", "无"]);
+            cnabsAjaxSync("获取负责人列表", "/Task/GetPersonInCharges", { projectSeriesGuid: $scope.projectSeriesInfo.selectedItem.Guid }, function (data) {
+                $.each(data, function (index, item) {
+                    userOptionArray.push([item.UserInfo.UserName, cnabsFormatUserName(item.UserInfo)]);
+                })
+            });
+            cnabsAjax("获取工作信息", '/Task/GetTaskInfo', { shortCode: shortCode }, function (data) {
+                var editTaskInfoInDialog = [{
+                    title: "工作名称",
+                    type: "text",
+                    elementId: "editTaskName",
+                    value: data.taskName,
+                    limit: {
+                        type: "rangelength",
+                        min: "1",
+                        max: "30"
+                    }
+                }, {
+                    title: "开始时间",
+                    type: "date",
+                    value: data.startTime,
+                    elementId: "editTaskStartTime",
+                    limit: {
+                        type: "dateISO",//判断日期格式必须为YYYY-MM-DD
+                        required: false//可以为空或者“-”
+                    }
+                }, {
+                    title: "截止时间",
+                    type: "date",
+                    value: data.endTime,
+                    elementId: "editTaskEndTime",
+                    limit: {
+                        type: "dateISO"//判断日期格式必须为YYYY-MM-DD
+                    }
+                }, {
+                    title: "扩展类型",
+                    type: "select",
+                    elementId: "editTaskExtensionType",
+                    value: data.taskExType,
+                    OptionArray: [["", "无"], ["CheckList", "工作要点检查"], ["DocumentCheckList", "文件整合"]]
+                }, {
+                    title: "负责人",
+                    type: "select",
+                    elementId: "personInCharge",
+                    value: data.personInCharge,
+                    OptionArray: userOptionArray
+                }, {
+                    title: "工作目标",
+                    type: "textarea",
+                    value: data.target,
+                    elementId: "editTaskTarget",
+                }, {
+                    title: "工作描述",
+                    type: "textarea",
+                    value: data.detail,
+                    elementId: "editTaskDetail",
+                }]
+                cnabsAutoDlgYesNo(editTaskInfoInDialog, '修改工作', function (data) {
+                    var param = {
+                        shortCode: shortCode,
+                        name: data.editTaskName,
+                        startTime: data.editTaskStartTime,
+                        endTime: data.editTaskEndTime,
+                        taskExtensionType: data.editTaskExtensionType,
+                        taskDetail: data.editTaskDetail,
+                        taskTarget: data.editTaskTarget,
+                        personInCharge: data.personInCharge
+                    };
+                    var noError = true;
+                    cnabsAjaxSync("修改工作", '/Task/ModifyTask', param, function (data) {
+                        if (data == 1) {
+                            $scope.ReloadPage($scope.projectSeriesInfo.selectedItem.Guid, $scope.selectedTaskGroup.guid);
+                            cnabsAjax("获取工作信息", '/Task/GetTaskInfo', { shortCode: shortCode }, function (data) {
+                                if (data.personInChargeUserProfile != null) {
+                                    data.personInChargeUserName = data.personInChargeUserProfile.UserName;
+                                    data.personInChargeRealName = data.personInChargeUserProfile.RealName;
+                                } else {
+                                    data.personInChargeUserName = "";
+                                    data.personInChargeRealName = "";
+                                }
+                                $scope.showTaskInfo(data, true);
+                                $scope.$apply();
+                            })
+                        }
+                    }, function (data) {
+                        cnabsMsgError(data.Value);
+                        noError = false;
+                    });
+                    return noError
+                });
+            });
+
+        }
+        $scope.DeleteOneTask = function (shortCode, taskName, isVaildandUnSend) {
+            var msg = '确认删除工作[' + taskName + '(' + shortCode + ')]';
+            if (isVaildandUnSend == 'UnSend') {
+                msg += '并取消未发送的提醒'
+            }
+            msg += '？';
+            cnabsAutoDlgYesNo(null, '删除工作', function () {
+                cnabsAjax("取消提醒", "/MessageReminding/DeleteMessageReminding", { uid: shortCode }, function (data) {
+                    cnabsAjax("删除工作", '/Task/RemoveTask', { shortCode: shortCode }, function (data) {
+                        $scope.ReloadPage($scope.projectSeriesInfo.selectedItem.Guid, $scope.selectedTaskGroup.guid);
+                        $scope.showTaskInfo({ shortCode: shortCode }, true);
+                        $scope.$apply();
+                    });
+                });
+            }, msg);
+        }
+
+        $scope.exportTable = function () {
+            var table = $scope.getTaskTable($scope.tasks);
+            var tableBodyJson = JSON.stringify(table);
+            var param = {
+                tableBodyJson: tableBodyJson,
+            };
+            cnabsAjax("导出工作列表", "/Task/ExportTable", param, function (guid) {
+                cnabsDownloadURL('/Download/Index?guid=' + guid);
+            });
+        }
+
+        $scope.getTaskTable = function (taskTable) {
+            var newTable = [];
+            $.each(taskTable, function (index, item) {
+                var row = {
+                    工作名称: item.taskName,
+                    开始时间: item.beginTime,
+                    结束时间: item.endTime,
+                    最新状态: item.status,
+                    负责人: item.personInChargeRealName,
+                };
+                newTable.push(row);
+            });
+            return newTable;
+        }
+
+        $scope.UpdateBtnStartStopByStatus = function (status) {
+            if (status == "进行中") {
+                $("#btnStartStop").text("停止工作");
+            }
+            else {
+                $("#btnStartStop").text("开始工作");
+            }
+        }
+        $scope.ControlTaskStatusColor = function (id, value) {
+            $("#" + id).html(value);
+            $("#" + id).css("color", cnabsGetColorByTaskStatus(value));
+        }
+
+        $scope.ChangeTaskStatus = function (newTaskStatus, info, isNotMatch) {
+            var params = { shortCode: $scope.shortCodeInDetails, newTaskStatus: newTaskStatus, comment: info };
+            cnabsAjax('修改任务状态', '/Task/ChangeTaskStatus', params, function (data) {
+                $scope.ControlTaskStatusColor("taskStatus", data);
+                $scope.UpdateBtnStartStopByStatus(data);
+                $scope.ReloadPage($scope.projectSeriesInfo.selectedItem.Guid, $scope.selectedTaskGroup.guid);
+                cnabsAjax("获取工作信息", '/Task/GetTaskInfo', { shortCode: shortCode }, function (data) {
+                    if (data.personInChargeUserProfile != null) {
+                        data.personInChargeUserName = data.personInChargeUserProfile.UserName;
+                        data.personInChargeRealName = data.personInChargeUserProfile.RealName;
+                    } else {
+                        data.personInChargeUserName = "";
+                        data.personInChargeRealName = "";
+                    }
+                    $scope.showTaskInfo(data, true);
+                    $scope.$apply();
+                })
+
+            });
+        }
+        $scope.GetSubsequentTasksCount = function () {
+            $("#am_warning").css("display", "none");
+            shortCode = $scope.shortCodeInDetails;
+            $.ajax({
+                url: '/Task/GetSubsequentTasksRecursively',
+                type: 'Post',
+                data: { shortCode: shortCode },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data.length != 0) {
+                        var str = "";
+                        var index = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].Status == "Finished") {
+                                index++
+                                str += "<div>" + index + "、" + data[i].TaskName + "[" + data[i].ShortCode + "]" + "</div>"
+                            }
+                        };
+                        if (index == 0 && str == "") {
+                            $("#am_warning").css("display", "none");
+                        } else {
+                            $("#am_warningContent").html(str);
+                            $("#am_warning").css("display", "block");
+                        }
+                    } else {
+                        $("#am_warning").css("display", "none");
+                    }
+                },
+                error: function () {
+                    alert("获取后续工作失败");
+                }
+            });
+        }
+        $scope.am_appear = function (nextStatus, isNotNull, isNotMatch) {
+            $("#redToolTip").css("display", "none");
+            $("#redToolTipLengthLimitation").css("display", "none");
+            if (isNotNull == undefined) {
+                isNecessary = false;
+            } else {
+                isNecessary = isNotNull;
+            }
+            $("#am_comment").val("");
+
+            amNextStatus = nextStatus;
+
+            //检查任务状态是否可以被修改
+            var isPass = false;
+            var params = { shortCode: $scope.shortCodeInDetails, newTaskStatus: amNextStatus };
+            cnabsAjaxSync('修改任务状态', '/Task/CheckChangeTaskStatus', params, function (data) {
+                isPass = true;
+            });
+            if (!isPass) {
+                return;
+            }
+
+            cnabsDlgYesNo('am_dialog', '请填写操作说明', function () {
+                if (isNecessary) {
+                    if ($("#am_comment").val() == "") {
+                        $("#redToolTipLengthLimitation").css("display", "none");
+                        $("#redToolTip").css("display", "block");
+                        return false;
+                    } else {
+                        $("#redToolTip").css("display", "none");
+                        var aminfor = $('#am_comment').val();
+                        if (aminfor.length > 500) {
+                            $("#redToolTipLengthLimitation").css("display", "block");
+                            return false;
+                        }
+
+                        $scope.ChangeTaskStatus(amNextStatus, aminfor, isNotMatch);
+                    }
+                } else {
+                    $("#redToolTip").css("display", "none");
+                    var aminfor = $('#am_comment').val();
+                    if (aminfor.length > 500) {
+                        $("#redToolTipLengthLimitation").css("display", "block");
+                        return false;
+                    }
+
+                    $scope.ChangeTaskStatus(amNextStatus, aminfor, isNotMatch);
+                }
+            }, "auto", 350);
+        }
+        $scope.startTask = function () {
+            if ($("#btnStartStop").text() == "开始工作") {
+                $scope.GetSubsequentTasksCount();
+                $scope.am_appear('Running');
+            }
+            else {
+                $scope.GetSubsequentTasksCount();
+                $scope.am_appear('Waitting');
+            }
+        }
+        $scope.finishTask = function () {
+            $("#am_warning").css("display", "none");
+            $scope.am_appear('Finished');
+        }
+        $scope.happenError = function () {
+            $scope.GetSubsequentTasksCount();
+            $scope.am_appear('Error', true);
+        };
+        $scope.downloadModel = function () {
+            var param = { exampleFileName: "工作流模板" };
+            cnabsAjax("导出工作列表", "/Download/ExampleFile", param, function (guid) {
+                cnabsDownloadURL('Download/Index?guid=' + guid);
+            })
+        }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Process") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+    });
+
+</script>
+<div id="divDashboardExProcessParent" ng-controller="DashboardExProcess">
+    <div id="divDashboardExProcessLeft" class="divDashboardExProcessLeft">
+        <div class="taskGroupLabels">
+            <div class="projectSeries">
+                <span class="projectSeriesTitle">选择项目：</span>
+                <select style="width:213px;height:28px;margin-left:3px;" ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid)" ng-model="projectSeriesInfo.selectedItem" ng-options="x.Name for x in projectSeriesInfo.items"></select>
+            </div>
+            <div class="projectSeriesProcess lineMargin">
+                <span class="projectSeriesProcessTitle">总进度</span>
+                <span ng-cloak style="float:right;margin-right:20px;">{{finishedTaskCount}}/{{taskCount}} {{percentCompleted}}</span>
+            </div>
+            <div style="width:286px;margin-bottom:10px;height: 30px;line-height: 30px;">
+                <div class="cnabs_btn left taskGroupBtnfloat" ng-click="importProcessTable()">导入</div>
+                <div class="cnabs_btn left taskGroupBtnfloat" ng-click="exportProcessTable()">导出</div>
+                <div class="cnabs_btn left taskGroupBtnfloat" style="width:94px;margin-right:0px;padding-left:30px; background-image:url(../../Images/Common/add.png);background-repeat:no-repeat;background-position:20px 2px" ng-click="createTaskGroup()">增加工作组</div>
+            </div>
+            <div class="taskGroups gridly" style="position:relative;">
+                <div class="eachTaskGroup brick" id="{{taskGroup.guid}}" ng-repeat="taskGroup in taskGroups" ng-cloak ng-click="taskGroupChange(selectedTaskGroup);" ng-init="selectedTaskGroup = taskGroup.guid; selectedProjectGuid=taskGroup.projectGuid" ng-style="taskGroup.controlBackgroundColor">
+                    <div style="overflow:hidden;font-size:14px;">
+                        <span class="taskGroupName" title="名称：{{taskGroup.name}}&#10描述：{{taskGroup.description}}">{{taskGroup.name}}</span>
+                        <span class="removeTaskGroupBtn" ng-click="removeTaskGroup(taskGroup.guid, taskGroup.name, $event)">删除</span>
+                        <span class="modifyTaskGroupBtn" ng-click="modifyTaskGroup(taskGroup.guid, $event)">编辑</span>
+                    </div>
+                    <div style="overflow:hidden;">
+                        <span class="taskGroupPercent" ng-style="taskGroup.percentColor">{{taskGroup.finishedTaskCount+"/"+taskGroup.taskCount}}<span> {{taskGroup.percentCompleted}}</span></span>
+                        <div class="progressBar">
+                            <div class="progressBarData cnabs_bg_green" ng-style="taskGroup.progressBarDataWidth"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="taskTable cnabs_scrollbar">
+            <div class="pusher">
+                <div style="padding:10px 20px 10px 20px;overflow:hidden;">
+                    <div class="taskTableTitle">工作列表</div>
+                    <div class="createTaskBtn cnabs_btn_add" ng-click="createTask()">增加工作</div>
+                    <table id="taskTableInDashBoard" class="table_v2 alone hover taskTableInDashBoard">
+                        <tr>
+                            <th class="text-left">工作名称</th>
+                            <th class="text-left">开始时间</th>
+                            <th class="text-left">截止时间</th>
+                            <th class="text-left">最新状态</th>
+                            <th class="text-left">负责人</th>
+                            <th class="text-center">提醒</th>
+                            <th class="text-left">操作</th>
+                        </tr>
+                        <tr ng-cloak ng-repeat="task in tasks">
+                            <td class="btnSidebarInDashBoard" ng-click="showTaskInfo(task)"><div title="{{task.taskName}}">{{task.taskName}}</div></td>
+                            <td class="text-left" style="width:95px;">{{task.beginTime}}</td>
+                            <td class="text-left" style="width:95px;">{{task.endTime}}</td>
+                            <td class="text-left" ng-style="task.controlTaskStatus"><div style="width:60px;">{{task.status}}</div></td>
+                            <td class="text-left">
+                                <div class="taskHandler" ng-mouseover="loadProfile(task.personInChargeUserName)" title="{{showProfile(task.personInChargeUserName)}}">
+                                    {{task.personInChargeRealName}}
+                                </div>
+                            </td>
+                            <td class="cnabs_pointer text-center" style="width:51px;" ng-click="setRemind(task.shortCode,task.endTime,'Task',GetTaskList,task.reminderLock)">
+                                <img class="reminderIcon" ng-src="{{task.reminderInfo.reminderIconSrc}}" alt="提醒" />
+                            </td>
+                            <td class="text-left">
+                                <span ng-click="EditOneTask(task.shortCode,task.taskName)" class="editOneTaskBtn cnabs_green">编辑</span>
+                                <span ng-click="DeleteOneTask(task.shortCode,task.taskName,task.reminderInfo.Exist?task.reminderInfo.Messagestatus:false)" class="deleteOneTaskBtn cnabs_red">删除</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="divDashboardExProcessRight" class="cnabs_scrollbar" style="width:326px;">
+        <div id="taskDetailsPanel" class="taskDetailsPanel" ng-cloak>
+            <div class="lineMargin" style="width:288px;">
+                <img id="btnHide" class="btnHide" src="../../Images/DashBoard/arrow_right.png" alt="Alternate Text" />
+                <a class="enterTaskPageBtn cnabs_btn" style="color:#fff;" href="{{enterTaskPageLink}}" target="_blank">进入工作面板</a>
+            </div>
+            <div class="taskInfo">
+                <table class="infoTable" style="margin-top:15px;">
+                    <tr>
+                        <td class="tablePadding"><div class="tableTitleStyle">工作名称</div></td>
+                        <td class="tablePadding"><div class="tableValueStyle">{{taskNameInDetails}}</div></td>
+                    </tr>
+                    <tr>
+                        <td class="tablePadding"><div class="tableTitleStyle">负责人</div></td>
+                        <td class="tablePadding"><div class="tableValueStyle" ng-mouseover="loadProfile(taskPersonInChargeUserName)" title="{{showProfile(taskPersonInChargeUserName)}}">{{taskPersonInChargeRealName == "" ? "-" : taskPersonInChargeRealName}}</div></td>
+                    </tr>
+                    <tr>
+                        <td class="tablePadding"><div class="tableTitleStyle">工作状态</div></td>
+                        <td class="tablePadding"><div class="tableValueStyle" ng-style="controlTaskStatus">{{taskStatus}}</div></td>
+                    </tr>
+                    <tr>
+                        <td class="tablePadding"><div class="tableTitleStyle">工作目标</div></td>
+                        <td class="tablePadding"><div class="tableValueStyle">{{taskObjective}}</div></td>
+                    </tr>
+                    <tr>
+                        <td class="tablePadding"><div class="tableTitleStyle">工作描述</div></td>
+                        <td class="tablePadding"><div class="tableValueStyle">{{taskDescription}}</div></td>
+                    </tr>
+                </table>
+                <div class="cnabs_overhide" style="width:288px;">
+                    <div id="btnStartStop" class="taskBtn startTaskBtn left" ng-click="startTask()">开始工作</div>
+                    <div id="btnFinish" ng-if="taskExtensionType==''" class="taskBtn finishTaskBtn left" ng-click="finishTask()">完成工作</div>
+                    <div ng-if="taskExtensionType!=''" class="taskBtn finishTaskBtn taskBtnDisable left">完成工作</div>
+                    <div id="btnError" class="taskBtn errorTaskBtn cnabs_bg_red right" ng-click="happenError()">发生错误</div>
+                </div>
+                <div class="disableBtnTip" ng-if="taskExtensionType!=''">* 该工作存在扩展工作，请到 <a class="cnabs_yellow" href="{{enterTaskPageLink}}" target=" _blank">工作面板</a> 完成它</div>
+                <div ng-show="blockedIssues.length >= 1">
+                    <div class="blockedIssueDiv">有{{blockedIssues.length}}个问题阻碍了该工作：</div>
+                    <table class="blockedIssueTable infoTable">
+                        <tbody>
+                            <tr ng-repeat="issue in blockedIssues" ng-click="openBlockedIssue(issue.issueGuid)">
+                                <td class="tablePadding">
+                                    <span class="cnabs_ellipsis left blockedName" style="width:250px;background-image:url(../../Images/DashBoard/emergencyLevel{{issue.issueEmergencyLevel}}.png)" title="{{issue.issueName}}">{{issue.issueName}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="recentlyLog">
+                    <div class="recentlyLogTitle">最近日志：</div>
+                    <div>
+                        <table class="infoTable recentlyLogTable" ng-cloak ng-repeat="operationLog in operationLogs">
+                            <tr>
+                                <td style="overflow:hidden;color:#E0E0E3;">
+                                    <span style="float:left;">{{operationLog.UserName}}</span>
+                                    <abbr class='timeago' title='{{operationLog.Time}}' style="float:right;">{{operationLog.Time}}</abbr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div class="operationLogComment">{{operationLog.Comment.length == 0 ? '-' : operationLog.Comment}}</div></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--dialog begin-->
+    <div class="module scenario" style="display:none; margin-left: 10px;">
+        <div id="am_dialog">
+            <div class="am_text" id="am_dialogText">
+                <div id="am_warning" style="display:none;">
+                    <div style="font-size:14px; margin-bottom:4px;overflow:hidden;">
+                        <div class="am_warningYellowImage" style="float:left; margin-top:5px;"></div>
+                        <div style="float:left; margin-left:5px;">温馨提示：</div>
+                    </div>
+                    <div class="np-tip" style="max-height:93px; overflow:auto;margin-bottom:15px;font-size:14px;">
+                        <div>以下工作因是其后续工作，它们的工作状态将从完成变成等待或者逾期：</div>
+                        <div id="am_warningContent" style="word-break: break-all;">
+                        </div>
+                    </div>
+                </div>
+                <textarea id="am_comment" style="width:98%;height:100px;margin:5px auto 0px;resize:none;" placeholder="此处填写操作说明"></textarea>
+                <div id="redToolTip" style="display:none;">
+                    <span style="color:#ff6666; float:left; margin-left:0; font-size:14px;">操作说明不能为空！</span>
+                </div>
+                <div id="redToolTipLengthLimitation" style="display:none;">
+                    <span style="color:#ff6666; float:left; margin-left:0; font-size:14px;">操作说明不能超过500个字符数！</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--dialog end-->
+    <!--导入的dialog-->
+    <div id="importDialogId" class="cnabs_dialogCloth ">
+        <div id="uploadNewExcelFile"></div>
+        <div class="importDescDiv">
+            <span class="importDescription">您可以上传Excel文件，实现批量导入工作到系统，Excel文件格式参考:</span>
+            <span class="modelExcel cnabs_yellow" ng-click="downloadModel()">工作流模板</span>
+        </div>
+    </div>
+    <!--End-->
+</div>

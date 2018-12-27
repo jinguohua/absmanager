@@ -1,0 +1,84 @@
+@import "../../styles/theme/default.less";
+.abs-input-empty {
+  .ant-input {
+    font-family: @abs-font-family;
+    border: 1px solid @red-1 !important;
+  }
+}
+
+@radiusNum: 2px;
+
+.abs-input {
+  margin-bottom: 10px;
+  .ant-input {
+    font-family: @abs-font-family;
+    height: 48px;
+    background-color: @abs-input-bg;
+    border: 1px solid @abs-input-border;
+    border-radius: @radiusNum;
+    -webkit-border-radius: @radiusNum;
+    -moz-border-radius: @radiusNum;
+    color: @abs-input-color;
+    caret-color:  @abs-input-border-hover; 
+   
+    &:hover {
+      border: 1px solid @abs-input-border-hover;
+    }
+    &:focus {
+      border: 1px solid @abs-input-border-focus;
+    }
+    &-suffix {
+      cursor: pointer;
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    display: inline; 
+    .ant-input {
+       &:not(.ant-input-disabled) {
+        &:hover {
+         border: 1px solid @abs-input-border-hover !important;
+        }
+        &:focus {
+          border: 1px solid @abs-input-border-focus !important;
+        }
+      }
+    }
+  }
+
+  &.small-view {
+    .ant-input {
+      height: 30px;
+      width: 240px;
+    }
+  }
+
+  .ant-select-arrow {
+    color: @white-1;
+  }
+  
+  &.abs-input-error {
+    .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+      border: 1px solid @red-4;
+    }
+  }
+  .ant-input-group-addon:first-child {
+    background-color: @grey-9;
+  }
+  .ant-input-group > .ant-input:last-child, .ant-input-group-addon:last-child {
+    background-color: @grey-9;
+  }
+  .ant-select {
+    color: @white-1;
+  }
+  .ant-input-disabled {
+    color: @grey-6;
+    background: @grey-8;
+    &:hover {
+      border: 1px solid @grey-6 !important;
+     }
+     &:focus {
+       border: 1px solid @grey-6 !important;
+     }
+  }
+}

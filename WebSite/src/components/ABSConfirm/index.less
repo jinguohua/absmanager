@@ -1,0 +1,74 @@
+@import '../../styles/theme/default.less';
+
+.abs-confirm-default {
+  .ant-modal-content {
+    border-radius: 5px;
+    border: 1px solid @abs-modal-border-color;
+    color: @abs-modal-color;
+    background-color: @abs-modal-bgcolor;
+  }
+
+  .ant-modal-header {
+    border-bottom: none;
+  }
+
+  .ant-modal-close-x {
+    width: 44px;
+    height: 40px;
+    line-height: 40px;
+    font-size: @abs-modal-size;
+  }
+  .ant-modal-close {
+    color: @abs-modal-closebtn-color;
+    &:hover {
+      color: @abs-modal-closebtn-hover-color;
+    }
+  }
+
+  .ant-modal-body {
+    padding: 0;
+    .abs-confirm-title {
+      color: @abs-modal-color;
+      font-size: @abs-modal-confirm-title-size;
+      margin: 30px 20px 20px;
+      .abs-ant-icon {
+        margin-right: 8px;
+        &-success {
+          color: @abs-modal-confirm-success-color;
+        }
+        
+        &-error {
+          color: @abs-modal-confirm-error-color;
+        }
+
+        &-warning {
+          color: @abs-modal-confirm-warning-color;
+        }
+
+        // &-info {
+        //   color: @abs-modal-confirm-info-color;
+        // }
+      }
+    }
+    
+    .abs-confirm-content {
+      font-size: @abs-modal-size;
+      line-height: @abs-modal-confirm-content-lineheight;
+      padding: 0 20px 0 50px;
+      max-height: 524px;
+      & > div {
+        padding-bottom: 70px;
+      }
+    }
+  }
+
+  .ant-modal-footer {
+    border: 0;
+    padding: 10px 20px;
+    border-radius: 0 0 8px 8px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: @abs-modal-footer-absolute-bg;
+  }
+}

@@ -1,0 +1,156 @@
+﻿@using ChineseAbs.ABSManagement.Utils;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@(string.IsNullOrEmpty(ViewBag.Title) ? string.Empty : (ViewBag.Title + " - "))CNABS存续期管理</title>
+    <link rel="shortcut icon" href="https://www.cn-abs.com/fav/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+    <link rel="stylesheet" href="~/Content/iconfont/iconfont.css" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/layout")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/alertify")
+    @Scripts.Render("~/bundles/cnabsMenu")
+    @Scripts.Render("~/bundles/cnabsUtils")
+    @Scripts.Render("~/bundles/highchart-dark")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryTimeAgo")
+    @Scripts.Render("~/bundles/angular")
+    @RenderSection("styles", required: false)
+    <style>
+        .navigator-title {
+            display: none;
+            font-size: 1.2em;
+            padding-top: 3px;
+        }
+
+        .feedback-text {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            background-color: #514C44;
+            text-align: left;
+            /*overflow: hidden;*/
+            color: #FFF;
+            font-size: 16px;
+        }
+
+        i.fitSize.icon {
+            line-height: 1;
+            vertical-align: middle;
+            font-size: 3.5em;
+        }
+
+        .float {
+            float: left;
+            display: inline;
+            width: 1050px;
+            background-color: #47423C;
+        }
+
+        .footer .title {
+            height: 30px;
+            padding-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .footer .subtitle {
+            font-size: 16px;
+        }
+
+        .footer .icon {
+            padding-top: 6px;
+        }
+
+        .footer li {
+            height: 32px;
+        }
+
+        .w120 {
+            width: 120px;
+            padding-left: 2px;
+        }
+
+        .w55 {
+            width: 55px;
+        }
+
+        .w60 {
+            width: 60px;
+        }
+
+        .truncate {
+            text-overflow: ellipsis;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-style: none;
+        }
+    </style>
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+<body>
+    <header>
+        <div id="header">
+            <div class="center">
+                <div>
+                    <div id="divLogo" class="left">
+                        <a href="http://cn-abs.com/Market/MarketSummary.aspx">
+                            <div id="divProductName" style="margin-right:30px;position:relative;">
+                                <img alt="SAFS" src="~/Images/logoInShare.png" style="float: left; border-style: none;">
+                                @*<img alt="christmas" src="../Images/lantern.png"
+                                style="position:absolute;right:-5px;top:0px;" />*@
+                                <div style="padding-top: 12px">
+                                    <span class="fixedColor" style="font-size: 18px;">中国资产证券化分析</span>
+                                    <br>
+                                    <span class="fixedColor" style="font-size: 12px">
+                                        China Securitization Analytics
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <div id="mid">
+            <div class="center content-wrapper">
+                @RenderBody()
+            </div>
+
+            <div class="footer clear">
+                <footer>
+                    <div class="content-wrapper">
+                        <div id="footer" style="color: #B7AFA5; clear: both; font-size: 10px;">
+                            上海和逸金融信息服务有限公司版权所有<br />
+                            Copyright 2014 - 2017 沪ICP备15008941号<br />
+                            @{
+                                var assemblyLocation = ViewContext.Controller.GetType().Assembly.Location;
+                                var verInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assemblyLocation);
+                                var version = (verInfo.FilePrivatePart > 0 ? verInfo.FileVersion
+                                    : string.Format("{0}.{1}.{2}", verInfo.FileMajorPart, verInfo.FileMinorPart, verInfo.FileBuildPart));
+                                    @: 版本:@version
+                            }
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="scrollBottom"></div>
+    <script type="text/javascript">
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

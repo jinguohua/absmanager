@@ -1,0 +1,73 @@
+﻿@model ABS.ABSManagementSite.Models.DealModelViewModel
+
+<div class="module collateralrule">
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th colspan="4" class="module-title">
+                    @Html.DisplayNameFor(r => r.CollateralRule)
+                    <img src="~/Images/Icons/pass.png" class="data-checked" />
+                    <img src="~/Images/Icons/error.png" class="data-failed" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th style="width:100px;">循环资产池</th>
+                <td class="noReinvestment">
+                    @Html.CheckBoxFor(r => r.CollateralRule.HasReinvestment, new { @class = "HasReinvestment" })
+                    @Html.LabelFor(r => r.CollateralRule.HasReinvestment)
+                </td>
+                <td class="hasReinvestment">@Html.LabelFor(r => r.CollateralRule.ReinvestmentRule.ReinvestmentEndDate)</td>
+                <td class="hasReinvestment">
+                    @Html.TextBoxFor(r => r.CollateralRule.ReinvestmentRule.ReinvestmentEndDate,
+                             new
+                             {
+                                 Value = string.Format("{0:yyyy-MM-dd}", Model.CollateralRule.ReinvestmentRule.ReinvestmentEndDate),
+                                 @class = "date"
+                             })
+                </td>
+            </tr>
+            <tr class="hasReinvestment">
+                <td>@Html.LabelFor(r => r.CollateralRule.ReinvestmentRule.ReinvestmentRuleType)</td>
+                <td>
+                    @Html.DropDownListFor(r => r.CollateralRule.ReinvestmentRule.ReinvestmentRuleType, new List<SelectListItem>(){
+                                           new SelectListItem(){
+                                               Value="",Text="-请选择-"
+                                           },
+                                           new SelectListItem(){
+                                               Value="similar",Text="延续当前资产池属性",Selected=true
+                                           }
+                                       })
+                </td>
+            </tr>
+            <tr class="OtherReinvestmentRule">
+                <td>@Html.LabelFor(r => r.CollateralRule.ReinvestmentRule.Wal)</td>
+                <td>@Html.TextBoxFor(r => r.CollateralRule.ReinvestmentRule.Wal)</td>
+            </tr>
+            <tr class="OtherReinvestmentRule">
+                <td>@Html.LabelFor(r => r.CollateralRule.ReinvestmentRule.Wac)</td>
+                <td>@Html.TextBoxFor(r => r.CollateralRule.ReinvestmentRule.Wac)</td>
+            </tr>
+            <tr class="OtherReinvestmentRule">
+                <td>评级</td>
+                <td>
+                    <select>
+                        <option value="">-请选择-</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        crChangeVisibility($(".HasReinvestment").prop("checked"), "HasReinvestment");
+        $(".HasReinvestment").change(function () {
+            crChangeVisibility($(this).prop("checked"), "HasReinvestment");
+        });
+        $(".collateralrule input,.collateralrule select").change(function () {
+            crCheckData();
+        });
+    });
+</script>

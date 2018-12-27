@@ -1,0 +1,460 @@
+﻿@model ABS.ABSManagementSite.Models.DealModelViewModel
+@using ChineseAbs.ABSManagementSite.Helpers
+@using ABS.Core
+
+<div class="module module-fees">
+    <table class="bordered" style="width:642px;">
+        <thead>
+            <tr>
+                <th colspan="6" class="module-title">
+                    @Html.DisplayNameFor(r => r.Fees)
+                    <img src="~/Images/Icons/pass.png" class="data-checked" />
+                    <img src="~/Images/Icons/error.png" class="data-failed" />
+                </th>
+            </tr>
+            <tr>
+                <th>描述</th>
+                <th>名称</th>
+                <th>类型</th>
+                <th>优先级</th>
+                <th colspan="2">操作</th>
+            </tr>
+        </thead>
+        <tbody class="fees">
+            @if (Model.Fees.FeeComponents != null && Model.Fees.FeeComponents.Count > 0)
+            {
+                for (int i = 0; i < Model.Fees.FeeComponents.Count; i++)
+                {
+                    <tr class="fee align-center">
+                        <td class="fee-description">@Html.DisplayFor(r => r.Fees.FeeComponents[i].Description)</td>
+                        <td class="fee-name">@Html.DisplayFor(r => r.Fees.FeeComponents[i].Name)</td>
+                        <td class="fee-type">
+                            @(Model.Fees.FeeComponents[i].IsProRated.HasValue ?
+                                        (((bool)Model.Fees.FeeComponents[i].IsProRated) ? "费率计算" : "简单") : "")
+                        </td>
+                        <td class="fee-ordinal">@Html.DisplayFor(r => r.Fees.FeeComponents[i].PaymentOrdinal)</td>
+                        <td><input type="button" class="button-remove-fee switchOn" data-subscript="@i" value="删除" /></td>
+                        <td><input type="button" class="button-edit-fee switchOn" data-subscript="@i" value="修改" /></td>
+                    </tr>
+                    <tr class="fee-full">
+                        <td colspan="6">
+                            <table class="inner">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:85px;">@Html.LabelFor(r => r.Fees.FeeComponents[i].PaymentOrdinal, new { @class = "lbl-fee-full-PaymentOrdinal" })</td>
+                                        <td style="width:150px;">
+                                            @Html.DropDownListFor(r => r.Fees.FeeComponents[i].PaymentOrdinal,
+                                         ABS.ABSManagementSite.Models.DealModelViewModel.GetOrdinalSelectList(10,
+                                        Model.Fees.FeeComponents[i].PaymentOrdinal.ToString()),
+                                        new { @class = "fee-full-PaymentOrdinal" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].IsProRated, new { @class = "lbl-fee-full-IsProRated" })</td>
+                                        <td>
+                                            @Html.DropDownListFor(r => r.Fees.FeeComponents[i].IsProRated,
+                                            new List<SelectListItem>() {
+                                                new SelectListItem() { Value = "", Text = "-请选择-" },
+                                                new SelectListItem() { Value = "false", Text = "简单", Selected = Model.Fees.FeeComponents[i].IsProRated.HasValue && !(bool)Model.Fees.FeeComponents[i].IsProRated },
+                                                new SelectListItem() { Value = "true", Text = "费率计算", Selected = Model.Fees.FeeComponents[i].IsProRated.HasValue && (bool)Model.Fees.FeeComponents[i].IsProRated }
+                                            }, new { @class = "fee-full-IsProRated" })
+                                        </td>
+                                        <td style="width:130px;">
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].NeedPriorityExpenseCap, new { @class = "fee-full-NeedPriorityExpenseCap" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].NeedPriorityExpenseCap, new { @class = "lbl-fee-full-NeedPriorityExpenseCap" })
+                                        </td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].PriorityExpenseCap, new { @class = "fee-full-PriorityExpenseCap" })</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].Name, new { @class = "lbl-fee-full-Name" })</td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].Name, new { @class = "fee-full-Name", placeholder = "字母数字或下划线,非纯数字" })</td>
+                                        <td class="proratedFee">
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].NeedUnpaidAccount, new { @class = "fee-full-NeedUnpaidAccount" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].NeedUnpaidAccount, new { @class = "lbl-fee-full-NeedUnpaidAccount" })
+                                        </td>
+                                        <td class="proratedFee">
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].NeedInterestOnUnpaidAccount, new { @class = "fee-full-NeedInterestOnUnpaidAccount" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].NeedInterestOnUnpaidAccount, new { @class = "lbl-fee-full-NeedInterestOnUnpaidAccount" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].Description, new { @class = "lbl-fee-full-Description" })</td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].Description, new { @class = "fee-full-Description" })</td>
+                                        <td class="proratedFee">@Html.LabelFor(r => r.Fees.FeeComponents[i].AccrualMethod, new { @class = "lbl-fee-full-AccrualMethod" })</td>
+                                        <td class="proratedFee">
+                                            @Html.DropDownListFor(r => r.Fees.FeeComponents[i].FeeBasisType,
+                                           MyEnumConvertor.ConvertToSelectList(typeof(EAccrualMethod), Model.Fees.FeeComponents[i].AccrualMethod.ToString()),
+                                           new { @class = "fee-full-AccrualMethod" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee">
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].FeeBasisType, new { @class = "lbl-fee-full-FeeBasisType" })</td>
+                                        <td>
+                                            @Html.DropDownListFor(r => r.Fees.FeeComponents[i].FeeBasisType,
+                                        MyEnumConvertor.ConvertToSelectList(typeof(EBasisType), Model.Fees.FeeComponents[i].FeeBasisType.ToString()),
+                                        new { @class = "fee-full-FeeBasisType" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee">
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].IsPerPaymentRate, new { @class = "fee-full-IsPerPaymentRate" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].IsPerPaymentRate, new { @class = "lbl-fee-full-IsPerPaymentRate" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee">
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].HasDiffFirstRate, new { @class = "fee-full-HasDiffFirstRate" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].HasDiffFirstRate, new { @class = "lbl-fee-full-HasDiffFirstRate" })
+                                        </td>
+                                        <td class="diffFirstRate">@Html.LabelFor(r => r.Fees.FeeComponents[i].FirstRate, new { @class = "lbl-fee-full-FirstRate" })</td>
+                                        <td class="diffFirstRate">@Html.TextBoxFor(r => r.Fees.FeeComponents[i].FirstRate, new { @class = "fee-full-FirstRate number small-value" })</td>
+                                    </tr>
+                                    <tr class="proratedFee">
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].IsFixedRate, new { @class = "fee-full-IsFixedRate" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].IsFixedRate, new { @class = "lbl-fee-full-IsFixedRate" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee feeFixedRate">
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].FixedRate, new { @class = "lbl-fee-full-FixedRate" })</td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].FixedRate, new { @class = "fee-full-FixedRate number small-value" })</td>
+                                    </tr>
+                                    <tr class="proratedFee feeNoFixedRate">
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].FloatingIndex, new { @class = "lbl-fee-full-FloatingIndex" })</td>
+                                        <td>
+                                            @Html.DropDownListFor(r => r.Fees.FeeComponents[i].FloatingIndex, new List<SelectListItem>(){
+                                           new SelectListItem(){
+                                               Value="",Text="-请选择-"
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNS012M",Text="一年期存款利率",
+                                               Selected="CNS012M"==Model.Fees.FeeComponents[i].FloatingIndex
+                                           },
+                                           new SelectListItem(){
+                                               Value="CNL012M",Text="一年期贷款利率",
+                                               Selected="CNL012M"==Model.Fees.FeeComponents[i].FloatingIndex
+                                           },
+                                            new SelectListItem(){
+                                               Value="CNL003Y",Text="三年期贷款利率",
+                                               Selected="CNL003Y"==Model.Fees.FeeComponents[i].FloatingIndex
+                                           }
+                                           ,
+                                            new SelectListItem(){
+                                               Value="CNL005Y",Text="五年期贷款利率",
+                                               Selected="CNL005Y"==Model.Fees.FeeComponents[i].FloatingIndex
+                                           }
+                                           ,
+                                            new SelectListItem(){
+                                               Value="CNL010Y",Text="十年期贷款利率",
+                                               Selected="CNL010Y"==Model.Fees.FeeComponents[i].FloatingIndex
+                                           }
+                                       }, new { @class = "fee-full-FloatingIndex" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee feeNoFixedRate">
+                                        <td>
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].Spread, new { @class = "lbl-fee-full-Spread" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(r => r.Fees.FeeComponents[i].Spread, new { @class = "fee-full-Spread number small-value" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee">
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].Cap, new { @class = "lbl-fee-full-Cap" })</td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].Cap, new { @class = "fee-full-Cap number small-value", placeholder = "(选填)" })</td>
+                                        <td>
+                                            @Html.CheckBoxFor(r => r.Fees.FeeComponents[i].IsCumulativeCap, new { @class = "fee-full-IsCumulativeCap" })
+                                            @Html.LabelFor(r => r.Fees.FeeComponents[i].IsCumulativeCap, new { @class = "lbl-fee-full-IsCumulativeCap" })
+                                        </td>
+                                    </tr>
+                                    <tr class="proratedFee">
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].Floor, new { @class = "lbl-fee-full-Floor" })</td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].Floor, new { @class = "fee-full-Floor number small-value", placeholder = "(选填)" })</td>
+                                    </tr>
+                                    <tr class="simpleFee">
+                                        <td>@Html.LabelFor(r => r.Fees.FeeComponents[i].FixedAmount, new { @class = "lbl-fee-full-FixedAmount" })</td>
+                                        <td>@Html.TextBoxFor(r => r.Fees.FeeComponents[i].FixedAmount, new { @class = "fee-full-FixedAmount number" })</td>
+                                    </tr>
+                                    <tr>
+                                        <td>支付明细</td>
+                                        <td colspan="10">
+                                            <table class="tbFeeDetail" style="width: 100%" data-name-prefix="Fees.FeeComponents[@i].PaymentSchedules">
+                                                <thead>
+                                                    <tr>
+                                                        <td style="width:205px;">日期</td>
+                                                        <td>金额</td>
+                                                        <td><input class="button-add-fee-schedule" type="button" value="+" /></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (Model.Fees.FeeComponents[i].PaymentSchedules != null && Model.Fees.FeeComponents[i].PaymentSchedules.Count() > 0)
+                                                    {
+                                                        for (int j = 0; j < Model.Fees.FeeComponents[i].PaymentSchedules.Count(); j++)
+                                                        {
+                                                            <tr data-subscript="@j">
+                                                                <td>
+                                                                    @Html.TextBoxFor(r => r.Fees.FeeComponents[i].PaymentSchedules[j].Date,
+                                                                                    htmlAttributes:new { Value = string.Format("{0:yyyy-MM-dd}", Model.Fees.FeeComponents[i].PaymentSchedules[j].Date), @class = "date" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(r => r.Fees.FeeComponents[i].PaymentSchedules[j].Value, htmlAttributes: new { @class = "number" })
+                                                                </td>
+                                                                <td><input type="button" onclick="removeAmortSchedule(this)" value="-" /></td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    <span class="switchOn" id="btnAddFee" style="margin-left:5px;padding:2px 10px;">添加</span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on("click", ".button-add-fee-schedule", function () {
+                var tb = $(this).closest("table");
+                var name_prefix = $(this).closest("table").data("name-prefix");
+                var i = tb.find("tbody tr").length;
+                var dateInputName = name_prefix + "[" + i + "].Date";
+                var valueInputName = name_prefix + "[" + i + "].Value";
+                var dateId = dateInputName.replace(/[\.\[\]]/g, "_");
+                var valueID = valueInputName.replace(/[\.\[\]]/g, "_");;
+                var tr = "<tr  data-subscript='" + i + "'><td><input id='" + dateId + "' class='date modeling-field-error' name='" + dateInputName + "' /></td><td><input class='modeling-field-error' id='" + valueID + "' name='" + valueInputName + "' /></td><td><input type='button' onclick='removeFeeSchedule(this)' value='-' /></td></tr>";
+                tb.find("tbody").append(tr);
+                tb.find("tbody").find(".date").datepicker({
+                    format: "yyyy-mm-dd"
+                });
+            })
+        })
+
+        function removeFeeSchedule(obj) {
+            var oldtr = $(obj).closest("tr");
+            var subscript = oldtr.data("subscript");
+            var trs = oldtr.closest("tbody").find("tr:gt(" + subscript + ")");
+            var name_prefix = $(obj).closest("table").data("name-prefix");
+            oldtr.remove();
+            for (var i = 0; i < trs.length; i++) {
+                var tr = trs[i];
+                var index = $(tr).data("subscript") - 1;
+                $(tr).data("subscript", index)
+                var dateInputName = name_prefix + "[" + index + "].Date";
+                var valueInputName = name_prefix + "[" + index + "].Value";
+                $(tr).find("input:eq(0)").attr("name", dateInputName).prop("id", dateInputName.replace(/[\.\[\]]/g, "_"));
+                $(tr).find("input:eq(1)").attr("name", valueInputName).prop("id", valueInputName.replace(/[\.\[\]]/g, "_"));
+            }
+        }
+    </script>
+    <table style="display:none;">
+        <tbody id="template_fee">
+            <tr class="fee align-center">
+                <td class="fee-description"></td>
+                <td class="fee-name"></td>
+                <td class="fee-type"></td>
+                <td class="fee-ordinal"></td>
+                <td><span class="switchOn" id="btnAddFee" onclick="removeFee(this)" data-subscript="" style="margin-left:5px;padding:2px 10px;">删除</span></td>
+                <td><span class="switchOn" id="btnAddFee" onclick="editFee(this)" data-subscript="" style="margin-left:5px;padding:2px 10px;">完成</span></td>
+            </tr>
+            <tr class="fee-full">
+                <td colspan="6">
+                    <table class="inner">
+                        <tbody>
+                            <tr>
+                                <td style="width:90px;"><label for="" class="lbl-fee-full-PaymentOrdinal">优先级</label></td>
+                                <td>
+                                    @Html.DropDownList("PaymentOrdinal",
+                                             ABS.ABSManagementSite.Models.DealModelViewModel.GetOrdinalSelectList(10),
+                                    new { @class = "fee-full-PaymentOrdinal" })
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-fee-full-IsProRated">类型</label></td>
+                                <td>
+                                    <select class="fee-full-IsProRated">
+                                        <option value="">-请选择-</option>
+                                        <option value="false">简单</option>
+                                        <option value="true">费率计算</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="fee-full-NeedPriorityExpenseCap" value="false" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-fee-full-NeedPriorityExpenseCap">优先支付费用上限</label>
+                                </td>
+                                <td><input class="fee-full-PriorityExpenseCap" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-fee-full-Name">名称</label></td>
+                                <td><input class="fee-full-Name" type="text" placeholder="字母数字或下划线,非纯数字" /></td>
+                                <td class="proratedFee">
+                                    <input type="checkbox" class="fee-full-NeedUnpaidAccount" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-fee-full-NeedUnpaidAccount">记录未偿金额</label>
+                                </td>
+                                <td class="proratedFee">
+                                    <input type="checkbox" class="fee-full-NeedInterestOnUnpaidAccount" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-fee-full-NeedInterestOnUnpaidAccount">未偿金额计息</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="" class="lbl-fee-full-Description">描述</label></td>
+                                <td><input class="fee-full-Description" type="text" /></td>
+                                <td class="proratedFee"><label for="" class="lbl-fee-full-AccrualMethod">计日天数</label></td>
+                                <td class="proratedFee">
+                                    @Html.DropDownList("AccrualMethod",
+                                          MyEnumConvertor.ConvertToSelectList(typeof(EAccrualMethod), ""),
+                                          new { @class = "fee-full-AccrualMethod" })
+                                </td>
+                            </tr>
+                            <tr class="proratedFee">
+                                <td><label for="" class="lbl-fee-full-FeeBasisType">费用计算基数</label></td>
+                                <td>
+                                    <select class="fee-full-FeeBasisType">
+                                        <option value="">-请选择-</option>
+                                        <option value="APB">当前资产池金额</option>
+                                        <option value="InterestCollection">利息收入帐金额</option>
+                                        <option value="PrincipalCollection">本金收入帐金额</option>
+                                        <option value="OriginalAPB">原始资产池金额</option>
+                                        <option value="NotesEndingBalance">所有证券剩余本金之和</option>
+                                        <option value="ResidualCashFlow">剩余现金流</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="proratedFee">
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="fee-full-IsPerPaymentRate" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-fee-full-IsPerPaymentRate">每期费率</label>
+                                </td>
+                            </tr>
+                            <tr class="proratedFee">
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="fee-full-HasDiffFirstRate" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-fee-full-HasDiffFirstRate">首期费率不同</label>
+                                </td>
+                                <td class="diffFirstRate"><label for="" class="lbl-fee-full-FirstRate">首期费率</label></td>
+                                <td class="diffFirstRate"><input type="text" class="fee-full-FirstRate small-value" /></td>
+                            </tr>
+                            <tr class="proratedFee">
+                                <td>&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" class="fee-full-IsFixedRate" value="true" />
+                                    <input type="hidden" value="false" />
+                                    <label for="" class="lbl-fee-full-IsFixedRate">固定费率</label>
+                                </td>
+                            </tr>
+                            <tr class="proratedFee feeFixedRate">
+                                <td><label for="" class="lbl-fee-full-FixedRate">费率</label></td>
+                                <td><input type="text" class="fee-full-FixedRate small-value" /></td>
+                            </tr>
+                            <tr class="proratedFee feeNoFixedRate">
+                                <td><label for="" class="lbl-fee-full-FloatingIndex">基准利率</label></td>
+                                <td>
+                                    <select class="fee-full-FloatingIndex">
+                                        <option value="">-请选择-</option>
+                                        <option name="CNS012M" value="CNS012M">一年期存款利率</option>
+                                        <option name="CNL012M" value="CNL012M">一年期贷款利率</option>
+                                        <option name="CNL003Y" value="CNL003Y">三年期贷款利率</option>
+                                        <option name="CNL005Y" value="CNL005Y">五年期贷款利率</option>
+                                        <option name="CNL010Y" value="CNL010Y">十年期贷款利率</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="proratedFee feeNoFixedRate">
+                                <td>
+                                    <label for="" class="lbl-fee-full-Spread">利差(bps)</label>
+                                </td>
+                                <td>
+                                    <input class="fee-full-Spread small-value" type="text" />
+                                </td>
+                            </tr>
+                            <tr class="proratedFee">
+                                <td><label for="" class="lbl-fee-full-Cap">上限</label></td>
+                                <td><input type="text" class="fee-full-Cap small-value" placeholder="(选填)" /></td>
+                                <td>
+                                    <input type="checkbox" class="fee-full-IsCumulativeCap" value="true" />
+                                    <input type="hidden" class="fee-full-IsCumulativeCap" value="false" />
+                                    <label for="" class="lbl-fee-full-IsCumulativeCap">累计上限</label>
+                                </td>
+                            </tr>
+                            <tr class="proratedFee">
+                                <td><label for="" class="lbl-fee-full-Floor">下限</label></td>
+                                <td><input type="text" class="fee-full-Floor small-value" placeholder="(选填)" /></td>
+                            </tr>
+                            <tr class="simpleFee">
+                                <td><label for="" class="lbl-fee-full-FixedAmount">金额</label></td>
+                                <td><input type="text" class="fee-full-FixedAmount" /></td>
+                            </tr>
+                            <tr>
+                                <td>支付明细</td>
+                                <td colspan="10">
+                                    <table class="tbFeeDetail" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <td style="width:205px;">日期</td>
+                                                <td>金额</td>
+                                                <td><input class="button-add-fee-schedule" type="button" value="+" /></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".fee-full-IsProRated").each(function () {
+            fChangeVisibility($(this), "IsProRated");
+        });
+        $(document).on("change", ".fee-full-IsProRated", function () {
+            fChangeVisibility($(this), "IsProRated");
+        });
+        $(".fee-full-NeedPriorityExpenseCap").each(function () {
+            fChangeVisibility($(this), "NeedPriorityExpenseCap");
+        });
+        $(document).on("change", ".fee-full-NeedPriorityExpenseCap", function () {
+            fChangeVisibility($(this), "NeedPriorityExpenseCap");
+        });
+        $(".fee-full-IsFixedRate").each(function () {
+            fChangeVisibility($(this), "IsFixedRate");
+        });
+        $(".fee-full-HasDiffFirstRate").each(function () {
+            fChangeVisibility($(this), "HasDiffFirstRate");
+        });
+        $(document).on("change", ".fee-full-IsFixedRate", function () {
+            fChangeVisibility($(this), "IsFixedRate");
+        });
+        $(document).on("change", ".fee-full-HasDiffFirstRate", function () {
+            fChangeVisibility($(this), "HasDiffFirstRate");
+        });
+        $(document).on("change", ".module-fees input,.module-fees select", function () {
+            fCheckData();
+        });
+    });
+</script>

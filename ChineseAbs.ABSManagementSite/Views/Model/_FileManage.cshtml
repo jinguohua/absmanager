@@ -1,0 +1,56 @@
+﻿<div class="module module-file" style="text-align:right;padding-right:15px;">
+    <button id="btUpload" type="button" class="switchOn" style="margin-right:10px;">上传模型</button>
+    <button id="btDownload" type="button" class="switchOn">下载模型</button>
+</div>
+
+<div id="dialog" title="上传模型">
+    <div style="margin:20px auto;">
+        <input type="file" id="fileChoose" name="fileCollateral" accept=".xlsx" style="width: 160px;" />
+        <span class="switchOn" onclick="UploadFile()">上传</span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dialog").dialog({
+            height: 200,
+            width: 400,
+            modal: true,
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                duration: 500
+            },
+            hide: {
+                //effect: "blind",
+                duration: 500
+            },
+            buttons: {
+                "取消": function () {
+                    ClearFile()
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#btDownload").click(function () {
+            var modelId = '';
+            var url = "/MyModels/DownloadModelFile?modelGuid=" + modelId;
+            var orig = window.location;
+            window.open(url);
+        })
+
+        $("#btUpload").click(function () {
+            $("#dialog").dialog("open");
+        })
+    })
+
+    function UploadFile() {
+        ClearFile()
+        $("#fileChoose").val("");
+    }
+
+    function ClearFile() {
+        $("#dialog").dialog("close");
+    }
+</script>

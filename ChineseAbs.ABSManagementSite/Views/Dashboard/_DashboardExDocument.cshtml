@@ -1,0 +1,2039 @@
+﻿<style>
+    .previewNewFiles, .previewNewVersions {
+        margin-top: 20px;
+    }
+
+    .divCreateNewFile, .divUploadNewVersion {
+        display: none;
+    }
+
+    .divCreateNewFile .cnabs_dialog_content_title {
+        display: none;
+    }
+
+    .divCreateNewFile #uploadNewFileName {
+        width: 558px;
+        padding-left: 10px;
+        height: 28px;
+        border-radius: 2px;
+    }
+
+    .divAutoCreateNewFile {
+        margin-bottom: 10px;
+    }
+
+    .previewNewFiles textarea.uploadFileDescription, .previewNewVersions textarea.uploadFileDescription {
+        width: 562px;
+        max-width: 562px;
+        padding-left: 10px;
+        padding-right: 10px;
+        min-height: 100px;
+        margin-top: 10px;
+        resize: vertical;
+        border-radius: 2px;
+    }
+
+    .divDashboardExDocument .operationList {
+        background-color: #47423c;
+        padding: 20px;
+        padding-top: 0px;
+    }
+
+    .divDashboardExDocument .operationBtns {
+        overflow: hidden;
+    }
+
+    .divDashboardExDocument .operationBtns div {
+        margin-right: 10px;
+    }
+
+    .divDashboardExDocument .searchInput {
+        float: right;
+        height: 20px;
+        border-radius: 2px;
+        padding-left: 10px;
+        margin-right: 132px;
+        margin-top: 23px;
+    }
+
+    .searchIcon {
+        margin-top: 8px;
+        margin-left: 6px;
+    }
+
+    .divSearchBtn {
+        position: absolute;
+        right: 20px;
+        top: 23px;
+    }
+
+    .searchMethods {
+        width: 122px;
+        overflow: hidden;
+        color: #47423C;
+        border-radius: 2px;
+        background-color: #b7afa5;
+        line-height: normal;
+    }
+
+    .searchMethods div {
+        padding-top: 10px;
+        padding-left: 10px;
+        font-size: 14px;
+    }
+
+    .searchMethods div:nth-of-type(2) {
+        padding-bottom: 10px;
+    }
+
+    .searchMethods div:hover {
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .divDocumentTable {
+        padding: 20px;
+    }
+
+    .documentTable td:nth-of-type(1) {
+        width: 21px;
+        min-width: 21px;
+    }
+
+    .documentTable td:nth-of-type(2) {
+        width: 452px;
+        min-width: 452px;
+    }
+
+    .documentTable td:nth-of-type(3) {
+        width: 60px;
+        min-width: 60px;
+    }
+
+    .documentTable td:nth-of-type(4) {
+        width: 150px;
+        min-width: 150px;
+    }
+
+    .documentTable td:nth-of-type(5) {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    .documentTable td:nth-of-type(6) {
+        width: 50px;
+        min-width: 50px;
+    }
+
+    .documentTableInfo {
+        overflow: hidden;
+        font-size: 14px;
+        color: #b0a89e;
+    }
+
+    .documentTableInfo .cnabs_yellow {
+        cursor: pointer;
+    }
+
+    .divCreateFolder, .divDocumentHistory {
+        display: none;
+    }
+
+    .divCreateFolder .folderPathInDialog {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: #b7afa5;
+    }
+
+    .divCreateFolder .newFolderNameInput {
+        width: 570px;
+        padding-left: 10px;
+        height: 26px;
+        border-radius: 2px;
+        margin-top: 10px;
+    }
+
+    .operationInHistory {
+        overflow: hidden;
+        padding: 12px 0px 20px 0px;
+    }
+
+    .operationInHistory .cnabs_btn, .operationInHistory .cnabs_btn_disabled {
+        margin-right: 10px;
+    }
+
+    .operationInHistory .versionStatistics {
+        color: #b0a89e;
+        height: 24px;
+        line-height: 24px;
+    }
+
+    .versionTable td:nth-of-type(1) {
+        width: 25px;
+        min-width: 25px;
+    }
+
+    .versionTable td:nth-of-type(2) {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .versionTable td:nth-of-type(3) {
+        width: 50px;
+        min-width: 50px;
+    }
+
+    .versionTable td:nth-of-type(4) {
+        width: 140px;
+        min-width: 140px;
+    }
+
+    .versionTable td:nth-of-type(5) {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    .versionTable td:nth-of-type(6) {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    .versionTable input, .documentTable input {
+        cursor: pointer;
+    }
+
+    .versionTable .documentVerisonName {
+        width: 178px;
+        padding-right: 10px;
+        padding-left: 32px;
+        cursor: pointer;
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .versionTable .documentVerisonNameTdDiv {
+        height: 30px;
+        line-height: 30px;
+        width: 178px;
+        padding-right: 10px;
+        padding-left: 32px;
+        background-position: 3px 7px;
+        background-size: 16px 16px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+    .documentTable .folderNameTdDiv {
+        float: left;
+        width: 410px;
+        padding-right: 10px;
+        padding-left: 32px;
+        background-image: url(../../Images/Common/folder.png);
+        background-position: 3px 7px;
+        background-size: 16px 16px;
+        background-repeat: no-repeat;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .documentTable .selectedAll {
+        float: left;
+        width: 410px;
+        padding-right: 10px;
+        padding-left: 32px;
+        cursor: pointer;
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .documentTable .documentNameTdDiv {
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        width: 410px;
+        padding-right: 10px;
+        padding-left: 32px;
+        background-position: 3px 7px;
+        background-size: 16px 16px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+    .thInputLabel {
+        float: left;
+        height: 38px;
+        line-height: 38px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .tdInputLabel {
+        float: left;
+        height: 30px;
+        line-height: 30px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .divIsNewFileSeriesNameExist {
+        display: none;
+    }
+
+    #divCreateNewFile #newFileNamePrompt {
+        width: 250px;
+    }
+
+    .parentFolderTitle {
+        width: 182px;
+        height: 38px;
+        line-height: 38px;
+        padding-right: 10px;
+    }
+
+    .parentFolder {
+        width: 150px;
+        height: 30px;
+        line-height: 30px;
+        padding-right: 10px;
+        color: #ffc446;
+        padding-left: 32px;
+        background-image: url(../../Images/Common/folder.png);
+        background-position: 3px 7px;
+        background-size: 16px 16px;
+        background-repeat: no-repeat;
+    }
+
+    .divDocumentAddCompare {
+        width: 260px;
+        right: 0;
+        position: absolute;
+    }
+
+    .divDocumentAddCompare table {
+        width: 100%;
+        height: 100%;
+    }
+
+    .divDocumentAddCompare .divHead {
+        background-color: #867c70;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 10px;
+    }
+
+    .divDocumentAddCompare .divBody {
+        background-color: #3e3832;
+    }
+
+    .divDocumentAddCompare .documentTable td:nth-of-type(2), .divDocumentAddCompare .cnabs_ellipsis {
+        width: 150px !important;
+        min-width: 100px !important;
+    }
+
+    .divDocumentAddCompare .divCompareBtn {
+        height: 50px;
+        padding-left: 10px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .imgArrow {
+        float: left;
+        width: 36px;
+        height: 36px;
+        display: table;
+        vertical-align: middle;
+        text-align: center;
+        background-color: rgba(235, 235, 234,0.9);
+        cursor: pointer;
+    }
+
+    .imgArrow:hover {
+        background-color: #dddbdb;
+    }
+
+
+    .imgArrow img {
+        margin-top: 4px;
+    }
+
+    .divDocumentCompare header {
+        font-size: 15px;
+    }
+
+    .divDocumentCompare iframe {
+        border: 0;
+    }
+
+    .closeDiv {
+        font-size: 22px;
+        float: right;
+        font-weight: 200;
+        width: 26px;
+        text-align: center;
+    }
+
+    .dialogHeader {
+        border-width: 0;
+        height: 26px;
+        line-height: 26px;
+        background-color: #625c53;
+        font-weight: 100;
+        font-size: 16px;
+    }
+
+    .dialogHeader_small {
+        border-width: 0;
+        height: 22px;
+        line-height: 22px;
+        background-color: #867c70;
+        font-weight: 100;
+        font-size: 14px;
+    }
+
+    .dialogBody_small {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .dialogClose {
+        line-height: 30px !important;
+        font-size: 36px !important;
+        width: 30px !important;
+        height: 30px !important;
+        margin-top: -15px !important;
+        padding: 0 !important;
+        color: #f2f0f0;
+        font-weight: 100 !important;
+        background: none !important;
+        text-indent: 0;
+        border: none !important;
+    }
+
+    .dialogClose_small {
+        line-height: 22px !important;
+        font-size: 26px !important;
+        width: 22px !important;
+        height: 22px !important;
+        padding: 0 !important;
+        color: #f2f0f0;
+        font-weight: 100 !important;
+        background: none !important;
+        text-indent: 0;
+        border: none !important;
+        margin-right: 10px !important;
+    }
+
+    .dialogClose:hover, .dialogClose_small:hover {
+        border: none;
+        color: white;
+    }
+
+    .dialogDiv .ui-dialog-titlebar {
+        padding: .4em 1em;
+        position: relative;
+    }
+
+    .dialogDiv {
+        padding: .2em;
+        outline: 0;
+    }
+
+    #divDocumentAddCompare {
+        max-height: 730px !important;
+        overflow-x: hidden;
+    }
+
+    .divDownLoadRecord {
+        padding: 20px 13px;
+    }
+
+    .divDownLoadRecord .periodTitle, .divDownLoadRecord .userTitle {
+        margin-right: 10px;
+        margin-top: 8px;
+    }
+
+    .divDownLoadRecord .recordStartTime {
+        margin-right: 10px;
+        padding-left: 10px;
+        width: 100px;
+        height: 26px;
+        border-radius: 2px;
+    }
+
+    .divDownLoadRecord .recordEndTime {
+        margin-left: 10px;
+        padding-left: 10px;
+        height: 26px;
+        width: 100px;
+        border-radius: 2px;
+    }
+
+    .divDownLoadRecord .recordUserSelect {
+        padding-left: 6px;
+        height: 28px;
+        width: 282px;
+        border-radius: 2px;
+    }
+
+    .divSelectedRecordUsers {
+        width: 290px;
+        margin-top: 10px;
+        max-height: 190px;
+        overflow-y: auto;
+        margin-left: 62px;
+    }
+
+    .uploadNewVersion_remark {
+        height: 70px;
+        width: 558px;
+        border: 1px;
+        border-radius: 2px;
+        margin-top: 10px;
+        display: none;
+        padding-left: 10px;
+    }
+
+    .uploadNewFile_remark {
+        height: 70px;
+        width: 558px;
+        border: 1px;
+        border-radius: 2px;
+        margin-top: 10px;
+        padding-left: 10px;
+    }
+
+    .uploadFileBtnDiv {
+        margin-top: 15px;
+    }
+
+    .uploadNewVersionDiv {
+        margin-top: 13.5px;
+    }
+
+    #divCreateNewFile .cnabs_file_picker_preview, #divUploadNewVersion .cnabs_file_picker_preview {
+        max-height: 117px;
+    }
+</style>
+
+<script type="text/javascript">
+    var autoDivUploadNewFile = new CnabsAutoDiv("divAutoCreateNewFile");
+    var uploadNewFilesArray = [];
+    var fileNameHistory = [];
+    var currentFolderFileNamesArray = [];
+    var currentFolderFileNamesObj = { fileSeriesName: "", fileSeriesGuid: "" };
+    function isShowNameExistTip() {
+        $("#newFileNamePrompt").css('display', 'none');
+        $('#divIsNewFileSeriesNameExist').css('display', 'none');
+        $.each(currentFolderFileNamesArray, function (index, item) {
+            if ($('#divCreateNewFile #newFileName').val() == item.fileSeriesName) {
+                $('#divIsNewFileSeriesNameExist input').prop('checked', true);
+                $('#divIsNewFileSeriesNameExist').css('display', 'block');
+            }
+        })
+    }
+    function ReNameTip() {
+        $("#newFileNamePrompt").css('display', 'none');
+        if (!$("#isNewFileSeriesNameExist").is(':checked')) {
+            $("#newFileNamePrompt").css('display', 'block');
+            $("#newFileNamePrompt .cnabs_dialog_oPromptMsg").html('文档名已存在，请重新命名新文档')
+        }
+    }
+    function compareSeries(fileNameSeries) {
+        var isNewSeries = true;
+        $.each(currentFolderFileNamesArray, function (index, item) {
+            if (fileNameSeries == item.fileSeriesName) {
+                isNewSeries = false;
+            }
+        })
+        return isNewSeries;
+    }
+    angular.module('DashBoard').controller('DashboardExDocument', function ($http, $scope, $rootScope, projectSeriesHelper, $compile, locationURL) {
+        $scope.loadProfile = cnabsLoadUserInfoTitle;
+        $scope.showProfile = cnabsGetUserInfoTitle;
+        $rootScope.$on("UpdateDashboardExDocument", function (event, projectSeriesGuid, issueGuid, folderGuid) {
+            $scope.ReloadPage(projectSeriesGuid, folderGuid);
+        });
+
+        $scope.ReloadPage = function (projectSeriesGuid, folderGuid) {
+            if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            }
+
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+
+            if (folderGuid != undefined && folderGuid != null) {
+                $scope.openFolder(folderGuid)
+            } else {
+                $scope.GetAllFolders();
+            }
+
+            $scope.isShowSearchMethods = false;
+            $scope.selectedSearchMethod = '按文件名搜索';
+            $scope.titleOrContent = 'title';
+            $scope.selectedDocItems = [];
+        }
+
+        $scope.projectSeriesChange = function (projectSeriesGuid) {
+            $scope.GetAllFolders();
+            $rootScope.$emit("UpdateCurrentProjectSeriesGuid", projectSeriesGuid);
+        }
+
+        $scope.deleteFoldersAndDocuments = function () {
+            var fileSeriesGuidsArray = [];
+            var folderGuidsArray = [];
+            var fileSeriesMsg = '';
+            var folderMsg = '';
+            $.each($scope.selectedItems, function (index, item) {
+                if (item.type == 'document') {
+                    fileSeriesGuidsArray.push(item.fileSeriesGuid);
+                    if (fileSeriesGuidsArray.length == 1) {
+                        fileSeriesMsg = '文件[' + item.fileSeriesName + ']';
+                    }
+                } else if (item.type == 'folder') {
+                    folderGuidsArray.push(item.folderGuid);
+                    if (folderGuidsArray.length == 1) {
+                        folderMsg = '文件夹[' + item.folderName + ']';
+                    }
+                }
+            })
+
+            if (fileSeriesGuidsArray.length > 1) {
+                fileSeriesMsg += '等' + fileSeriesGuidsArray.length + '个文件'
+            };
+            if (folderGuidsArray.length > 1) {
+                folderMsg += '等' + folderGuidsArray.length + '个文件夹'
+            }
+            if (folderGuidsArray.length && fileSeriesGuidsArray.length) {
+                fileSeriesMsg = '，' + fileSeriesMsg
+            }
+            var msg = '确认彻底删除' + folderMsg + fileSeriesMsg + '?'
+            cnabsAutoDlgYesNo(null, "删除", function (data) {
+                if (folderGuidsArray.length) {
+                    var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, folderGuids: folderGuidsArray }
+                    cnabsAjaxSync("删除文件夹", "/DMS/RemoveFolders", param, function () {
+                    })
+                }
+                if (fileSeriesGuidsArray.length) {
+                    var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, fileSeriesGuids: fileSeriesGuidsArray }
+                    cnabsAjaxSync("删除文件", "/DMS/RemoveFileSeries", param, function (data) {
+                    })
+                }
+                $scope.openFolder($scope.currentFolderGuid)
+            }, msg)
+        }
+
+        /******************文档对比部分start*************************/
+        $scope.$on('ngCompareFinished', function (ngRepeatFinishedEvent) {
+            var h = 34 * $scope.docSelectd.length + 50 + 33;
+            if (h > 763) h = 763;
+            if ($("#divDocumentAddCompare").is(":hidden")) {
+                $scope.CompareDialog(h);
+            }
+            else {
+                var dialogDiv = $("#divDocumentAddCompare").parent();
+                if (!$scope.CompareDrag) {
+                    dialogDiv.css({
+                        top: $(window).height() - h,
+                    })
+                }
+            }
+        })
+
+        $scope.CompareDrag = false;
+
+
+
+        $scope.CompareDialog = function (height) {
+            var dialogWidth = 280;
+            var dialogHeight = height;
+            var topPosition = $(window).height() - dialogHeight;
+            var leftPosition = $(window).width() - dialogWidth - 2;
+            $("#divDocumentAddCompare").dialog({
+                title: "加入对比",
+                resizable: false,
+                width: dialogWidth,
+                open: function () {
+                    var dialogHead = $(this).prev();
+                    dialogHead.addClass("dialogHeader_small");
+                    dialogHead.find(".ui-button").html("×");
+                    dialogHead.find(".ui-button").addClass("dialogClose_small");
+                    $(this).addClass("dialogBody_small");
+                    var dialogDiv = $("#divDocumentAddCompare").parent();
+
+                    dialogDiv.css({
+                        "padding": 0,
+                        "height": dialogHeight + 1,
+                        "border": "none",
+                        "position": "fixed",
+                        "max-height": $("#divDocumentAddCompare").css("max-height") + 33,
+                        top: topPosition,
+                        left: leftPosition
+                    });
+
+                    //$(this).find("tr").each(function () {
+                    //    $(this).find("td").not(":first").click(function () {
+                    //         $(this).parent().find(":checkbox").click();
+                    //    })
+                    //});
+                },
+
+                drag: function () {
+                    $scope.CompareDrag = true;
+                },
+                close: function () {
+                    $scope.docSelectd = [];
+                    $scope.CompareDrag = false;
+                    $scope.hasDocSelected = false;
+                    $scope.Compare2docItems = [];
+                }
+            });
+            $("#divDocumentAddCompare").dialog();
+        }
+
+        $scope.AddComparison = function () {
+            $scope.isHideDivDocumentAddCompare = false;
+            $.each($scope.selectedItems, function (index, item) {
+                if (JSON.stringify(item.icon).indexOf('word.png') > 0) {
+                    var docItem = {
+                        fileGuid: item.latestVerFileGuid,
+                        fileSeriesName: item.fileSeriesName,
+                        icon: item.icon,
+                        version: item.version
+                    }
+                    if (JSON.stringify($scope.docSelectd).indexOf(docItem.fileGuid) < 0) {
+                        $scope.docSelectd.push(docItem);
+                    }
+                }
+            })
+        }
+
+
+        //历史文档加入对比按钮
+        $scope.historyAddCompare = function () {
+            $scope.isHideDivDocumentAddCompare = false;
+            $.each($scope.selectedVersionDocItems, function (index, item) {
+                if (JSON.stringify(item.icon).indexOf('word.png') > 0) {
+                    var docItem = {
+                        fileGuid: item.fileGuid,
+                        fileSeriesName: item.fileSeriesName,
+                        icon: item.icon,
+                        version: item.version
+                    }
+                    if (JSON.stringify($scope.docSelectd).indexOf(docItem.fileGuid) < 0) {
+                        $scope.docSelectd.push(docItem);
+                    }
+                }
+            })
+            $("#divDocumentHistory").dialog("close");
+        }
+
+        var diffArr = [];
+        var iframeBody;
+        $scope.StartComparison = function () {
+            $scope.imgSrc = "";
+            var firstDoc, secondDoc
+            if ($scope.Compare2docItems[0].value < $scope.Compare2docItems[1].value) {
+                firstDoc = $scope.Compare2docItems[0];
+                secondDoc = $scope.Compare2docItems[1];
+            }
+            else {
+                firstDoc = $scope.Compare2docItems[1];
+                secondDoc = $scope.Compare2docItems[0];
+            }
+
+            var param = {
+                firstDocGuid: firstDoc.fileGuid,
+                secondDocGuid: secondDoc.fileGuid
+            }
+            var scrollHeight = 0;
+            cnabsAjax("获取对比图片", "/DocumentCompare/GetImgs", param, function (data) {
+                $scope.addCount = data.addCount;
+                $scope.deleteCount = data.deleteCount;
+                $scope.imgCount = data.imgCount;
+                // $scope.imgSrc = "/DocumentCompare/GetImg?imgPath=" + data.imgPath + "&imgName=1.png";
+                $scope.imgSrc = "/DocumentCompare/GetImg?imgPath=" + data.imgPath + "&imgName=1.html";
+                $scope.currentPage = 1;
+                $scope.ShowPrevOrNext();
+                $scope.$apply();
+
+                var dlg = $("#divDocumentCompare").dialog({
+                    title: "比对结果",
+                    closeOnEscape: true,
+                    height: 'auto',
+                    width: 1000,
+                    resizable: false,
+                    modal: true,
+                    position: { my: "top center", at: "top center" },
+                    open: function (event, ui) {
+                        var dialogHead = $(".divDocumentCompare").prev();
+                        dialogHead.addClass("dialogHeader");
+                        dialogHead.find(".ui-button").html("×");
+                        dialogHead.find(".ui-button").addClass("dialogClose")
+                        $("#divDocumentCompare").parent().css({
+                            "padding": 0,
+                            "top": "0px"
+                        })
+                        $(".iframeComp").height(cnabsGetViewportInfoHeight() - 110);
+                        $("#divDocumentCompare").parent().parent().css("overflow", "hidden");
+                        scrollHeight = $("#divDocumentCompare").parent().parent().scrollTop();
+                        $("#divDocumentCompare").parent().parent().scrollTop(0);
+
+                        $("#iframeComp").load(function () {
+                            $scope.getDiff();
+                            $(iframeBody).find("a").css("text-decoration", "none");
+                            var awpages = $(iframeBody).find(".awpage");
+                            var pageHeight = awpages.eq(0).height();
+                            $scope.imgCount = awpages.length;
+                            $scope.$apply();
+                            $(document.getElementById("iframeComp").contentDocument).scroll(function () {
+                                var scrollHeight = $(iframeBody).scrollTop();
+                                var pageHei = pageHeight + 20;
+                                $scope.currentPage = Math.round(scrollHeight / pageHei) + 1;
+                                $scope.$apply();
+                            })
+                        })
+                    },
+                    close: function () {
+                        $("#divDocumentCompare").parent().parent().css("overflow", "auto");
+                        $("#divDocumentCompare").parent().parent().scrollTop(scrollHeight);
+                    }
+                });
+
+                $("#divDocumentCompare").dialog();
+            })
+        }
+        $scope.Compare2docItems = [];
+        $scope.CheckChangeCompare = function ($event, dataitem) {
+            var item = $event.target;
+            item.fileGuid = dataitem.fileGuid;
+            if ($event.target.checked) {
+                $scope.Compare2docItems.push(item);
+                if ($scope.Compare2docItems.length > 2) {
+                    $scope.Compare2docItems[0].checked = false;
+                    $scope.Compare2docItems.shift();
+                }
+            }
+            else {
+                var arrIndex = $scope.Compare2docItems.getArrayIndex(item.value);
+                $scope.Compare2docItems.splice(arrIndex, 1);
+            }
+            if ($scope.Compare2docItems.length == 2) {
+                $scope.hasDocSelected = true;
+            }
+            else {
+                $scope.hasDocSelected = false;
+            }
+        };
+
+        $scope.ImgPrev = function () {
+
+            if ($scope.currentPage > 1) {
+                $scope.currentPage = $scope.currentPage - 1;
+                $scope.imgSrc = $scope.imgSrc.replace(/\d+.png/g, "/" + $scope.currentPage + ".png");
+
+            }
+            $scope.ShowPrevOrNext();
+        }
+        $scope.ImgNext = function () {
+            if ($scope.currentPage < $scope.imgCount) {
+                $scope.currentPage = $scope.currentPage + 1;
+                $scope.imgSrc = $scope.imgSrc.replace(/\d+.png/g, "/" + $scope.currentPage + ".png");
+            }
+            $scope.ShowPrevOrNext();
+        }
+
+        $scope.ShowPrevOrNext = function () {
+            if ($scope.imgCount <= 1) {
+                $scope.isShowImgPrev = false;
+                $scope.isShowImgNext = false;
+            }
+            else {
+                $scope.isShowImgPrev = true;
+                $scope.isShowImgNext = true;
+            }
+            if ($scope.currentPage == $scope.imgCount) { $scope.isShowImgNext = false; }
+
+            if ($scope.currentPage == 1) { $scope.isShowImgPrev = false; }
+        }
+        $scope.currentDiff = 0;
+        var diffIndex = 0;
+        var diffMark = " solid 4px rgba(54, 188, 237,0.5)";
+        var fromBack = false;
+        var fromFore = false;
+        $scope.diffFore = function () {
+            if (fromBack) diffIndex = diffIndex - 1;
+            if (diffIndex < diffArr.length) $(diffArr[diffIndex + 1]).each(function () { $(this).css("border-bottom", "none") });
+            $(diffArr[diffIndex]).each(function () {
+                $(this).css("border-bottom", diffMark);
+            });
+            $scope.controlScrollHeight();
+            diffIndex--;
+            fromBack = false;
+            fromFore = true;
+            if (diffIndex < 0) diffIndex = 0;
+        }
+
+        $scope.diffBack = function () {
+            if (fromFore) diffIndex = diffIndex + 1;
+            if (diffIndex > 0) $(diffArr[diffIndex - 1]).each(function () {
+                $(this).css("border-bottom", "none");
+            });
+            $(diffArr[diffIndex]).each(function () {
+                $(this).css("border-bottom", diffMark);
+            });
+            $scope.controlScrollHeight();
+            diffIndex++;
+            fromBack = true;
+            fromFore = false;
+            if (diffIndex > diffArr.length - 1) diffIndex = diffArr.length - 1;
+        }
+        $scope.controlScrollHeight = function () {
+            if (diffArr[diffIndex] != null && diffArr[diffIndex][0] != null) {
+                if ($(iframeBody).scrollTop() < $(diffArr[diffIndex][0]).offset().top - $("#iframeComp").height() + 20) {
+                    $(iframeBody).scrollTop($(diffArr[diffIndex][0]).offset().top - 20);
+                }
+                else if ($(iframeBody).scrollTop() > $(diffArr[diffIndex][0]).offset().top) {
+                    $(iframeBody).scrollTop($(diffArr[diffIndex][0]).offset().top - 100);
+                }
+            }
+        }
+
+        //获取文档对比不同dom 元素集
+        $scope.getDiff = function () {
+            diffArr = [];
+            diffSameParentArr = [];
+            diffIndex = 0;
+            if (diffArr.length == 0) {
+                iframeBody = document.getElementById("iframeComp").contentDocument.body;
+                var diff = $(iframeBody).find(".awdiv :empty");
+                var diffTempArr = [];
+                diff.each(function () {
+                    if ($(this).height() == 0 && $(this).width() > 5 && $(this).css("border-top-color") == "rgb(181, 8, 46)") {
+                        diffTempArr.push($(this));
+                    }
+                });
+
+                diffSameParentArr.push(diffTempArr[0]);
+                for (var i = 0; i < diffTempArr.length - 1; i++) {
+                    if (diffTempArr[i].parent().html() == diffTempArr[i + 1].parent().html()) {
+                        diffSameParentArr.push(diffTempArr[i + 1]);
+                    }
+                    else {
+                        diffArr.push(diffSameParentArr);
+                        diffSameParentArr = [];
+                        diffSameParentArr.push(diffTempArr[i + 1]);
+                    }
+                    // }
+                }
+                diffArr.push(diffSameParentArr);
+            }
+        }
+
+
+        /**********************文档对比部分end********************************************/
+
+
+        $scope.showSearchMethods = function () {
+            $scope.isShowSearchMethods = true;
+        }
+        $scope.hideSearchMethods = function () {
+            $scope.isShowSearchMethods = false;
+        }
+        $scope.searchDocument = function (method) {
+            if (method == 'title') {
+                $scope.selectedSearchMethod = '按文件名搜索';
+                $scope.titleOrContent = 'title';
+            } else if (method == 'content') {
+                $scope.selectedSearchMethod = '按内容搜索';
+                $scope.titleOrContent = 'content';
+            }
+            if ($scope.searchText == '' || $scope.searchText == undefined) {
+                return;
+            }
+            $scope.selectAll = false;
+            $scope.selectedItems = [];
+            $scope.selectedNumber = $scope.selectedItems.length;
+            if ($scope.titleOrContent == 'title') {
+                cnabsAjax('搜索相关文件夹以及文件', '/DMS/SearchAllFolderAndFileInfoByKeyword', {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    searchText: $scope.searchText,
+                    folderGuid: $scope.currentFolderGuid,
+                }, function (data) {
+                    $.each(data.folders, function (index, item) {
+                        item.type = 'folder';
+                        item.ischecked = false;
+                        item.folderNameNew = item.folderName;
+                        item.folderName = '';
+                        $.each(item.highLightKeywordIndex, function (index, str) {
+                            if (str.isHighLight) {
+                                str.Keyword = '<span>' + str.Keyword + '</span>'
+                            } else {
+                                str.Keyword = '<span style="color:#fff;">' + str.Keyword + '</span>'
+                            }
+                            item.folderName += str.Keyword
+                        })
+                    })
+                    $scope.folders = data.folders;
+
+                    $.each(data.files, function (index, item) {
+                        item.type = 'document';
+                        item.ischecked = false;
+                        item.icon = { 'background-image': 'url(../../Images/Common/' + cnabsGetFileIconByFileName(item.latestVerFileName) + ')', 'width': '250px' }
+                        item.fileSeriesNameNew = item.fileSeriesName;
+                        item.fileSeriesName = '';
+                        $.each(item.highLightKeywordIndex, function (index, str) {
+                            if (str.isHighLight) {
+                                str.Keyword = '<span class="cnabs_yellow">' + str.Keyword + '</span>'                                
+                            } else {
+                                str.Keyword = '<span style="color:#fff;">' + str.Keyword + '</span>'
+                            }
+                            item.fileSeriesName += str.Keyword;
+                        })
+                    })
+                    $scope.documents = data.files;
+                    $scope.totalNumber = $scope.folders.length + $scope.documents.length;
+                    $scope.isSearchResult = true;
+                    $scope.$apply();
+                    $scope.controlTableThWidth('documentTable');
+                })
+            }
+        }
+        $scope.showAllFiles = function (event) {
+            var event = event || window.event;
+            if (event.keyCode == 8 && ($scope.searchText == '' || $scope.searchText == undefined)) {
+                $scope.openFolder($scope.currentFolderGuid);
+            }
+        }
+        $scope.pressEnterToSearch = function (event) {
+            var event = event || window.event;
+            if (event.keyCode == 13 && $scope.searchText != '' && $scope.searchText != undefined) {
+                $scope.searchDocument();
+            }
+        }
+        $scope.GetDocuments = function (FolderGuid) {
+            $scope.documents = [];
+            currentFolderFileNamesArray = [];
+            cnabsAjax("获取文件", "/DMS/GetFiles", {
+                projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                folderGuid: FolderGuid,
+            }, function (data) {
+                $.each(data, function (index, item) {
+                    currentFolderFileNamesObj = { fileSeriesName: "", fileSeriesGuid: "" };
+                    item.type = 'document';
+                    item.ischecked = false;
+                    item.icon = { 'background-image': 'url(../../Images/Common/' + cnabsGetFileIconByFileName(item.latestVerFileName) + ')', 'width': '410px' };
+                    currentFolderFileNamesObj.fileSeriesName = item.fileSeriesName;
+                    currentFolderFileNamesObj.fileSeriesGuid = item.fileSeriesGuid;
+                    currentFolderFileNamesArray.push(currentFolderFileNamesObj);
+                })
+                $scope.documents = data;
+                $scope.totalNumber = $scope.folders.length + $scope.documents.length;
+                $scope.$apply();
+                $scope.controlTableThWidth('documentTable');
+
+            })
+        }
+        $scope.GetFolders = function (FolderGuid) {
+            $scope.folders = [];
+            cnabsAjax("获取文件夹", "/DMS/GetFolders", {
+                projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                folderGuid: FolderGuid,
+            }, function (data) {
+                $.each(data, function (index, item) {
+                    item.type = 'folder';
+                    item.ischecked = false;
+                })
+                $scope.folders = data;
+                $scope.totalNumber = $scope.folders.length + $scope.documents.length;
+                $scope.$apply();
+            })
+        }
+
+        $scope.GetFolderPath = function (FolderGuid) {
+            cnabsAjax('获取文件夹路径', '/DMS/GetFolderPath', { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, folderGuid: FolderGuid }, function (data) {
+                data[0].folderName = '所有文件';
+                $scope.folderPaths = data;
+                $scope.$apply();
+            })
+        }
+        $scope.openFolder = function (FolderGuid) {
+            $scope.isSearchResult = false;
+            $scope.currentFolderGuid = FolderGuid;
+            $scope.selectAll = false;
+            $scope.selectedItems = [];
+            $scope.GetFolderPath(FolderGuid);
+            $scope.GetFolders(FolderGuid);
+            $scope.GetDocuments(FolderGuid);
+            $scope.selectedNumber = $scope.selectedItems.length;
+
+            locationURL.setURLHash("folderGuid", FolderGuid);
+        }
+        $scope.GetAllFolders = function () {
+            cnabsAjax('获取所有文件', '/DMS/GetAllFolders', { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid }, function (data) {
+                $scope.openFolder(data.key)
+            })
+        }
+        $scope.returnPreviousFolder = function (isLast, FolderGuid) {
+            if (isLast) {
+                return;
+            };
+            $scope.openFolder(FolderGuid)
+        }
+
+        $scope.docSelectd = [];
+        $scope.selectFoldersOrDocuments = function () {
+            $scope.selectedItems = [];
+            $scope.selectedDocItems = [];
+
+            $scope.hasFolderSelected = false;
+            $scope.hasDocumentSelected = false;
+            $.each($scope.folders, function (index, item) {
+                if (item.ischecked) {
+                    $scope.selectedItems.push(item);
+                    $scope.hasFolderSelected = true;
+                }
+            })
+            $.each($scope.documents, function (index, item) {
+                if (item.ischecked) {
+                    $scope.selectedItems.push(item);
+                    $scope.hasDocumentSelected = true;
+                }
+            })
+            $scope.selectedNumber = $scope.selectedItems.length;
+            $scope.selectAll = false;
+            if ($scope.selectedNumber == $scope.folders.length + $scope.documents.length) {
+                $scope.selectAll = true;
+            }
+
+            $.each($scope.selectedItems, function (index, item) {
+                if (item.type == "document") {
+                    if (JSON.stringify(item.icon).indexOf('word.png') > 0) {
+                        $scope.selectedDocItems.push(item);
+                    }
+                }
+            })
+        }
+        $scope.selectAllFoldersAndDocuments = function () {
+            $.each($scope.folders, function (index, item) {
+                item.ischecked = $scope.selectAll;
+            })
+            $.each($scope.documents, function (index, item) {
+                item.ischecked = $scope.selectAll;
+            })
+            $scope.selectFoldersOrDocuments()
+        }
+
+        $scope.createFolder = function () {
+            $('#newFolderNameInput').val('');
+            $('#folderNamePromptMsg').html('');
+            $('#createFolderNamePrompt').css('display', 'none');
+            cnabsDlgYesNo('divCreateFolder', "新建文件夹", function (data) {
+                var newFolderNameInput = $('#newFolderNameInput').val();
+                if (!newFolderNameInput.length) {
+                    $('#folderNamePromptMsg').html('请填写文件夹名称');
+                    $('#createFolderNamePrompt').css('display', 'block');
+                    return false;
+                }
+                if (newFolderNameInput.length > 100) {
+                    $('#folderNamePromptMsg').html('文件夹名称不能超过100字符数');
+                    $('#createFolderNamePrompt').css('display', 'block');
+                    return false;
+                }
+                var invalidCharList = "/\\:*?\"<>|";
+                for (var i = 0; i < newFolderNameInput.length; i++) {
+                    if (invalidCharList.indexOf(newFolderNameInput[i]) >= 0) {
+                        $('#folderNamePromptMsg').html('文件夹名称不能包含特殊字符/\\:*?\"<>|');
+                        $('#createFolderNamePrompt').css('display', 'block');
+                        return false;
+                    }
+                }
+                var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, folderNames: $('#newFolderNameInput').val(), parentFolderGuid: $scope.currentFolderGuid, folderDescriptions: '' }
+                cnabsAjax("新建文件夹", "/DMS/CreateFolders", param, function () {
+                    $scope.openFolder($scope.currentFolderGuid)
+                })
+            }, 'auto', 610)
+        }
+        $scope.triggerUpload = function (inputId) {
+            $("#" + inputId).val('');
+            $("#" + inputId).click();
+        }
+        $scope.clearCreateFile = function () {
+            $('.deleteUploadImage').remove();
+            uploadNewFilesArray = [];
+            fileNameHistory = [];
+            $("#previewNewFiles").html('');
+            $("#uploadNewFileInput").val('');
+            $('#divIsNewFileSeriesNameExist').css('display', 'none');
+        }
+        $scope.removeAndAddNewFileStyle = function (files, images) {
+            var uploadFileLength = files.length + images.length;
+            if (uploadFileLength == 1) {
+                $("#uploadNewFileName").removeClass("cnabs_none");
+                if (files.length) {
+                    $("#divCreateNewFile #uploadNewFileName").val(cnabsGetFileNameWithoutExtension(files[0].name));
+                }
+                if (images.length) {
+                    $("#divCreateNewFile #uploadNewFileName").val(cnabsGetFileNameWithoutExtension(images[0].name));
+                }
+                $("#uploadNewFileName").addClass("cnabs_block");
+            }
+            if (uploadFileLength != 1) {
+                $("#uploadNewFileName").removeClass("cnabs_block");
+                $("#uploadNewFileName").addClass("cnabs_none");
+            }
+            if (uploadFileLength > 0) {
+                $("#divCreateNewFile .uploadNewFile_remark").removeClass("cnabs_none");
+                $("#divCreateNewFile .uploadNewFile_remark").addClass("cnabs_block");
+            } else {
+                $("#divCreateNewFile .uploadNewFile_remark").removeClass("cnabs_block");
+                $("#divCreateNewFile .uploadNewFile_remark").addClass("cnabs_none");
+            }
+        }
+
+        $scope.createFile = function () {
+            $("#divCreateNewFile .uploadNewFile_remark").removeClass("cnabs_block");
+            $("#divCreateNewFile .uploadNewFile_remark").addClass("cnabs_none");
+            $("#uploadNewFileName").removeClass("cnabs_block");
+            $("#uploadNewFileName").addClass("cnabs_none");
+            document.getElementById("uploadNewFile_remark").value = "";
+            $scope.files = [];
+            var filePicker = new CnabsFilePicker();
+            filePicker.init("uploadNewFile", {
+                buttonText: '上传附件',
+                showComment: true,
+                onChange: function (files, images) {
+                    $.each(files, function (index, item) {
+                        item.comment = "";
+                        if (!compareSeries(cnabsGetFileNameWithoutExtension(item.name))) {
+                            item.comment = "* 文档名已存在，归为新版本";
+                        }
+                    })
+                    $("#divCreateNewFile #uploadNewFileName").keyup(function () {
+                        var inputVal = $("#divCreateNewFile #uploadNewFileName").val();
+                        if (!compareSeries(inputVal)) {
+                            files[0].comment = "* 文档名已存在，归为新版本";
+                            $(".cnabs_file_picker_file_show_comment").eq(0).css("display", "block");
+                            $(".cnabs_file_picker_file_show_comment").eq(0).text("* 文档名已存在，归为新版本");
+                        }
+                        if (compareSeries(inputVal)) {
+                            files[0].comment = "";
+                            $(".cnabs_file_picker_file_show_comment").eq(0).css("display", "none");
+                        }
+                    })
+                    $("#divCreateNewFile .cnabs_file_picker_preview").css("width", "570px");
+                    $("#divCreateNewFile .cnabs_file_picker_each_file").css("height", "17px");
+                    var uploadFilesLength = 0;
+                    uploadFilesLength = parseInt(files.length + images.length);
+                    if (uploadFilesLength == 1) {
+                        $("#divCreateNewFile #uploadNewFileName").removeClass("cnabs_none");
+                        if (files.length) {
+                            $("#divCreateNewFile #uploadNewFileName").val(cnabsGetFileNameWithoutExtension(files[0].name));
+                        }
+                        if (images.length) {
+                            $("#divCreateNewFile #uploadNewFileName").val(cnabsGetFileNameWithoutExtension(images[0].name));
+                        }
+                        $("#divCreateNewFile #uploadNewFileName").addClass("cnabs_block");
+                    }
+                    if (uploadFilesLength > 1) {
+                        $("#divCreateNewFile #uploadNewFileName").removeClass("cnabs_block");
+                        $("#divCreateNewFile #uploadNewFileName").addClass("cnabs_none");
+                    }
+                    $scope.removeAndAddNewFileStyle(files, images);
+                    $scope.files = files;
+                    $scope.images = images;
+                }
+            })
+            cnabsDlgYesNo('divCreateNewFile', "上传文档", function () {
+                var formDataUploadDocument = new FormData();
+                var uploadDocumentArr = [];
+                var fileSeriesNamesUploadDocumentArr = [];
+                var updateVersionArry = [];
+                var fileSeriesNamesUpdateVersionArry = [];
+                var fileSeriesUpdateVersionArry = [];
+                var fileSeriesNameUploadDocumentString = "";
+                var remarks = $("#divCreateNewFile .uploadNewFile_remark").val();
+                var selectedImgAndFile = [];
+                //处理文件和图片的情况
+                $.each($scope.files, function (index, item) {
+                    selectedImgAndFile.push(item);
+                })
+                $.each($scope.images, function (index, item) {
+                    selectedImgAndFile.push(item);
+                })
+
+                $.each(selectedImgAndFile, function (index, item) {
+                    var isNewSeries;
+                    var defindSeriesNameInputVal = $("#divCreateNewFile #uploadNewFileName").val();
+                    var selectedFileName = cnabsGetFileNameWithoutExtension(item.name);
+                    if (selectedImgAndFile.length == 1) {
+                        isNewSeries = compareSeries(defindSeriesNameInputVal);
+                    }
+                    if (selectedImgAndFile.length > 1) {
+                        isNewSeries = compareSeries(selectedFileName);
+                    }
+                    //创建新系列
+                    if (isNewSeries) {
+                        uploadDocumentArr.push(item);
+                        fileSeriesNamesUploadDocumentArr.push(selectedFileName);
+                    }
+                    //更新新版本
+                    if (!isNewSeries) {
+                        updateVersionArry.push(item);
+                        if (selectedImgAndFile == 1) {
+                            fileSeriesNamesUpdateVersionArry.push(defindSeriesNameInputVal);
+                        }
+                        if (selectedImgAndFile > 1) {
+                            fileSeriesNamesUpdateVersionArry.push(selectedFileName);
+                        }
+                        $.each(currentFolderFileNamesArray, function (index, item) {
+                            if (item.fileSeriesName == selectedFileName || item.fileSeriesName == defindSeriesNameInputVal) {
+                                fileSeriesUpdateVersionArry.push(item);
+                            }
+                        })
+                    }
+                })
+                if (selectedImgAndFile.length == 1) {
+                    fileSeriesNameUploadDocumentString = $("#divCreateNewFile #uploadNewFileName").val();
+                }
+                if (selectedImgAndFile.length > 1) {
+                    fileSeriesNameUploadDocumentString = fileSeriesNamesUploadDocumentArr.join(",");
+                }
+
+                //append新系列的信息
+                if (uploadDocumentArr.length) {
+                    for (var i = 0; i < uploadDocumentArr.length; ++i) {
+                        var file = uploadDocumentArr[i];
+                        formDataUploadDocument.append("file" + i, file);
+                    }
+                    formDataUploadDocument.append("projectGuid", $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+                    formDataUploadDocument.append("folderGuid", $scope.currentFolderGuid);
+                    formDataUploadDocument.append("fileSeriesNames", fileSeriesNameUploadDocumentString);
+                    formDataUploadDocument.append("description", remarks);
+                    cnabsAjaxUploadFile("上传文档", "/DMS/CreateFile", formDataUploadDocument, function () {
+                        $scope.openFolder($scope.currentFolderGuid);
+                    })
+                }
+                //更新版本
+                if (updateVersionArry.length) {
+                    $.each(updateVersionArry, function (index, selectFile) {
+                        var selectedName = "";
+                        if (selectedImgAndFile.length == 1) {
+                            selectedName = $("#divCreateNewFile #uploadNewFileName").val();
+                        }
+                        if (selectedImgAndFile.length > 1) {
+                            selectedName = cnabsGetFileNameWithoutExtension(selectFile.name);
+                        }
+                        $.each(fileSeriesUpdateVersionArry, function (i, existFileSeries) {
+                            if (selectedName == existFileSeries.fileSeriesName) {
+                                var formDataUpdateVersion = null;
+                                formDataUpdateVersion = new FormData();
+                                if (selectedImgAndFile.length == 1) {
+                                    formDataUpdateVersion.append("file", updateVersionArry[0]);
+                                }
+                                if (selectedImgAndFile.length > 1) {
+                                    formDataUpdateVersion.append("file", updateVersionArry[i]);
+                                }
+                                formDataUpdateVersion.append("fileSeriesGuid", existFileSeries.fileSeriesGuid);
+                                formDataUpdateVersion.append("projectGuid", $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+                                formDataUpdateVersion.append("description", remarks);
+                                cnabsAjaxUploadFileSync("上传新版本", "/DMS/UploadFile", formDataUpdateVersion, function () {
+                                })
+                            }
+                        })
+                    })
+                    $scope.openFolder($scope.currentFolderGuid);
+                }
+            }, 'auto', 595)
+        }
+
+        function DefineValidate(value, title) {
+            var jsonResult = {
+                verdict: false,
+                msg: ""
+            }
+            value = value.replace(/(^[\s\n\t]+|[\s\n\t]+$)/g, "");
+            if (value.length == 0) {
+                jsonResult.msg = title + "不能为空。";
+                return jsonResult;
+            }
+            if (value.length > 100) {
+                jsonResult.msg = title + "不能超过100字符数。";
+                return jsonResult;
+            }
+            var invalidCharList = "/\\:*?\"<>|";
+            for (var i = 0; i < value.length; i++) {
+                if (invalidCharList.indexOf(value[i]) >= 0) {
+                    jsonResult.msg = title + "不能包含特殊字符/\\:*?\"<>|";
+                    return jsonResult;
+                }
+            }
+            jsonResult.verdict = true;
+            return jsonResult;
+        }
+        $scope.downLoadFile = function (isHistory) {
+            cnabsClearFrame();
+            var fileGuids = [];
+            var folderGuids = [];
+
+            if (isHistory) {
+                for (var i = 0; i < $scope.selectedVersionsArray.length; i++) {
+                    fileGuids.push($scope.selectedVersionsArray[i].fileGuid);
+                }
+            } else {
+                for (var i = 0; i < $scope.selectedItems.length; i++) {
+                    if ($scope.selectedItems[i].type == 'document') {
+                        fileGuids.push($scope.selectedItems[i].latestVerFileGuid);
+                    }
+                }
+                $.each($scope.selectedItems, function (index, item) {
+                    if (item.type == 'folder') {
+                        folderGuids.push(item.folderGuid);
+                    }
+                })
+            }
+            if (fileGuids.length == 1 && folderGuids.length < 1) {
+                cnabsAjax('下载文件', '/DMS/DownloadFile', {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    fileGuids: fileGuids
+                }, function (guids) {
+                    for (var i = 0; i < guids.length; i++) {
+                        cnabsDownloadURL('/Download/Index?guid=' + guids[i], i);
+                    }
+                });
+            } else {
+                window.location.href = '/DMS/DownloadCompressFiles?projectGuid=' + $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid
+                    + '&fileGuidsText=' + fileGuids.join(',') + '&folderGuidsText=' + folderGuids.join(',') + '&isSearchFile=' + $scope.isSearchResult;
+            }
+        }
+        $scope.GetUserListInRecord = function () {
+            $scope.userListInRecord = null;
+            cnabsAjaxSync("导出上传记录时，获取上传用户列表", "/DMS/GetExportFileUserNames", { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid }, function (data) {
+                $.each(data, function (index, item) {
+                    item.realNameAndUserName = cnabsFormatUserName(item.UserInfo);
+                    item.hasSelected = false;
+                })
+                $scope.userListInRecord = data;
+            })
+        }
+
+        $scope.removeHasSelectedUsers = function () {
+            $.each($scope.userListInRecord, function (index, item) {
+                item.hasSelected = false;
+                $.each($scope.selectedRecordUsers, function (i, element) {
+                    if (item.UserInfo.UserName == element.UserName) {
+                        item.hasSelected = true;
+                    }
+                })
+            })
+        }
+        $scope.addRecordUser = function () {
+            if ($scope.currentSelectedUser == 'All') {
+                $scope.selectedRecordUsers = [];
+            } else {
+                $scope.selectedRecordUsers.push({ RealName: $('#recordUserSelect').find("option:selected").text(), UserName: $scope.currentSelectedUser });
+            }
+            $scope.removeHasSelectedUsers();
+        }
+        $scope.removeRecordUsers = function (userName) {
+            $.each($scope.selectedRecordUsers, function (index, item) {
+                if (item.UserName == userName) {
+                    $scope.selectedRecordUsers.splice(index, 1);
+                    return false;
+                }
+            })
+            $scope.removeHasSelectedUsers()
+        }
+
+        $scope.downLoadRecord = function () {
+            $scope.GetUserListInRecord();
+            if ($scope.userListInRecord == undefined
+                || $scope.userListInRecord == null) {
+                return;
+            }
+            //clear
+            var obj = cnabsGetPastDateAndFutureDate(3)
+            $('#recordStartTime').val(obj.past);
+            $('#recordEndTime').val(obj.future);
+            $scope.currentSelectedUser = 'All';
+            $('#recordTimePrompt').css('display', 'none');
+            $scope.selectedRecordUsers = [];
+            cnabsDlgYesNo('divDownLoadRecord', "导出选中文件的上传记录", function () {
+                $('#recordTimePrompt').css('display', 'none');
+                if ($('#recordStartTime').val() != '') {
+                    var obj = cnabsParseDateArray($('#recordStartTime').val());
+                    if (!obj.isValidDate) {
+                        $('#recordTimePrompt').css('display', 'block');
+                        var Error = obj.errorMsg.split('：')[0];
+                        $('#recordTimePrompt .cnabs_dialog_oPromptMsg').html('开始时间' + Error);
+                        return false;
+                    }
+                    $('#recordStartTime').val(obj.dateArray[0]);
+                }
+                if ($('#recordEndTime').val() != '') {
+                    var obj = cnabsParseDateArray($('#recordEndTime').val());
+                    if (!obj.isValidDate) {
+                        $('#recordTimePrompt').css('display', 'block');
+                        var Error = obj.errorMsg.split('：')[0];
+                        $('#recordTimePrompt .cnabs_dialog_oPromptMsg').html('截止时间' + Error);
+                        return false;
+                    }
+                    $('#recordEndTime').val(obj.dateArray[0]);
+                }
+                if ($('#recordStartTime').val() != '' && $('#recordEndTime').val() != '' && $('#recordStartTime').val() > $('#recordEndTime').val()) {
+                    $('#recordTimePrompt').css('display', 'block');
+                    $('#recordTimePrompt .cnabs_dialog_oPromptMsg').html('开始时间不能大于截止时间');
+                    return false;
+                }
+                var fileGuids = [], folderGuids = [];
+                for (var i = 0; i < $scope.selectedItems.length; i++) {
+                    if ($scope.selectedItems[i].type == 'document') {
+                        fileGuids.push($scope.selectedItems[i].fileSeriesGuid);
+                    }
+                    if ($scope.selectedItems[i].type == 'folder') {
+                        folderGuids.push($scope.selectedItems[i].folderGuid);
+                    }
+                }
+                var recordUsers = [];
+                $.each($scope.selectedRecordUsers, function (index, item) {
+                    recordUsers.push(item.UserName);
+                })
+                var param = {
+                    projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid,
+                    fileSeriesGuidsText: fileGuids.join(','),
+                    folderGuidsText: folderGuids.join(','),
+                    usernames: recordUsers,
+                    startTime: $('#recordStartTime').val(),
+                    endTime: $('#recordEndTime').val()
+                }
+                cnabsClearFrame();
+                cnabsAjax('导出上传记录', '/DMS/ExportUploadFileRecordToExcel', param, function (guid) {
+                    cnabsDownloadURL('/Download/Index?guid=' + guid);
+                });
+            }, 'auto', 'auto')
+        }
+        $scope.getHistory = function () {
+            if ($scope.selectedItems.length == 1 && $scope.selectedItems[0].type == 'document') {
+                $scope.historicalFiles = [];
+                $scope.selectAllVersionsInput = false;
+                $scope.selectedVersionsArray = [];
+                $scope.selectedVersionDocItems = [];
+                var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, fileSeriesGuid: $scope.selectedItems[0].fileSeriesGuid }
+                cnabsAjax("获取历史版本", "/DMS/GetHistoricalFiles", param, function (data) {
+                    $.each(data, function (index, item) {
+                        item.ischecked = false;
+                        item.icon = { 'background-image': 'url(../../Images/Common/' + cnabsGetFileIconByFileName(item.fileName) + ')' }
+                    })
+                    $scope.historicalFiles = data;
+                    $scope.$apply();
+                    $scope.controlTableThWidth('versionTable');
+                    cnabsDlgOk('divDocumentHistory', $scope.selectedItems[0].fileSeriesName + " 的历史版本", function () {
+
+                    }, 'auto', 863)
+                })
+
+            } else {
+                cnabsMsgError('查看历史版本失败：请选择一个文档')
+            }
+
+        }
+
+        $scope.selectVersions = function () {
+            $scope.selectedVersionsArray = [];
+            $scope.selectedVersionDocItems = [];
+            $.each($scope.historicalFiles, function (index, item) {
+                if (item.ischecked) {
+                    $scope.selectedVersionsArray.push(item);
+                }
+            })
+            $scope.selectAllVersionsInput = false;
+            if ($scope.selectedVersionsArray.length == $scope.historicalFiles.length) {
+                $scope.selectAllVersionsInput = true;
+            }
+            $.each($scope.selectedVersionsArray, function (index, item) {
+                if (JSON.stringify(item.icon).indexOf('word.png') > 0) {
+                    $scope.selectedVersionDocItems.push(item);
+                }
+            })
+
+        }
+        $scope.selectAllVersions = function () {
+            $.each($scope.historicalFiles, function (index, item) {
+                item.ischecked = $scope.selectAllVersionsInput;
+            })
+            $scope.selectVersions()
+        }
+
+        $scope.updateHistoryTable = function (FileSeriesGuid) {
+            $scope.historicalFiles = [];
+            $scope.selectAllVersionsInput = false;
+            $scope.selectedVersionsArray = [];
+            $scope.selectedVersionDocItems = [];
+            var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, fileSeriesGuid: FileSeriesGuid }
+            cnabsAjax("获取历史版本", "/DMS/GetHistoricalFiles", param, function (data) {
+                $.each(data, function (index, item) {
+                    item.ischecked = false;
+                    item.icon = { 'background-image': 'url(../../Images/Common/' + cnabsGetFileIconByFileName(item.fileName) + ')' }
+                })
+                $scope.historicalFiles = data;
+                $scope.$apply();
+                $scope.controlTableThWidth('versionTable');
+            })
+        }
+        $scope.clearCreateNewVersion = function () {
+            $('.deleteUploadImage').remove();
+            uploadNewFilesArray = [];
+            $("#previewNewVersions").html('');
+            $("#uploadNewVersionInput").val('');
+        }
+
+        $scope.sortArr = function (arr) {
+            for (var i = 0; i < arr.length - 1; i++) {
+                for (var j = 0; j < arr.length - 1 - i; j++) {
+                    if (arr[j].lastModifiedDate > arr[j + 1].lastModifiedDate) {
+                        var temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
+                }
+            }
+            return arr;
+        }
+
+        $scope.removeAndAddVersionStyle = function (files, images) {
+            var fileLength = files.length + images.length;
+            $("#divUploadNewVersion .cnabs_file_picker_delete_file").removeClass("cnabs_file_picker_delete_file_scroll");
+            $(".uploadNewVersion_remark").css("display", "none");
+            if (fileLength) {
+                $(".uploadNewVersion_remark").css("display", "block");
+            } else {
+                document.getElementById("uploadNewVersion_remark").value = "";
+                $(".uploadNewVersion_remark").css("display", "none");
+            }
+        }
+
+        $scope.uploadNewVersion = function (isHistory) {
+            $(".uploadNewVersion_remark").css("display", "none");
+            document.getElementById("uploadNewVersion_remark").value = "";
+            $scope.clearCreateNewVersion();
+            var selectedFileAndImg = [];
+            if (isHistory) {
+                $scope.uploadNewVersionFileSeriesName = $scope.historicalFiles[0].fileSeriesName;
+            } else {
+                $scope.uploadNewVersionFileSeriesName = $scope.selectedItems[0].fileSeriesName;
+            }
+            var filePicker = new CnabsFilePicker();
+            filePicker.init("uploadNewVersion", {
+                buttonText: '上传新版本',
+                showLastModifyTime: true,
+                showComment: false,
+                onChange: function (files, images) {
+                    $.each(files, function (index, item) {
+                        selectedFileAndImg.push(item);
+                    })
+                    $.each(images, function (index, item) {
+                        selectedFileAndImg.push(item);
+                    })
+                    $("#divUploadNewVersion .cnabs_file_picker_preview").css("width", "570px");
+                    $("#divUploadNewVersion .cnabs_file_picker_each_file").css("height", "17px");
+                    $scope.removeAndAddVersionStyle(files, images);
+                }
+            });
+            cnabsDlgYesNo('divUploadNewVersion', "上传 " + $scope.uploadNewVersionFileSeriesName + " 的新版本", function () {
+                var remarks = $("#divUploadNewVersion .uploadNewVersion_remark").val();
+                var formData = new FormData();
+                if (selectedFileAndImg.length) {
+                    for (var i = 0; i < selectedFileAndImg.length; ++i) {
+                        var file = selectedFileAndImg[i];
+                        formData.append("file" + i, file);
+                    }
+                }
+                if (isHistory) {
+                    var FileSeriesGuid = $scope.historicalFiles[0].fileSeriesGuid;
+                } else {
+                    var FileSeriesGuid = $scope.selectedItems[0].fileSeriesGuid;
+                }
+                formData.append("projectGuid", $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid);
+                formData.append("fileSeriesGuid", FileSeriesGuid);
+                formData.append("description", remarks);
+                cnabsAjaxUploadFile("上传新版本", "/DMS/UploadFile", formData, function () {
+                    $scope.updateHistoryTable(FileSeriesGuid);
+                    $scope.openFolder($scope.currentFolderGuid);
+                })
+            }, 'auto', 610)
+        };
+        $scope.deleteFile = function () {
+            var Versions = '';
+            var FileGuids = [];
+            $.each($scope.selectedVersionsArray, function (index, item) {
+                Versions += item.version
+                FileGuids.push(item.fileGuid);
+                if (index != $scope.selectedVersionsArray.length - 1) {
+                    Versions += '、'
+                }
+            })
+            var message = '';
+            if ($scope.selectAllVersionsInput) {
+                message = "确认彻底删除文档[" + $scope.historicalFiles[0].fileSeriesName + "]以及它的所有版本？";
+            } else {
+                message = "确认删除文档[" + $scope.historicalFiles[0].fileSeriesName + "]的第" + Versions + "版，共" + $scope.selectedVersionsArray.length + "个版本文件？";
+            }
+            cnabsAutoDlgYesNo(null, "删除历史版本", function () {
+                var param = { projectGuid: $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid, fileGuids: FileGuids }
+                cnabsAjax("删除历史版本", "/DMS/RemoveFile", param, function (data) {
+                    if ($scope.selectAllVersionsInput) {
+                        $('#divDocumentHistory').dialog("close")
+                    } else {
+                        $scope.updateHistoryTable($scope.historicalFiles[0].fileSeriesGuid);
+                    }
+                    $scope.openFolder($scope.currentFolderGuid);
+                })
+            }, message)
+        }
+        $scope.controlTableThWidth = function (x) {
+            $('#' + x + '_false').width($("#" + x + '_true').width())
+        };
+
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Document") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+    })
+        .directive('onFinishRenderFilters', function ($timeout) {
+            return {
+                restrict: 'A',
+                scope: true,
+                link: function (scope, element, attr) {
+                    if (scope.$last === true) {
+                        var module = "ng" + attr.onFinishRenderFilters + "Finished";
+                        $timeout(function () {
+                            scope.$emit(module);
+                        });
+                    }
+                },
+            };
+        });
+
+
+
+    //array 扩展
+    Array.prototype.getArrayIndex = function (value) {
+        var index = -1;
+        for (var i = 0; i < this.length; i++) {
+            if (this[i].value == value) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    /************** 加入对比 div可拖动start******************************/
+    $(function () {
+        var flag = false;
+        function MouseMoveDiv(e) {
+            if (flag == true) {
+                var x = window.event.clientX;
+                var y = window.event.clientY;
+                $(e).css({
+                    "top": y - $("#divDashboardExDocumentParent").offset().top - 10,
+                    "left": x - $("#divDashboardExDocumentParent").offset().left * 2,
+                });
+            }
+        }
+
+        function MouseDownDiv(e) {
+            flag = true;
+        }
+        function MouseUpDiv() {
+            flag = false;
+        }
+
+        $(".divMove").mousedown(function () { MouseDownDiv(this); });
+        $(".divMove").mousemove(function () { MouseMoveDiv(this) });
+        $(".divMove").mouseup(function () { MouseUpDiv() })
+    })
+    /************** 加入对比 div可拖动end******************************/
+
+</script>
+<div id="divDashboardExDocumentParent" ng-controller="DashboardExDocument" ng-init="isHideDivDocumentAddCompare=true" style="position:relative;" oncontextmenu="return false" ondragstart="return false" onselectstart="return false" onselect="document.selection.empty()" oncopy="document.selection.empty()" onbeforecopy="return false">
+    <div id="divDashboardExDocument" class="divDashboardExDocument" style="width:100%;">
+        <header class="operationList">
+            <div class="cnabs_overhide" style="height:70px;line-height:70px; overflow:hidden;">
+                <span style="float:left;color:#b7afa5;font-size:14px;">选择项目：</span>
+                <select style="width:213px;height:28px;margin-left:3px;" ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid)" ng-model="projectSeriesInfo.selectedItem" ng-options="x.Name for x in projectSeriesInfo.items"></select>
+
+                <div class="divSearchBtn" ng-mouseover="showSearchMethods()" ng-mouseleave="hideSearchMethods()" style="display:none;">
+                    <div style="overflow:hidden;margin-bottom:2px;">
+                        <span class="cnabs_btn right" style="overflow:hidden;" ng-click="searchDocument(titleOrContent)">
+                            <span id="selectedSearchMethod" style="width:84px;float:left;text-align:left;">{{selectedSearchMethod}}</span>
+                            <img ng-if="!isShowSearchMethods" class="right searchIcon" src="~/Images/Common/downwardsTriangle.png" alt="Alternate Text" />
+                            <img ng-if="isShowSearchMethods" class="right searchIcon" src="~/Images/Common/upwardTriangle.png" alt="Alternate Text" />
+                        </span>
+                    </div>
+                    <div class="searchMethods" ng-show="isShowSearchMethods">
+                        <div ng-click="searchDocument('title')">按文件名搜索</div>
+                        <div ng-click="searchDocument('content')">按内容搜索</div>
+                    </div>
+                </div>
+                <div class="right cnabs_btn" style="margin-top:23px;" ng-click="searchDocument('title')">按名称搜索</div>
+                <input class="searchInput" style="margin-right:10px;" type="text" placeholder="请输入关键字" ng-model="searchText" ng-keyup="showAllFiles($event)" ng-keypress="pressEnterToSearch($event)" name="name" />
+            </div>
+            <div class="operationBtns">
+                <div class="cnabs_btn left" ng-click="createFolder()">新建文件夹</div>
+                <div class="cnabs_btn left" ng-click="createFile()">上传新文档</div>
+                <div ng-if="selectedItems.length>=1" class="cnabs_btn left" ng-click="downLoadFile(false)">下载</div>
+                <div ng-if="selectedItems.length<1" class="cnabs_btn_disabled left">下载</div>
+                <div ng-if="selectedItems.length==1&&!hasFolderSelected" class="cnabs_btn left" ng-click="getHistory()">查看历史版本</div>
+                <div ng-if="!(selectedItems.length==1&&!hasFolderSelected)" class="cnabs_btn_disabled left">查看历史版本</div>
+                <div ng-if="selectedItems.length==1&&!hasFolderSelected" class="cnabs_btn left" ng-click="uploadNewVersion(false)">上传新版本</div>
+                <div ng-if="!(selectedItems.length==1&&!hasFolderSelected)" class="cnabs_btn_disabled left">上传新版本</div>
+                <div ng-if="selectedItems.length>=1" class="cnabs_btn left" ng-click="deleteFoldersAndDocuments()">删除</div>
+                <div ng-if="selectedItems.length<1" class="cnabs_btn_disabled left">删除</div>
+                <div ng-if="selectedDocItems.length>=1" class="cnabs_btn left" ng-click="AddComparison()">加入对比</div>
+                <div ng-if="selectedDocItems.length<1" class="cnabs_btn_disabled left">加入对比</div>
+                <div class="cnabs_btn left" ng-if="selectedItems.length>=1" ng-click="downLoadRecord()">导出上传记录</div>
+                <div ng-if="selectedItems.length<1" class="cnabs_btn_disabled left">导出上传记录</div>
+            </div>
+        </header>
+        <div class="divDocumentTable">
+            <div class="documentTableInfo">
+                <div class="left">
+                    <span ng-repeat="folderPath in folderPaths">
+                        <span ng-init="isLast=$index==folderPaths.length-1" ng-class={'cnabs_yellow':!isLast} ng-click="returnPreviousFolder(isLast,folderPath.folderGuid)">{{folderPath.folderName}}</span>
+                        <span ng-if="!isLast">/</span>
+                    </span>
+                </div>
+                <div class="right">共{{totalNumber}}项，已选择{{selectedNumber}}项</div>
+            </div>
+            <div style="position:relative;margin-top:10px;">
+                <table id="documentTable_false" class="table_v2 alone hover  documentTable" style="width:100%;position:absolute;top:0px; left:0px;margin:0px;">
+                    <tr>
+                        <td><label for="selectedAll" class="thInputLabel"><input id="selectedAll" type="checkbox" name="name" ng-change="selectAllFoldersAndDocuments()" ng-model="selectAll" /></label></td>
+                        <td>
+                            <label for="selectedAll" class="selectedAll" ng-style="isSearchResult?{'width':'250px'}:{'width':'410px'}">文件名</label>
+                            <span ng-if="isSearchResult" class="left parentFolderTitle">所在文件夹</span>
+                        </td>
+                        <td>版本</td>
+                        <td>上传时间</td>
+                        <td>大小</td>
+                        <td>上传者</td>
+                    </tr>
+                </table>
+                <div class="cnabs_scrollbar" style="max-height:584px;overflow-y:auto;">
+                    <table id="documentTable_true" class="table_v2 alone hover  documentTable" style="width:100%;margin:0px;">
+                        <tr>
+                            <td><input type="checkbox" name="name" /></td>
+                            <td>
+                                <label class="selectedAll" ng-style="isSearchResult?{'width':'250px'}:{'width':'410px'}">文件名</label>
+                                <span ng-if="isSearchResult" class="left parentFolderTitle">所在文件夹</span>
+                            </td>
+                            <td>版本</td>
+                            <td>上传时间</td>
+                            <td>大小</td>
+                            <td>上传者</td>
+                        </tr>
+                        <tr ng-cloak ng-repeat="folder in folders">
+                            <td><label class="tdInputLabel"><input type="checkbox" name="name" ng-change="selectFoldersOrDocuments()" ng-model="$parent.folders[$index].ischecked" /></label></td>
+                            <td style="overflow:hidden;">
+                                <div ng-show="(folder.highLightKeywordIndex)==undefined" ng-click="openFolder(folder.folderGuid)" class="cnabs_ellipsis cnabs_yellow folderNameTdDiv left cnabs_pointer" title="{{folder.folderName}}" ng-style="isSearchResult?{'width':'250px'}:{'width':'410px'}" ng-bind-html="folder.folderName|trustHtml"></div>
+                                <div ng-show="(folder.highLightKeywordIndex)!=undefined" ng-click="openFolder(folder.folderGuid)" class="cnabs_ellipsis cnabs_yellow folderNameTdDiv left cnabs_pointer" title="{{folder.folderNameNew}}" ng-style="isSearchResult?{'width':'250px'}:{'width':'410px'}" ng-bind-html="folder.folderName|trustHtml"></div>
+                                <span ng-if="isSearchResult" class="left parentFolder cnabs_ellipsis cnabs_pointer" ng-click="openFolder(folder.parentFolderGuid)" title="{{folder.catalog}}">{{folder.catalog}}</span>
+                            </td>
+                            <td>-</td>
+                            <td>{{folder.createTime}}</td>
+                            <td>-</td>
+                            <td ng-mouseover="loadProfile(folder.createUser.UserName)"
+                                title="{{showProfile(folder.createUser.UserName)}}">
+                                <div class="cnabs_ellipsis" style="width:50px;">{{folder.createUser.RealName}}</div>
+                            </td>
+                        </tr>
+                        <tr ng-cloak ng-repeat="document in documents">
+                            <td><label class="tdInputLabel"><input id="{{document.fileSeriesGuid}}" type="checkbox" name="name" ng-change="selectFoldersOrDocuments()" ng-model="$parent.documents[$index].ischecked" /></label></td>
+                            <td>
+                                <label  ng-show="(document.highLightKeywordIndex)==undefined" for="{{document.fileSeriesGuid}}" class="cnabs_ellipsis documentNameTdDiv" ng-style="document.icon" title="{{document.fileSeriesName}}" ng-bind-html="document.fileSeriesName|trustHtml"></label>
+                                <label ng-show="(document.highLightKeywordIndex)!=undefined" for="{{document.fileSeriesGuid}}" class="cnabs_ellipsis documentNameTdDiv" ng-style="document.icon" title="{{document.fileSeriesNameNew}}" ng-bind-html="document.fileSeriesName|trustHtml"></label>
+                                <span ng-if="isSearchResult" class="left parentFolder cnabs_ellipsis cnabs_pointer" ng-click="openFolder(document.folderGuid)" title="{{document.catalog}}">{{document.catalog}}</span>
+                            </td>
+                            <td>V{{document.version}}</td>
+                            <td>{{document.lastModifyTime}}</td>
+                            <td>{{document.size}}</td>
+                            <td ng-mouseover="loadProfile(document.lastModifyUser.UserName)"
+                                title="{{showProfile(document.lastModifyUser.UserName)}}">
+                                <div class="cnabs_ellipsis" style="width:50px;">{{document.lastModifyUser.RealName}}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-------上传新文档dialog------->
+    <div id="divCreateNewFile" class="divCreateNewFile">
+        <div style="position:relative;">
+            <input type="text" id="uploadNewFileName" class="cnabs_none" placeholder="请输入文档名称或上传文档后自动读取" value="" />
+            <div id="divAutoCreateNewFile" class="divAutoCreateNewFile"></div>
+            <div id="uploadNewFile" class="uploadFileBtnDiv"></div>
+        </div>
+        <textarea id="uploadNewFile_remark" class="uploadNewFile_remark" placeholder="可输入备注内容"></textarea>
+    </div>
+    <!-------上传新版本dialog------->
+    <div id="divUploadNewVersion" class="divUploadNewVersion">
+        <div id="uploadNewVersion" class="uploadNewVersionDiv"></div>
+        <textarea id="uploadNewVersion_remark" type="text" class="uploadNewVersion_remark" placeholder="可输入备注内容"></textarea>
+    </div>
+    <!------新建文件夹dialog-------->
+    <div id="divCreateFolder" class="divCreateFolder">
+        <div class="folderPathInDialog">
+            <span ng-repeat="folderPath in folderPaths">
+                <span ng-init="isLast=$index==folderPaths.length-1">{{folderPath.folderName}}</span>
+                <span ng-if="!isLast">/</span>
+            </span>
+            <div>
+                <input id="newFolderNameInput" class="newFolderNameInput" placeholder="请输入文件夹名称" type="text" name="name" />
+                <div class="cnabs_dialog_prompt cnabs_dialog_input_wid" id="createFolderNamePrompt" style="display: none;font-size:13px;">
+                    <span class="ui-icon-alert cnabs_dialog_oPromptImage left"></span>
+                    <span id="folderNamePromptMsg" class="left cnabs_dialog_oPromptMsg"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------历史版本dialog-------->
+    <div id="divDocumentHistory" class="divDocumentHistory">
+        <header class="operationInHistory">
+            <div class="left cnabs_btn" ng-click="uploadNewVersion(true)" style="display:none;">上传新版本</div>
+            <div class="left cnabs_btn" ng-if="selectedVersionsArray.length>0" ng-click="downLoadFile(true)">下载</div>
+            <div class="left cnabs_btn_disabled" ng-if="selectedVersionsArray.length<=0">下载</div>
+            <div class="left cnabs_btn" ng-if="selectedVersionsArray.length>0" ng-click="deleteFile()">删除</div>
+            <div class="left cnabs_btn_disabled" ng-if="selectedVersionsArray.length<=0">删除</div>
+            <div class="left cnabs_btn" ng-if="selectedVersionDocItems.length>0" ng-click="historyAddCompare()">加入对比</div>
+            <div class="left cnabs_btn_disabled" ng-if="selectedVersionDocItems.length<=0">加入对比</div>
+            <div class="right versionStatistics">
+                共{{historicalFiles.length}}个版本，已选择{{selectedVersionsArray.length}}个
+            </div>
+        </header>
+        <div style="position:relative;">
+            <table id="versionTable_false" class="table_v2 alone hover versionTable" style="width:100%;margin:0px;position:absolute;top:0px;left:0px;">
+                <tr>
+                    <td><label for="selectAllVersionsInput" class="thInputLabel"><input id="selectAllVersionsInput" type="checkbox" name="name" ng-model="selectAllVersionsInput" ng-change="selectAllVersions()" /></label></td>
+                    <td><label for="selectAllVersionsInput" class="documentVerisonName left">文档名</label></td>
+                    <td>版本</td>
+                    <td>上传时间</td>
+                    <td>大小</td>
+                    <td>上传者</td>
+                    <td><div style="width:200px;">备注</div></td>
+                </tr>
+            </table>
+            <div class="cnabs_scrollbar" style="max-height:264px;overflow-y:auto;">
+                <table id="versionTable_true" class="table_v2 alone hover versionTable" style="margin:0px;width:100%;">
+                    <tr>
+                        <td><input type="checkbox" name="name" /></td>
+                        <td><label class="documentVerisonName left">文档名</label></td>
+                        <td>版本</td>
+                        <td>上传时间</td>
+                        <td>大小</td>
+                        <td>上传者</td>
+                        <td>备注</td>
+                    </tr>
+                    <tr ng-repeat="historicalFile in historicalFiles">
+                        <td><label class="tdInputLabel" for="{{historicalFile.fileGuid}}"><input id="{{historicalFile.fileGuid}}" type="checkbox" name="name" ng-model="$parent.historicalFiles[$index].ischecked" ng-change="selectVersions()" /></label> </td>
+                        <td><label for="{{historicalFile.fileGuid}}" class="cnabs_ellipsis left documentVerisonNameTdDiv" ng-style="historicalFile.icon" title="{{historicalFile.fileName}}">{{historicalFile.fileName}}</label></td>
+                        <td>V{{historicalFile.version}}</td>
+                        <td>{{historicalFile.lastModifyTime}}</td>
+                        <td>{{historicalFile.size}}</td>
+                        <td ng-mouseover="loadProfile(historicalFile.lastModifyUser.UserName)" title="{{showProfile(historicalFile.lastModifyUser.UserName)}}">
+                            {{historicalFile.lastModifyUser.RealName}}
+                        </td>
+                        <td><div class="cnabs_ellipsis" style="width:200px;" title="{{historicalFile.description==''?'-':historicalFile.description}}">{{historicalFile.description==''?'-':historicalFile.description}}</div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <!------导出上传记录---------->
+    <div id="divDownLoadRecord" class="divDownLoadRecord" style="display:none;">
+        <div class="cnabs_dialog_content_everyline">
+            <div class="cnabs_overhide">
+                <span class="left fixedColor periodTitle">上传时间</span>
+                <input class="date left recordStartTime" id="recordStartTime" type="text" name="name" value=" " />
+                <span class="left fixedColor" style="margin-top:8px;">-</span>
+                <input class="date left recordEndTime" id="recordEndTime" type="text" name="name" value=" " />
+            </div>
+            <div class="cnabs_dialog_prompt cnabs_dialog_input_wid" id="recordTimePrompt" style="margin-left:62px;width:288px;">
+                <span class="ui-icon-alert cnabs_dialog_oPromptImage left"></span>
+                <span class="left cnabs_dialog_oPromptMsg"></span>
+            </div>
+        </div>
+        <div class="cnabs_dialog_content_everyline">
+            <div class="cnabs_overhide">
+                <span class="left fixedColor userTitle">上传用户</span>
+                <select class="recordUserSelect left" id="recordUserSelect" ng-change="addRecordUser()" ng-model="currentSelectedUser">
+                    <option value="All">所有用户</option>
+                    <option ng-repeat="user in userListInRecord" value="{{user.UserInfo.UserName}}" ng-hide="user.hasSelected">{{user.realNameAndUserName}}</option>
+                </select>
+            </div>
+            <div class="cnabs_scrollbar divSelectedRecordUsers">
+                <div class="cnabs-overhide cnabs_multipleChoice" ng-repeat="user in selectedRecordUsers">
+                    <span class="left">{{user.RealName}}</span>
+                    <span class="right cnabs_red cnabs_pointer" ng-click="removeRecordUsers(user.UserName)">删除</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------加入对比dialog-------->
+    <div id="divDocumentAddCompare" class="divDocumentAddCompare" style="display:none">
+        <div class="divBody">
+            <table class="documentTable">
+                <tr ng-cloak ng-repeat="item in docSelectd" on-finish-render-filters="Compare">
+                    <td style="width:30px">
+                        <label>
+                            <input style="margin-left:8px;" id="{{item.fileGuid}}" type="checkbox" name="ckcompare" ng-click="CheckChangeCompare($event,item)" ng-model="$parent.docSelectd[$index].ischecked" value="{{$index}}" />
+                        </label>
+                    </td>
+                    <td>
+                        <label style="cursor:pointer" for="{{item.fileGuid}}" class="cnabs_ellipsis documentNameTdDiv" ng-style="{{item.icon}}" title="{{item.fileSeriesName}}" ng-bind-html="item.fileSeriesName|trustHtml">
+                        </label>
+                    </td>
+                    <td style="padding-right:10px;text-align:right;width:40px;min-width:30px">
+                        <label for="{{item.fileGuid}}">V{{item.version}}</label>
+                    </td>
+                </tr>
+            </table>
+            <div class="divCompareBtn"><div class="cnabs_btn left ng-scope" ng-click="StartComparison()" ng-style="{'visibility':hasDocSelected?'visible':'hidden'}">开始对比</div></div>
+        </div>
+    </div>
+
+    <!------对比结果dialog-------->
+    <div id="divDocumentCompare" class="divDocumentCompare" style="display:none" oncontextmenu="return false" ondragstart="return false" onselectstart="return false" onselect="document.selection.empty()" oncopy="document.selection.empty()" onbeforecopy="return false">
+        <header class="operationInHistory">
+            <div>
+                <span style="float:right">共{{imgCount}}页，当前第{{currentPage}}页</span>
+
+                <span>删除</span><span style="color:red;margin:0 5px">{{deleteCount}}</span>处
+                <span style="margin-left:20px;">增加</span><span style="color:green;margin:0 5px">{{addCount}}</span>处
+
+                <div class="left cnabs_btn" ng-click="diffFore()" id="diffForeBtn">上一处</div><div class="left cnabs_btn" ng-click="diffBack()">下一处</div>
+            </div>
+        </header>
+        <div style="position:relative;background-color:#ffffff;text-align:center" ng-init="isShowImgPrev=true;isShowImgNext=true;">
+            <table style="width:100%;border-collapse:collapse">
+                <tr>
+                    @*<td style="width:36px">
+                            <div class="imgArrow" ng-show="isShowImgPrev" ng-click="ImgPrev()">
+                                <img src="~/Images/arrowleft.png" />
+                            </div>
+                        </td>*@
+                    <td>
+                        @*<img class="imgComp" style="max-height:1200px;" src="{{imgSrc}}" />*@
+                        <iframe id="iframeComp" class="iframeComp" style="max-height:1200px;width:100%;" src="{{imgSrc}}"></iframe>
+                    </td>
+                    @*<td style="width:36px"><div class="imgArrow" ng-show="isShowImgNext" ng-click="ImgNext()"><img src="~/Images/arrowright.png" /></div></td>*@
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

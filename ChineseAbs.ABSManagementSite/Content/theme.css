@@ -1,0 +1,90 @@
+﻿.hCell {
+    color: #f45b5b; 
+}
+.panel {
+    background-color: #47423c;
+    margin: 0 10px 0 10px;
+    padding: 10px;
+}
+
+.button {
+    background-color: #5c554d;
+    border-style: none;
+    color: #b7afa5;
+    cursor: pointer;
+    font-size: 13px;
+    height: 22px;
+}
+.button:hover {
+    background-color: #d3d3d3;
+    color: Black;
+}
+
+.left {
+    float: left;
+}
+
+.nav-strip {
+    left: 90px;
+    z-index: 700;
+}
+#subNavStrip {
+    z-index: 700;
+}
+#subNavStrip div.nav-strip {
+    display: none;
+    position: absolute;
+}
+.nav-strip ul {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+.nav-strip ul li.nav-item {
+    display: inline;
+    float: left;
+    height: 36px;
+    position: relative;
+}
+.nav-strip ul li.nav-seperator {
+    padding-top: 10px;
+}
+.nav-strip ul li.nav-item:hover a, .nav-strip ul li.nav-item.hover a {
+    color: #ebb062;
+}
+#mainNavStrip.nav-strip ul li.nav-item.active a {
+    background-color: #3b3732;
+}
+.nav-strip ul li.nav-item.active a, .nav-strip ul li.nav-item.active span {
+    color: #ebb062;
+}
+.nav-strip ul li a {
+    color: #b7afa5;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    outline: medium none;
+    padding: 7px 20px;
+}
+#subNavStrip .nav-strip ul li span {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    outline: medium none;
+    padding: 10px;
+}
+.nav-strip ul li a .primary-link {
+    background-attachment: fixed;
+    background-position: 100% -10px;
+}
+.nav-strip ul li.active a .primary-link {
+    background-attachment: fixed;
+    background-position: 100% -56px;
+}
+.nav-strip ul li.no-subnav a .primary-link {
+    background: transparent none repeat scroll 0 0;
+    padding-right: 0;
+}
+.nav-strip ul li.no-subnav a .primary-link {
+    background: transparent none repeat scroll 0 0;
+}

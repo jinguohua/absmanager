@@ -1,0 +1,29 @@
+/* °¢Àï°Í°ÍÊ¸Á¿Í¼±ê¿â£ºhttp://www.iconfont.cn/ */
+@font-face {font-family: "iconfont";
+  /* add MIME type to IIS if not exist */
+  src: url('iconfont.eot?t=1465955105'); /* IE9*/
+  src: url('iconfont.eot?t=1465955105#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1465955105') format('woff'), /* chrome, firefox */ 
+  url('iconfont.ttf?t=1465955105') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1465955105#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  font-weight:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-weixin:before { content: "\e607"; }
+.icon-setting:before { content: "\e60a"; }
+.icon-ordinarydownload:before { content: "\e600"; }
+.icon-wenhao:before { content: "\e601"; }
+.icon-xiangqing:before { content: "\e602"; }
+.icon-dibu:before { content: "\e603"; }
+.icon-dingbu:before { content: "\e604"; }
+.icon-fanhui:before { content: "\e605"; }
+.icon-chakan:before { content: "\e606"; }
+.icon-pdf:before { content: "\e608"; }

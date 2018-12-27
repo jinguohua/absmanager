@@ -1,0 +1,1187 @@
+[{
+    "key": 1,
+    "value": [{
+        "key": 0,
+        "value": "全部",
+        "selected": true
+      },
+      {
+        "key": 97,
+        "value": "中原证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 695,
+        "value": "重庆国际信托股份有限公司",
+        "selected": false
+      }
+    ],
+    "title": "发行/管理人",
+    "type": "select"
+  },
+  {
+    "key": 2,
+    "value": [{
+        "key": 0,
+        "value": "全部",
+        "selected": true
+      },
+      {
+        "key": 181,
+        "value": "安徽国元信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 246,
+        "value": "安信证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 14,
+        "value": "百瑞信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 909,
+        "value": "柏瑞爱建资产管理(上海)有限公司",
+        "selected": false
+      },
+      {
+        "key": 708,
+        "value": "北京方正富邦创融资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 9,
+        "value": "北京国际信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 1030,
+        "value": "北京千石创富资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1270,
+        "value": "北京首都开发控股(集团)有限公司",
+        "selected": false
+      },
+      {
+        "key": 739,
+        "value": "北京新华富时资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 570,
+        "value": "北银丰业资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 289,
+        "value": "博时资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1000,
+        "value": "渤海国际信托股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 939,
+        "value": "渤海汇金证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 916,
+        "value": "财富证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 665,
+        "value": "财通证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1201,
+        "value": "财通证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 200,
+        "value": "长安财富资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 238,
+        "value": "长安国际信托股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 904,
+        "value": "长城国瑞证券有限公司",
+        "selected": false
+      },
+      {
+        "key": 559,
+        "value": "长城嘉信资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 500,
+        "value": "长城证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 830,
+        "value": "长江养老保险股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 149,
+        "value": "长江证券（上海）资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 138,
+        "value": "长江证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 868,
+        "value": "常州市交通产业集团有限公司",
+        "selected": false
+      },
+      {
+        "key": 874,
+        "value": "成都市公共交通集团有限公司",
+        "selected": false
+      },
+      {
+        "key": 1276,
+        "value": "川财证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 1975,
+        "value": "大同证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 825,
+        "value": "德邦创新资本有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 148,
+        "value": "德邦证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 2871,
+        "value": "德邦证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 141,
+        "value": "第一创业证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 151,
+        "value": "东方花旗证券有限公司",
+        "selected": false
+      },
+      {
+        "key": 230,
+        "value": "东方汇智资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 77,
+        "value": "东方证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 507,
+        "value": "东海瑞京资产管理(上海)有限公司",
+        "selected": false
+      },
+      {
+        "key": 91,
+        "value": "东海证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 646,
+        "value": "东莞证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 178,
+        "value": "东吴证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 69,
+        "value": "东兴证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 2986,
+        "value": "东亚前海证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 587,
+        "value": "东证融汇证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 199,
+        "value": "方正证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1019,
+        "value": "富安达资产管理(上海)有限公司",
+        "selected": false
+      },
+      {
+        "key": 842,
+        "value": "富国资产管理(上海)有限公司",
+        "selected": false
+      },
+      {
+        "key": 202,
+        "value": "工银瑞信投资管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 2482,
+        "value": "光大保德信资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 118,
+        "value": "光大证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 16,
+        "value": "广东粤财信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 92,
+        "value": "广发证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 94,
+        "value": "广发证券资产管理（广东）有限公司",
+        "selected": false
+      },
+      {
+        "key": 878,
+        "value": "广西新发展交通集团有限公司",
+        "selected": false
+      },
+      {
+        "key": 349,
+        "value": "广州证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 287,
+        "value": "国都证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 110,
+        "value": "国海证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1040,
+        "value": "国泓资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 20,
+        "value": "国家开发银行股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 217,
+        "value": "国金证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 63,
+        "value": "国开证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 347,
+        "value": "国联信托股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 80,
+        "value": "国联证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 649,
+        "value": "国融证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 2846,
+        "value": "国盛证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1260,
+        "value": "国寿投资控股有限公司",
+        "selected": false
+      },
+      {
+        "key": 61,
+        "value": "国泰君安证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 549,
+        "value": "国泰元鑫资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 2262,
+        "value": "国通信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 600,
+        "value": "国投泰康信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 208,
+        "value": "国信证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 884,
+        "value": "国元证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 68,
+        "value": "海通证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 96,
+        "value": "恒泰证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1881,
+        "value": "宏信证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 2538,
+        "value": "湖南省信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 1007,
+        "value": "华安未来资产管理（上海）有限公司",
+        "selected": false
+      },
+      {
+        "key": 2004,
+        "value": "华安证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 5,
+        "value": "华宝信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 1915,
+        "value": "华宝证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 357,
+        "value": "华创证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 715,
+        "value": "华福证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 352,
+        "value": "华金证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1191,
+        "value": "华菁证券有限公司",
+        "selected": false
+      },
+      {
+        "key": 630,
+        "value": "华林证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1192,
+        "value": "华龙证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 15,
+        "value": "华能贵诚信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 281,
+        "value": "华融国际信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 60,
+        "value": "华融证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 7,
+        "value": "华润深国投信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 1346,
+        "value": "华泰财产保险股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 145,
+        "value": "华泰证券（上海）资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 79,
+        "value": "华泰证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1029,
+        "value": "华西证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1263,
+        "value": "华夏久盈资产管理有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 143,
+        "value": "华夏资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 295,
+        "value": "华鑫证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 214,
+        "value": "华信信托股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 371,
+        "value": "汇添富资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 308,
+        "value": "嘉实资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 284,
+        "value": "建信信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 917,
+        "value": "建信资本管理有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 865,
+        "value": "江东控股集团有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 370,
+        "value": "江海证券有限公司",
+        "selected": false
+      },
+      {
+        "key": 876,
+        "value": "江苏宁宿徐高速公路有限公司",
+        "selected": false
+      },
+      {
+        "key": 3258,
+        "value": "江苏省国际信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 383,
+        "value": "江苏中南建设集团股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 889,
+        "value": "江阴城市建设投资有限公司",
+        "selected": false
+      },
+      {
+        "key": 11,
+        "value": "交银国际信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 341,
+        "value": "交银施罗德资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1003,
+        "value": "金元证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 745,
+        "value": "九州证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 747,
+        "value": "开源证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1046,
+        "value": "开源证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 129,
+        "value": "昆仑信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 1021,
+        "value": "联储证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 1686,
+        "value": "联讯证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 163,
+        "value": "民生加银资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1262,
+        "value": "民生通惠资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 286,
+        "value": "民生证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 984,
+        "value": "南方资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 90,
+        "value": "南京公用控股（集团）有限公司",
+        "selected": false
+      },
+      {
+        "key": 155,
+        "value": "南京市城市建设投资控股（集团）有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 875,
+        "value": "南京市江宁区自来水总公司",
+        "selected": false
+      },
+      {
+        "key": 46,
+        "value": "南京银行股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 873,
+        "value": "南通国有资产投资控股有限公司",
+        "selected": false
+      },
+      {
+        "key": 256,
+        "value": "宁波城建投资控股有限公司",
+        "selected": false
+      },
+      {
+        "key": 255,
+        "value": "农银汇理（上海）资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 997,
+        "value": "鹏华资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 2,
+        "value": "平安信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 270,
+        "value": "平安证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1261,
+        "value": "平安资产管理有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 83,
+        "value": "齐鲁证券有限公司",
+        "selected": false
+      },
+      {
+        "key": 1854,
+        "value": "前海开源资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1257,
+        "value": "人保投资控股有限公司",
+        "selected": false
+      },
+      {
+        "key": 3033,
+        "value": "瑞元资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 1041,
+        "value": "山西证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1223,
+        "value": "陕西省国际信托股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 2176,
+        "value": "上海北信瑞丰资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 890,
+        "value": "上海城建(集团)公司",
+        "selected": false
+      },
+      {
+        "key": 76,
+        "value": "上海东方证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 197,
+        "value": "上海富诚海富通资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 273,
+        "value": "上海光大证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 8,
+        "value": "上海国际信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 167,
+        "value": "上海国泰君安证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 82,
+        "value": "上海海通证券资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 826,
+        "value": "上海华富利得资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 790,
+        "value": "上海华信证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 669,
+        "value": "上海金元百利资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 863,
+        "value": "上海南汇发展（集团）有限公司",
+        "selected": false
+      },
+      {
+        "key": 841,
+        "value": "上海浦东路桥建设股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1113,
+        "value": "上海浦银安盛资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 662,
+        "value": "上海兴瀚资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 538,
+        "value": "上银瑞金资本管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 864,
+        "value": "绍兴市上虞区水务集团有限公司",
+        "selected": false
+      },
+      {
+        "key": 2199,
+        "value": "申港证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 185,
+        "value": "申万宏源证券有限公司",
+        "selected": false
+      },
+      {
+        "key": 2227,
+        "value": "深圳华润元大资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 130,
+        "value": "深圳平安大华汇通财富管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 994,
+        "value": "深圳市红塔资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 222,
+        "value": "深圳市融通资本管理股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 2139,
+        "value": "首创证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 770,
+        "value": "首誉光控资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 869,
+        "value": "四川能投发展股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 861,
+        "value": "苏州城市建设投资发展有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 74,
+        "value": "苏州信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 692,
+        "value": "太平洋证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 1259,
+        "value": "太平资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 872,
+        "value": "太原煤炭气化（集团）有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 871,
+        "value": "太原市龙城发展投资有限公司",
+        "selected": false
+      },
+      {
+        "key": 218,
+        "value": "天风证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 821,
+        "value": "天弘创新资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 250,
+        "value": "天津市房地产信托集团有限公司",
+        "selected": false
+      },
+      {
+        "key": 737,
+        "value": "银华财富资本管理(北京)有限公司",
+        "selected": false
+      },
+      {
+        "key": 10,
+        "value": "英大国际信托有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 2630,
+        "value": "英大证券有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 828,
+        "value": "元达信资本管理(北京)有限公司",
+        "selected": false
+      },
+      {
+        "key": 802,
+        "value": "云南国际信托有限公司",
+        "selected": false
+      },
+      {
+        "key": 855,
+        "value": "云南祥鹏航空有限责任公司",
+        "selected": false
+      },
+      {
+        "key": 505,
+        "value": "招商财富资产管理有限公司",
+        "selected": false
+      },
+      {
+        "key": 62,
+        "value": "招商证券股份有限公司",
+        "selected": false
+      },
+      {
+        "key": 684,
+        "value": "紫金信托有限责任公司",
+        "selected": false
+      }
+    ],
+    "title": "发行/管理人",
+    "type": "select"
+  },
+  {
+    "key": 4,
+    "value": [{
+        "key": 1,
+        "value": "信贷资产证券化",
+        "selected": false
+      },
+      {
+        "key": 2,
+        "value": "企业资产证券化",
+        "selected": false
+      },
+      {
+        "key": 4,
+        "value": "保险资产证券化",
+        "selected": false
+      }
+    ],
+    "title": "市场分类",
+    "type": "checkbox"
+  },
+  {
+    "key": 5,
+    "value": [{
+        "key": 1,
+        "value": "企业贷款",
+        "selected": false
+      },
+      {
+        "key": 2,
+        "value": "专项信贷",
+        "selected": false
+      },
+      {
+        "key": 3,
+        "value": "汽车抵押贷款",
+        "selected": false
+      },
+      {
+        "key": 4,
+        "value": "住房抵押贷款",
+        "selected": false
+      },
+      {
+        "key": 5,
+        "value": "不良资产重组",
+        "selected": false
+      },
+      {
+        "key": 6,
+        "value": "小额贷款",
+        "selected": false
+      },
+      {
+        "key": 9,
+        "value": "金融租赁",
+        "selected": false
+      },
+      {
+        "key": 10,
+        "value": "融资租赁",
+        "selected": false
+      },
+      {
+        "key": 12,
+        "value": "收费收益权",
+        "selected": false
+      },
+      {
+        "key": 14,
+        "value": "个人消费贷款",
+        "selected": false
+      },
+      {
+        "key": 15,
+        "value": "住房公积金",
+        "selected": false
+      },
+      {
+        "key": 16,
+        "value": "应收账款",
+        "selected": false
+      },
+      {
+        "key": 17,
+        "value": "委托贷款",
+        "selected": false
+      },
+      {
+        "key": 18,
+        "value": "REITs",
+        "selected": false
+      },
+      {
+        "key": 19,
+        "value": "保理融资",
+        "selected": false
+      },
+      {
+        "key": 20,
+        "value": "信托受益权",
+        "selected": false
+      },
+      {
+        "key": 21,
+        "value": "BT项目回购",
+        "selected": false
+      },
+      {
+        "key": 22,
+        "value": "两融债权",
+        "selected": false
+      },
+      {
+        "key": 23,
+        "value": "股票质押回购",
+        "selected": false
+      },
+      {
+        "key": 24,
+        "value": "保单质押贷款",
+        "selected": false
+      },
+      {
+        "key": 25,
+        "value": "设备按揭贷款",
+        "selected": false
+      },
+      {
+        "key": 26,
+        "value": "票据收益权",
+        "selected": false
+      },
+      {
+        "key": 27,
+        "value": "CMBS",
+        "selected": false
+      },
+      {
+        "key": 28,
+        "value": "PPP",
+        "selected": false
+      },
+      {
+        "key": 29,
+        "value": "信用卡分期",
+        "selected": false
+      },
+      {
+        "key": 99,
+        "value": "其他",
+        "selected": false
+      }
+    ],
+    "title": "产品分类",
+    "type": "checkbox"
+  },
+  {
+    "key": 6,
+    "value": [{
+        "key": 1,
+        "value": "证监会",
+        "selected": false
+      },
+      {
+        "key": 2,
+        "value": "银监会",
+        "selected": false
+      },
+      {
+        "key": 3,
+        "value": "保监会",
+        "selected": false
+      },
+      {
+        "key": 4,
+        "value": "交易商协会",
+        "selected": false
+      },
+      {
+        "key": 5,
+        "value": "其他监管机构",
+        "selected": false
+      }
+    ],
+    "title": "监管机构",
+    "type": "checkbox"
+  },
+  {
+    "key": 7,
+    "value": [{
+        "key": 2018,
+        "value": "2018",
+        "selected": false
+      },
+      {
+        "key": 2017,
+        "value": "2017",
+        "selected": false
+      },
+      {
+        "key": 2016,
+        "value": "2016",
+        "selected": false
+      },
+      {
+        "key": 2015,
+        "value": "2015",
+        "selected": false
+      },
+      {
+        "key": 2014,
+        "value": "2014",
+        "selected": false
+      },
+      {
+        "key": 2013,
+        "value": "2013",
+        "selected": false
+      },
+      {
+        "key": 2012,
+        "value": "2012",
+        "selected": false
+      },
+      {
+        "key": 2011,
+        "value": "2011",
+        "selected": false
+      },
+      {
+        "key": 2008,
+        "value": "2008",
+        "selected": false
+      },
+      {
+        "key": 2007,
+        "value": "2007",
+        "selected": false
+      },
+      {
+        "key": 2006,
+        "value": "2006",
+        "selected": false
+      },
+      {
+        "key": 2005,
+        "value": "2005",
+        "selected": false
+      }
+    ],
+    "title": "产品发行时间",
+    "type": "checkbox"
+  }
+]

@@ -1,0 +1,97 @@
+@import "../../styles/theme/default.less";
+
+@font-size : 40px;
+@width : 48px;
+.modal {
+  &-content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 14px;
+    line-height: 18px;
+  }
+  &-enclosure {
+    font-size: @font-m;
+    color: @abs-modal-upload-enclosure-color;
+    width: @width;
+  }
+  &-icon {
+    &-disabled .abs-ant-icon-text {
+      color: @grey-2;
+    }
+    &-disabled .abs-ant-icon-text:hover {
+      color: @grey-2;
+    }
+  }
+  &-enclosure_desc {
+    font-size: @font-m;
+    color: @abs-modal-upload-enclosure_size-color;
+  }
+  &-files {
+    display: flex;
+    flex-direction: row;
+    margin-top: 14px;
+    &-image {
+      &-word {
+        font-size: @font-size;
+        color: @blue-22;
+      }
+      &-xls {
+        font-size: @font-size;
+        color: @green-6;
+      }
+      &-pdf {
+        font-size: @font-size;
+        color: @red-11;
+      }
+      &-ppt {
+        font-size: @font-size;
+        color: @orange-7;
+      }
+      &-zip {
+        font-size: @font-size;
+        color: @red-12;
+      }
+      &-pic {
+        font-size: @font-size;
+        color: @yellow-5;
+      }
+      &-common-type {
+        font-size: @font-size;
+        color: @grey-27;
+      }
+    }
+    &-delete {
+      font-size: 10pt;
+      color: @grey-2;
+      margin-top: 2px;
+      margin-left: 4px;
+      height: 10px;
+      cursor: pointer;
+    }
+    &-delete:hover {
+      font-size: 10pt;
+      color: @red-1;
+      margin-top: 2px;
+      margin-left: 4px;
+      height: 10px;
+      cursor: pointer;
+    }
+    &-content {
+      margin-left: 6px;
+      display: flex;
+      flex-direction: column;
+      &-title {
+        font-size: @font-m;
+        color: @orange-5;
+      }
+      &-div {
+        display: flex;
+        flex-grow: 1;
+      }
+      &-desc {
+        font-size: @font-s;
+        color: @grey-2;
+      }
+    }
+  }
+}

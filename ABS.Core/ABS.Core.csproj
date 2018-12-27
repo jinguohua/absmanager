@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E101B76C-12F8-4BC1-A2C4-438AAD19262E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ABS.Core</RootNamespace>
+    <AssemblyName>ABS.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Core, Version=1.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Core.1.1.9\lib\SAFS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Core.Data.Entity, Version=1.1.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Core.Data.Entity.1.2.3\lib\SAFS.Core.Data.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Core.Permissions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Core.Permissions.1.2.2\lib\SAFS.Core.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="SAFS.Utility, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAFS.Utility.1.1.0\lib\SAFS.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DTO\AccountViewModel.cs" />
+    <Compile Include="DTO\AdjustDateRuleViewModel.cs" />
+    <Compile Include="DTO\AssetDataViewModel.cs" />
+    <Compile Include="DTO\AssetPackageStatisticViewModel.cs" />
+    <Compile Include="DTO\AssetPackageViewModel.cs" />
+    <Compile Include="DTO\CodeCategoryViewModel.cs" />
+    <Compile Include="DTO\CompanyViewModel.cs" />
+    <Compile Include="DTO\DateOverrideViewModel.cs" />
+    <Compile Include="DTO\DateRuleViewModel.cs" />
+    <Compile Include="DTO\FeeViewModel.cs" />
+    <Compile Include="DTO\MenuViewModel.cs" />
+    <Compile Include="DTO\NoteRatingViewModel.cs" />
+    <Compile Include="DTO\OrganizationViewModel.cs" />
+    <Compile Include="DTO\PackageAssetRelativeViewModel.cs" />
+    <Compile Include="DTO\ProjectAccountViewModel.cs" />
+    <Compile Include="DTO\ProjectCompanyViewModel.cs" />
+    <Compile Include="DTO\ProjectNoteViewModel.cs" />
+    <Compile Include="DTO\ProjectViewModel.cs" />
+    <Compile Include="DTO\QueryPageModel.cs" />
+    <Compile Include="DTO\SearchFilter.cs" />
+    <Compile Include="DTO\SpecificDateRuleViewModel.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AppUser.cs" />
+    <Compile Include="Models\BankAccount.cs" />
+    <Compile Include="Models\CodeCategory.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\CustomizeRate.cs" />
+    <Compile Include="Models\DateRule.cs" />
+    <Compile Include="Models\DbMigrations.cs" />
+    <Compile Include="Models\DbModuleConfigs.cs" />
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Fee.cs" />
+    <Compile Include="Models\NoteCoupon.cs" />
+    <Compile Include="Models\NoteRating.cs" />
+    <Compile Include="Models\Organization.cs" />
+    <Compile Include="Models\ProjectAccount.cs" />
+    <Compile Include="Models\ProjectAssetPackage.cs" />
+    <Compile Include="Models\ProjectCompany.cs" />
+    <Compile Include="Models\ProjectFee.cs" />
+    <Compile Include="Models\ProjectNote.cs" />
+    <Compile Include="Models\ProjectNoteAmortization.cs" />
+    <Compile Include="Models\Projects.cs" />
+    <Compile Include="Models\UserActivity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseCodeService.cs" />
+    <Compile Include="Services\CompanyService.cs" />
+    <Compile Include="Services\OrganizationsService.cs" />
+    <Compile Include="Services\MenuServices.cs" />
+    <Compile Include="Services\ProjectAccountService.cs" />
+    <Compile Include="Services\ProjectNoteService.cs" />
+    <Compile Include="Services\ProjectService.cs" />
+    <Compile Include="Services\TestServices.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Utilities\CacheHelper.cs" />
+    <Compile Include="Utilities\CodeCategoryAttribute.cs" />
+    <Compile Include="Utilities\DistinctExtension.cs" />
+    <Compile Include="Utilities\EnumHelper.cs" />
+    <Compile Include="Utilities\Enums.cs" />
+    <Compile Include="DTO\PageListData.cs" />
+    <Compile Include="Utilities\DBHelper.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ABS.AssetManagement\ABS.AssetManagement.csproj">
+      <Project>{80455b8b-34ce-4618-8415-1b3a8606dca7}</Project>
+      <Name>ABS.AssetManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ABS.Infrastructure\ABS.Infrastructure.csproj">
+      <Project>{fd139ed1-5bda-47da-9831-9a2130cd83b5}</Project>
+      <Name>ABS.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

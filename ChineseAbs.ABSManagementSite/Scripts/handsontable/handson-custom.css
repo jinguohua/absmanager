@@ -1,0 +1,205 @@
+﻿.ht_clone_left th,.handsontable td:not(.htSeparator) {
+    height: 22px !important;
+}
+.ht_clone_top_left_corner th,
+.ht_clone_top th,.wtSpreader table.htCore thead th {
+    background-color: #625C53 !important;
+    height: 40px !important;
+    vertical-align:middle;
+}
+.handsontable th {
+    color: #E0E0E3 !important;
+    font-weight: bold;
+    text-align: center;
+}
+.handsontable td.htDimmed {
+     color: #ffffff !important;
+}
+.handsontable th,
+.handson .handsontable td {
+    border-right: 1px solid #666 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    padding: 5px 10px;
+}
+.handson .handsontable tr:nth-child(2n) * {
+    background-color: #4F4A43 !important;
+}
+.handson .ht_clone_left tr:nth-child(2n+1) * ,
+.handson .ht_master tr:nth-child(2n+1) * {
+    background-color: #47423C !important;
+}
+div.htAutocompleteArrow,
+.ht_clone_bottom,.ht_clone_bottom_left_corner{
+    display: none;
+}
+.htItemWrapper ,
+.htUIMultipleSelect .handsontable .htCore .highlight{
+    color: black !important;
+}
+.handsontable .columnSorting.ascending::after
+,.handsontable .columnSorting.descending::after {
+    color: #E0E0E3;
+}
+.handsontable .highlight {
+    color: #fff;
+}
+.handsontable td.area {
+    background: none;
+}
+#handsonDeal, #handsonSecurity, #handsonOrg{
+    z-index: 0;
+    margin-left:20px;
+}
+#handsonDeal img, #handsonSecurity img, #handsonOrg img {
+    margin: 100px 500px;
+}
+/*columnsCheck*/
+.column-note-check,.column-note-uncheck{
+    background-color: #625C53;
+}
+.column-note-check, .column-note-uncheck,.column-note-orga
+,.column-custom-comment,.column-custom-operation{
+    display:inline-block;
+    width:auto;
+    margin:4px;
+    padding:4px;
+    cursor: pointer;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+}
+.column-note-orga {
+    border: 1px solid #625C53;
+    padding: 3px;
+}
+.column-custom-operation {
+    margin-bottom: 0px;
+}
+.column-note-check *, .column-note-uncheck *,.column-note-orga *{
+    vertical-align:middle;
+}
+/*operateButton*/
+.operatePnl {
+    margin: 10px 20px 12px 20px;
+}
+.operatePnl > span.operateButton {
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: #80715a;
+    padding: 1px 5px 4px 10px;
+}
+.operatePnl > span.operateButton:last-child {
+    padding: 1px 10px 4px 10px;
+}
+.operatePnl > span.operateButton:hover {
+    background-color: #8A7A61;
+}
+.operatePnl > span.operateButton * {
+    vertical-align: middle;
+}
+.listtable {
+   padding-top: 10px;
+   z-index: -1;
+}
+/*filterPnl*/
+.filterPnl span {
+    width: 140px;
+    text-align: right;
+    padding: 4px 0;
+}
+.filterPnl select {
+    width: 200px;
+    margin-left: 5px;
+}
+.filterPnl span,.filterPnl table,.filterPnl select {
+    display: inline-block;
+    vertical-align: top;
+}
+.filterOperate{
+    text-align: center;
+}
+.filterOperate input[type='button'],.ui-button {
+    border: none!important;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -moz-border-radius: 2px;
+    padding: 0;
+    height: 30px;
+}
+.confirmBtn {
+    color: #37342E!important;
+    background-color: #FFC43D!important;
+}
+.cancelBtn {
+    color: #37342E;
+    background-color: #cdcdcd;
+}
+.confirmBtn:hover {
+    color: #37342E;
+    background-color: #FFCD58!important;
+}
+.cancelBtn:hover {
+    color: #37342E;
+    background-color: #E7E7E7!important;
+}
+.column-button-allOrNot {
+    background-color: #8A7A61!important;
+    color: #ffffff!important;
+    border: none;
+    padding: 0 10px;
+    height: 24px;
+}
+/*filterRecord*/
+.filter-record {
+    max-height:100px;
+    overflow-y:auto;
+    margin-right: -10px;    
+    margin-top: -3px;
+}
+.filter-record span{
+    display: inline-block;
+    margin: 5px 5px 5px 0;
+    padding: 3px 5px;
+}
+.filter-record span:not(.filter-title){
+    background-color: #ddd;
+    color: #000;
+}
+.filter-record-stat span {
+    padding: 4px;
+}
+ /*drawing*/
+.chart-title {
+    background-color: #514c44;
+    padding: 10px;
+}
+.drawingColumn {
+    float: left;
+    margin-top: 5px;
+    margin-left: 25px;
+}
+.drawingColumn > span {
+    padding: 3px 6px;
+}
+.drawingColumn select {
+    width: 150px;
+}
+.drawingColumn > span,.drawingColumn > div {
+    display: inline-block;
+    vertical-align: top;
+}
+.drawingColumn > div > span,.drawingColumn > div > select {
+    display: table;
+}
+.nopeCheck {
+    border: 2px solid red;
+}
+/*others*/
+.panelPadding {
+    padding: 10px;
+}

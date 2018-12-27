@@ -1,0 +1,409 @@
+﻿
+@using ChineseAbs.ABSManagementSite.Common
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section styles{
+	<style>
+		input[type='text'], input[type='password'], #role {
+			padding-left: 10px;
+			border: none;
+			width: 191px;
+			height: 26px;
+			border-radius: 2px;
+		}
+
+		.select2-selection {
+			min-height: 26px !important;
+		}
+
+		.select2-dropdown, .select2-selection, .select2-results__options, .select2-search__field {
+			width: 200px !important;
+			color: black;
+			font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+		}
+
+		.cnabs_dialog_content_title {
+			height: 28px;
+			line-height: 28px;
+		}
+
+		.background_this {
+			background: #3b3831;
+			padding: 10px 20px 10px 20px;
+		}
+
+		.select_range_style {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			padding: 5px 5px 5px;
+			background-color: #47423c;
+		}
+
+
+		.hidden_style {
+			width: 140px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			margin-right: 15px;
+		}
+
+
+		.edit_green_style {
+			cursor: pointer;
+		}
+
+		.delete_red_style {
+			cursor: pointer;
+			margin-left: 10px;
+		}
+
+		.company_list_style {
+			float: left;
+			margin-left: 0;
+			height: 24px;
+			margin-top: 10px;
+			font-size: 16px;
+		}
+
+		.company_schedule {
+			height: 4px;
+			background: #3ebf52;
+		}
+
+		.select_range_outer {
+			margin-top: 5px;
+			margin-bottom: 15px;
+			height: 24px;
+		}
+
+ .table_v2{
+	 table-layout: fixed;
+	 width: 100%!important;
+    margin: 10px 0px!important;
+ }
+	.table_v2  td{
+		text-align: center;
+	}
+ 	</style>
+}
+
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/jqueryForm")
+<link href="~/Scripts/select2.min.css" rel="stylesheet" />
+<script src="~/Scripts/select2.min.js"></script>
+
+@section scripts{
+}
+<div class="tablecloth">
+	<header class="am_site_map_panel">
+		<span class="am_site_map_arrow">当前位置：</span>
+		<a class="am_site_map_label" href="/">解决方案</a>
+		<span class="am_site_map_arrow">></span>
+		<a class="am_site_map_label" href="/Company">发行协作平台</a>
+		<span class="am_site_map_arrow">></span>
+		<span class="am_site_map_arrow">公司列表</span>
+	</header>
+	<div ng-app="Company" ng-controller="CompanyCtrl" class="background_this">
+
+		<div style="overflow:hidden;overflow: hidden;margin-bottom:15px;">
+
+			<span class="label company_list_style" ng-init="GetCompanyType()" style="margin-left: 0;line-height:24px;">公司列表</span>
+			<div class="cnabs_btn_add" ng-click="createCompany()" style=" margin-top: 10px; ">添加公司</div>
+		</div>
+		<div>
+			<table class="table_v2 embed hover" >
+				
+					<tr class="tbody_th">
+						<th>公司名称</th>
+						<th>公司简称</th>
+						<th>公司类型</th>
+						<th>联系人</th>
+						<th>公司网站</th>
+						<th>公司邮箱</th>
+						<th>公司电话</th>
+						<th>公司地址</th>
+						<th>描述</th>
+						<th style="width:30px">启用</th>
+						<th>操作</th>
+					</tr>
+		
+				<tr ng-cloak ng-repeat="item in CompanyInfo" ng-click="OnClick(item)">
+					<td class="hidden_style"><a title="{{item.Name}}">{{item.Name}}</a></td>
+					<td class="hidden_style">{{item.ShortName}}</td>
+					<td class="hidden_style">{{item.CategoryType}}</td>
+					<td class="hidden_style">{{item.Contact}}</td>
+					<td class="hidden_style" title="{{item.Website}}">{{item.Website}}</td>
+					<td class="hidden_style" title="{{item.Email}}">{{item.Email}}</td>
+					<td class="hidden_style" title="{{item.Phone}}">{{item.Phone}}</td>
+					<td class="hidden_style" title="{{item.Location}}">{{item.Location}}</td>
+					<td class="hidden_style" title="{{item.Description}}">{{item.Description}}</td>
+					<td>{{item.IsActived? '是' : '否'}}</td>
+					<td>
+						<span ng-click="editCompany(item)" class="edit_green_style cnabs_green">编辑</span>
+						<span ng-click="editCompany(item)" class="delete_red_style cnabs_red">删除</span>
+					</td>
+				</tr>
+			
+			</table>
+		</div>
+	</div>
+</div>
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+<script>
+
+
+
+	var CompanyApp = angular.module('Company', []);
+
+	CompanyApp.controller('CompanyCtrl', function ($scope) {
+
+		$scope.CompanyType = [];
+
+		$scope.CompanyId = '';
+
+		$scope.GetCompanyType = function (item) {
+
+			cnabsAjax("获取公司类型", "/Company/GetBaseCategory", { category: "CompanyTypes" }, function (data) {
+				$scope.CompanyType = data;
+			});
+
+		}
+
+		$scope.OnClick = function (item) {
+			$scope.CompanyId = item.Id;
+		}
+
+		$scope.reloadCompanyTable = function () {
+			cnabsAjax("获取公司", "/Company/GetCompanyList", {}, function (data) {
+				$scope.CompanyInfo = data.members;
+				$scope.$apply();
+			})
+
+		}
+
+		$scope.createCompany = function () {
+			var createCompanyDialog = [{
+				title: "公司名称",
+				type: "text",
+				elementId: "Name",
+				value: "",
+				placeHolder: "请填写公司名称",
+
+			}, {
+				title: "公司简称",
+				type: "text",
+				elementId: "ShortName",
+				value: "",
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "公司类型",
+				type: "multiselect",
+				elementId: "Category",
+				value: "企业贷款",
+				OptionArray: $scope.CompanyType,
+			}, {
+				title: "联系人",
+				type: "text",
+				elementId: "Contact",
+				value: "",
+				placeHolder: "",
+
+			}, {
+				title: "公司网站",
+				type: "text",
+				elementId: "Website",
+				value: "",
+				placeHolder: "",
+
+			}, {
+				title: "公司邮箱",
+				type: "text",
+				elementId: "Email",
+				value: "",
+				placeHolder: "",
+
+			}, {
+				title: "公司电话",
+				type: "text",
+				elementId: "Phone",
+				value: "",
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "公司地址",
+				type: "text",
+				elementId: "Location",
+				value: "",
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "描述",
+				type: "text",
+				elementId: "Description",
+				value: "",
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "是否启用",
+				type: "radio",
+				elementId: "IsActived",
+				value: "是",
+				OptionArray: ["是", "否"],
+
+			}]
+			cnabsAutoDialog(createCompanyDialog, "增加新公司", function (data) {
+				var param = {
+					Name: data.Name,
+					ShortName: data.ShortName,
+					Category: $("#Category").val(),
+					Contact: data.Contact,
+					WebSite: data.WebSite,
+					Email: data.Email,
+					Phone: data.Phone,
+					Location: data.Location,
+					Description: data.Description,
+					IsActived: data.IsActived == "是" ? true : false,
+				};
+				cnabsAjax("添加公司", "/Company/AddCompany", param, function (data) {
+					$scope.reloadCompanyTable();
+					$(".cnabs_dialogCloth").dialog("close");
+				})
+			});
+			setCompanyList();
+
+		}
+
+		$scope.editCompany = function (data) {
+			var editCompanyDialog = [{
+				title: "公司名称",
+				type: "text",
+				elementId: "Name",
+				value: data.Name,
+				placeHolder: "请填写公司名称",
+
+			}, {
+				title: "公司简称",
+				type: "text",
+				elementId: "ShortName",
+				value: data.ShortName,
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "公司类型",
+				type: "multiselect",
+				elementId: "Category",
+				value: data.Category,
+				OptionArray: $scope.CompanyType,
+			}, {
+				title: "联系人",
+				type: "text",
+				elementId: "Contact",
+				value: data.Contact,
+				placeHolder: "",
+
+			}, {
+				title: "公司网站",
+				type: "text",
+				elementId: "Website",
+				value: data.Website,
+				placeHolder: "",
+
+			}, {
+				title: "公司邮箱",
+				type: "text",
+				elementId: "Email",
+				value: data.Email,
+				placeHolder: "",
+
+			}, {
+				title: "公司电话",
+				type: "text",
+				elementId: "Phone",
+				value: data.Phone,
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "公司地址",
+				type: "text",
+				elementId: "Location",
+				value: data.Location,
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "描述",
+				type: "text",
+				elementId: "Description",
+				value: data.Description,
+				placeHolder: "请填写公司简称",
+
+			}, {
+				title: "是否启用",
+				type: "radio",
+				elementId: "IsActived",
+					value: data.IsActived ? "是" : "否",
+					OptionArray: ["是", "否"],
+
+			}]
+			cnabsAutoDialog(editCompanyDialog, '修改公司', function (data) {
+				var param = {
+					id: $scope.CompanyId,
+					Name: data.Name,
+					ShortName: data.ShortName,
+					Category: $("#Category").val(),
+					Contact: data.Contact,
+					Website: data.Website,
+					Email: data.Email,
+					Phone: data.Phone,
+					Location: data.Location,
+					Description: data.Description,
+					IsActived: data.IsActived == "是" ? true : false,
+				};
+				cnabsAjax("修改公司", "/Company/UpdateCompany", param, function (result) {
+					$scope.reloadCompanyTable();
+					$(".cnabs_dialogCloth").dialog("close");
+				})
+			})
+			setCompanyList();
+			$("#Category").val(data.Category);
+			$("#Category").select2();
+
+		}
+
+		$scope.deleteCompany = function (item) {
+
+			var msg = '是否确定删除[' + item.ShortName + ']？';
+
+			cnabsAutoDlgYesNo(null, "删除公司", function () {
+				cnabsAjax("删除公司", '/Company/DeleteCompany', { id: item.Id }, function (data) {
+
+					$scope.reloadCompanyTable();
+				})
+			}, msg)
+		}
+
+		$scope.reloadCompanyTable();
+
+		setCompanyList();
+
+
+		function setCompanyList() {
+			var data = $scope.CompanyType;
+			$("#Category").select2({
+				tags: false,                          //支持新增，默认为false
+				multiple: true,                      //支持多选，默认为false
+				data: data,                      //下拉框绑定的数据
+				allowClear: true,                    //支持清空，默认为false
+				placeholder: '请添加或选择公司类型'      //提示语
+			});
+			//$("#Category").select2();
+
+
+		}
+	})
+</script>

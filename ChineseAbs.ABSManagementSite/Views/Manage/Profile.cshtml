@@ -1,0 +1,245 @@
+﻿
+@using ChineseAbs.ABSManagementSite.Common
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style type="text/css">
+        tr {
+            text-align: center;
+        }
+    </style>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            BindingElementActive(4, 2, 10);
+        });
+
+    </script>
+}
+
+@Scripts.Render("~/bundles/angular")
+<script src="~/Scripts/paulkinzett-toolbar/jquery.toolbar.js"></script>
+<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+
+
+
+<link href="~/Content/paulkinzett-toolbar/jquery.toolbar.css" rel="stylesheet" />
+<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.fancytree.min.js"></script>
+<style>
+    input[type='text'],input[type='password']{
+        padding-left:10px;
+        border:none;
+        width:168px;
+        height:26px;
+        border-radius:2px;
+    }
+    .cnabs_dialog_content_title{
+        height:28px;
+        line-height:28px;
+    }
+    .userInfo {
+        width:259px;
+        margin:100px auto;
+        border:1px solid #615c54;
+        padding: 60px 90px 60px 70px;
+    }
+    .userInfo div {
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+    .userInfo .userInfoTitle {
+        float: left;
+        text-align:right;
+        margin-right:10px;
+        width: 70px;
+        height:28px;
+    }
+    .userInfo div {
+        line-height:28px;
+    }
+    .userInfo div input {
+        float: left;
+    }
+    .userInfo .errorMsg{
+        margin-left:80px;
+    }
+    .userInfo .errorMsg:nth-of-type(1){
+        margin-right:5px;
+    }
+    .submitUserInfoBtn{
+        margin:20px 0px 0px 80px;
+        line-height:30px;
+    }
+</style>
+
+<script type="text/javascript">
+    var userTnfoApp = angular.module('userTnfo', []);
+    userTnfoApp.controller('userTnfoCtrl', function ($scope, $rootScope) {
+        $scope.updataUserInfo = function () {
+            $scope.emailErrorMsg = false;
+            $scope.cellphoneErrorMsg = false;
+            cnabsAjax("获取用户信息", "/Manage/GetUserProfile", null, function (data) {
+                $scope.user = { userName: data.userName, realName: data.realName, email: data.email, department: data.department, company: data.company,cellphone:data.cellphone};
+                $scope.$apply();
+            })
+        }
+        $scope.updataUserInfo();
+        $scope.changePassWord = function () {
+            var userPasswordControls = [{
+                title: "旧密码",
+                type: "password",
+                elementId: "oldPassword",
+                value: "",
+                placeHolder: "请填写旧密码",
+                limit: {
+                    type: "rangelength",
+                    min: "6",
+                    max: "30"
+                }
+            }, {
+                title: "新密码",
+                type: "password",
+                elementId: "password",
+                value: "",
+                placeHolder: "请填写新密码",
+                limit: {
+                    type: "rangelength",
+                    min: "6",
+                    max: "30"
+                }
+            },{
+                title: "确认密码",
+                type: "password",
+                elementId: "repeatPassword",
+                value: "",
+                placeHolder: "请填写新密码",
+                limit: {
+                    type: "rangelength",
+                    min: "6",
+                    max: "30"
+                }
+            }]
+
+            cnabsAutoDlgYesNo(userPasswordControls, "修改密码", function (data) {
+                var param = {
+                    oldPassword: data.oldPassword,
+                    password: data.password,
+                    repeatPassword: data.repeatPassword
+                };
+                cnabsAjax("修改密码", "/Manage/ModifyPassword", param, function (data) {
+                    $scope.updataUserInfo();
+                    cnabsMsgSuccess('重置用户密码成功');
+                })
+            })
+        }
+
+        $scope.vaildEmail = function (type) {
+            if ($scope.user.email == '') {
+                $scope.emailErrorMsg = false;
+                return
+            }
+            if (type != 'change' && $scope.user.email != '') {
+                $scope.emailErrorMsg = false;
+               var reg = /\w[-\w.+]*@@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
+               if (!reg.test($scope.user.email)) {
+                   $scope.emailErrorMsg = true;
+               }
+           }
+
+        }
+        $scope.vaildCellphone = function (type) {
+            if ($scope.user.cellphone == '') {
+                $scope.cellphoneErrorMsg = false;
+                return
+            }
+            if (type != 'change' && $scope.user.cellphone != '') {
+                $scope.cellphoneErrorMsg = false;
+                var reg = /(13\d|14[57]|15[^4,\D]|17[13678]|18\d)\d{8}|170[0589]\d{7}/;
+                if (!reg.test($scope.user.cellphone) || $scope.user.cellphone.length>11) {
+                    $scope.cellphoneErrorMsg = true;
+                }
+            }
+        }
+        $scope.submitUserInfo = function () {
+            if ($scope.emailErrorMsg || $scope.cellphoneErrorMsg) {
+                return
+            }
+            if ($scope.user.realName.length == 0) {
+                cnabsMsgError("真实姓名必填")
+            } 
+            else if ($scope.user.realName.length > 50) {
+                cnabsMsgError("真实姓名长度不能超过30字符数")
+            }
+            else {
+                cnabsAjax("修改用户信息", "/Manage/ModifyUserProfile", $scope.user, function (data) {
+                    $scope.updataUserInfo();
+                    cnabsMsgSuccess('修改用户信息成功');
+                })
+            }
+        }
+    });
+</script>
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">个人资料</span>
+    </header>
+    <div ng-app="userTnfo">
+        <div ng-controller="userTnfoCtrl" ng-cloak>
+            <form class="userInfo cnabs_overhide" action="" name="myForm" novalidate>
+                <div>
+                    <span class='userInfoTitle'>用户名</span>
+                    <span ng-cloak style="padding-left:10px;">{{user.userName}}</span>
+                    <span class="cnabs_btn right" ng-click="changePassWord()">修改密码</span>
+                </div>
+                <div>
+                    <span class='userInfoTitle'>真实姓名</span>
+                    <input type="text" ng-model="user.realName" name="userRealName" required>
+                    <span class="errorMsg cnabs_red" ng-if="user.realName.length > 50">
+                        <span>*</span>
+                        <span>真实姓名不能超过50字符数</span>
+                    </span>
+                    <span class="errorMsg cnabs_red" ng-show="myForm.userRealName.$dirty && myForm.userRealName.$invalid">
+                        <span>*</span>
+                        <span ng-show="myForm.userRealName.$error.required">真实姓名必填。</span>
+                    </span>
+                </div>
+                <div>
+                    <span class='userInfoTitle'>公司名称</span>
+                    <input type="text" ng-model="user.company">
+                </div>
+                <div>
+                    <span class='userInfoTitle'>部门名称</span>
+                    <input type="text" ng-model="user.department">
+                </div>
+                <div>
+                    <span class='userInfoTitle'>邮箱</span>
+                    <input type="text" ng-model="user.email" name="userEmail" ng-blur="vaildEmail()" ng-change="vaildEmail('change')">
+                    <span class="errorMsg cnabs_red" ng-show="emailErrorMsg">
+                        <span>*</span>
+                        <span>邮箱地址格式不正确。</span>
+                    </span>
+                </div>
+                <div>
+                    <span class='userInfoTitle'>手机号码</span>
+                    <input type="text" ng-model="user.cellphone" ng-blur="vaildCellphone()" ng-change="vaildCellphone('change')">
+                    <span class="errorMsg cnabs_red" ng-show="cellphoneErrorMsg">
+                        <span>*</span>
+                        <span>手机号码格式不正确。</span>
+                    </span>
+                </div>
+                <div class="cnabs_btn_purple left submitUserInfoBtn" ng-click="submitUserInfo()">提交</div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+@import "../../../styles/theme/default.less";
+
+.abs-notice{
+  width: 42px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  cursor: pointer;
+  color: @abs-notice-color;
+  &:hover{
+    color: @abs-notice-hover-color !important;
+  }
+  i {
+    font-size: @abs-notice-font-size;
+  }
+  .ant-badge{
+    margin-top: 20px;
+      sup{
+        width: 4px;
+        min-width: 4px;
+        height: 4px;
+        background: @abs-notice-ant-badge-sup;
+     }
+  }
+  .abs-badge-small {
+    sup {
+      box-shadow: 0 0 0 4px @abs-notice-ant-badge-sup-small;
+    }
+  }
+
+  .abs-badge-big {
+    sup {
+      box-shadow: 0 0 0 6px @abs-notice-ant-badge-sup-big;
+    }
+  }
+}

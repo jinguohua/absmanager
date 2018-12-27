@@ -1,0 +1,48 @@
+@import '../../../../styles/theme/default.less';
+
+.relationAndResultTable {
+  .abs-panel-content {
+    position: relative;
+  }
+  
+  .abs-list-mask {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    background-color: @grey-11-rgba;
+    border-bottom: 1px dashed @grey-5;
+    border-top: 1px dashed @grey-5;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .abs-table {
+    position: relative;
+    z-index: 0;
+    .ant-table {
+      table {
+        table-layout: fixed;
+        width: auto;
+        td {
+          width: 130px;
+          min-width: 130px;
+          max-width: 160px;
+          .abs-list-color-col {
+            margin: 0 -12px;
+            height: 100%;
+            width: 160px;
+            min-width: 160px;
+            max-width: 160px;
+          }
+        }
+      }
+      .abs-list-col-pass {
+        color: @green-3;
+      }
+      
+      .abs-list-col-noPass {
+        color: @red-4;
+      }
+    }
+  } 
+}

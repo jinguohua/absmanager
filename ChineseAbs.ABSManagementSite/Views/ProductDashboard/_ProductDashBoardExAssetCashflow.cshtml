@@ -1,0 +1,197 @@
+﻿<script>
+    var app = angular.module('ProductDashboard');
+</script>
+<div class="cnabs_div_v2 " ng-controller="DashboardExAssetCashflow" id="divAssetCashflowView">
+    <div class="seletectdiv seletectdivHorizon">
+        <span>产&nbsp;&nbsp;&nbsp;品</span>
+        <select ng-change="projectChange(projectInfo.selectedItem.guid)" ng-model="projectInfo.selectedItem" ng-options="x.name for x in projectInfo.items;"></select>
+        <span>偿付期</span>
+        <select ng-model="selectedPaymentDay" ng-change="paymentDayChange(selectedPaymentDay)">
+            @*<option selected="selected" value="">所有</option>*@
+            <option ng-repeat="x in  paymentDays" value="{{x.PaymentDay}}">{{x.IsCurrentPaymentDay?"当期 ":"第 "+x.Sequence+" 期"}}   {{x.PaymentDay}}</option>
+        </select>
+
+        <div style="width:30px;height:30px; margin-top:20px; float:right;display:block; ">
+            <a  target="_blank" href="/DesignProduct/EditModel?projectGuid=8433283a-6d64-4c8c-90ff-7dc5cbce0510">
+                <span style="width:30px; height:30px; color: #FFC446;" class="ui-icon ui-icon-pencil  right"></span>
+            </a>
+        </div>
+    </div>
+    @Html.Partial("~/Views/Module/_AssetCashflow.cshtml")
+
+</div>
+<script type="text/javascript">
+    var maxDisplayAssetCount = 100;
+    var showChange = true;
+    function assetCashflowDeclareHandson(chart, data) {
+        resetHandsonColumnSetting(data);
+        var container = document.querySelector("#" + chart);
+        var handsontable = new Handsontable(container, {
+            width: 1010,
+            height: data.dataResult.length * 33 > 780 ? 780 : data.dataResult.length * 33 + 57,
+            colHeaders: data.colHeader,
+            data: data.dataResult,
+            columns: data.columns,
+            filters: false,
+            columnSorting: false,
+            sortIndicator: true,
+            autoColumnSize: true,
+            manualColumnResize: true,
+            readOnly: true,
+            wordWrap: false,
+            copyable: false,
+            manualColumnMove: true,
+            renderAllRows: false,
+            fixedColumnsLeft: 2,
+            fixedRowsBottom: 1,
+            multiSelect: false,
+            fillHandle: false,
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                var visualRowIndex = this.instance.toVisualRow(row);
+                var visualColIndex = this.instance.toVisualColumn(col);
+                if (visualColIndex != 0 && visualColIndex != 1) {
+                    cellProperties.className = 'htRight';
+                } else {
+                    cellProperties.className = 'htCenter';
+                }
+                cellProperties.width = 128;
+                if (visualColIndex == 1) {
+                    cellProperties.width = 80;
+                }
+                if (visualColIndex == 0) {
+                    cellProperties.width = 100;
+                    cellProperties.className = 'htCenter cnabs_whiteSpace';
+                }
+                return cellProperties;
+            },
+            mergeCells: data.mergeCellsInfo,
+            viewportColumnRenderingOffset: 100,
+            maxRows: data.dataResult.length,
+            beforeKeyDown: function (e) {
+                if (e.keyCode === 8 || e.keyCode === 46) {
+                    Handsontable.Dom.stopImmediatePropagation(e);
+                }
+            }
+        });
+        return handsontable;
+    }
+    signDiffRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+        $(td).removeClass("htDimmed");
+        $(td).addClass("signTr");
+    };
+
+    RemoveSignDiffRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        $(td).removeClass("signTr");
+        $(td).addClass("htDimmed");
+    };
+    var currentAssetCashflowCellsComment = [];
+    function currentAssetCashflowDeclareHandson(chart, data, overrideSingleAssetDataLast, userCustomCashflow) {
+        resetHandsonColumnSetting(data);
+        var container = document.querySelector("#" + chart);
+        var handsontable = new Handsontable(container, {
+            width: 969,
+            height: data.dataResult.length * 33 > 780 ? 780 : data.dataResult.length * 33 + 57,
+            colHeaders: data.colHeader,
+            data: data.dataResult,
+            filters: true,
+            columnSorting: false,
+            sortIndicator: true,
+            autoColumnSize: true,
+            manualColumnResize: true,
+            wordWrap: false,
+            copyable: false,
+            manualColumnMove: true,
+            renderAllRows: false,
+            fixedColumnsLeft: 1,
+            fixedRowsBottom: 1,
+            multiSelect: false,
+            fillHandle: false,
+            comments: true,
+            cell: currentAssetCashflowCellsComment,
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                var visualRowIndex = this.instance.toVisualRow(row);
+                var visualColIndex = this.instance.toVisualColumn(col);
+
+                if (visualColIndex != 0) {
+                    cellProperties.className = 'htRight';
+                    cellProperties.type = 'numeric';
+                    cellProperties.format= '0,0.00';
+                    if (this.comment) {
+                        cellProperties.className = 'htRight ' + this.comment.className;
+                    }
+                    // cellProperties.width = 128;
+                } else {
+                    cellProperties.className = 'htCenter';
+                }
+                if (visualRowIndex != data.dataResult.length - 1 && (visualColIndex == 1 || visualColIndex == 2 || visualColIndex == 3)) {
+                    cellProperties.readOnly = userCustomCashflow;
+                } else {
+                    cellProperties.readOnly = true;
+                }
+                if (overrideSingleAssetDataLast.indexOf(row + 1) >= 0 && showChange) {
+                    cellProperties.renderer = signDiffRenderer;
+                }
+                return cellProperties;
+            },
+            viewportColumnRenderingOffset: 100,
+        });
+        return handsontable;
+    }
+    var assetCashflowHandson;
+    var currentAssetCashflowHandson;
+    angular.module('ProductDashboard').controller('DashboardExAssetCashflow', function ($scope, $rootScope, avatarHelper, projectHelper, locationURL) {
+        $rootScope.$on("UpdateDashboardExAssetCashflow", function (event, projectGuid, paymentDay) {
+            $scope.projectInfo = projectHelper.reload(projectGuid);
+            $scope.paymentDays = $scope.projectInfo.paymentDays;
+
+            if (cnabsHasContent(projectGuid)) {
+                projectGuid = $scope.projectInfo.selectedItem.guid;
+            }
+            if (cnabsHasContent(paymentDay)) {
+                $scope.selectedPaymentDay = paymentDay;
+            }
+            else {
+                $scope.nullPaymentDay();
+            }
+            $scope.projectGuid = $scope.projectInfo.selectedItem.guid;
+            if ($rootScope.ReloadAssetflowBoard != undefined) {
+                $rootScope.ReloadAssetflowBoard();
+            }
+        });
+        $scope.nullPaymentDay = function () {
+            if ($scope.paymentDays != null) {
+                if ($scope.paymentDays.length != 0) {
+                    $scope.selectedPaymentDay = $scope.paymentDays[0].PaymentDay;
+                    locationURL.setURLHash("paymentDay", $scope.selectedPaymentDay);
+                }
+            } else {
+                $scope.selectedPaymentDay = null;
+                locationURL.setURLHash("paymentDay", $scope.selectedPaymentDay);
+            }
+        };
+
+        $scope.projectChange = function (projectGuid) {
+            // $rootScope.$emit("UpdateCurrentProjectGuid", projectGuid);
+            $scope.projectGuid = projectGuid;
+            locationURL.setURLHash("projectGuid", projectGuid);
+            $scope.paymentDays = projectHelper.GetPaymentDays(projectGuid);
+            $scope.nullPaymentDay();
+            $rootScope.ReloadAssetflowBoard();
+        }
+
+        $scope.paymentDayChange = function (paymentDay) {
+            locationURL.setURLHash("paymentDay", paymentDay);
+            $rootScope.ReloadAssetflowBoard();
+        }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "AssetCashflow") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+    })
+</script>

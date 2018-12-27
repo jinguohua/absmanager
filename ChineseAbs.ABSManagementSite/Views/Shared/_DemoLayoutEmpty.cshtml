@@ -1,0 +1,25 @@
+﻿@using ChineseAbs.ABSManagement.Utils;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@(string.IsNullOrEmpty(ViewBag.Title) ? string.Empty : (ViewBag.Title + " - "))CNABS存续期管理</title>
+    <link rel="shortcut icon" href="https://www.cn-abs.com/fav/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+    <link rel="stylesheet" href="~/Content/iconfont/iconfont.css" />
+
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+<body>
+    <header>
+    </header>
+
+    @RenderBody()
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

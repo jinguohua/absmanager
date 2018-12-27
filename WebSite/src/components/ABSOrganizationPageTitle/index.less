@@ -1,0 +1,51 @@
+@import '../../styles/theme/default.less';
+
+.abs-organization {
+  display: flex;
+  justify-content: space-between;
+  background-color: @abs-page-title-bg;
+  padding: 20px;
+  height: 80px;
+}
+
+.abs-page-head {
+  display: flex;
+  flex-direction: row;
+  margin-right: 12px; 
+  .abs-organization-logo {
+    margin-right: 12px;
+  }
+  .abs-page-content {
+    &-head {
+      display: flex;
+      flex-direction: row;
+    }
+    &-title {
+      color: @abs-page-title-content-title-color;
+      font-size: @font-l;
+      white-space: nowrap;
+    }
+    &-subtitle {
+      color: @abs-page-title-content-subtitle-color;
+      font-size: @font-s;
+    }
+  }
+}
+
+.ant-tooltip .ant-tooltip-inner {
+  line-height: 18px;
+}
+
+.prizes {
+  &-tooltip-title {
+    font-size: 14px;
+    color: @blue-3;
+    display: block;
+    margin-bottom: 10px;
+  } 
+}
+
+
+.img-title {
+  white-space: pre-line;
+}

@@ -1,0 +1,59 @@
+@import "../../styles/theme/default.less";
+@radiusNum: 2px;
+.abs-select {
+    .ant-select {
+        &-selection {
+            border: 1px solid @abs-select-border;
+            width: 240px;
+            height: 30px;
+            background-color: @abs-select-bg;
+            border-radius: @radiusNum;
+            -webkit-border-radius: @radiusNum;
+            -moz-border-radius: @radiusNum;
+            color: @abs-select-color;
+            &:hover {
+                border: 1px solid @abs-select-border-hover;
+            }
+            &:focus {
+                border: 1px solid @abs-select-border-focus;
+            }
+        }
+        &-arrow {
+            color: @abs-select-arrow;
+        }
+        &__rendered {
+            line-height: 27px;
+        }
+    }
+}
+
+.ant-select-dropdown {
+  background-color: @abs-option-bg;
+  &-menu {
+    border: 1px solid @abs-select-border;
+    border-bottom-left-radius: @radiusNum;
+    border-bottom-right-radius: @radiusNum;
+    &-item {
+      color: @abs-select-color;
+      &:hover {
+        background-color: @abs-option-hover;
+      }
+      &:first-child {
+        border-radius: 0;
+      }
+      &-active {
+        background-color: @abs-option-hover;
+      }
+      &-selected {
+        background-color: @abs-option-hover;
+        color: @abs-select-color;
+        font-weight: normal;
+        &:hover {
+          background-color: @abs-option-hover;
+          color: @abs-select-color;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}

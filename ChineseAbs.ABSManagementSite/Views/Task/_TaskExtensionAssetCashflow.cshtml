@@ -1,0 +1,150 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+@using ChineseAbs.ABSManagementSite.Models;
+@using ChineseAbs.ABSManagement.Object;
+@using ChineseAbs.ABSManagementSite.Common;
+@using ChineseAbs.ABSManagement.Models;
+@using System.Linq;
+@Styles.Render("~/Content/handsontable")
+@Scripts.Render("~/bundles/handsontable")
+@Styles.Render("~/Content/handsontableCustom")
+@Scripts.Render("~/bundles/handsontableCustom")
+@Scripts.Render("~/bundles/lodash")
+<style type="text/css">
+    #divAssetCashflowView .div_labels {
+        height: 40px;
+        border-bottom: 1px solid #68625b;
+        margin-left: 0px !important;
+        margin-top: 10px;
+        width: 1010px !important;
+    }
+    #divAssetCashflowView .divOverrideLast {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    #divAssetCashflowView .currentDate {
+        margin-left: 20px;
+    }
+    #divAssetCashflowView .controlMarginLeft {
+        margin-left: 20px;
+    }
+    #divAssetCashflowView .divGetAssetCashflowFile {
+        width: 970px !important;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    #divAssetCashflowView .divInfoTable {
+        margin-left: 20px;
+        margin-right: 20px;
+        max-width: 969px !important;
+    }
+    #divAssetCashflowView .partAssetCashflowlabels .cnabs_btn_tab_selected {
+        border-bottom-color: #47423C;
+    }
+    #divAssetCashflowView .divCurrentPrincipalAndInterest {
+        background: #59534c!important;
+        margin-left:20px;
+        margin-right:20px;
+    }
+    #divAssetCashflowView .currentPrincipalAndInterestTitle {
+        border-bottom: 1px solid #68625b;
+    }
+</style>
+<script>
+    var app = angular.module('workPanel');
+</script>
+<div class="cnabs_div_v2" id="divAssetCashflowView" ng-controller="TaskExtensionAssetCashFlow">
+    @{
+        var errorMsg = Model.TaskExtension.Info as string;
+        var taskExPaymentDay = new DateTime();
+
+        if (errorMsg != null)
+        {
+            <div class="cnabs_error_message">
+                @Html.Raw(Toolkit.FormatHtmlText(errorMsg))
+            </div>
+        }
+        else
+        {
+            taskExPaymentDay = (DateTime)(Model.TaskExtension.Info);
+
+            <div style="overflow:hidden;border-bottom:2px dotted #666;">
+                <div>
+                    <div style="overflow:hidden;">
+                        <span class="left fixedColor">当前状态：</span>
+                        @if (Model.TaskExtension.Status == TaskExtensionStatus.Finished)
+                        {
+                            <span class="left cnabs_green" style="margin-left:5px;width:200px;"> 已核对</span>
+                        }
+                        else if (Model.TaskExtension.Status == TaskExtensionStatus.NotMatch)
+                        {
+                            <span class="left cnabs_red" style="margin-left:5px;width:200px;"> 已核对，数据不匹配</span>
+                        }
+                        else
+                        {
+                            <span class="left cnabs_blue" style="margin-left:5px;width:200px;"> 未核对</span>
+                        }
+                        @if (Model.TaskExtension.Status == TaskExtensionStatus.Finished && !string.IsNullOrEmpty(Model.TaskExtension.Handler))
+                        {
+                            <span class="left fixedColor" style="margin-left:5px;width:98px;">核对人：</span>
+                            <span class="left" style="margin-left:5px;width:200px;"> @Toolkit.ToString(Model.TaskExtension.Handler)</span>
+                        }
+                        @if (Model.TaskExtension.Status == TaskExtensionStatus.Finished && Model.TaskExtension.HandleTime != null)
+                        {
+                            <span class="left fixedColor" style="margin-left:5px;width:84px;">核对时间：</span>
+                            <span class="left" style="margin-left:5px;"> @Toolkit.DateTimeToString(Model.TaskExtension.HandleTime)</span>
+                        }
+                        <span id="ConfirmAssetMatch" class="fixedColor" style="margin-top:1px; float:right; cursor:pointer;">是否匹配</span>
+                        <input id="checkboxConfirmAssetMatch" style="margin-top:5px; float:right; margin-right:5px; cursor:pointer;" type="checkbox" name="name" value=" " checked="" />
+                    </div>
+
+                    <div class="am_button" style="float:right;margin-top:8px;">
+                        <input id="btnConfirmAsset" type="button" value="确认核对" />
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-left:-20px;">
+                @Html.Partial("~/Views/Module/_AssetCashflow.cshtml")
+            </div>
+        }
+    }
+</div>
+<script type="text/javascript">
+    TextControlCheckbox("checkboxConfirmAssetMatch", "ConfirmAssetMatch");
+    $("#btnConfirmAsset").click(function () {
+        if ($("#checkboxConfirmAssetMatch").is(":checked")) {
+            var taskStatus = $('#taskStatus')[0].textContent;
+            if (taskStatus == '完成') {
+                GetSubsequentTasksCount();
+            }
+            if (taskStatus == '完成' && $("#am_warning").css("display") == 'block' && $("#am_warningContent").html() != '') {
+                am_appear('Running', false, false, ajaxSaveCollateralData);
+            } else {
+                ajaxSaveCollateralData();
+            }
+        } else {
+            GetSubsequentTasksCount();
+            am_appear('Error', true, true);
+        }
+    });
+    var currentTaskExStatus = '@Model.TaskExtension.Status';
+    if (currentTaskExStatus == "NotMatch") {
+        $("#checkboxConfirmAssetMatch").prop("checked", false)
+    }
+    function ajaxSaveCollateralData() {
+        cnabsAjax('核对', '/Task/ConfirmAssetCashflow', {
+            shortCode: '@Model.ShortCode',
+            @*intColl: '@assetCashflow.TotalCurrentInterestCollection',
+            prinColl: '@assetCashflow.TotalCurrentPrinCollection',
+            loss: '0.0'*@
+        }, function () {
+            AddTaskLog("已核对资产池现金流");
+            cnabsMsgSuccess("可以设置任务为【完成】", true);
+        });
+    }
+    angular.module('workPanel').controller('TaskExtensionAssetCashFlow', function ($scope) {
+        $scope.projectGuid = '@Model.ProjectGuid';
+        $scope.selectedPaymentDay = '@Toolkit.DateToString(taskExPaymentDay)';
+    });
+</script>
+

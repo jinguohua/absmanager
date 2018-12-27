@@ -1,0 +1,265 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.CashflowDatasetViewModel
+@using ChineseAbs.ABSManagementSite.Common;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .selector {
+        margin: 10px 20px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(1), .CashflowTable .CashflowTableTr td:nth-of-type(1) {
+        width: 100px;
+        text-align: left;
+        max-width:100px;
+        min-width:100px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(2), .CashflowTable .CashflowTableTr td:nth-of-type(2) {
+        width: 120px;
+        text-align: right;
+        max-width:120px;
+        min-width:120px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(3), .CashflowTable .CashflowTableTr td:nth-of-type(3) {
+        width: 120px;
+        text-align: right;
+        max-width:120px;
+        min-width:120px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(4), .CashflowTable .CashflowTableTr td:nth-of-type(4) {
+        width: 120px;
+        text-align: right;
+        max-width:120px;
+        min-width:120px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(5), .CashflowTable .CashflowTableTr td:nth-of-type(5) {
+        width: 150px;
+        text-align: right;
+        max-width:150px;
+        min-width:150px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(6), .CashflowTable .CashflowTableTr td:nth-of-type(6) {
+        width: 150px;
+        text-align: right;
+        max-width:150px;
+        min-width:150px;
+    }
+
+    .CashflowTable .CashflowTableHeader th:nth-of-type(7), .CashflowTable .CashflowTableTr td:nth-of-type(7) {
+        width: 150px;
+        text-align: right;
+        max-width:150px;
+        min-width:150px;
+    }
+
+    .chart {
+        width: 80%;
+        margin: 0 auto;
+    }
+    .projectNamePrompt_div {
+        overflow: hidden;
+        height: 22px;
+        line-height: 22px;
+        margin-bottom:10px;
+    }
+</style>
+<div class="tablecloth" style="overflow:hidden">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/PaymentHistory/?viewType=assetCashflow&projectGuid=@Model.ProjectGuid">偿付历史</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">证券偿付明细</span>
+    </header>
+    <div class="cnabs_div_v2">
+        <div id="selector">
+            <div class="projectNamePrompt_div">
+                <span class="currentProject">当前产品：</span>
+                <span id="currentProjectName" class="currentProjectName"></span>
+            </div>
+
+            <section>
+                <span class="fixedColor">偿付日期：</span>
+                <select id="selectPaymentDay" name="selectPaymentDay">
+
+                    @foreach (var paymentDate in Model.ValidPaymentDays)
+                    {
+                        var index = Model.AllPaymentDays.IndexOf(paymentDate);
+                        var key = paymentDate.ToString("yyyyMMdd");
+
+                        var prefix = index < 0 ? "-" : "第" + (index + 1).ToString() + "期 ";
+                        var value = prefix + Toolkit.DateToString(paymentDate);
+                        if (Model.Dataset.PaymentDay.Value == paymentDate)
+                        {
+                            <option value="@key" selected="selected">@value</option>
+                        }
+                        else
+                        {
+                            <option value="@key">@value</option>
+                        }
+                    }
+                </select>
+            </section>
+        </div>
+
+        <div class="cnabs_v2_margin" style="overflow:hidden;">
+            <span class="cnabs_label_v2">证券偿付明细</span>
+        </div>
+
+        <div style="overflow:hidden;">
+            <table class="table_v2 alone hover cnabs_v2_margin CashflowTable" id="taskTable" style="width:100%;">
+                <tbody id="taskTablebody">
+                    <tr class="CashflowTableHeader">
+                        <th>证券简称</th>
+                        <th>证券代码</th>
+                        <th>当期利率</th>
+                        <th>原始本金(万)</th>
+                        <th>当期支付本金(万)</th>
+                        <th>当期剩余本金(万)</th>
+                        <th>当期支付利息(万)</th>
+                        @*<th>当期支付费用(万)</th>*@
+                    </tr>
+                    @{
+                        var dataset = Model.Dataset;
+                        var noteDatas = dataset.NoteDatas;
+                        var sumNotional = noteDatas.Sum(x => x.NoteInfo.Notional);
+                        var sumPrincipalPaid = noteDatas.Sum(x => x.PaymentDetail.PrincipalPaid.Value);
+                        var sumEndingBalance = noteDatas.Sum(x => x.PaymentDetail.EndingBalance.Value);
+                        var sumInterestPaid = noteDatas.Sum(x => x.PaymentDetail.InterestPaid.Value);
+
+                        foreach (var noteData in dataset.NoteDatas)
+                        {
+                            var noteInfo = noteData.NoteInfo;
+                            var paymentDetail = noteData.PaymentDetail;
+                            <tr class="CashflowTableTr">
+                                <td>@noteInfo.Name</td>
+                                <td>@noteInfo.SecurityCode</td>
+                                <td>@noteData.CurrentCouponRate</td>
+                                <td>@Toolkit.To10KString(noteInfo.Notional)</td>
+                                <td>@Toolkit.To10KString(paymentDetail.PrincipalPaid)</td>
+                                <td>@Toolkit.To10KString(paymentDetail.EndingBalance)</td>
+                                <td>@Toolkit.To10KString(paymentDetail.InterestPaid)</td>
+                            </tr>
+                        }
+
+                        <tr class="CashflowTableTr">
+                            <td>总计</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>@Toolkit.To10KString(sumNotional)</td>
+                            <td>@Toolkit.To10KString(sumPrincipalPaid)</td>
+                            <td>@Toolkit.To10KString(sumEndingBalance)</td>
+                            <td>@Toolkit.To10KString(sumInterestPaid)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div style="overflow:hidden;padding-top:50px;background-color:#47423C">
+                <div style="width:50%; float:left;">
+                    <div id="chartNotional" class="chart"></div>
+                </div>
+
+                <div style="width:50%; float:right;">
+                    <div id="chartInterest" class="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        BindingElementActive(4, 2, 5);
+
+        var projectGuid = cnabsGetUrlParam('projectGuid');
+        cnabsAjax("获取产品名称", "/PaymentHistory/GetProjectNameByGuid", { projectGuid: projectGuid }, function (projectName) {
+            $("#currentProjectName").html(projectName);
+        });
+
+        var paymentDay = cnabsGetUrlParam('paymentDay');
+        $("#currentPaymentDay").html(paymentDay);
+
+        updateMenuLinkByProject(projectGuid);
+
+        var params = { projectGuid: projectGuid, paymentDay: paymentDay };
+        cnabsAjax("获取本金偿付明细", "/PaymentHistorySecurity/GetNotionalChart", params, function (dataSeriesList) {
+            var dataList = new Array();
+            var data = new Array();
+            $.each(dataSeriesList, function (i, dataSeries) {
+                data.push([dataSeries.name, dataSeries.data[0][0]]);
+            });
+            dataList.push({ name: "", data: data });
+            DrawPieChart('chartNotional', '支付本金分布', dataList);
+        });
+
+        cnabsAjax("获取利息偿付明细", "/PaymentHistorySecurity/GetInterestChart", params, function (dataSeriesList) {
+            var dataList = new Array();
+            var data = new Array();
+            $.each(dataSeriesList, function (i, dataSeries) {
+                data.push([dataSeries.name, dataSeries.data[0][0]]);
+            });
+            dataList.push({ name: "", data: data });
+            DrawPieChart('chartInterest', '支付利息分布', dataList);
+        });
+
+        $(function () {
+            $("#selectPaymentDay").change(function () {
+                var paymentDay = $("#selectPaymentDay").val();
+                var url = location.protocol + "//" + location.host + location.pathname;
+                location.href = url + "?projectGuid=" + '@Model.ProjectGuid' + "&paymentDay=" + paymentDay;
+            });
+        });
+    });
+
+    function DrawPieChart(div, title, dataList) {
+        var options = {
+            chart: {
+                renderTo: div,
+                type: 'pie'
+            },
+            title: {
+                text: title
+            },
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            legend: {
+                align: 'right',
+                layout: 'vertical',
+                verticalAlign: 'middle',
+                x: 0,
+                y: 10
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false,
+                        distance: 0,
+                        color: 'white',
+                        connectorColor: '#000000',
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    },
+                    showInLegend: true
+                }
+            },
+            series: dataList
+        };
+
+        chart = new Highcharts.Chart(options);
+    }
+
+</script>

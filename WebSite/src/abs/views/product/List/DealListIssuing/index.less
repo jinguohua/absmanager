@@ -1,0 +1,74 @@
+@import '../../../../../styles/theme/default.less';
+
+.deal-list-issuing {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  &-filter {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+  }
+  &-left {
+    display: flex;
+  }
+  &-right {
+    height: calc(~"100% - 48px");
+    width: 100%;
+    flex: 1 1;
+  }
+  &-filter-table {
+    height: 100%;
+    width: 1px;
+    z-index: 1;
+    flex: auto;
+    .abs-list-container {
+      position: relative;
+      height: 100%;
+      &-footer {
+        border-bottom: 0;
+      }
+    }
+    table {
+      tr {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  &-detail {
+    height: 100%;
+    width: 280px;
+    border: 1px solid @abs-panel-border-color;
+  }
+  &-content {
+    height: 100%;
+  }  
+  &-title {
+    color: @abs-deal-list-issuing-title;
+    text-align: center;
+    padding: 20px;
+    p {
+      display: inline-block;
+      text-align: justify;
+    }
+  }
+  &-default {
+    &-title {
+      color: @abs-deal-list-issuing-defalut-title;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      height: 100%;
+    }
+  }
+  &-special {
+    height: 100%;
+  }
+  .abs-progress {
+    margin: 0 20px;
+  }
+}

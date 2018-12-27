@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CDD0711D-898D-44B0-B7A4-23732340DE9F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CNABS.Mgr.Deal</RootNamespace>
+    <AssemblyName>CNABS.Mgr.Deal</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CDO17, Version=1.0.6345.19973, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO17.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO21, Version=1.0.6337.30458, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO21.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO23, Version=1.0.6345.19891, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO23.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO24, Version=1.0.6337.30458, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO24.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO27, Version=1.0.6345.19891, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO27.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO3, Version=1.0.6345.19891, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\CDO3.dll</HintPath>
+    </Reference>
+    <Reference Include="CDO5">
+      <HintPath>..\ABSManager-libs\CDO5.dll</HintPath>
+    </Reference>
+    <Reference Include="ChineseAbs.AnalyzerLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\ChineseAbs.AnalyzerLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="ChineseAbs.CommonLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\ChineseAbs.CommonLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="ChineseAbs.Logic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ABSManager-libs\ChineseAbs.Logic.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\ABSDeal.cs" />
+    <Compile Include="Model\Asset.cs" />
+    <Compile Include="Model\Assets.cs" />
+    <Compile Include="Model\BasicInformation.cs" />
+    <Compile Include="Model\CollateralRule.cs" />
+    <Compile Include="Model\CreditEnhancementRule.cs" />
+    <Compile Include="Model\FreeRule.cs" />
+    <Compile Include="Model\Location.cs" />
+    <Compile Include="Model\NoteRule.cs" />
+    <Compile Include="Model\Result\ABSDealResult.cs" />
+    <Compile Include="Model\Result\AcfUnitAssetSum.cs" />
+    <Compile Include="Model\Result\AcfResult.cs" />
+    <Compile Include="Model\Result\AcfUnit.cs" />
+    <Compile Include="Model\Result\AcfAsset.cs" />
+    <Compile Include="Model\Result\AcfDataset.cs" />
+    <Compile Include="Model\Result\AcfUnitBase.cs" />
+    <Compile Include="Model\Result\AcfUnitDatasetSum.cs" />
+    <Compile Include="Model\ScenarioRule.cs" />
+    <Compile Include="Model\ScheduleRule.cs" />
+    <Compile Include="Model\Setting\ABSDealSetting.cs" />
+    <Compile Include="Model\Setting\CashflowSetting.cs" />
+    <Compile Include="Model\Setting\OverrideAssetSetting.cs" />
+    <Compile Include="Model\Setting\OverrideSingleAssetSetting.cs" />
+    <Compile Include="Model\SimpleDealModel.cs" />
+    <Compile Include="Model\SimpleScheduleData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ABSDealUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ABS.Core\ABS.Core.csproj">
+      <Project>{e101b76c-12f8-4bc1-a2c4-438aad19262e}</Project>
+      <Name>ABS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChineseAbs.ABSManagement\ABS.ABSManagement.csproj">
+      <Project>{8F725429-CF98-4153-A769-0597C805EB09}</Project>
+      <Name>ABS.ABSManagement</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

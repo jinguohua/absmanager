@@ -1,0 +1,321 @@
+﻿
+<style>
+    .lineMargin {
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .permissionTable td:nth-of-type(1) {
+        width: 190px;
+        min-width:190px;
+    }
+
+    .permissionTable td:nth-of-type(2) {
+        width: 190px;
+        min-width:190px;
+    }
+
+    .permissionTable td:nth-of-type(3) {
+        width: 190px;
+        min-width:190px;
+    }
+    .permissionTable td:nth-of-type(4) {
+        width: 70px;
+        min-width:70px;
+    }
+    span.fancytree-node{
+        line-height:30px;padding-left:14px;width:94.91%;
+    }
+    .fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-active, .fancytree-container.fancytree-treefocus span.fancytree-node.fancytree-selected, span.fancytree-node.fancytree-active:hover, span.fancytree-node.fancytree-selected:hover{
+        background-color:#615c54;border:1px solid #59554d;
+    }
+    span.fancytree-node.fancytree-active, span.fancytree-node.fancytree-selected{
+         background-color:#615c54;border:1px solid #59554d;
+    }
+    span.fancytree-node:hover{
+        background-color:#615c54;border:1px solid #59554d;
+    }
+    span.fancytree-empty, span.fancytree-vline, span.fancytree-expander, span.fancytree-icon, span.fancytree-checkbox, span.fancytree-radio, span.fancytree-drag-helper-img, #fancytree-drop-marker{
+        vertical-align:middle;
+    }
+    span.fancytree-title{
+        color:#fff;font-size:14px;white-space:normal;width:194.5px;word-wrap:break-word;
+    }
+    .permissionTable .editOneUserBtn {
+        cursor:pointer;
+    }
+    .permissionTable .deleteOneUserBtn{
+        margin-left:10px;cursor:pointer;
+    }
+</style>
+
+<script type="text/javascript">
+    angular.module('DashBoard').controller('DashboardExPermission', function ($scope, $rootScope,locationURL) {
+        $rootScope.$on("UpdateDashboardExPermission", function (event, projectSeriesGuid) {
+            if ($("#permissionBtn").attr('hide') != 'true') {
+                $scope.ReloadPage(projectSeriesGuid);
+            }
+        });
+
+        $scope.ReloadPage = function (projectSeriesGuid) {
+            cnabsAjaxSync("获取产品系列", "/ProjectSeries/GetProjectSeriesByUsername", null, function (data) {
+                $scope.projectSeries = data;
+                if (data.length) {
+                    $scope.selectedProjectSeries = data[0];
+                    if (projectSeriesGuid == null || !projectSeriesGuid.length) {
+                        $scope.selectedProjectSeries = data[0];
+                    }
+
+                    $.each(data, function () {
+                        if (this.Guid == projectSeriesGuid) {
+                            $scope.selectedProjectSeries = this;
+                        }
+                    })
+
+                    $scope.GetProjectSeriesTree();
+                }
+            });
+        }
+
+        $scope.resetAllTeamMemberPermission = function () {
+            cnabsAutoDlgYesNo(null, "重置项目成员权限", function () {
+                var param = { projectSeriesGuid: $scope.selectedProjectSeries.Guid };
+                cnabsAjax("重置项目成员权限", "/TeamMember/ResetAllTeamMemberPermission", param, function (data) {
+                    $scope.ReloadPage($scope.selectedProjectSeries.Guid);
+                });
+
+            }, "重置项目成员权限: 1.将除了创建者、负责人外，所有有读权限的人员设置为项目成员；2.重置所有项目成员的权限");
+        }
+
+        $scope.GetUserPermissionTable = function (guid, treeNodeName, objectType) {
+            $scope.usersInfo = [];
+            cnabsReleaseAllToolbar();
+            cnabsAjax("获取用户权限列表", "/Permission/GetUserPermissionByUid", {
+                uid: guid,
+                objectType: objectType,
+                treeNodeName: treeNodeName
+            }, function (data) {
+                $scope.usersInfo = data;
+                $scope.$apply();
+            })
+        }
+
+        $scope.GetProjectSeriesTree = function () {
+            var fancyTreeDiv = document.getElementById("fancyTree");
+            var parentDiv = document.getElementById("projectSeriesTree");
+            if (fancyTreeDiv != null) {
+                parentDiv.removeChild(fancyTreeDiv);
+            }
+            var newDiv = document.createElement('div');
+            newDiv.id = "fancyTree";
+            parentDiv.appendChild(newDiv);
+            cnabsAjaxSync('获取产品系列树形表', '/Permission/GetProjectSeriesTreeData', { projectSeriesGuid: $scope.selectedProjectSeries.Guid }, function (data) {
+                if (data != null) {
+                    $scope.currentSelectedTreeInfo = {
+                        objectType: data[0].type,
+                        uid: data[0].key,
+                        treeNodeName:data[0].title
+                    };
+                    $("#fancyTree").fancytree({
+                        clickFolderMode: 4,
+                        icons: false,
+                        source: data,
+                        click: function (evevt, data) {
+                            $scope.GetUserPermissionTable(data.node.key, data.node.title, data.node.data.type);
+                            $scope.currentSelectedTreeInfo.objectType = data.node.data.type;
+                            $scope.currentSelectedTreeInfo.uid = data.node.key;
+                            $scope.currentSelectedTreeInfo.treeNodeName = data.node.title;
+                        }
+
+                    });
+
+                    $scope.GetUserPermissionTable($scope.selectedProjectSeries.Guid, $scope.currentSelectedTreeInfo.treeNodeName, $scope.currentSelectedTreeInfo.objectType);
+                }
+            })
+        }
+
+        $scope.GetAllAuthedUsers = function () {
+            var userOptionArray = [];
+            cnabsAjaxSync("GetAllAuthedUsers", "/EnterpriseUser/GetAllAuthedUsers", null, function (data) {
+                var usernames = $scope.GetNamesFromUsernamePermissionTable();
+                for (var i = 0; i < usernames.length; i++) {
+                    usernames[i] = usernames[i].toLowerCase();
+                }
+                $.each(data, function () {
+                    var curUserName = this.userName.toLowerCase();
+                    if (usernames.indexOf(curUserName) < 0) {
+                        userOptionArray.push([this.userName, cnabsFormatUserName(this)]);
+                    }
+                })
+            });
+            return userOptionArray;
+        }
+
+        $scope.GetNamesFromUsernamePermissionTable = function () {
+            var userPermissionInfo = $scope.usersInfo;
+            var usernames = [];
+            for (var i = 0; i < userPermissionInfo.length; i++) {
+                usernames.push(userPermissionInfo[i].UserName);
+            }
+            return usernames;
+        }
+
+        $scope.AddUserPermission = function () {
+            var userOptionArray = $scope.GetAllAuthedUsers();
+            if (userOptionArray.length == 0) {
+                cnabsAlert("当前项目下，没有可添加权限的用户，请在[操作]中直接对用户的权限进行修改！")
+                return;
+            }
+            var addUserPermissionInDialog = [{
+                title: "用户名称",
+                type: "select",
+                elementId: "username",
+                value: userOptionArray[0][0],
+                OptionArray: userOptionArray
+            }, {
+                title: "只读权限",
+                type: "checkbox",
+                elementId: "readPermission",
+                value: true,
+                disabled:true
+            }, {
+                title: "编写权限",
+                type: "checkbox",
+                elementId: "writePermission",
+                value: false,
+            }, {
+                title: "执行权限",
+                type: "checkbox",
+                elementId: "executePermission",
+                value: false,
+            }]
+
+            cnabsAutoDlgYesNo(addUserPermissionInDialog, "增加用户权限", function (data) {
+                var permissionTypeText = GetToAddUserPermission(data); 
+                if (permissionTypeText.length == 0) {
+                    cnabsAlert("权限类型不能为空！")
+                    return;
+                }
+                var param = {
+                    uid: $scope.currentSelectedTreeInfo.uid,
+                    objectType: $scope.currentSelectedTreeInfo.objectType,
+                    username: data.username,
+                    permissionTypeText: permissionTypeText,
+                    treeNodeName: $scope.currentSelectedTreeInfo.treeNodeName
+                };
+                cnabsAjax("增加用户权限", "/Permission/AddUserPermission", param, function () {
+                    $scope.GetUserPermissionTable(param.uid,param.treeNodeName,param.objectType);
+                })
+            })
+        }
+        $scope.EditOneUserPermission = function (guid, realname, username, permission) {
+            var permissionList = permission.split(',');
+            var modifyUserPermissionInDialog = [{
+                title: "用户名称",
+                type: "label",
+                elementId: "username",
+                value: realname+"("+username+")"
+            }, {
+                title: "只读权限",
+                type: "checkbox",
+                elementId: "readPermission",
+                value: permissionList.indexOf("Read") >= 0 ? true : false,
+                disabled:true
+            }, {
+                title: "编写权限",
+                type: "checkbox",
+                elementId: "writePermission",
+                value: permissionList.indexOf("Write") >= 0 ? true : false
+            }, {
+                title: "执行权限",
+                type: "checkbox",
+                elementId: "executePermission",
+                value: permissionList.indexOf("Execute") >= 0 ? true : false
+            }];
+            var currSelectedTreeInfo = $scope.currentSelectedTreeInfo;
+            cnabsAutoDlgYesNo(modifyUserPermissionInDialog, "修改权限", function (data) {
+                var permissionTypeText = GetToAddUserPermission(data);
+                cnabsAjax("修改权限", "/Permission/ModifyPermission", {
+                    username: username,
+                    uid: guid,
+                    objectType: currSelectedTreeInfo.objectType,
+                    permissionTypeText: permissionTypeText.length == 0 ? "Delete" : permissionTypeText,
+                    treeNodeName: currSelectedTreeInfo.treeNodeName
+                }, function (data) {
+                    $scope.GetUserPermissionTable(guid, currSelectedTreeInfo.treeNodeName, currSelectedTreeInfo.objectType);
+                })
+            })
+        }
+        $scope.DeleteOneUserPermission = function (guid, realname, username, permission) {
+            var currSelectedTreeInfo = $scope.currentSelectedTreeInfo;
+            var message = "确认删除[" + realname + "(" + username + ")]的[" + permission + "]权限么？";
+            cnabsAutoDlgYesNo(null, "删除权限", function () {
+                cnabsAjax("删除权限", "/Permission/DeleteUserPermission", {
+                    username: username,
+                    uid: guid,
+                    treeNodeName: currSelectedTreeInfo.treeNodeName,
+                    objectType:currSelectedTreeInfo.objectType
+                }, function (data) {
+                    $scope.GetUserPermissionTable(guid, currSelectedTreeInfo.treeNodeName, currSelectedTreeInfo.objectType);
+                })
+            }, message)
+        }
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Permission") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+
+    });
+
+    function GetToAddUserPermission(data) {
+        var userPermission = [];
+        if (data.readPermission) {
+            userPermission.push("Read");
+        }
+        if (data.writePermission) {
+            userPermission.push("Write");
+        }
+        if (data.executePermission) {
+            userPermission.push("Execute");
+        }
+        return userPermission.join(',');
+    }
+
+</script>
+
+<div id="divDashboardExPermissionParent" ng-controller="DashboardExPermission" style="position:relative;">
+    <div id="divDashboardExPermission" style="width:100%;">
+        <div style="overflow:hidden;padding:0px 20px 10px 20px;">
+            <div style="background:#47423c;min-height:679px;float:left;width:284px;padding-left:20px;">
+                <div id="projectSeriesTree" class="fancy-tree-style">
+                </div>
+            </div>
+            <div style="min-height:600px;float:left;width:686px;padding:0px 0px 0px 20px; ">
+                <div style="background-color:#3b3831;min-height:601px">
+                    <div class="cnabs_btn_add" ng-click="AddUserPermission()" type="button" style="position:absolute;top:-46px;">增加用户权限</div>
+                    <div class="cnabs_btn" style="position:absolute;top:-46px;left:486px;" ng-click="resetAllTeamMemberPermission()">重置</div>
+                    <table class="table_v2 alone hover  permissionTable" style="width:100%;margin:0px 0px 10px;">
+                        <tr>
+                            <td>真实姓名</td>
+                            <td>用户名</td>
+                            <td>用户权限</td>
+                            <td>操作</td>
+                        </tr>
+                        <tr ng-cloak ng-repeat="userInfo in usersInfo">
+                            <td>{{userInfo.RealName}}</td>
+                            <td>{{userInfo.UserName}}</td>
+                            <td>{{userInfo.Permission}}</td>
+                            <td>
+                                <span ng-click="EditOneUserPermission(userInfo.UniqueIdentifier,userInfo.RealName,userInfo.UserName,userInfo.Permission)" class="editOneUserBtn cnabs_green">编辑</span>
+                                <span ng-click="DeleteOneUserPermission(userInfo.UniqueIdentifier,userInfo.RealName,userInfo.UserName,userInfo.Permission)" class="deleteOneUserBtn cnabs_red">删除</span>
+                             </td> 
+                        </tr>
+                    </table>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

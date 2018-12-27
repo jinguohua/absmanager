@@ -1,0 +1,30 @@
+@import '../../styles/theme/default.less';
+.base-title {
+  position: relative;
+  width: 90px;
+  font-size: @font-m;
+  color: @blue-3;
+  display: flex;
+  align-items: center;
+  &.select-field-title {
+    width: 90px;
+  }
+  &-star {
+    color: @red-6;
+    margin-right: 2px;
+    position: absolute;
+    top: 3px;
+  }
+  &-text {
+    width: 90px;
+    padding-left: 8px;
+    word-break: break-all;
+  }
+
+  .search-field-title {
+    white-space: nowrap;
+  }
+  .ant-select-enabled {
+    margin-left: 12px;
+  }
+}

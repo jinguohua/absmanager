@@ -1,0 +1,285 @@
+﻿<style type="text/css">
+    .toolbar_CheckList th:nth-of-type(1), .checkListView td:nth-of-type(1) {
+        width: 30px;
+        min-width: 30px;
+        max-width: 30px;
+        text-align: center;
+    }
+
+    .toolbar_CheckList th:nth-of-type(2), .checkListView td:nth-of-type(2) {
+        width: 535px;
+        min-width: 535px;
+        max-width: 535px;
+    }
+
+    .toolbar_CheckList th:nth-of-type(3), .checkListView td:nth-of-type(3) {
+        width: 60px;
+        min-width: 60px;
+        max-width: 60px;
+    }
+
+    .toolbar_CheckList th:nth-of-type(4), .checkListView td:nth-of-type(4) {
+        width: 16px;
+        min-width: 16px;
+        max-width: 16px;
+    }
+
+    .groupName {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #FFC446;
+    }
+    table.table_v2 {
+    font-size: 13px;
+	border-collapse: collapse;
+}
+
+.div_table_CheckList .table_v2.embed {
+    width:-moz-calc(100% + 10px); 
+    width:calc(100% + 10px);
+    margin: 10px -5px;
+}
+
+table.table_v2 tr:first-child {
+    color: #b7afa5;
+    background-color: #625C53 !important;
+    height: 40px;
+    padding: 0 20px;
+}
+
+table.table_v2  tr:not(:first-child) {
+    height: 32px;
+}
+
+table.table_v2.hover  tr:not(:first-child):hover {
+    background-color: #7f786f;
+}
+
+table.table_v2  td:first-child,th:first-child {
+    padding-left:20px;
+}
+
+table.table_v2  td:last-child,th:last-child {
+    padding-right:20px;
+}
+
+table.table_v2 tr:nth-child(even) {
+    background-color: #47423C; 
+ }
+
+table.table_v2 tr:nth-child(odd) {
+    background-color: #4F4A43;
+ }
+.div_checkListTitle{
+    font-size:16px;height:24px;line-height:24px;overflow:hidden;
+}
+.div_checkListTitle .whiteDot{
+    width:4px;height:4px;background-color:#fff;margin-right:10px;margin-top:10px;
+}
+.groupName .toggleIcon{
+    margin-top:7px;margin-right:3px;
+}
+</style>
+
+<div class="cnabs_div_v2" style="min-height:22px;" ng-controller="TaskExtensionCheckItem">    
+    <div style="overflow:hidden;">
+        <div class="left div_checkListTitle">
+            <span class="left whiteDot"></span>
+            <span class="left">工作要点</span>
+        </div>
+        <div id="btnAddTaskExtensionCheckList" class="cnabs_btn_add right">增加工作要点</div>
+        <div id="deleteTaskExCheckListGroup" class="cnabs_btn right" style="display:none;margin-right:10px;">删除工作要点分组</div>
+    </div>
+    <div ng-model="taskExCheckList" class="cnabs_v2_margin">
+        <div ng-repeat="checkGroup in taskExCheckGroups" ng-cloak>
+            <div class="groupName cnabs_div_v2" style="cursor:pointer;overflow:hidden;background-color:#625C53;" ng-click="toggle(checkGroup)">
+                <span class="left">{{checkGroup.GroupName}}</span>
+                <img class="right toggleIcon" ng-if="checkGroup.isShowCheckItemList" src="~/Images/Common/shrink.png" alt="Alternate Text" />
+                <img class="right toggleIcon" ng-if="!checkGroup.isShowCheckItemList" src="~/Images/Common/unfolded.png" alt="Alternate Text" />
+            </div>
+            <div class="div_table_CheckList" ng-show="checkGroup.isShowCheckItemList">
+                <table class="table_v2 hover" style="width:100%;">
+                    <tr class="toolbar_CheckList">
+                        <th style="text-align:left">序号</th>
+                        <th style="text-align:left">工作要点</th>
+                        <th>当前状态</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr class="checkListView" ng-cloak ng-repeat="item in checkGroup.CheckItems">
+                        <td style="text-align:left;">{{$index + 1}}</td>
+                        <td style="text-align:left; overflow:hidden"><span class="cnabs_ellipsis left" style="width:750px;" title="{{item.Name}}">{{item.Name}}</span></td>
+                        <td class="cnabs_pointer" ng-style="item.controlTaskExCheckStatus" ng-click="CheckItem(item.Name,item.Guid,checkGroup.GroupName,item.CheckStatus)">
+                            <input class="cnabs_pointer" type="checkbox" name="name" ng-checked="item.checked" />
+                            {{item.CheckStatus}}
+                        </td>
+                        <td>
+                            <span class="cnabs_red cnabs_pointer" ng-click="DeleteCheckList(checkGroup.GroupName,item.Name)">删除</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog begin-->
+
+@Html.Partial("../Module/_AddTaskExCheckItem")
+
+<!--Dialog end-->
+<script type="text/javascript">
+    angular.module('workPanel').controller('TaskExtensionCheckItem', function ($scope) {
+        $scope.GetTaskExCheckList = function () {
+            cnabsAjaxSync("获取工作扩展信息", "/TaskEx/GetTaskExCheckList", { shortCode: "@Model.ShortCode" }, function (data) {
+                if (data != null && data.CheckGroups.length > 0) {
+                    $.each(data.CheckGroups, function (index) {
+                        var checkGroup = data.CheckGroups[index];
+                        $.each(checkGroup.CheckItems, function (index, item) {
+                            if (item.CheckStatus == 'Checked') {
+                                item.checked = true;
+                            } else {
+                                item.checked = false;
+                            }
+                            item.statusColor = cnabsGetColorByTaskExCheckItemStatus(item.CheckStatus);
+                            item.controlTaskExCheckStatus = { 'color': item.statusColor };
+                            item.CheckStatus = cnabsTranslateTaskExCheckItemStatus(item.CheckStatus);
+                        })
+                    })
+
+                    if ($scope.taskExCheckGroups == undefined) {
+                        $.each(data.CheckGroups, function () {
+                            this.isShowCheckItemList = true;
+                        });
+                    } else {
+                        $.each(data.CheckGroups, function () {
+                            var self = this;
+                            if (self.isShowCheckItemList == undefined) {
+                                self.isShowCheckItemList = true;
+                            }
+                            $.each($scope.taskExCheckGroups, function () {
+                                if (self.GroupName == this.GroupName) {
+                                    self.isShowCheckItemList = this.isShowCheckItemList;
+                                }
+                            });
+                        });
+                    }
+                    $scope.taskExCheckGroups = data.CheckGroups;
+                    $("#deleteTaskExCheckListGroup").css("display", "block");
+                } else {
+                    $scope.taskExCheckGroups = [];
+                    $("#deleteTaskExCheckListGroup").css("display", "none");
+                }
+            });
+        }
+
+        $scope.toggle = function (group) {
+            group.isShowCheckItemList = !group.isShowCheckItemList;
+        }
+        var checkItem_Name = '', checkItem_Guid = '', group_Name = '', checkItem_Type = '';
+        $scope.checkItemAjax = function () {
+            cnabsAjaxSync('标记工作要点状态', '/TaskEx/ModifyTaskExtensionCheckList', {
+                shortCode: "@Model.ShortCode",
+                groupName: group_Name,
+                checkItemName: checkItem_Name,
+                checkItemGuid: checkItem_Guid,
+                checkItemType: checkItem_Type
+            }, function (resultCount) {
+                $scope.GetTaskExCheckList();
+                $scope.$apply();
+            });
+        }
+        $scope.CheckItem = function (checkItemName, checkItemGuid, groupName, checkItemType) {
+            $scope.GetTaskExCheckList();
+            checkItemType = checkItemType == "完成" ? "Checked" : "Unchecked";
+            var message = "是否标记工作要点[" + checkItemName + "]为完成状态？";
+
+            if (checkItemType == "Checked") {
+                message = "当前工作要点[" + checkItemName + "]的状态为完成，点击确定后，它的状态将标记为等待。";
+            }
+            checkItem_Name = checkItemName;
+            checkItem_Guid = checkItemGuid;
+            group_Name = groupName;
+            checkItem_Type = checkItemType;
+            cnabsAutoDlgYesNo(null, "标记工作要点状态", function () {
+                var taskStatus = $('#taskStatus')[0].textContent;
+                if (taskStatus == '完成') {
+                    GetSubsequentTasksCount();
+                }
+                if (taskStatus == '完成' && $("#am_warning").css("display") == 'block' && $("#am_warningContent").html() != '') {
+                    am_appear('Running', false, false, $scope.checkItemAjax);
+                } else {
+                    $scope.checkItemAjax()
+                }
+            }, message);
+
+        }
+        $scope.GetTaskExCheckList();
+
+        $scope.DeleteCheckList = function (groupName, checkItemName) {
+            var msg = "确认删除工作要点[" + checkItemName + "]?";
+            cnabsAutoDlgYesNo(null, '删除工作要点', function () {
+                cnabsAjaxSync("删除工作要点", "/TaskEx/DeleteExtensionCheckItem", {
+                    shortCode: '@Model.ShortCode',
+                    checkItemName: checkItemName,
+                    groupName: groupName
+                }, function (data) {
+
+                })
+                $scope.GetTaskExCheckList();
+                $scope.$apply();
+            }, msg)
+        }
+
+
+        $(function () {
+            var addTaskExCheckItem = new AddTaskExCheckItem();
+            addTaskExCheckItem.onSuccess = function () {
+                $scope.GetTaskExCheckList();
+                $scope.$apply();
+            };
+
+            $("#btnAddTaskExtensionCheckList").click(function () {
+                addTaskExCheckItem.trigger();
+            });
+            $("#deleteTaskExCheckListGroup").click(function () {
+                var groupNames = GetCheckListGroupNames();
+                if (groupNames.length == 0) {
+                    cnabsAlert("当前工作没有可删除的工作要点分组。");
+                    return;
+                }
+                var controls = [{
+                    title: "分组名称",
+                    type: "select",
+                    elementId: "selectText",
+                    value: "",
+                    OptionArray: groupNames
+                }];
+                cnabsAutoDlgYesNo(controls, '删除工作要点分组', function (uiValue) {
+                    var msg = "确认删除工作要点分组[" + uiValue.selectText + "]里的所有工作要点?";
+                    cnabsAutoDlgYesNo(null, '删除工作要点分组', function () {
+                        cnabsAjax("删除工作要点分组", "/TaskEx/DeleteExtensionCheckItemGroup", {
+                            shortCode: '@Model.ShortCode',
+                            groupName: uiValue.selectText
+                        }, function (data) {
+                            $scope.GetTaskExCheckList();
+                            $scope.$apply();
+                        })
+                    }, msg)
+                })
+            })
+        });
+
+        function GetCheckListGroupNames() {
+            var groupNames = [];
+            cnabsAjaxSync("获取工作要点分组名称", "/TaskEx/GetTaskExCheckList", { shortCode: '@Model.ShortCode' }, function (data) {
+                if (data != null && data.CheckGroups.length > 0) {
+                    for (var i = 0; i < data.CheckGroups.length; i++) {
+                        var groupName = data.CheckGroups[i].GroupName;
+                        groupNames.push(groupName);
+                    }
+                }
+            })
+            return groupNames;
+        }
+    });
+
+</script>

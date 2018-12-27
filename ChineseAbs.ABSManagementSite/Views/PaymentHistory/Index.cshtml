@@ -1,0 +1,348 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.PaymentHistoryViewModel
+@using ChineseAbs.ABSManagementSite.Common;
+@using ChineseAbs.ABSManagement.Utils;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style type="text/css">    
+    .CashflowTableHeader th:nth-of-type(1), .CashflowTableTr td:nth-of-type(1) {
+        text-align: center;
+        width: 100px;
+    }
+
+    .CashflowTableHeader th:nth-of-type(2), .CashflowTableTr td:nth-of-type(2) {
+        text-align: center;
+        width: 230px;
+    }
+
+    .CashflowTableHeader th:nth-of-type(3), .CashflowTableTr td:nth-of-type(3) {
+        text-align: center;
+        width: 440px;
+    }
+
+    .CashflowTableHeader th:nth-of-type(4), .CashflowTableTr td:nth-of-type(4) {
+        text-align: center;
+        width: 160px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(1), .SumAssetCashflowTableTr td:nth-of-type(1) {
+        text-align: left;
+        width: 70px;
+        max-width:70px;
+        min-width:70px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(2), .SumAssetCashflowTableTr td:nth-of-type(2) {
+        text-align: left;
+        width: 76px;
+        max-width:76px;
+        min-width:76px;
+    }
+
+     .SumAssetCashflowTableHeader th:nth-of-type(3), .SumAssetCashflowTableTr td:nth-of-type(3) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(4), .SumAssetCashflowTableTr td:nth-of-type(4) {
+        text-align: right;
+        width: 90px;
+        max-width:90px;
+        min-width:90px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(5), .SumAssetCashflowTableTr td:nth-of-type(5) {
+        text-align: right;
+        width: 100px;
+        max-width:100px;
+        min-width:100px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(6), .SumAssetCashflowTableTr td:nth-of-type(6) {
+        text-align: right;
+        width: 100px;
+        max-width:100px;
+        min-width:100px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(7), .SumAssetCashflowTableTr td:nth-of-type(7) {
+        text-align: right;
+        width: 100px;
+        max-width:100px;
+        min-width:100px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(8), .SumAssetCashflowTableTr td:nth-of-type(8) {
+        text-align: right;
+        width: 100px;
+        max-width:100px;
+        min-width:100px;
+    }
+
+    .SumAssetCashflowTableHeader th:nth-of-type(9), .SumAssetCashflowTableTr td:nth-of-type(9) {
+        text-align: right;
+        width: 80px;
+        max-width:80px;
+        min-width:80px;
+    }
+   
+    .SumAssetCashflowTableHeader th:nth-of-type(10){
+        text-align: left;
+        width: 65px;
+        max-width:65px;
+        min-width:65px;
+        padding-left:10px;
+    }
+
+    .SumAssetCashflowTableTr td:nth-of-type(10) {
+        text-align: left;
+        width: 45px;
+        max-width: 45px;
+        min-width: 45px;
+        padding-left:30px;
+    }
+
+     .SumAssetCashflowTableHeader th:nth-of-type(11) {
+        text-align: left;
+        width: 67px;
+        max-width:67px;
+        min-width:67px;
+        padding-left:5px;
+    }
+
+    .SumAssetCashflowTableTr td:nth-of-type(11) {
+        text-align: left;
+        width: 47px;
+        max-width: 47px;
+        min-width: 47px;
+        padding-left:20px;
+    }
+
+    .progressOfPay .progressbar {
+        float: left;
+        padding: 0px;
+    }
+
+    .progressOfPay .hasPaidValue {
+        float: right;
+        margin-right: 30px;
+        padding: 0px;
+    }
+
+    .progressbar {
+        position: relative;
+    }
+
+    .completePay {
+        position: absolute;
+        left: 50px;
+        top: 5px;
+        width: 300px;
+        height: 8px;
+        background: rgba(256,256,256,0.2);
+    }
+
+    .hasPaid {
+        position: absolute;
+        left: 50px;
+        top: 5px;
+        width: 150px;
+        height: 8px;
+        background-color: #ffc446;
+    }
+</style>
+
+<script>
+    $(function () {
+        function setProjectGuid(projectGuid) {
+            var url = location.protocol + "//" + location.host + location.pathname;
+            location.href = url + "?projectGuid=" + projectGuid;
+        };
+        $("#selectProject").change(function () {
+            setProjectGuid($("#selectProject").val());
+        });
+    });
+
+</script>
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">偿付历史</span>
+    </header>
+
+    <div class="cnabs_div_v2">
+        <section id="selector">
+            <span class="fixedColor">选择产品：</span>
+            <select id="selectProject" name="selectProject">
+                @for (int i = 0; i < Model.Projects.Count; ++i)
+                {
+                    var name = Model.Projects[i].ProjectName;
+                    var guid = Model.Projects[i].Guid;
+
+                    if (!string.IsNullOrEmpty(Request.QueryString["projectGuid"]) && guid == Request.QueryString["projectGuid"])
+                    {
+                        <option value="@guid" selected="selected">@name</option>
+                    }
+                    else
+                    {
+                        <option value="@guid">@name</option>
+                    }
+                }
+            </select>
+        </section>
+
+        <div style="overflow:auto;">
+            <div class="cnabs_v2_margin" style="overflow:hidden;">
+                <span class="cnabs_label_v2">偿付信息汇总</span>
+                @if (!Model.HasReinvestmentInfo)
+                {
+                    <div style="float:right;display:block;margin-top:6px;">
+                        <span style="width:110px;text-align:center">单位：万</span>
+                    </div>
+                }
+            </div>
+
+            <div style="overflow:hidden;">
+                @if (Model.HasReinvestmentInfo)
+                {
+                    <div style="text-align:left;color:#ff6666;font-size:15px;font-weight:bold;word-wrap:break-word;">
+                        偿付历史功能暂不支持包含循环购买信息的产品。
+                    </div>
+                }
+                else if (!string.IsNullOrWhiteSpace(Model.ExceptionMessage))
+                {
+                    <div style="text-align:left;color:#ff6666;font-size:15px;font-weight:bold;word-wrap:break-word;">
+                        @Model.ExceptionMessage
+                    </div>
+                }
+                else
+                {
+                    <table class="table_v2 alone hover cnabs_v2_margin" id="taskTable" style="width:100%;">
+                        <tbody id="taskTablebody">
+                            <tr class="SumAssetCashflowTableHeader">
+                                <th>偿付期</th>
+                                <th>支付日</th>
+                                <th>资产收入本金</th>
+                                <th>资产收入利息</th>
+                                <th>证券期初本金</th>
+                                <th>证券本金支付</th>
+                                <th>证券期末本金</th>
+                                <th>证券利息支付</th>
+                                @*<th>费用支付</th>*@
+
+                                <th>超额利差</th>
+
+                                <th>资产端明细</th>
+                                <th>证券端明细</th>
+                            </tr>
+                            @if (Model == null || Model.Datasets == null || Model.Datasets.Count == 0)
+                            {
+                                <tr><td colspan="12" style="text-align:center;font-size:18px">暂无偿付信息</td></tr>
+                            }
+                            else
+                            {
+                                Func<decimal, string> showMoney = x => (x / 10000).ToString("n2");
+
+                                foreach (var assetDataset in Model.AssetDatasets.FastReverse())
+                                {
+                                    var cashflowInfos = Model.Datasets.Where(x => x.PaymentDay.HasValue && x.PaymentDay.Value == assetDataset.PaymentDay).ToList();
+                                    ChineseAbs.ABSManagementSite.Models.PaymentDetail cashflowInfo = null;
+                                    bool isCurrentDataset = false;
+                                    if (cashflowInfos.Count == 1)
+                                    {
+                                        cashflowInfo = cashflowInfos.Single().SumPaymentDetail;
+                                        isCurrentDataset = Model.AssetDatasets.Max(x => x.PaymentDay) == cashflowInfos.Single().PaymentDay
+                                            && cashflowInfos.Single().PaymentDay > DateTime.Now;
+                                    }
+
+                                    var sumAsset = assetDataset.SumAsset;
+                                    <tr class="SumAssetCashflowTableTr">
+                                        @if (assetDataset.Sequence < 0)
+                                        {
+                                            <td>第 - 期</td>
+                                        }
+                                        else
+                                        {
+                                            <td>第 @assetDataset.Sequence 期</td>
+                                        }
+                                        <td>@Toolkit.DateToString(assetDataset.PaymentDay)</td>
+                                        <td>@showMoney(sumAsset.Principal)</td>
+                                        <td>@showMoney(sumAsset.Interest)</td>
+
+                                        @if (isCurrentDataset)
+                                        {
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            @*<td>-</td>*@
+                                        }
+                                        else
+                                        {
+
+                                            <td>@showMoney(cashflowInfo.EndingBalance.Value + cashflowInfo.PrincipalPaid.Value)</td>
+                                            <td>@showMoney(cashflowInfo.PrincipalPaid.Value)</td>
+                                            <td>@showMoney(cashflowInfo.EndingBalance.Value)</td>
+                                            <td>@showMoney(cashflowInfo.InterestPaid.Value)</td>
+                                            @*<td>@showMoney(95270000m)</td>*@
+
+                                            <td>@showMoney(sumAsset.SumMoney - cashflowInfo.PrincipalPaid.Value - cashflowInfo.InterestPaid.Value)</td>
+                                        }
+
+                                        <td>
+                                            <a href="~/PaymentHistoryAsset?projectGuid=@Model.CurrentProject.ProjectGuid&paymentDay=@assetDataset.PaymentDay.ToString("yyyyMMdd")">
+                                                <em class="ui-icon ui-icon-chart-bars smallImageSize"></em>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @if (isCurrentDataset)
+                                            {
+                                                <em class="ui-icon ui-icon-chart-pie smallImageSize" style="color: rgb(183, 175, 165);"></em>
+                                            }
+                                            else
+                                            {
+                                                <a href="~/PaymentHistorySecurity?projectGuid=@Model.CurrentProject.ProjectGuid&paymentDay=@assetDataset.PaymentDay.ToString("yyyyMMdd")">
+                                                    <em class="ui-icon ui-icon-chart-pie smallImageSize"></em>
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ModelTableTr = $(".CashflowTableTr");
+    for (var i = 0; i < ModelTableTr.length; i++) {
+        ModelTableTr[i].id = "tr" + i;
+        var completePayWidth = $("#tr" + i + " .completePay").width();
+        var hasPaidWidth = completePayWidth * parseInt($("#tr" + i + " .hasPaidValue").html()) / 100;
+        $("#tr" + i + " .hasPaid").css({
+            width: hasPaidWidth + "px"
+        })
+    }
+
+    $(document).ready(function () {
+        BindingElementActive(4, 2, 5);
+
+        var projectGuid = '@(Model.CurrentProject == null ? string.Empty : Model.CurrentProject.ProjectGuid)';
+        updateMenuLinkByProject(projectGuid);
+    });
+
+</script>

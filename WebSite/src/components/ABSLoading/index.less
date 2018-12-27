@@ -1,0 +1,28 @@
+@import "../../styles/theme/default.less";
+
+.abs-loading {
+  display: inline-block;
+  position: absolute;
+  top: calc(~"50% - 20px");
+  &-small {
+    font-size: @abs-loading-size-small;
+    width: @abs-loading-size-small;
+    height: @abs-loading-size-small;
+  }
+  &-default {
+    font-size: @abs-loading-size-default;
+    width: @abs-loading-size-default;
+    height: @abs-loading-size-default;
+  }
+  &-large {
+    font-size: @abs-loading-size-large;
+    width: @abs-loading-size-large;
+    height: @abs-loading-size-large;
+  }
+  &-blue {
+    color: @abs-loading-color-blue !important;
+  }
+  &-white {
+    color: @abs-loading-color-white !important;
+  }
+}

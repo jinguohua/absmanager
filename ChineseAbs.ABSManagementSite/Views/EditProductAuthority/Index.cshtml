@@ -1,0 +1,787 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/angular")
+<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+
+
+
+<link href="../../Content/cnabsUtils/bootstrap-datepicker.css" rel="stylesheet" />
+<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.fancytree.min.js"></script>
+<script src="../../Scripts/cnabsUtils/bootstrap-datepicker.min.js"></script>
+<script src="../../Scripts/cnabsUtils/bootstrap-datepicker.zh-CN.min.js"></script>
+<style>
+    .editOneUserBtn {
+        cursor: pointer;
+    }
+
+    .deleteOneUserBtn {
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .panel {
+        background-color: #47423C;
+        height: 99%;
+        margin: 10px;
+        padding: 5px;
+    }
+
+    .productAuthority td:nth-of-type(1), .productAuthority th:nth-of-type(1) {
+        width: 220px;
+        max-width: 220px;
+        min-width: 220px;
+        text-align: left;
+    }
+
+    .productAuthority td:nth-of-type(2), .productAuthority th:nth-of-type(2) {
+        width: 90px;
+        max-width: 90px;
+        min-width: 90px;
+    }
+
+    .productAuthority td:nth-of-type(3), .productAuthority th:nth-of-type(3) {
+        width: 100px;
+        max-width: 110px;
+        min-width: 100px;
+    }
+
+    .productAuthority td:nth-of-type(4), .productAuthority th:nth-of-type(4) {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .productAuthority td:nth-of-type(5), .productAuthority th:nth-of-type(5) {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+    }
+
+    .productAuthority td:nth-of-type(6), .productAuthority th:nth-of-type(6) {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+    }
+
+    .productAuthority td:nth-of-type(7), .productAuthority th:nth-of-type(7) {
+        width: 120px;
+        max-width: 130px;
+        min-width: 120px;
+    }
+
+    .selectaddUserMethods {
+        width: 272px;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        color: #B7AFA5;
+        margin: 10px 0px 20px 0px;
+    }
+
+        .selectaddUserMethods .addUserMethod {
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .selectaddUserMethods .addUserByCreateProductAuthorityLabel {
+            margin-left: 32px;
+        }
+
+    .selectedAddUserMethod {
+        color: #ffc446;
+    }
+    .addUserMethodBottomLine {
+        position: absolute;
+        bottom: -1.5px;
+        height: 2px;
+        width: 130px;
+        background-color: #ffc446;
+    }
+    .cnabs_btn_tab_selected {
+        border-bottom-color:#47423c;
+    }
+    .divTab {
+        height: 40px;
+        border-bottom: 1px solid #4f4a43;
+        padding-top: 20px;
+    }
+    .fontTranform {
+        height: 60px;
+        line-height:15px;
+        text-align: center;
+        width: 20px;
+        padding-top:10px;
+        padding-bottom:10px;
+        padding-left:5px;
+        padding-right:5px;
+        cursor: pointer;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        position:absolute;
+    }
+
+    .selectedLabel {
+        background-image: url(../../Images/DashBoard/selectedLabel.png);
+        background-size:35px 80px;
+        background-repeat:no-repeat;
+        padding-left:7.5px;
+        padding-right:7.5px;
+        left:-35px;
+        color:#ffc446;
+    }
+
+    .unselectedLabel {
+        background-image: url(../../Images/DashBoard/unselectedLabel.png);
+        padding-left:5px;
+        padding-right:5px;
+        left:-30px;
+    }
+
+    .EditAuthority {
+        display: none;
+        min-height:600px;
+    }
+    .downloadFileAuthorityIcon{
+        margin-top: 2px;
+        margin-right:6px;
+        float:left;
+    }
+</style>
+<div>
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/MyProjects">产品列表</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_arrow" href="/Design">在线设计</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">权限管理</span>
+    </header>
+</div>
+<div ng-app="EditProductAuthority" class="tablecloth" style="min-height:500px;">
+    <div ng-controller="EditProductAuthorityModule" style="padding:0px 20px 10px;position:relative;">
+        <div>
+            <div ng-cloak ng-repeat="label in labels" id="divLabel{{label.EditAuthorityId}}" class="fontTranform {{label.style}}" ng-click="labelChange(label.EditAuthorityId)" ng-style="label.controlLabelStyle">{{label.title}}</div>
+        </div>
+        <div class="divEditProductAuthority EditAuthority">
+            <div style="height:50px;line-height:50px;overflow:hidden">
+                <span style="font-size:16px;float:left;color:#b7afa5;">用户：</span>
+                <select style='float:left;margin-top:14px;width:238px;' ng-change="usernameChange(selectedUserInfo.username)" ng-model="selectedUserInfo" ng-options="x.info for x in usernameInfo"></select>
+                <input style="margin-left:10px;cursor:pointer;outline:none;" type="checkbox" value="创建产品权限" id="createProductAuthority" ng-click="createProductAuthorityCheck()" />
+                <label for="createProductAuthority" style="cursor: pointer;color:#b7afa5;">创建产品权限</label>
+                <div class="cnabs_btn_add" style="margin-top:14px;" ng-click="AddProductAuthority()">增加产品权限</div>
+                <div class="cnabs_btn_add" style="float:right;margin-right:10px;margin-top:14px;" ng-click="AddNewUser()">增加新用户</div>
+            </div>
+            <div>
+                <table class="table_v2 embed hover productAuthority" style="width:100%;margin:10px 0px 0px 0px;">
+                    <tr>
+                        <th>产品名称</th>
+                        <th class="text-left">创建者</th>
+                        <th class="text-left">所属机构</th>
+                        <th class="text-left">创建时间</th>
+                        <th class="text-center">编辑模型权限</th>
+                        <th class="text-center">编辑工作权限</th>
+                        <th class="text-left">操作</th>
+                    </tr>
+                    <tr style="text-align:center" ng-cloak ng-repeat="productInfo in UserProductAuthorityTable">
+                        <td>{{productInfo.ProjectName}}</td>
+                        <td class="text-left">{{productInfo.CreateUserName}}</td>
+                        <td class="text-left">{{productInfo.EnterpriseName}}</td>
+                        <td class="text-left">{{productInfo.CreateTime}}</td>
+                        <td class="text-center"><img ng-src="{{productInfo.ModifyModelAuthorityImageSrc}}" alt="Alternate Text" /></td>
+                        <td class="text-center"><img ng-src="{{productInfo.ModifyTaskAuthorityImageSrc}}" alt="Alternate Text" /></td>
+                        <td class="text-left">
+                            <span ng-click="EditUserPruductAuthority(productInfo.ProjectName,productInfo.ProjectGuid,productInfo.EnterpriseName,productInfo.ModifyTaskAuthority,productInfo.ModifyModelAuthority)" class="editOneUserBtn cnabs_green">编辑</span>
+                            <span ng-click="DeleteUserPruductAuthority(productInfo.ProjectName, productInfo.ProjectGuid)" class="deleteOneUserBtn cnabs_red">删除</span>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <!--增加新用户dialog-->
+            <div id="divAddNewUser" class="divAddNewUser" style="display: none; padding-left: 0; padding: 0; overflow-x: hidden;">
+                <div class="divTab">
+                    <div id="addUserByAddProductAuthorityLabel" class="cnabs_btn_tab cnabs_btn_tab_selected" style="margin-left:50px;">
+                        开通相关产品权限
+                    </div>
+                    <div id="addUserByCreateProductAuthorityLabel" class="cnabs_btn_tab">
+                        开通创建产品权限
+                    </div>
+                </div>
+                <div style="margin:0px 0px 0px 50px;">
+                    <div class="cnabs_dialog_content_everyline">
+                        <span class="cnabs_dialog_content_title">用户名称</span>
+                        <div class="left">
+                            <input id="username" class="cnabs_dialog_input_wid" type="text" style="width:230px" ng-model="addNewUser_userName">
+                            <div class="cnabs_dialog_prompt cnabs_dialog_input_wid" id="usernamePrompt" style="display:none;">
+                                <span class="ui-icon-alert cnabs_dialog_oPromptImage left"></span>
+                                <span class="left cnabs_dialog_oPromptMsg" id="verifyUsername"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divAddNewUserByAddProduct" class="divAddNewUserByAddProduct">
+                        <div class="cnabs_dialog_content_everyline">
+                            <span class="cnabs_dialog_content_title">产品机构</span>
+                            <div class="left">
+                                <select id="newUserEnterpriseName" class="cnabs_dialog_input_wid" style="width:230px" ng-model="newUserEnterpriseName">
+                                    <option ng-repeat="x in enterpriseNameOptionArray" value="{{x.value}}">{{x.name}}</option>
+                                </select>
+                                <div class="cnabs_dialog_prompt cnabs_dialog_input_wid" id="enterpriseNamePrompt">
+                                    <span class="ui-icon-alert cnabs_dialog_oPromptImage left"></span>
+                                    <span class="left cnabs_dialog_oPromptMsg"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cnabs_dialog_content_everyline">
+                            <span class="cnabs_dialog_content_title">产品名称</span>
+                            <div class="left">
+                                <select id="addNewUser_productName" class="cnabs_dialog_input_wid" style="width:230px"></select>
+                            </div>
+                        </div>
+                        <div class="cnabs_dialog_content_everyline">
+                            <span class="cnabs_dialog_content_title">编辑模型</span>
+                            <div class="left">
+                                <div>
+                                    <input class="left" type="checkbox" ng-model="addNewUser_modifyModel">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cnabs_dialog_content_everyline">
+                            <span class="cnabs_dialog_content_title">编辑工作</span>
+                            <div class="left">
+                                <div>
+                                    <input class="left" type="checkbox" ng-model="addNewUser_modifyTask">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="divEditDownLoadAuthority EditAuthority">
+            <div style="height:50px;line-height:50px;overflow:hidden">
+                <span style="font-size:16px;float:left;color:#b7afa5;">产品：</span>
+                <select ng-change="projectChange()" ng-model="selectedProject" ng-options="x.name for x in projects" style='float:left;margin-top:14px;width:238px;'></select>
+            </div>
+            <table class="table_v2 embed hover" style="width:100%;margin:10px 0px 0px 0px;">
+                <tr>
+                    <td>用户</td>
+                    <td>下载权限</td>
+                    <td>更新时间</td>  
+                    <td>操作</td>
+                </tr>
+                <tr ng-repeat="x in DownloadFileAuthority">
+                    <td>{{x.UserName}}</td>
+                    <td style="overflow:hidden;" title="{{x.DownloadAuthorityTypeChinese}}">
+                        <img class="downloadFileAuthorityIcon" ng-src="{{x.authorityIcon}}">
+                        <img ng-if="x.DownloadAuthorityType != 'AllForbidden'&&x.DownloadAuthorityType != 'AllAllowed'" class="left" src="../../Images/Common/bubble_angle_left_green.png" style="margin-top:5px;" alt="Alternate Text" />
+                        <div ng-if="x.DownloadAuthorityType != 'AllForbidden'&&x.DownloadAuthorityType != 'AllAllowed'" class="left cnabs_bubbleText">
+                            {{x.DownloadAuthorityTypeChinese}}
+                        </div>
+                    </td>
+                    <td>{{x.LastModifyTime}}</td>
+                    <td class="editOneUserBtn cnabs_green" ng-click="UpdateDownloadFileAuthorities(x.UserName,x.DownloadAuthorityType)">编辑</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = angular.module('EditProductAuthority', []);
+    app.controller('EditProductAuthorityModule', function ($scope) {
+        $scope.ReloadPage = function () {
+            $('.divEditProductAuthority').css('display', 'block')
+            var labels = [{ title: "产品权限", EditAuthorityId: "Product", style: "selectedLabel" },
+                          { title: "下载权限", EditAuthorityId: "DownLoad", style: "unselectedLabel" }];
+            $.each(labels, function (index, item) {
+                item.top = index * 84 + "px";
+                item.controlLabelStyle = { top: item.top };
+            })
+            $scope.labels = labels;
+
+            $scope.projects = [];
+            cnabsAjax("获取产品", "/MyProjects/GetProjects", { projectType: '存续期' }, function (data) {
+                $scope.projects = data;
+                var projectGuid = cnabsGetUrlParam('projectGuid');
+                if (projectGuid != null) {
+                    $.each(data, function (index, item) {
+                        if (item.guid == projectGuid) {
+                            $scope.selectedProject = data[index]
+                        }
+                    })
+                } else {
+                    $scope.selectedProject = data[0]
+                }
+
+                updateMenuLinkByProject($scope.selectedProject.guid);
+
+                $scope.GetDownloadFileAuthority();
+                $scope.$apply();
+            })
+
+            $scope.usernameInfo = [];
+            cnabsAjax("获取用户信息", "/EditProductAuthority/GetAllAuthorityUserInfo", null, function (data) {
+                if (data.length) {
+                    $.each(data, function () {
+                        $scope.usernameInfo.push({
+                            info: this.RealName + "(" + this.UserName + ")",
+                            username: this.UserName
+                        });
+                    })
+
+                    $scope.selectedUserInfo = $scope.usernameInfo[0];
+                    $scope.$apply();
+                }
+                $scope.GetAuthorityProjectTable($scope.selectedUserInfo.username);
+            });
+        }
+
+        $scope.ReloadPage();
+        $scope.labelChange = function (Id) {
+            $.each($scope.labels, function (index, item) {
+                if (item.EditAuthorityId == Id) {
+                    item.style = 'selectedLabel';
+                    $(".divEdit" + item.EditAuthorityId + 'Authority').css('display', 'block');
+                } else {
+                    item.style = 'unselectedLabel';
+                    $(".divEdit" + item.EditAuthorityId + 'Authority').css('display', 'none');
+                }
+            })
+        }
+        $scope.projectChange = function () {
+            $scope.GetDownloadFileAuthority();
+            updateMenuLinkByProject($scope.selectedProject.guid);
+        }
+        $scope.GetDownloadFileAuthority = function () {
+            $scope.DownloadFileAuthority = [];
+            cnabsAjax("获取下载文档权限", "/DownloadFileAuthority/GetDownloadFileAuthorities", { projectGuid: $scope.selectedProject.guid }, function (data) {
+                $.each(data, function (index,item) {
+                    if (item.DownloadAuthorityType == 'AllForbidden') {
+                        item.DownloadAuthorityTypeChinese = '禁止下载任何文件';
+                        item.authorityIcon = '../../Images/Common/incorrect_brown.png';
+                    } else if (item.DownloadAuthorityType == 'AllAllowed') {
+                        item.DownloadAuthorityTypeChinese = '可以下载任何文件';
+                        item.authorityIcon = '../../Images/Common/correct.png';
+                    } else if (item.DownloadAuthorityType == 'Word2Pdf') {
+                        item.DownloadAuthorityTypeChinese = 'word文件自动转pdf';
+                        item.authorityIcon = '../../Images/Common/correct.png';
+                    } else if (item.DownloadAuthorityType == 'Word2PdfWithWatermark') {
+                        item.DownloadAuthorityTypeChinese = 'word文件自动转pdf+水印';
+                        item.authorityIcon = '../../Images/Common/correct.png';
+                    }
+                })
+                $scope.DownloadFileAuthority = data;
+                $scope.$apply();
+            })
+
+        }
+        $scope.UpdateDownloadFileAuthorities = function (UserName,DownloadAuthorityType) {
+            var controls = [{
+                title: "用户名称",
+                type: "label",
+                elementId: "userName",
+                value: UserName
+            },{
+                title: "下载权限",
+                type: "select",
+                elementId: "downloadFileAuthorities",
+                value: DownloadAuthorityType,
+                OptionArray: [["AllAllowed", "可以下载任何文件"], ["Word2Pdf", "下载时，word文件自动转pdf"], ["Word2PdfWithWatermark", "下载时，word文件自动转pdf+水印"]]
+                //OptionArray: [["AllAllowed", "可以下载任何文件"], ["Word2Pdf", "下载时，word文件自动转pdf"], ["Word2PdfWithWatermark", "下载时，word文件自动转pdf+水印"], ["AllForbidden", "禁止下载任何文件"]]
+            }, {
+                title: "应用于所有产品",
+                type: "checkbox",
+                checkboxStyle:"checkboxText",
+                elementId: "usedToAllProject",
+                value: false
+            }]
+            cnabsAutoDlgYesNo(controls, '编辑用户下载权限', function (data) {
+                var param;
+                if (data.usedToAllProject) {
+                    param = {
+                        userNames: UserName,
+                        downloadFileAuthorityType: data.downloadFileAuthorities
+                    }
+                } else {
+                    param = {
+                        projectGuid: $scope.selectedProject.guid,
+                        userNames: UserName,
+                        downloadFileAuthorityType: data.downloadFileAuthorities
+                    }
+                }
+                cnabsAjax("更新下载文档权限", "/DownloadFileAuthority/UpdateDownloadFileAuthorities", param, function (data) {
+                    $scope.GetDownloadFileAuthority();
+                })
+            })
+        }
+
+
+        //用户选择框更改时间
+        $scope.usernameChange = function (username) {
+            if (cnabsHasContent(username)) {
+                $scope.GetAuthorityProjectTable(username);
+            }
+        }
+
+        function cnabsConvertTimestamp(time) {
+            if (time == null) {
+                return "-";
+            }
+
+            var date = new Date(parseInt(time.replace("/Date(", "").replace(")/", "")));
+            Y = date.getFullYear() + '-';
+            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + "-";
+            D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+            return Y + M + D;
+        }
+        $scope.GetAuthorityImageSrc = function (hasAuthority) {
+            if (hasAuthority) {
+                return '../../Images/Common/tick.png'
+            } else {
+                return '../../Images/Common/cross.png'
+            }
+        }
+        //根据用户名获取权限产品列表
+        $scope.GetAuthorityProjectTable = function (username) {
+            cnabsAjax("获取用户信息", "/EditProductAuthority/GetProjectAuthorityByUsername", { username: username }, function (data) {
+                $scope.UserProductAuthorityTable = data;
+                if (data.length) {
+                    $.each(data, function () {
+                        this.CreateUserName = this.CreateUserName;
+                        this.CreateTime = cnabsConvertTimestamp(this.CreateTime);
+                        this.EnterpriseName = this.EnterpriseName == null ? "-" : this.EnterpriseName;
+                        this.ModifyModelAuthorityImageSrc = $scope.GetAuthorityImageSrc(this.ModifyModelAuthority);
+                        this.ModifyTaskAuthorityImageSrc = $scope.GetAuthorityImageSrc(this.ModifyTaskAuthority);
+                    })
+                }
+                else {
+                    $scope.isRemoveUserAllAuthority();
+                }
+                $scope.$apply();
+            });
+            $scope.SetCreateProductAhorityCheckBox(username);
+        }
+
+        //根据机构名称-获取所有产品名称
+        $scope.GetProjectNames = function (enterpriseName, username) {
+            var projectNameOptionArray = [];
+            cnabsAjaxSync("获取产品名称", "/EditProductAuthority/GetProjectNamesByenterpriseName", { enterpriseName: enterpriseName, username: username }, function (data) {
+                if (data.length) {
+                    $.each(data, function () {
+                        projectNameOptionArray.push([this.Guid, this.Name]);
+                    })
+                }
+            });
+            return projectNameOptionArray;
+        }
+
+        //获取所有机构名称
+        $scope.GetAllEnterpriseName = function () {
+            var enterpriseNameOptionArray = [];
+            cnabsAjaxSync("获取机构名称", "/EditProductAuthority/GetAllEnterpriseName", null, function (data) {
+                if (data.length) {
+                    $.each(data, function () {
+                        enterpriseNameOptionArray.push([this.EnterpriseName]);
+                    })
+                }
+            });
+            return enterpriseNameOptionArray;
+        }
+
+        function SetProductNameSelectOption(isNewUser) {
+            $("#productName").empty();
+            $("#addNewUser_productName").empty();
+            if (isNewUser) {
+                var enterpriseName = $scope.newUserEnterpriseName;
+            } else {
+                var enterpriseName = $("#enterpriseName option:selected").text();
+            }
+
+            var username = isNewUser ? null : $scope.selectedUserInfo.username;
+            var projectNameOptionArray = $scope.GetProjectNames(enterpriseName, username);
+            var objProductName = document.getElementById("productName");
+            var objAddNewUser_productName = document.getElementById("addNewUser_productName");
+            if (isNewUser) {
+                if (projectNameOptionArray.length == 0) {
+                    var optionItem = new Option("无", "empty");
+                    objAddNewUser_productName.options.add(optionItem);
+                }
+                for (var i = 0; i < projectNameOptionArray.length; i++) {
+                    var option = projectNameOptionArray[i];
+                    var optionItem = new Option(option[1], option[0]);
+                    objAddNewUser_productName.options.add(optionItem);
+                }
+            } else {
+                if (projectNameOptionArray.length == 0) {
+                    var optionItem = new Option("无", "empty");
+                    objProductName.options.add(optionItem);
+                }
+                for (var i = 0; i < projectNameOptionArray.length; i++) {
+                    var option = projectNameOptionArray[i];
+                    var optionItem = new Option(option[1], option[0]);
+                    objProductName.options.add(optionItem);
+                }
+            }
+        }
+
+        $scope.SetCreateProductAhorityCheckBox = function (username) {
+            cnabsAjaxSync("增加用户权限", "/EditProductAuthority/CheckCreateProductAuthorityByName", { username: username }, function (data) {
+                if (data == true) {
+                    $("#createProductAuthority").prop("checked", true);
+                } else {
+                    $("#createProductAuthority").prop("checked", false);
+                }
+            });
+        }
+
+        $scope.createProductAuthorityCheck = function () {
+            var username = $scope.selectedUserInfo.username;
+            var selectStatus = $("#createProductAuthority").prop("checked");
+            if (selectStatus == false) {
+                var msg = "是否要删除用户[" + $scope.selectedUserInfo.info + "]的创建产品权限？";
+                cnabsAutoDlgYesNo(null, "删除权限", function () {
+                    cnabsAjaxSync("删除权限", "/EditProductAuthority/DeleteCreateProductAuthority", { username: username }, function (data) {
+                        $("#createProductAuthority").prop("checked", false);
+                        $scope.isRemoveUserAllAuthority();
+                        return;
+                    })
+                }, msg)
+                $("#createProductAuthority").prop("checked", true);
+            } else {
+                var msg = "是否要添加用户[" + $scope.selectedUserInfo.info + "]的创建产品权限？";
+                cnabsAutoDlgYesNo(null, "添加权限", function () {
+                    cnabsAjaxSync("添加权限", "/EditProductAuthority/AddCreateProductAuthority", { username: username }, function (data) {
+                        $("#createProductAuthority").prop("checked", true);
+                        return;
+                    })
+                }, msg)
+                $("#createProductAuthority").prop("checked", false);
+            }
+        }
+        $scope.AddNewUser = function () {
+            var enterpriseNameOptionArray = $scope.GetAllEnterpriseName();
+            if (enterpriseNameOptionArray.length) {
+                $scope.enterpriseNameOptionArray = [];
+                $.each(enterpriseNameOptionArray, function (index, item) {
+                    $scope.enterpriseNameOptionArray.push({ value: item[0], name: item[0] })
+                })
+                $scope.newUserEnterpriseName = $scope.enterpriseNameOptionArray[0].value
+            } else {
+                $scope.enterpriseNameOptionArray = [{ value: 'empty', name: '无' }];
+            }
+            SetProductNameSelectOption(true);
+            $('#newUserEnterpriseName').change(function () {
+                SetProductNameSelectOption(true);
+            })
+            function SelectAddUserMethod(method) {
+                if (method == 'createProductAuthority') {
+                    $('#addUserMethodBottomLine').css({ 'transform': 'translateX(142px)', 'transition-duration': '0.5s' })
+                    $('#addUserByCreateProductAuthorityLabel').addClass('cnabs_btn_tab_selected');
+                    $('#addUserByAddProductAuthorityLabel').removeClass('cnabs_btn_tab_selected');
+                    $('#divAddNewUserByAddProduct').css('display', 'none');
+                } else if (method == 'editProductAuthority') {
+                    $('#addUserMethodBottomLine').css({ 'transform': 'translateX(0px)', 'transition-duration': '0.5s' })
+                    $('#addUserByCreateProductAuthorityLabel').removeClass('cnabs_btn_tab_selected');
+                    $('#addUserByAddProductAuthorityLabel').addClass('cnabs_btn_tab_selected');
+                    $('#divAddNewUserByAddProduct').css('display', 'block');
+                }
+            }
+            $('#addUserByCreateProductAuthorityLabel').click(function () {
+                SelectAddUserMethod('createProductAuthority');
+            })
+            $('#addUserByAddProductAuthorityLabel').click(function () {
+                SelectAddUserMethod('editProductAuthority');
+            })
+            $scope.addNewUser_userName = '';
+            $scope.addNewUser_modifyModel = false;
+            $scope.addNewUser_modifyTask = false;            
+            $("#usernamePrompt").css("display", "none");
+            cnabsDlgYesNo('divAddNewUser', "增加新用户", function () {
+                function IsNewUser(username) {
+                    var closeDialog = true;
+                    cnabsAjax("获取用户信息", "/EditProductAuthority/GetAllAuthorityUserInfo", null, function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].UserName == username) {
+                                closeDialog = false
+                            }
+                        }
+                    })
+                    return closeDialog;
+                }
+                if (!IsNewUser($scope.addNewUser_userName)) {
+                    cnabsMsgError("增加新用户失败：该用户已存在！")
+                    return false
+                }
+                //用户名称错误信息提示
+                $scope.addNewUser_userName.length
+                if ($scope.addNewUser_userName.length == 0) {
+                    $("#usernamePrompt").css("display", "block");
+                    document.getElementById("verifyUsername").innerHTML = "请填写用户名称！";
+                    return false;
+                }
+                if ($scope.addNewUser_userName.length > 30) {
+                    $("#usernamePrompt").css("display", "block");
+                    document.getElementById("verifyUsername").innerHTML = "用户名称不能超过30字符数！";
+                    return false;
+                }
+                
+                if ($('.cnabs_btn_tab_selected')[0].id == 'addUserByCreateProductAuthorityLabel') {
+                    var closeDialog = false;
+                    cnabsAjaxSync("添加创建产品权限", "/EditProductAuthority/AddCreateProductAuthority", { username: $scope.addNewUser_userName }, function (data) {
+                        $scope.ReloadPage();
+                        closeDialog = true;
+                    });
+                    return closeDialog;
+                }
+                if ($('.cnabs_btn_tab_selected')[0].id == 'addUserByAddProductAuthorityLabel') {
+                    var params = {
+                        username: $scope.addNewUser_userName,
+                        enterpriseName: $scope.newUserEnterpriseName,
+                        projectGuid: $('#addNewUser_productName').val(),
+                        modifyModel: $scope.addNewUser_modifyModel,
+                        modifyTask: $scope.addNewUser_modifyTask
+                    };
+                    var closeDialog = false;
+                    cnabsAjaxSync("添加产品权限", "/EditProductAuthority/AddUserProductAuthority", params, function (data) {
+                        $scope.ReloadPage();
+                        closeDialog = true;
+                    });
+                    return closeDialog;
+                }
+            }, 350)
+        }
+        $scope.AddProductAuthority = function () {
+            var enterpriseNameOptionArray = $scope.GetAllEnterpriseName();
+            if (enterpriseNameOptionArray.length == 0) {
+                enterpriseNameOptionArray = ["empty", "无"];
+            }
+            var addUserProductAuthority = [{
+                title: "用户名称",
+                type: "label",
+                elementId: "userName",
+                value: $scope.selectedUserInfo.username
+            }, {
+                title: "产品机构",
+                type: "select",
+                elementId: "enterpriseName",
+                value: enterpriseNameOptionArray[0][0],
+                OptionArray: enterpriseNameOptionArray
+            }, {
+                title: "产品名称",
+                type: "select",
+                elementId: "productName",
+                value: "",
+                OptionArray: ""
+            }, {
+                title: "编辑模型",
+                type: "checkbox",
+                elementId: "modifyModel",
+                value: false,
+            }, {
+                title: "编辑工作",
+                type: "checkbox",
+                elementId: "modifyTask",
+                value: false,
+            }]
+            cnabsAutoDlgYesNo(addUserProductAuthority, "增加产品权限", function (data) {
+                var params = {
+                    username: $scope.selectedUserInfo.username,
+                    enterpriseName: data.enterpriseName,
+                    projectGuid: data.productName,
+                    modifyModel: data.modifyModel,
+                    modifyTask: data.modifyTask
+                };
+                var closeDialog = false;
+                cnabsAjaxSync("增加产品权限", "/EditProductAuthority/AddUserProductAuthority", params, function (data) {
+                    $scope.GetAuthorityProjectTable($scope.selectedUserInfo.username)
+                    closeDialog = true;
+                });
+                return closeDialog;
+            }, null, {
+                onInitialized: function () {
+                    SetProductNameSelectOption(false);
+                    $('#enterpriseName').change(function () {
+                        SetProductNameSelectOption(false);
+                    })
+                }
+            })
+        }
+
+        $scope.DeleteUserPruductAuthority = function (projectName, projectGuid) {
+            var username = $scope.selectedUserInfo.username;
+            var params = {
+                username: $scope.selectedUserInfo.username,
+                projectGuid: projectGuid
+            };
+            var message = "确认删除用户[" + username + ")]的产品[" + projectName + "]的权限么？";
+            cnabsAutoDlgYesNo(null, "删除权限", function () {
+                cnabsAjax("删除权限", "/EditProductAuthority/DeleteUserProductAuthority", {
+                    username: $scope.selectedUserInfo.username,
+                    projectGuid: projectGuid
+                }, function (data) {
+                    $scope.GetAuthorityProjectTable($scope.selectedUserInfo.username);
+                });
+            }, message)
+        }
+
+        $scope.EditUserPruductAuthority = function (projectName, projectGuid, enterpriseName, modifyTaskAuthority, modifyModelAuthority) {
+            enterpriseName = enterpriseName == "-" ? "无" : enterpriseName;
+            var addUserProductAuthority = [{
+                title: "用户名称",
+                type: "label",
+                elementId: "username",
+                value: $scope.selectedUserInfo.username
+            }, {
+                title: "产品机构",
+                type: "label",
+                elementId: "enterpriseName",
+                value: enterpriseName
+            }, {
+                title: "产品名称",
+                type: "label",
+                elementId: "productName",
+                value: projectName
+            }, {
+                title: "编辑模型",
+                type: "checkbox",
+                elementId: "modifyModel",
+                value: modifyModelAuthority
+            }, {
+                title: "编辑工作",
+                type: "checkbox",
+                elementId: "modifyTask",
+                value: modifyTaskAuthority
+            }]
+            cnabsAutoDlgYesNo(addUserProductAuthority, "编辑权限", function (data) {
+                var params = {
+                    username: data.username,
+                    enterpriseName: data.enterpriseName,
+                    projectGuid: projectGuid,
+                    modifyModel: data.modifyModel,
+                    modifyTask: data.modifyTask
+                };
+                var closeDialog = false;
+                cnabsAjaxSync("编辑权限", "/EditProductAuthority/ModifyUserProductAuthority", params, function (data) {
+                    $scope.GetAuthorityProjectTable($scope.selectedUserInfo.username);
+                    closeDialog = true;
+                });
+                return closeDialog;
+            })
+        }
+        $scope.isRemoveUserAllAuthority = function () {
+            if (!$scope.UserProductAuthorityTable.length && !$("#createProductAuthority").is(":checked")) {
+                $scope.ReloadPage()
+            }
+        }
+    })
+</script>

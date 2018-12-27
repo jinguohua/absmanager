@@ -1,0 +1,24 @@
+<# if (GeneratePocos) { #><#
+foreach(Table tbl in from t in tables where !t.Ignore select t)
+{
+#><# if (GenereateAllTable || GenereateTableModelNames.Contains(tbl.Name)) { var newTableName = ConvertUnderlineName(tbl.Name);#>
+using ChineseAbs.ABSManagement.Models;
+<#= string.IsNullOrEmpty(GenereateTableModelFolderName) ? string.Empty : ("using ChineseAbs.ABSManagement.Models." + GenereateTableModelFolderName + ";") #>
+
+namespace ChineseAbs.ABSManagement.Manager<#= string.IsNullOrEmpty(GenereateTableModelManagerFolderName) ? string.Empty : ("." + GenereateTableModelManagerFolderName) #>
+{
+    public class <#= tbl.Name #>Manager
+        : BaseModelManager<<#= tbl.Name #>, ABSMgrConn.Table<#= tbl.Name #>>
+    {
+        public <#= tbl.Name #>Manager()
+        {
+            m_defaultTableName = "dbo.<#= tbl.Name #>";
+            m_defaultPrimaryKey = "<#= ConvertUnderlineName(tbl.Name) #>_id";
+            m_defalutFieldPrefix = "<#= ConvertUnderlineName(tbl.Name) #>_";
+        }
+    }
+}
+<# SaveModelManagerFile(tbl.Name + "Manager.cs"); #>
+<#}#>
+<#}#>
+<#}#>

@@ -1,0 +1,166 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html ng-app="myApp" ng-cloak>
+<head>
+  <meta charset="UTF-8">
+  <title>付息审批</title>
+  <link rel="shortcut icon" href="../../Content/img/demo/favicon.ico" type="image/x-icon">
+   <link rel="stylesheet" href="../../Content/vendor/font-awesome/css/font-awesome.css">
+  <link rel="stylesheet" href="~/Content/alertify/alertify.css">
+  <link rel="stylesheet" href="~/Content/alertify/themes/semantic.css">
+
+    <link rel="stylesheet" href="../../Content/css/abs-manager.css">
+
+
+    <script src="../../Content/vendor/jquery/dist/jquery.js"></script>
+    <script src="../../Content/vendor/angular/angular.js"></script>
+    <script src="../../Content/js/demo/abs-manager.js"></script>
+    <script src="/Scripts/cnabsUtils/cnabsUtils.js"></script>
+    <script src="/Scripts/cnabsUtils/cnabsUtils.core.js"></script>
+    <script src="/Scripts/alertify.js"></script>
+
+</head>
+<body ng-controller="MainCtrl as ctrl">
+  <!-- header -->
+  <div class="full-width-container box-shadow-style1">
+    <div class="header-container abs-container">
+      <div class="logo-wrapper">
+         <img src="../../Content/img/demo/logo.jpg" alt="logo">
+      </div>
+      <div class="menu-wrapper">
+        <span>
+            <a style="cursor:pointer" class="cur-selected"
+               ng-click="showSubMenu($event)"
+               ng-mouseleave="autoHideSubMenu($event)"
+               ng-mouseenter="clearTimer($event)">存续期管理</a>
+
+          <ul ng-mouseleave="autoHideSubMenu($event)"
+              ng-mouseenter="clearTimer($event)">
+              <li>
+                  <a href="/Demo/Project">产品列表</a>
+              </li>
+              <li>
+                  <a href="/Demo/ImportData">数据导入</a>
+              </li>
+              <li>
+                  <a href="/Demo/ExportReport">报告管理</a>
+              </li>
+            <li>
+              <a href="#">产品监控</a>
+            </li>
+          </ul>
+        </span>
+        <span>
+            <a href="/Demo/ConfigProject">产品配置</a>
+      </span>
+        <span>
+        <a href="#">产品测算</a>
+      </span>
+      </div>
+    </div>
+  </div>
+
+
+  <!--目录路径-->
+  <div class="full-width-container bgc-DBEBF7">
+    <div class="catalog-container abs-container">
+    <span class="icon icon-home">
+       <img src="../../Content/img/demo/home.png" alt="home">
+        <a href="/Demo/Project">
+            <mark>
+                存续期管理
+            </mark>
+        </a>
+    </span>
+      <span>报告管理</span>
+    </div>
+  </div>
+
+<div class="auto-show-wrapper">
+
+  <!--条件过滤-->
+  <div class="filter-container abs-container">
+    <div class="input-selector">
+      <div class="cur-selected" ng-click="showList($event)">建元2016年第一期个人住房抵押贷款证券化信托</div>
+      <ul ng-click="changeSelected($event)">
+        <li>建元2013年第一期个人住房抵押贷款证券化信托</li>
+        <li>建元2014年第一期个人住房抵押贷款证券化信托</li>
+        <li>建元2015年第一期个人住房抵押贷款证券化信托</li>
+      </ul>
+    </div>
+
+    <div class="input-selector">
+      <div class="cur-selected" ng-click="showList($event)">第9期</div>
+      <ul ng-click="changeSelected($event)">
+        <li>第6期</li>
+        <li>第7期</li>
+        <li>第8期</li>
+        <li>第9期</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="table-container abs-container">
+    <div class="table-title">报告列表</div>
+
+    <div class="table-wrapper">
+      <table cellspacing="0">
+        <tr>
+          <th width="20%">报告名称</th>
+          <th width="15%">状态</th>
+          <th width="20%%">更新时间</th>
+          <th width="45%">操作</th>
+        </tr>
+          <tr data-id="trId1">
+              <td>
+                  <div class="icon-item">
+                      <img src="" alt="">
+                      <span>第9期受托机构报告</span>
+                  </div>
+              </td>
+              <td>正在审核</td>
+              <td>2017.6.12 17:31</td>
+              <td>
+                  <div class="btn-area">
+                      <button class="btn-primary" onclick="generateByUploadedExcel()">报告下载</button>
+                      <button class="btn-primary">报告打印</button>
+                      <button class="btn-primary" disabled="disabled" ng-click="submitAudit($event)">提交审核</button>
+                      <button class="btn-primary" ng-click="cancelAudit($event)">撤销审核</button>
+                  </div>
+              </td>
+          </tr>
+          
+          @*<tr>
+          <td>
+            <div class="icon-item">
+              <img src="" alt="">
+              <span>第五期付息通知单</span>
+            </div>
+          </td>
+          <td>
+            <span class="success">审核通过</span>
+          </td>
+          <td>2017.5.30 15:33</td>
+          <td>
+            <div class="btn-area">
+              <button class="btn-primary">报告下载</button>
+              <button class="btn-primary">报告打印</button>
+              <button class="btn-primary" disabled="disabled">提交审核</button>
+              <button class="btn-primary" disabled="disabled">撤销审核</button>
+            </div>
+          </td>
+        </tr>*@
+      </table>
+    </div>
+
+  </div>
+</div>
+  <!--footer-->
+  <div class="footer-container abs-container">
+
+  </div>
+</body>
+</html>

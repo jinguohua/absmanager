@@ -1,0 +1,49 @@
+﻿@model ABS.ABSManagementSite.Models.DealModelViewModel
+
+<div class="module basicinformation">
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th colspan="4" class="module-title">
+                    @Html.DisplayNameFor(r => r.BasicInformation)
+                    <img src="~/Images/Icons/pass.png" class="data-checked" />
+                    <img src="~/Images/Icons/error.png" class="data-failed" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.LabelFor(r => r.BasicInformation.DealFullName)</td>
+                <td colspan="3">
+                    @Html.TextBoxFor(r => r.BasicInformation.DealFullName, new { style = "width:93% !important;", @class = "longTextBox" })
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(r => r.BasicInformation.DealName)</td>
+                <td>@Html.TextBoxFor(r => r.BasicInformation.DealName)</td>
+                <td>@Html.LabelFor(r => r.BasicInformation.Issuer)</td>
+                <td>@Html.TextBoxFor(r => r.BasicInformation.Issuer, new { placeholder = "(选填)" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(r => r.BasicInformation.Originator)</td>
+                <td>@Html.TextBoxFor(r => r.BasicInformation.Originator, new { placeholder = "(选填)" })</td>
+                <td>@Html.LabelFor(r => r.BasicInformation.LeadUnderwriter)</td>
+                <td>@Html.TextBoxFor(r => r.BasicInformation.LeadUnderwriter, new { placeholder = "(选填)" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(r => r.BasicInformation.Comment)</td>
+                <td colspan="3">
+                    @Html.TextAreaFor(r => r.BasicInformation.Comment,
+                         new { rows = "2", style = "width:93%;max-width: 510px;", placeholder = "(选填)" })
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".basicinformation input,.basicinformation textarea").change(function () {
+            bCheckData();
+        });
+    });
+</script>

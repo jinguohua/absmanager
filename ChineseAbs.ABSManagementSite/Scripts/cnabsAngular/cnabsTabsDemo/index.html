@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="../../../Content/cnabsUtils/layout.css" rel="stylesheet" />
+    <style type="text/css">
+        .tabs {
+            position: relative;
+        }
+
+        .tabs span {
+            height: 60px;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .fontTranform {
+            height: 60px;
+            line-height: 15px;
+            text-align: center;
+            width: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+            cursor: pointer;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            position: absolute;
+        }
+
+        .selectedLabel {
+            background-image: url(../../../Images/DashBoard/selectedLabel.png);
+            background-size: 35px 80px;
+            background-repeat: no-repeat;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+            left: -35px;
+            color: #ffc446;
+        }
+
+        .unselectedLabel {
+            background-image: url(../../../Images/DashBoard/unselectedLabel.png);
+            padding-left: 5px;
+            padding-right: 5px;
+            left: -30px;
+        }
+
+        .tabEx {
+            display: none;
+            min-height: 600px;
+        }
+
+        .tabEx > div {
+            overflow: hidden;
+            /*padding: 10px 20px 10px 20px;*/
+        }
+    </style>
+
+    <script src="../../angular.min.js"></script>
+    <script src="../../jquery-1.8.2.min.js"></script>
+    <script src="../cnabsTabs.js"></script>
+
+</head>
+<body style="background-color:#757070">
+
+    <div class="tablecloth" style="margin:0 auto;">
+        <div ng-app="TabApp">
+            <div ng-controller="tabs" class="tabs">
+                <cnabstabs></cnabstabs>
+            </div>
+            <!--包裹controller的div前缀保持一致，这里是divTabEx-->
+            <div id="divTabExInfo" class="tabEx">
+                <div ng-controller="tabExInfo">
+                    <div class="seletectdiv seletectdivHorizon ">
+                        <span>选择项</span>
+                        <select ng-model="selectedName" ng-change="personChange(selectedName)" ng-options="x.name as x.name for x in personInfo"></select>
+                    </div>
+                </div>
+            </div>
+            <div id="divTabExAssetCashflow" class="tabEx">
+                <div ng-controller="tabExAssetCashflow">
+                    <div class="seletectdiv seletectdivHorizon ">
+                        <span>选择项</span>
+                        <select ng-model="selectedName" ng-change="personChange(selectedName)" ng-options="x.name as x.name for x in personInfo"></select>
+                    </div>
+                </div>
+
+            </div>
+            <div id="divTabExCashflow" class="tabEx">
+                fasdfasdf
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+    var labels = [
+        { title: "产品", tabId: "Info", selected: true, params: ["personName"] },
+        { title: "资产", tabId: "AssetCashflow", params: ["personName"] },
+        { title: "证券", tabId: "Cashflow", params: ["personName"] },
+        { title: "产品", tabId: "Info1", selected: true },
+        { title: "资产", tabId: "AssetCashflow1" },
+        { title: "证券", tabId: "Cashflow1"},
+    ];
+
+    var comtab = new ComTab(labels, "divTabEx");
+    comtab.init();
+    var DashBoardApp = angular.module('TabApp', ['comTab']);
+
+    DashBoardApp.controller('tabs', function ($scope, $rootScope, $location) {
+
+    });
+
+    angular.module('TabApp').controller('tabExInfo', function ($scope, $rootScope, locationURL) {
+
+        //"UpdateTabEx"固定前缀，参数顺序与labels 对象里 params 数组保持一致，可以多参数
+        $rootScope.$on("UpdateTabExInfo", function (event, personName) {
+            $scope.personInfo = [{ name: "莫克" }, { name: "甜甜" }]
+            $scope.selectedName = personName != null ? personName : $scope.personInfo[0].name;
+        });
+
+        $scope.personChange = function (personName) {
+            locationURL.setURLHash("personName", personName);  
+        }
+
+        /*************这块代码暂时没有想到方法简化：用于刷新，不刷tab和一些选项的*******************/
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.tabId == "Info") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+        /********************************/
+
+    })
+
+    DashBoardApp.controller('tabExAssetCashflow', function ($scope, $rootScope, locationURL) {
+        $scope.personInfo = [{ name: "莫克" }, { name: "甜甜" }]
+        $rootScope.$on("UpdateTabExAssetCashflow", function (event, personName) {
+            $scope.selectedName = personName != null ? personName : $scope.personInfo[0].name;
+        });
+
+        $scope.personChange = function (personName) {
+            locationURL.setURLHash("personName", personName);
+        }
+
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.tabId == "AssetCashflow") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+
+    })
+
+
+
+</script>

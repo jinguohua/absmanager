@@ -1,0 +1,82 @@
+@import '../../styles/theme/default.less';
+
+.abs-pagination {
+  .ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis, 
+  .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis {
+    color: @abs-pagination-item-color;
+  }
+
+  .ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-link-icon, 
+  .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-link-icon {
+    color: @abs-pagination-item-link-color;
+  }
+
+  .ant-pagination-disabled a, 
+  .ant-pagination-disabled:hover a, 
+  .ant-pagination-disabled:focus a, 
+  .ant-pagination-disabled .ant-pagination-item-link, 
+  .ant-pagination-disabled:hover .ant-pagination-item-link, 
+  .ant-pagination-disabled:focus .ant-pagination-item-link {
+    color: @abs-pagination-item-color;
+  }
+  
+  .ant-pagination-prev:focus .ant-pagination-item-link, 
+  .ant-pagination-next:focus .ant-pagination-item-link, 
+  .ant-pagination-prev:hover .ant-pagination-item-link, 
+  .ant-pagination-next:hover .ant-pagination-item-link {
+    color: @abs-pagination-item-color;
+  }
+  
+  .ant-pagination-prev .ant-pagination-item-link, 
+  .ant-pagination-next .ant-pagination-item-link {
+    background-color: @abs-pagination-item-bg;
+    border-color: @abs-pagination-item-bg;
+    &:hover,
+    &:focus {
+      border-color: @abs-pagination-item-hover-bg;
+      background-color: @abs-pagination-item-hover-bg;
+    }
+  }
+
+  .ant-pagination-prev a, .ant-pagination-next a {
+    color: @abs-pagination-item-color;
+  }
+  
+  .ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next {
+    border-radius: 2px;
+    margin-right: 6px;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  .ant-pagination-item {
+    border-radius: 2px;
+    margin-right: 6px;
+    height: 30px;
+    line-height: 30px;
+    background-color: @abs-pagination-item-bg;
+    border-color: @abs-pagination-item-bg;
+    &:hover,
+    &:focus {
+      border-color: @abs-pagination-item-hover-bg;
+      background-color: @abs-pagination-item-hover-bg;
+    }
+
+    a {
+      color: @abs-pagination-item-color;
+    }
+  }
+
+  .ant-pagination-item-active {
+    background-color: @abs-pagination-item-active-bg;
+    border-color: @abs-pagination-item-active-bg;
+    &:hover,
+    &:focus {
+      border-color: @abs-pagination-item-active-bg;
+      background-color: @abs-pagination-item-active-bg;
+    }
+    a {
+      color: @abs-pagination-item-color;
+    }
+  }
+}

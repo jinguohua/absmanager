@@ -1,0 +1,609 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.ProjectSeriesViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+<style>
+    .screeningConditionTitle {
+        margin-bottom: 10px;
+        color: #B7AFA5;
+    }
+
+    .selectedScreeningCondition {
+        overflow: hidden;
+    }
+
+        .selectedScreeningCondition span {
+            float: left;
+            padding: 1px 7px;
+            margin: 0 5px 5px 5px;
+            background-color: #ddd;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            color: #000;
+        }
+
+    .projectSeriesProgress {
+        width: 80px;
+        position: relative;
+        background: #fff;
+        height: 20px;
+        float: left;
+    }
+
+        .projectSeriesProgress div {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: #66ff66;
+            height: 20px;
+            display: inline-block;
+        }
+
+    .DashboardExYellowColor {
+        color: #FFC446;
+        cursor: pointer;
+    }
+
+    .DashboardExGrayColor {
+        color: #c8c8c8;
+    }
+
+    #filterOptions div {
+        overflow: hidden;
+    }
+
+        #filterOptions div div {
+            float: left;
+        }
+    .background_this {
+        background: #3b3831;
+        padding: 10px 20px 10px 20px;
+    }
+
+    .select_range_style {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 5px 5px 5px;
+        background-color: #47423c;
+    }
+
+    .select_condition_style {
+        float: left;
+        margin-top: 4px;
+        color: #B7AFA5;
+        margin-left: 5px;
+    }
+
+    .project_condition_style {
+        width: 80px;
+        float: left;
+        position: relative;
+        background: #403930;
+        height: 4px;
+        align-content: center;
+        margin-top: 7px;
+    }
+
+    .project_name_style {
+        width: 180px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+	float:left;
+	margin-right:15px;
+    }
+    .edit_green_style {
+        cursor:pointer;
+    }
+    .delete_red_style {
+        cursor: pointer;
+        margin-left:10px;
+        
+    }
+    .project_list_style {
+        float:left; 
+        margin-left: 0;
+        height:24px;
+        margin-top: 10px; 
+        font-size: 16px;
+    }
+    .project_schedule {
+        height: 4px;  
+        background:#3ebf52;
+    }
+    .select_range_outer {
+        margin-top:5px;
+        margin-bottom:15px;
+        height:24px;     
+    }
+</style>
+
+
+    
+}
+
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/jqueryForm")
+
+@section scripts{
+}
+<div class="tablecloth">
+            <header class="am_site_map_panel">
+                <span class="am_site_map_arrow">当前位置：</span>
+                <a class="am_site_map_label" href="/">解决方案</a>
+                <span class="am_site_map_arrow">></span>
+                <a class="am_site_map_label" href="/ProjectSeries">发行协作平台</a>
+                <span class="am_site_map_arrow">></span>
+                <span class="am_site_map_arrow">项目列表</span>
+            </header>
+        <div ng-app="ProjectSeries" ng-controller="ProjectSeriesCtrl" class="background_this">
+
+            <div class="label select_range_outer" style="margin-left: 0;line-height:24px;">筛选范围</div>
+            <div class="select_range_style">
+                <div style="overflow:hidden; margin-bottom:10px;">
+                    <div id="filterOptions">
+                        <div style="margin-top: 10px; margin-left:5px;">
+                            <div class="screeningConditionTitle">项目状态：</div>
+                            <div ng-repeat=" projectSeriesStatus in projectSeriesStatuses" ng-cloak style="margin-left:15px;cursor: pointer; width:81px;" ng-click="selectCondition('projectSeriesStatus',$event)">
+                                <input style="cursor: pointer;" type="checkbox" name="projectSeriesStatus" value="{{projectSeriesStatus.value}}" ng-checked="projectSeriesStatus.checked" />
+                                <span>{{projectSeriesStatus.value}}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:5px;margin-left:5px;">
+                            <div class="screeningConditionTitle">立项时间：</div>
+                            <div ng-repeat=" projectSeriesPeriod in projectSeriesPeriods" ng-cloak style="margin-left:15px;cursor: pointer;width:81px;" ng-click="selectCondition('projectSeriesPeriod',$event)">
+                                <input style="cursor: pointer;" type="checkbox" name="projectSeriesPeriod" value="{{projectSeriesPeriod.value}}" ng-checked="projectSeriesPeriod.checked" />
+                                <span>{{projectSeriesPeriod.value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="selectedScreeningCondition">
+                    <t class="select_condition_style">筛选条件：</t>
+                    <span ng-cloak ng-repeat="selectedCondition in selectedConditions" class="ng-binding ng-scope ng-cloak" style=" margin-left: 14px;">{{selectedCondition}}</span>
+                </div>
+            </div>
+            <div style="overflow:hidden;overflow: hidden;margin-bottom:15px;">
+
+                <span class="label project_list_style" style="margin-left: 0;line-height:24px;">项目列表</span>
+
+            <div class="cnabs_btn_add" ng-click="createProjectSeries()" style=" margin-top: 10px; ">添加项目</div>
+        </div>
+        <div>
+            <table class="table_v2 embed hover" style="margin: 0; width: 100%;">
+                <tr>
+                    <th style="width:180px;text-align:left;">项目名称</th>
+                    <th style="width:139px;text-align:left;">类型</th>
+                    <th style="width:146px;text-align:left;">立项日期</th>
+                    <th style="width:146px;text-align:left;">计划完成</th>
+                    <th style="width:180px;text-align:left;">项目进度</th>
+                    <th style="width:94px;text-align:left;">负责人</th>
+                    <th style="width:80px;text-align:left;">成员数</th>
+                    <th style="width:79px; text-align:center;">操作</th>
+                </tr>
+                <tr ng-cloak ng-repeat="eachProjectSeriesInfo in projectSeriesInfo">
+                    <td class="text-left"><a class="project_name_style" href="/DashBoard?projectSeriesGuid={{eachProjectSeriesInfo.guid}}" title="{{eachProjectSeriesInfo.name}}">{{eachProjectSeriesInfo.name}}</a></td>
+                    <td class="text-left">{{eachProjectSeriesInfo.type}}</td>
+                    <td class="text-left">{{eachProjectSeriesInfo.createTimeStamp}}</td>
+                    <td class="text-left">{{eachProjectSeriesInfo.estimatedFinishTime}}</td>
+                    <td style="overflow:hidden;">
+                        <div class="project_condition_style">
+                            <div ng-style="eachProjectSeriesInfo.controlWidth" class="project_schedule cnabs_bg_green"></div>
+                        </div>
+                        <span ng-style="eachProjectSeriesInfo.controlStatusColor">{{eachProjectSeriesInfo.status}}</span>
+                    </td>
+
+                    <td class="text-left">
+                        <div style="width:94px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;float:left;"
+                             ng-mouseover="loadProfile(eachProjectSeriesInfo.personInCharge.userName)"
+                             title="{{showProfile(eachProjectSeriesInfo.personInCharge.userName)}}">
+                            {{eachProjectSeriesInfo.personInCharge.realName}}
+                        </div>
+                    </td>
+                    <td class="text-left">{{eachProjectSeriesInfo.personCount}}</td>
+                    <td class="text-left">
+                        <span ng-click="editProjectSeries(eachProjectSeriesInfo.guid)" class="edit_green_style cnabs_green">编辑</span>
+                        <span ng-click="deleteOrExitProjectSeries(eachProjectSeriesInfo.guid,eachProjectSeriesInfo.name, eachProjectSeriesInfo.isCreator)" class="delete_red_style cnabs_red">{{eachProjectSeriesInfo.isCreator? '删除':'退出'}}</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+<script>
+
+
+    $(function () {
+        BindingElementActive(4, 1, 0);
+    });
+
+    var userOptionArray = [];
+    var currentUsername = '';
+    cnabsAjaxSync("GetAllAuthedUsers", "/EnterpriseUser/GetAllAuthedUsers", null, function (data) {
+        $.each(data, function () {
+            userOptionArray.push([this.userName, cnabsFormatUserName(this)]);
+            if (this.isCurrentUser) {
+                currentUsername = this.userName;
+            }
+        })
+    });
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator = "-";
+
+        var month = (date.getMonth() >= 0 && date.getMonth() <= 8) ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1);
+        var strDate = (date.getDate() >= 1 && date.getDate() <= 9) ? ("0" + date.getDate()) : (date.getDate());
+      
+        var currentDate = date.getFullYear() + seperator + month + seperator + strDate;
+        return currentDate;
+    }
+
+    function ValidateTimeFormat(value,title) {
+        var jsonResult = {
+            verdict: false,
+            msg: ""
+        }
+        value = value.replace(/(^[\s\n\t]+|[\s\n\t]+$)/g, "");
+        if (value.length == 0) {
+            jsonResult.msg = "计划完成日期不能为空！";
+            return jsonResult;
+        }
+
+        var reg = /^[1-2]{1}([0-9]{3})-(0[1-9]|1[012])-(([0-2]){1}([0-9]{1})|([3]{1}[0-1]{1}))$/;
+        if (!reg.test(value)) {
+            jsonResult.msg = "计划完成日期格式：YYYY-MM-DD";
+            return jsonResult;
+        } 
+
+        jsonResult.verdict = true;
+        return jsonResult;
+    }
+
+    var createProjectSeriesDialog = [{
+        title: "项目名称",
+        type: "text",
+        elementId: "newProjectSeriesName",
+        value: "",
+        placeHolder: "请填写项目名称",
+        limit:{
+            type: "custom",
+            callback: ValidateProjectName
+        }
+    }, {
+        title: "项目类型",
+        type: "select",
+        elementId: "newProjectSeriesType",
+        value: "企业贷款",
+        OptionArray: [
+            "企业贷款",
+            "融资租赁",
+            "个人消费贷款",
+            "住房抵押贷款",
+            "信托受益权",
+            "汽车抵押贷款",
+            "收费收益权",
+            "应收账款",
+            "REITs",
+            "住房公积金",
+            "专项信贷",
+            "金融租赁",
+            "小额贷款",
+            "不良资产重组",
+            "委托贷款",
+            "保理融资",
+            "其它",
+        ]
+    }, {
+        title: "立项日期",
+        type: "date",
+        elementId: "newProjectSeriesCreateTime",
+        value: getNowFormatDate(),
+        placeHolder: "请选择立项日期",
+        limit: {
+            "type": "dateISO"//判断日期格式必须为YYYY-MM-DD
+        }
+    }, {
+        title: "计划完成",
+        type: "date",
+        elementId: "newProjectSeriesFinishedTime",
+        value: "",
+        placeHolder: "请选择计划完成日期",
+        limit: {
+            "type": "custom",
+            callback: ValidateTimeFormat//判断日期格式必须为YYYY-MM-DD
+        }
+    }, {
+        title: "负责人",
+        type: "select",
+        elementId: "newProjectSeriesPersonInCharge",
+        value: currentUsername,        
+        OptionArray: userOptionArray
+    }, {
+        title: "项目邮箱",
+        type: "text",
+        elementId: "email",
+        limit: {
+            type: 'email',
+            required: false
+        }
+    }]
+
+    function ValidateProjectName(value, title) {
+        var jsonResult = {
+            verdict: false,
+            msg: ""
+        }
+        value = value.replace(/(^[\s\n\t]+|[\s\n\t]+$)/g, "");
+        if (value.length == 0) {
+            jsonResult.msg = title + "不能为空。";
+            return jsonResult;
+        }
+        if (value.length > 30) {
+            jsonResult.msg = title + "的长度不能超过30个字符。";
+            return jsonResult;
+        }
+        var invalidCharList = "/\\:*?\"<>|";
+        for (var i = 0; i < value.length; i++) {
+            if (invalidCharList.indexOf(value[i]) >= 0) {
+                jsonResult.msg = title + "不能包含特殊字符/\\:*?\"<>|";
+                return jsonResult;
+            }
+        }
+        jsonResult.verdict = true;
+        return jsonResult;
+    }
+
+    var ProjectSeriesApp = angular.module('ProjectSeries', []);
+    ProjectSeriesApp.controller('ProjectSeriesCtrl', function ($scope) {
+        $scope.loadProfile = cnabsLoadUserInfoTitle;
+        $scope.showProfile = cnabsGetUserInfoTitle;
+
+        $scope.reloadProjectSeriesTable = function ()
+        {
+            var array = $scope.projectSeriesStatuses.concat($scope.projectSeriesPeriods);
+            var arrayBoolean = [];
+            var UrlStatusStr = "";
+            var UrlPeriod = -1;
+            $scope.selectedConditions = [];
+            for (var i = 0; i < array.length; i++) {
+                arrayBoolean.push(array[i].checked)
+                if (array[i].checked) {
+                    $scope.selectedConditions.push(array[i].value);
+                    if (i < $scope.projectSeriesStatuses.length) {
+                        UrlStatusStr += array[i].value + "|";
+                    } else {
+                        UrlPeriod = array[i].code
+                    }
+                } else {
+                    $.each($scope.selectedConditions, function (index, item) {
+                        if (item == array[i].value) {
+                            $scope.selectedConditions.splice(index, 1);
+                        }
+                    })
+                }
+            }
+            //判断是否为无筛选
+            var allConditions = [true, true, true, true, true, false, false, false]
+            var contrastResult = 0;
+            $.each(arrayBoolean, function (index, item) {
+                if (item == allConditions[index]) {
+                    contrastResult++;
+                } else {
+                    return true;
+                }
+            })
+            if (contrastResult == 8) {
+                $scope.selectedConditions = ["发行", "存续期", "终止", "清算", "全部时间"];
+            }
+            //发送请求
+            UrlStatusStr = UrlStatusStr.substring(0, UrlStatusStr.lastIndexOf("|"))
+            if (UrlStatusStr) {
+                var param = { filterByCreatedDays: UrlPeriod, filterByStage: UrlStatusStr };
+                cnabsAjax("GetProjectSeriesList", "/ProjectSeries/GetProjectSeriesList", param, function (data) {
+                    $.each(data, function () {
+                        this.statusColor = cnabsGetColorByTaskStatus(this.status);
+                        this.controlStatusColor = { 'color': this.statusColor, 'float': 'left', 'margin-left': '10px' };
+                        this.controlWidth = { 'width': this.percentCompleted };
+                        this.userInfoTitle = '';
+                    })
+                    $scope.projectSeriesInfo = data;
+                    $scope.$apply();
+                })
+            } else {
+                $scope.projectSeriesInfo = [];
+            }
+        }
+
+        $scope.projectSeriesStatuses = [{ value: "发行", checked: true }, { value: "存续期", checked: true }, { value: "终止", checked: true }, { value: "清算", checked: true }];
+        $scope.projectSeriesPeriods = [{ value: "全部时间", checked: true ,code:-1}, { value: "过去一周", checked: false,code:7}, { value: "过去一月" ,checked:false,code:30}, {value:"过去一年",checked:false,code:365}];
+        $scope.selectedConditions = ["发行", "存续期", "终止", "清算", "全部时间"];
+        $scope.selectCondition = function (name,event) {            
+            if (name == "projectSeriesStatus") {
+                for (var i = 0; i < $('input[name="' + name + '"]').length; i++) {
+                    if (event.target == $('input[name="' + name + '"]')[i] || event.target.previousElementSibling == $('input[name="' + name + '"]')[i] || event.target.firstElementChild == $('input[name="' + name + '"]')[i]) {
+                        $scope.projectSeriesStatuses[i].checked = !$scope.projectSeriesStatuses[i].checked;
+                    }
+                };
+            } else {              
+                for (var i = 0; i < $('input[name="' + name + '"]').length; i++) {
+                    if (event.target == $('input[name="' + name + '"]')[i] || event.target.previousElementSibling == $('input[name="' + name + '"]')[i] || event.target.firstElementChild == $('input[name="' + name + '"]')[i]) {
+                        $scope.projectSeriesPeriods[i].checked = true;
+                        $('input[name="' + name + '"]')[i].checked = true;
+                    } else{
+                        $scope.projectSeriesPeriods[i].checked = false;
+                    }
+                };
+            }
+
+            $scope.reloadProjectSeriesTable();
+        }
+        $scope.createProjectSeries = function () {
+            cnabsAutoDlgYesNo(createProjectSeriesDialog, "增加新项目", function (data) {
+                var param = {
+                    name: data.newProjectSeriesName,
+                    projectSeriesType: data.newProjectSeriesType,
+                    personInCharge: data.newProjectSeriesPersonInCharge,
+                    createTime: data.newProjectSeriesCreateTime,
+                    estimatedFinishTime: data.newProjectSeriesFinishedTime,
+                    email:data.email,
+                };
+                cnabsAjax("创建项目", "/ProjectSeries/CreateProjectSeries", param, function (data) {
+                    if (data == 1) {
+                        $scope.reloadProjectSeriesTable();
+                    }
+                })
+            });
+        }
+
+        $scope.editProjectSeries = function (projectSeriesGuid) {
+            cnabsAjax("获取项目信息", "/ProjectSeries/GetOneProjectSeriesInfo", { projectSeriesGuid: projectSeriesGuid }, function (data) {
+                var editProjectSeriesDialog = [{
+                    title: "项目名称",
+                    type: "text",
+                    elementId: "newProjectSeriesName",
+                    value: data.Name,
+                    placeHolder: "请填写项目名称",
+                    limit: {
+                        type: "rangelength",
+                        min: "1",
+                        max: "30"
+                    }
+                }, {
+                    title: "项目类型",
+                    type: "select",
+                    elementId: "newProjectSeriesType",
+                    value: data.Type,
+                    OptionArray: [
+                        "企业贷款",
+                        "融资租赁",
+                        "个人消费贷款",
+                        "住房抵押贷款",
+                        "信托受益权",
+                        "汽车抵押贷款",
+                        "收费收益权",
+                        "应收账款",
+                        "REITs",
+                        "住房公积金",
+                        "专项信贷",
+                        "金融租赁",
+                        "小额贷款",
+                        "不良资产重组",
+                        "委托贷款",
+                        "保理融资",
+                        "其它",
+                    ]
+                }, {
+                    title: "立项日期",
+                    type: "date",
+                    elementId: "newProjectSeriesCreateTime",
+                    value: data.StartTime,
+                    placeHolder: "请选择立项日期",
+                    limit: {
+                        "type": "dateISO"//判断日期格式必须为YYYY-MM-DD
+                    }
+                }, {
+                    title: "计划完成",
+                    type: "date",
+                    elementId: "newProjectSeriesFinishedTime",
+                    value: data.EndTime,
+                    placeHolder: "请选择计划完成日期",
+                    limit: {
+                        "type": "custom",
+                        callback: ValidateTimeFormat//判断日期格式必须为YYYY-MM-DD
+                    }
+                }, {
+                    title: "负责人",
+                    type: "select",
+                    elementId: "newProjectSeriesPersonInCharge",
+                    value: data.PersonInCharge,
+                    OptionArray: userOptionArray
+                }, {
+                    title: "项目邮箱",
+                    type: "text",
+                    elementId: "email",
+                    value:data.Email,
+                    limit: {
+                        type: 'email',
+                        required: false
+                    }
+                }]
+                cnabsAutoDlgYesNo(editProjectSeriesDialog, '修改项目', function (data) {
+                    var param = {
+                        projectSeriesGuid: projectSeriesGuid,
+                        name: data.newProjectSeriesName,
+                        projectSeriesType: data.newProjectSeriesType,
+                        personInCharge: data.newProjectSeriesPersonInCharge,
+                        createTime: data.newProjectSeriesCreateTime,
+                        estimatedFinishTime: data.newProjectSeriesFinishedTime,
+                        email: data.email
+                    };
+                    cnabsAjax("修改项目", "/ProjectSeries/ModifyProjectSeriesInfo", param, function (result) {
+                        if (result == 1) {
+                            $scope.reloadProjectSeriesTable();
+                        }
+                    })
+                })
+            })
+        }
+
+        $scope.deleteOrExitProjectSeries = function (projectSeriesGuid, projectSeriesName, isCreator) {
+            if (isCreator)
+            {
+                $scope.deleteProjectSeries(projectSeriesGuid, projectSeriesName);
+            }
+            else
+            {
+                $scope.exitProjectSeries(projectSeriesGuid, projectSeriesName);
+            }
+        }
+
+        $scope.deleteProjectSeries = function (projectSeriesGuid, projectSeriesName) {
+            for (var i = 0; i < $scope.projectSeriesInfo.length; ++i) {
+                if (projectSeriesGuid == $scope.projectSeriesInfo[i].guid
+                    && !$scope.projectSeriesInfo[i].permission.write
+                    && !$scope.projectSeriesInfo[i].isCreator) {
+                    cnabsAlert("删除失败：只有创建者才能进行删除操作");
+                    return;
+                }
+            }
+
+            var msg = '是否确定删除[' + projectSeriesName + ']？';
+
+            cnabsAutoDlgYesNo(null, "删除项目", function () {
+                cnabsAjax("删除项目", '/ProjectSeries/RemoveProjectSeries', { projectSeriesGuid: projectSeriesGuid }, function (data) {
+                    if (data == 1) {
+                        $scope.reloadProjectSeriesTable();
+                    }
+                })
+            }, msg)
+        }
+
+        $scope.exitProjectSeries = function (projectSeriesGuid, projectSeriesName) {
+            for (var i = 0; i < $scope.projectSeriesInfo.length; ++i) {
+                if (projectSeriesGuid == $scope.projectSeriesInfo[i].guid
+                    && $scope.projectSeriesInfo[i].isCreator) {
+                    cnabsAlert("退出失败：只有非创建者才能进行退出操作");
+                    return;
+                }
+            }
+
+            var msg = '是否确定退出[' + projectSeriesName + ']？';
+
+            cnabsAutoDlgYesNo(null, "退出项目", function () {
+                cnabsAjax("退出项目", '/ProjectSeries/ExitProjectSeries', { projectSeriesGuid: projectSeriesGuid }, function (data) {
+                    if (data == 1) {
+                        $scope.reloadProjectSeriesTable();
+                    }
+                })
+            }, msg)
+        }
+
+        $scope.reloadProjectSeriesTable();
+    })
+</script>

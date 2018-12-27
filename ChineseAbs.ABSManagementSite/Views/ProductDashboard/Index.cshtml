@@ -1,0 +1,317 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DashboardViewModel
+@Styles.Render("~/Content/handsontable")
+@Scripts.Render("~/bundles/handsontable")
+@Styles.Render("~/Content/handsontableCustom")
+@Scripts.Render("~/bundles/handsontableCustom")
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/cnabsUtils/semantic/components/sidebar.min.css" rel="stylesheet" />
+@section styles{
+    <style>
+        .DashboardTabs {
+            position: relative;
+        }
+
+        .DashboardTabs span {
+            height: 60px;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+
+        .fontTranform {
+            height: 60px;
+            line-height: 15px;
+            text-align: center;
+            width: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+            cursor: pointer;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            position: absolute;
+        }
+
+        .selectedLabel {
+            background-image: url(../../Images/DashBoard/selectedLabel.png);
+            background-size: 35px 80px;
+            background-repeat: no-repeat;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+            left: -35px;
+            color: #ffc446;
+        }
+
+        .unselectedLabel {
+            background-image: url(../../Images/DashBoard/unselectedLabel.png);
+            padding-left: 5px;
+            padding-right: 5px;
+            left: -30px;
+        }
+
+        .dashboardEx {
+            display: none;
+            min-height: 600px;
+        }
+
+        .dashboardEx > div {
+            overflow: hidden;
+            /*padding: 10px 20px 10px 20px;*/
+        }
+
+        .seletectdiv {
+            line-height: 40px;
+            overflow: hidden;
+        }
+
+        .seletectdiv span {
+            float: left;
+            color: #b7afa5;
+            font-size: 16px;
+            width: 50px;
+        }
+
+        .seletectdiv span:not(:first-of-type) {
+            /*margin-left: 20px;*/
+        }
+
+        .seletectdiv select {
+            width: 213px;
+            float: left;
+            margin: 5px 0 5px 5px;
+            border-radius: 2px;
+            height: 28px;
+        }
+
+        .divDashboardLeft {
+            background: #47423c;
+            min-height: 638px;
+            float: left;
+            width: 290px;
+            padding-left: 20px;
+            padding-top: 10px;
+        }
+
+        .divDetailInfo {
+            width: 740px;
+            float: right;
+            padding-top: 10px;
+        }
+
+        .divDetailInfo select {
+            margin: 5px 0 5px 5px;
+            border-radius: 2px;
+            height: 22px;
+        }
+
+        .seletectdivHorizon select {
+            margin-right: 15px;
+        }
+    </style>
+}
+
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/lodash")
+<script src="~/Scripts/paulkinzett-toolbar/jquery.toolbar.js"></script>
+<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+<script src="~/Scripts/me-lazyload/me-lazyload.js"></script>
+<script src="~/Scripts/cnabsAngular/cnabsSrvUser.js?version=201709210503"></script>
+
+@section scripts{
+
+}
+
+
+<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.fancytree.min.js"></script>
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+<script>
+    var DashBoardApp = angular.module('ProductDashboard', ['me-lazyload', 'cnabsSrvUser']);
+
+    DashBoardApp.controller('DashboardTabs', function ($scope, $rootScope, $location) {
+        $scope.currentProjectGuid = "";
+        var labels = [
+            { title: "产品", dashboardExId: "Info", style: "unselectedLabel" },
+            { title: "资产", dashboardExId: "AssetCashflow", style: "unselectedLabel" },
+            { title: "证券", dashboardExId: "Cashflow", style: "unselectedLabel" },
+            { title: "文档", dashboardExId: "Document", style: "unselectedLabel" }
+        ];
+        $.each(labels, function (index, item) {
+            item.top = index * 84 + "px";
+            item.controlLabelStyle = { top: item.top };
+        })
+        $scope.labels = labels;
+        $scope.isProjectSeriesChangedByUser = false;
+
+        $scope.labelChange = function (dashboardExId, data) {
+            if (!$scope.isProjectChangedByUser) {
+                $scope.currentProjectGuid = cnabsGetUrlParam('projectGuid');
+                 updateMenuLinkByProject($scope.currentProjectGuid);
+            }
+            var projectGuid = $location.search().projectGuid;
+            if (projectGuid != null) {
+                $scope.currentProjectGuid = projectGuid;
+            }
+            $location.path(dashboardExId);
+            var paymentDay = $location.search().paymentDay;
+            var fileSeriesGuid = $location.search().fileSeriesGuid;
+            $.each($scope.labels, function () {
+                var div = $("#divDashboardEx" + this.dashboardExId);
+                this.translateX = -((this.index - 1) * 53 + 24) + "px";
+                if (this.dashboardExId == dashboardExId) {
+                    if ('Info' == dashboardExId) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectGuid, paymentDay);
+                    }
+                    else if ('AssetCashflow' == dashboardExId) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectGuid, paymentDay);
+                    }
+                    else if ('Cashflow' == dashboardExId) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectGuid, paymentDay);
+                    }
+                    else if ('Document' == dashboardExId) {
+                        $rootScope.$emit("UpdateDashboardEx" + dashboardExId, $scope.currentProjectGuid, paymentDay, fileSeriesGuid);
+                    }
+                    this.style = 'selectedLabel';
+                    div.css({ 'display': 'block' });
+                } else {
+                    this.style = 'unselectedLabel';
+                    div.css({ 'display': 'none' });
+                }
+            })
+        };
+
+        //$rootScope.$on("UpdateCurrentProjectGuid", function (event, projectGuid) {
+        //    $scope.currentProjectGuid = projectGuid;
+        //    $scope.isProjectSeriesChangedByUser = true;
+        //    $location.search({ projectGuid: projectGuid });
+        //});
+
+        $rootScope.$on("ChangeLabel", function (event, data) {
+            $scope.labelChange(data.dashboardExId, data);
+        });
+    });
+
+    DashBoardApp.service('projectHelper', function () {
+
+        this.reload = function (projectGuid) {
+            var projectInfo = null;
+            cnabsAjaxSync("GetProjectsNameAndGuid", "/MyProjects/GetProjects", { projectType: '存续期' }, function (data) {
+                var selectedItem = null;
+                var paymentDays = null;
+                $.each(data, function () {
+                    if (this.guid == projectGuid) {
+                        selectedItem = this;
+                    }
+                })
+
+                if (selectedItem == null) {
+                    if (data.length) {
+                        selectedItem = data[0];
+                    }
+                }
+                cnabsAjaxSync("获取产品偿付期信息", "/Schedule/GetPaymentDays", { projectGuid: selectedItem.guid }, function (data) {
+                    paymentDays = data.paymentDays;
+                }, function (errorInfo) {
+                    console.log(errorInfo)
+                });
+
+                projectInfo = { items: data, selectedItem: selectedItem, paymentDays: paymentDays };
+            });
+            return projectInfo;
+        }
+
+        this.GetPaymentDays = function (projectGuid) {
+            var paymentDays = null;
+            cnabsAjaxSync("获取产品偿付期信息", "/Schedule/GetPaymentDays", { projectGuid: projectGuid }, function (data) {
+                paymentDays = data.paymentDays;
+            }, function (errorInfo) {
+                console.log(errorInfo)
+            });
+            return paymentDays;
+        }
+    });
+
+    DashBoardApp.service('locationURL', function ($location) {
+        var hash = null;
+        this.getInitURL = function () {
+            if (hash == null) {
+                hash = {};
+                var dashboardExIdstr;
+                var path = $location.path();
+                path = path.replace(/\//g, "");
+                var dashboardExIdstr = path == "" ? "Info" : path;
+                var paymentDay = $location.search().paymentDay;
+                var fileSeriesGuid = $location.search().fileSeriesGuid;
+                hash.dashboardExId = dashboardExIdstr;
+                hash.paymentDay = paymentDay;
+                hash.fileSeriesGuid = fileSeriesGuid;
+            }
+            return hash;
+        };
+
+        this.setURLHash = function (hashKey, hashValue) {
+            $location.search(hashKey, hashValue);
+            if (hashKey == "projectGuid") {
+                updateMenuLinkByProject(hashValue);
+            }
+        }
+
+    });
+
+    DashBoardApp.service('avatarHelper', function ($http) {
+        this.load = function (user) {
+            var userInfoArray = user;
+            if (!$.isArray(userInfoArray)) {
+                userInfoArray = [user];
+            }
+
+            $.each(userInfoArray, function () {
+                var userInfo = this;
+                var userName = "";
+                if (cnabsHasContent(userInfo.UserName)) {
+                    var userName = userInfo.UserName;
+                }
+                if (cnabsHasContent(userInfo.userName)) {
+                    var userName = userInfo.userName;
+                }
+                if (cnabsHasContent(avatarCache[userName])) {
+                    userInfo.AvatarPath = avatarCache[userName];
+                } else {
+                    $http.get('/DashBoard/GetUserAvatar', { params: { userName: userName } }).success(
+                        function (data, status, headers, config) {
+                            userInfo.AvatarPath = data;
+                        }
+                    );
+                }
+            })
+        }
+    });
+
+</script>
+
+<div class="tablecloth">
+    <div ng-app="ProductDashboard">
+        <div ng-controller="DashboardTabs" class="DashboardTabs">
+            <div ng-cloak ng-repeat="label in labels" id="divLabel{{label.dashboardExId}}" class="fontTranform {{label.style}}" ng-click="labelChange(label.dashboardExId)" ng-style="label.controlLabelStyle"><span>{{label.title}}</span></div>
+        </div>
+
+        <div id="divDashboardExInfo" class="dashboardEx">
+            @Html.Partial("_ProductDashBoardExInfo")
+        </div>
+        <div id="divDashboardExAssetCashflow" class="dashboardEx">
+            @Html.Partial("_ProductDashBoardExAssetCashflow")
+        </div>
+        <div id="divDashboardExCashflow" class="dashboardEx">
+            @Html.Partial("_ProductDashBoardExCashflow")
+        </div>
+        <div id="divDashboardExDocument" class="dashboardEx">
+            @Html.Partial("_ProductDashBoardExDocument")
+        </div>
+    </div>
+</div>

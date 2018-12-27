@@ -1,0 +1,272 @@
+@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+@using ChineseAbs.ABSManagementSite.Models;
+@using ChineseAbs.ABSManagement.Object;
+@using ChineseAbs.ABSManagementSite.Common;
+@using ChineseAbs.ABSManagement.Models;
+
+<style>
+    .am_fileName{
+        width:520px;
+    }
+    .am_fileName span{
+        width:475px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;text-align:left;
+    }
+    .am_fileUpdateTime{
+        width:130px;    
+    }
+    .disableColor{
+        color: #c8c8c8;
+    }
+    #am_AutoUploadDocument{
+        cursor:pointer;
+    }
+    .divOperationTip{
+        position:relative;
+        cursor:pointer;
+    }
+    .downloadFileTip{
+        position:absolute;
+        display:none;
+        border:1px solid #666;
+        background: #47423C;
+        z-index:1000;
+        color:#B7AFA5;
+        padding:3px;
+    }
+    .documentTableList td:nth-of-type(1), .documentTableList th:nth-of-type(1) {
+        width: 700px;
+        max-width: 700px;
+        min-width: 700px;
+    }
+
+    .documentTableList td:nth-of-type(2), .documentTableList th:nth-of-type(2) {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+    }
+
+    .documentTableList td:nth-of-type(3), .documentTableList th:nth-of-type(3) {
+        width: 55px;
+        max-width: 55px;
+        min-width: 55px;
+    }
+
+    .documentTableList td:nth-of-type(4), .documentTableList th:nth-of-type(4) {
+        width: 45px;
+        max-width: 45px;
+        min-width: 45px;
+    }
+
+    .documentTableList th:nth-of-type(5) {
+        width: 52px;
+        max-width: 52px;
+        min-width: 52px;
+    }
+
+    .documentTableList td:nth-of-type(5) {
+        width: 52px;
+        max-width: 52px;
+        min-width: 52px;
+        padding-left:15px;
+    }
+    .table_background_panel {
+        overflow: hidden;
+        background-color: #37342e;
+    }    
+</style>
+<div>
+    <div class="module scenario" style="display:none; margin-left: 10px;">
+        <div id="divSystemGeneratedFile">
+            <div style="overflow:hidden; margin-top:10px;">
+                <input id="checkboxAm_AutoUploadDocument" type="checkbox" name="name" value=" " style="float:left; cursor:pointer; margin-top:2px;" />
+                <span id="am_AutoUploadDocument" style="float:left;">是否自动上传至文档系统</span>
+            </div>
+        </div>
+    </div>
+
+    @{
+        var errorMsg = Model.TaskExtension.Info as string;
+        if (errorMsg != null)
+        {
+            <div style="text-align:left;color:#ff6666;font-size:15px;font-weight:bold;word-wrap:break-word;">
+                @Html.Raw(Toolkit.FormatHtmlText(errorMsg))
+            </div>
+        }
+        else
+        {
+            var taskExViewModel = (TaskExDocumentViewModel)(Model.TaskExtension.Info);
+            var documents = taskExViewModel == null ? null : taskExViewModel.Documents;
+            <div class="table_background_panel">
+                <table class="table_v2 hover documentTableList" style="width:100%;margin-top:-2px;">
+                    <tr>
+                        <th class="text-left">文件名</th>
+                        <th class="text-left">更新时间</th>
+                        <th class="text-left">上传</th>
+                        <th class="text-left">下载</th>
+                        <th class="text-left">系统生成</th>
+                    </tr>
+                    @if (documents != null)
+                    {
+                        foreach (var document in documents)
+                        {
+                            <tr class="text-left">
+                                <td class="am_fileName text-left" style="overflow:hidden;">
+                                    @if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.Excel)
+                                    {
+                                        <em class="ui-icon ui-icon-file-xls smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.Word)
+                                    {
+                                        <em class="ui-icon ui-icon-file-word smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.PDF)
+                                    {
+                                        <em class="ui-icon ui-icon-file-pdf smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.RAR
+                                        || document.FileType == ChineseAbs.ABSManagement.Utils.FileType.ZIP)
+                                    {
+                                        <em class="ui-icon ui-icon-file-zip smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.TXT)
+                                    {
+                                        <em class="ui-icon ui-icon-file-txt smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.Image)
+                                    {
+                                        <em class="ui-icon ui-icon-file-image smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.PPT)
+                                    {
+                                        <em class="ui-icon ui-icon-file-report smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else if (document.FileType == ChineseAbs.ABSManagement.Utils.FileType.Script)
+                                    {
+                                        <em class="ui-icon ui-icon-file-script smallImageSize left cnabs_yellow"></em>
+                                    }
+                                    else
+                                    {
+                                        <em class="ui-icon ui-icon-file smallImageSize left cnabs_yellow"></em>
+                                    }
+
+                                    <span class="left" style="margin-left:5px;">@document.Name</span>
+                                </td>
+                                <td class="am_fileUpdateTime">
+                                    @Toolkit.DateTimeToString(document.UpdateTime)
+                                </td>
+                                <td style="width:100px;">
+                                    <a class="cnabs_yellow" style="outline:none;">
+                                        <text class="ui-icon ui-icon-upload smallImageSize" onclick="uploadDocument('@document.Guid')"></text>
+                                    </a>
+                                </td>
+                                <td style="width:100px;">
+                                    @{
+                            var downloadLink = "/TaskEx/DownloadTaskExDocument?"
+                                + "shortCode=" + Model.ShortCode
+                                + "&taskExDocumentGuid=" + document.Guid;
+                                    }
+
+                                    @if (document.UpdateTime.HasValue)
+                                    {
+                                        <a href="@downloadLink">
+                                            <text class="ui-icon ui-icon-download smallImageSize"></text>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <em class="ui-icon ui-icon-download smallImageSize disableColor"></em>
+                                    }
+                                </td>
+                                <td style="width:100px;">
+                                    @if (document.AutoGenerate)
+                                    {
+                                        <a class="cnabs_yellow" style="outline:none;">
+                                            <text class="ui-icon ui-icon-client smallImageSize" onclick="systemGeneratedFile('@Model.ShortCode', '@document.Guid')"></text>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <em class="ui-icon ui-icon-client smallImageSize disableColor"></em>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+
+            </div>
+        }
+    }
+
+    <div id='divDownloadFileTip' class="downloadFileTip" style="display:none">上传文件大小不超过10MB</div>
+</div>
+<script>    
+        $(function () {
+            $(".divOperationTip").hover(
+               function () {
+                   var div = $('#divDownloadFileTip');
+                   div.css("top", $(this).offset().top);
+                   div.css("left", $(this).offset().left + $(this).width() + 5);
+                   div.show();
+               },
+               function () {
+                   $('#divDownloadFileTip').hide();
+               }
+            );
+        });
+
+        TextControlCheckbox("checkboxAm_AutoUploadDocument", "am_AutoUploadDocument");
+        var taskExDocumentGuid = '';
+        function uploadAjax(){
+            var params = { taskExDocumentGuid: taskExDocumentGuid, shortCode: '@Model.ShortCode' };
+            cnabsDlgAjaxUploadFile('上传文件', '/TaskEx/UploadTaskExDocument', params, function (data) {
+                var msg = '上传文件成功, 共添加了' + data + '个文件';
+                cnabsMsgSuccess(msg, true);
+            });
+        }
+        function uploadDocument(TaskExDocumentGuid) {
+            taskExDocumentGuid = TaskExDocumentGuid;
+            var taskStatus = $('#taskStatus')[0].textContent;
+            if (taskStatus == '完成') {
+                GetSubsequentTasksCount();
+	    }
+	    if (taskStatus == '完成'&& $("#am_warning").css("display") == 'block' && $("#am_warningContent").html() != ''){	    
+                am_appear('Running', false, false, uploadAjax);
+            } else {           
+                uploadAjax();
+            }
+        }
+        var shortCode = '';
+        var taskExDocGuid = '';
+        var autoUpload = false;
+        function systemGeneratedFileAjax() {
+            var params = {
+                shortCode: shortCode,
+                taskExDocumentGuid: taskExDocGuid,
+                autoUpload: autoUpload
+            };
+            cnabsAjax('系统生成文档', '/TaskEx/GenerateDocument', params, function (guid) {
+                window.location.href = '/Download?guid=' + guid;
+                if (autoUpload) {
+                    setTimeout("window.location.reload()", 1000);
+                }
+            });
+        }
+        function systemGeneratedFile(ShortCode, TaskExDocGuid) {
+            shortCode = ShortCode;
+            taskExDocGuid = TaskExDocGuid;
+            cnabsDlgYesNo('divSystemGeneratedFile', '系统生成文档', function () {
+                autoUpload = $("#checkboxAm_AutoUploadDocument").is(":checked");
+                var taskStatus = $('#taskStatus')[0].textContent;
+                if (autoUpload && taskStatus == '完成') {
+                    GetSubsequentTasksCount();
+		}
+	        if (autoUpload && taskStatus == '完成'&& $("#am_warning").css("display") == 'block' && $("#am_warningContent").html() != ''){			
+                    am_appear('Running', false, false, systemGeneratedFileAjax);
+                } else {
+                    systemGeneratedFileAjax();
+                }
+            }, 230, 350);
+        }
+    
+</script>

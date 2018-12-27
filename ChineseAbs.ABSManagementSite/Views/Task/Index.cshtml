@@ -1,0 +1,789 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+@using ChineseAbs.ABSManagementSite.Models
+@using ChineseAbs.ABSManagementSite.Common
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/pagewalkthrough/jquery.pagewalkthrough.css">
+
+    @Scripts.Render("~/bundles/angular")
+
+
+    <style type="text/css">
+        h3 {
+            font-size: 17px;
+            padding: 2px 5px;
+            margin: 10px 0;
+        }
+
+        tr {
+            text-align: center;
+        }
+
+        #walkthrough-content {
+            display: none;
+        }
+
+        .divOperations {
+            position: relative;
+        }
+
+        #am_more {
+            margin-left: 5px;
+            margin-top: 10px;
+        }
+
+        #am_comment_details {
+            position: absolute;
+            top: 340px;
+            left: 146px;
+            width: 614px;
+            background: #47423c;
+            border: 1px solid #a7a7a7;
+            padding: 10px 10px;
+        }
+
+        .am_prevTaskName {
+            color: #ffc446;
+            width: 165px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            display: block;
+        }
+
+        .statusColor {
+            color: #fff;
+        }
+
+        .operationLogTable td:nth-of-type(1), .operationLogTable th:nth-of-type(1) {
+            text-align: left;
+            width: 650px;
+            min-width: 650px;
+            max-width: 650px;
+        }
+
+        .operationLogTable td:nth-of-type(2), .operationLogTable th:nth-of-type(2) {
+            width: 66px;
+            min-width: 66px;
+            max-width: 66px;
+        }
+
+        .operationLogTable td:nth-of-type(3), .operationLogTable th:nth-of-type(3) {
+            text-align: left;
+            width: 158px;
+            min-width: 158px;
+            max-width: 158px;
+        }
+
+        .operationLogTable td:nth-of-type(4), .operationLogTable th:nth-of-type(4) {
+            text-align: left;
+            width: 90px;
+            min-width: 90px;
+            max-width: 90px;
+        }
+        .table.infoTable td:first-child, table.infoTable th:first-child {
+            padding-left:0px !important;
+        }
+        .blockedIssueDiv {
+            margin-top:10px;
+            padding: 10px 20px;
+            background: #47423C;
+            overflow:hidden;
+        }
+        .alertBlockedIssue {
+            background-image: url(../../Images/yellowAlert.png);
+            background-repeat: no-repeat;
+            padding-left: 18px;
+            background-position:0px 10px;
+            height:34px;
+            line-height:34px;
+        }
+        #ctrlIssueId {
+            height:34px;
+            line-height:34px;
+        }
+        .blockedIssueTable td:nth-of-type(1){
+            width: 460px;
+        }
+        .blockedIssueTable th:nth-of-type(1) {
+            width: 445px;
+            padding-left:35px;
+        }
+        .blockedIssueTable td:nth-of-type(2), .blockedIssueTable th:nth-of-type(2) {
+            width: 100px;
+        }
+        .blockedIssueTable td:nth-of-type(3), .blockedIssueTable th:nth-of-type(3) {
+            width:100px;
+        }
+        .blockedIssueTable td:nth-of-type(4), .blockedIssueTable th:nth-of-type(4) {
+            width:100px;
+        }
+        .blockedIssueTable td:nth-of-type(5), .blockedIssueTable th:nth-of-type(5) {
+            width:100px;
+        }
+        /*.blockedIssueTable td:nth-of-type(6){
+            width:90px;
+        }*/
+        .blockedIssueTable th:nth-of-type(6) {
+            width:100px;
+        }
+        #blockedIssueDivId .blockedIssueTable tbody tr:first-child {
+            background-color: #4F4A43 !important;
+            color: #fff;
+            height: 32px;
+        }
+            #blockedIssueDivId .blockedIssueTable tbody tr:first-child:hover {
+                background-color: #7f786f !important;
+            }
+        .blockedIssueTable {
+            display:none;
+        }
+        .issueName {
+            background-repeat:no-repeat;
+            padding-left:15px;
+            background-position:0px 3px;
+        }
+        .fixedThead {
+            display:block;
+            width:100%;
+        }
+        .scrollTbody {
+            max-height:136px;
+            overflow:hidden;
+            overflow-y:auto;
+            display:block;
+        }
+    </style>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/pagewalkthrough")
+
+    @if (Model.ProjectSeriesStage == ChineseAbs.ABSManagement.Models.ProjectSeriesStage.存续期)
+    {
+        <script type="text/javascript">
+            BindingElementActive(4, 2, 1);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            BindingElementActive(4, 1, 1);
+        </script>
+    }
+}
+<script>
+            var WorkPanelApp = angular.module('workPanel', []);
+</script>
+@using (Html.BeginForm("Index", "Task", new { shortCode = Model.ShortCode }, FormMethod.Post,
+                            new { @class = "form-horizontal", role = "form", id = "formTask" }))
+{
+
+    <div class="tablecloth" style="padding-bottom:1px;">
+        <header class="am_site_map_panel">
+            <span class="am_site_map_arrow">当前位置：</span>
+            <a class="am_site_map_label" href="/">解决方案</a>
+            <span class="am_site_map_arrow">></span>
+
+            @if (Model.ProjectSeriesStage == ChineseAbs.ABSManagement.Models.ProjectSeriesStage.存续期)
+            {
+                <a class="am_site_map_label" href="/">存续期管理平台</a>
+                <span class="am_site_map_arrow">></span>
+                <a class="am_site_map_label" href="/Schedule/?taskStatus=-1&projectGuid=@Model.ProjectGuid">工作列表</a>
+                <span class="am_site_map_arrow">></span>
+            }
+            else
+            {
+                <a class="am_site_map_label" href="/ProjectSeries">发行协作平台</a>
+                <span class="am_site_map_arrow">></span>
+                <a class="am_site_map_label" href="/Dashboard">项目进度</a>
+                <span class="am_site_map_arrow">></span>
+            }
+            <span class="am_site_map_arrow">工作面板（@Model.ShortCode）</span>
+        </header>
+        <div class="cnabs_div_v2" ng-app="workPanel" ng-controller="workPanelCtrl">
+            <header class="cnabs_label_v2 cnabs_overhide">
+                @if (Model.ProjectSeriesStage == ChineseAbs.ABSManagement.Models.ProjectSeriesStage.存续期)
+                {
+                    <a class="cnabs_yellow" href="/Schedule/?taskStatus=-1&projectGuid=@Model.ProjectGuid">@Model.ProjectName</a>
+                }
+                else
+                {
+                    <a class="cnabs_yellow" href="/DashBoard/?projectSeriesGuid=@Model.ProjectSeriesGuid">@Model.ProjectName</a>
+                }
+                <span class="cnabs_grey">/</span>
+                <span class="cnabs_white">@Model.ShortCode</span>
+                <span class="cnabs_white">-@Model.TaskName</span>
+                @if (Model.NextTaskShortCode != null)
+                {
+                    <a class="right cnabs_pointer cnabs_btn_next" href="/Task?shortCode=@Model.NextTaskShortCode" title="下一个工作：@Model.NextTaskName" style="margin-left:4px;margin-top:3px;"></a>
+                }
+                @if (Model.PreviousTaskShortCode != null)
+                {
+                    <a class="right cnabs_pointer cnabs_btn_previous" href="/Task?shortCode=@Model.PreviousTaskShortCode" title="上一个工作：@Model.PreviousTaskName" style="margin-top:3px;"></a>
+                }
+            </header>
+            <div class="cnabs_panel_v2 cnabs_div_v2 cnabs_v2_margin">
+                <div style="padding-left:3px;padding-right:3px;">
+                    <div class="am_button">
+                        <input id="btnStartStop" class="am_buttonstop" type="button" name="name" value="开始工作" />
+                        <input id="btnFinish" class="am_buttonfinish" type="button" name="name" value="完成工作" />
+                        <input id="btnError" class="am_buttonerror" type="button" name="name" value="发生错误" />
+                    </div>
+                    <div class="am_twoline">
+                        <div class="am_lineone">
+                            <span class="fixedColor">开始日期：</span>
+                            <span style="margin-left:5px; width:200px;">@Model.StartTime</span>
+                            <span class="fixedColor" style="margin-left: 5px;">前置工作：</span>
+                            <span style="margin-left:30px; width:201px;">
+                                @if (Model.PrevTaskShortCodeArray.Count == 0)
+                                {
+                                    <text>-</text>
+                                }
+                                @for (int i = 0; i < Model.PrevTaskShortCodeArray.Count; ++i)
+                                {
+                                    var prevTaskShortCode = Model.PrevTaskShortCodeArray[i];
+                                    var prevTaskName = Model.PrevTaskNameArray[i];
+                                    <a class="am_orange am_prevTaskName" href="/Task?shortCode=@prevTaskShortCode" target="_blank" title="@prevTaskName">@prevTaskName</a>
+                                }
+                            </span>
+                            <span class="fixedColor" style="margin-left: 5px;">工作操作人：</span>
+                            @if (string.IsNullOrEmpty(Model.TaskHandler))
+                            {
+                                <span id="am_taskHandler" style="margin-left:5px; width:240px;">-</span>
+                            }
+                            else
+                            {
+                                <span id="am_taskHandler" style="margin-left:5px; width:240px;">@Model.TaskHandler</span>
+                            }
+                        </div>
+                        <div class="am_linetwo">
+                            <span class="fixedColor">截止日期：</span>
+                            <span style="margin-left:5px; width:200px;">@Model.EndTime</span>
+                            <span class="fixedColor" style="margin-left: 5px;">前置工作状态：</span>
+                            @if (Model.PrevTaskShortCodeArray.Count == 0)
+                            {
+                                <span id="am_PrevTaskStatus" style="margin-left:5px; width:200px;">-</span>
+                            }
+                            else
+                            {
+                                if (Model.Status == ChineseAbs.ABSManagement.Models.TaskStatus.Finished)
+                                {
+                                    <span id="am_PrevTaskStatus" class="cnabs_green" style="margin-left:5px; width:200px;"></span>
+                                }
+                                else
+                                {
+                                    <span id="am_PrevTaskStatus" class="cnabs_blue" style="margin-left:5px; width:200px;"></span>
+                                }
+                            }
+                            <span class="fixedColor" style="margin-left: 5px;">工作状态：</span>
+                            <span id="taskStatus" style="margin-left:19px; width:240px;">@Toolkit.ToCnString(Model.Status)</span>
+                        </div>
+                    </div>
+                    <div class="am_font">
+                        <div style="margin-bottom:10px;">
+                            <div class="fixedColor" style="margin-bottom:5px;">工作目标：</div>
+                            <div>@Html.Raw(Model.TaskTarget != null ? Toolkit.FormatHtmlText("    " + Model.TaskTarget.Replace("\r\n", "\r\n    ")) : "")</div>
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <div class="fixedColor" style="margin-bottom:5px;">工作描述：</div>
+                            <div style="margin-bottom:2px;">
+                                @Html.Raw(Model.TaskDetail != null ? Toolkit.FormatHtmlText("    " + Model.TaskDetail.Replace("\r\n", "\r\n    ")) : "")
+                            </div>
+                            </div>
+                    </div>
+                </div>                
+            </div>
+            <div id="blockedIssueDivId" ng-show="blockedIssues.length >= 1">
+                <div class="blockedIssueDiv ng-cloak">
+                    <div class="alertBlockedIssue left">有{{blockedIssues.length}}个问题阻碍当前工作</div>
+                    <div id="ctrlIssueId" class="cnabs_yellow cnabs_pointer right ctrlIssue" ng-click="ctrlBlockedTable()">打开列表</div>
+                    <div class="clear"></div>
+                </div>
+                <table class="table_v2 alone cnabs_v2_margin hover blockedIssueTable" style="width:100%;margin:0!important">
+                    <thead class="fixedThead">
+                        <tr>
+                            <th class="text-left">标题</th>
+                            <th class="text-left">状态</th>
+                            <th class="text-left">提问者</th>
+                            <th class="text-left">提问时间</th>
+                            <th class="text-left">领取人</th>
+                            <th class="text-left">领取时间</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scrollTbody cnabs_scrollbar">
+                        <tr ng-repeat="issue in blockedIssues">
+                            <td class="text-left cnabs_yellow cnabs_pointer" ng-click="openBlockedIssue(issue.issueGuid)">
+                                <span class="issueName cnabs_ellipsis left" title="{{issue.issueName}}" style="width:435px;background-image:url(../../Images/DashBoard/emergencyLevel{{issue.issueEmergencyLevel}}.png)">{{issue.issueName}}</span>
+                            </td>
+                            <td class="text-left">{{issue.issueStatusCN}}</td>
+                            <td class="text-left"><span class="cnabs_ellipsis left" style="width:90px;" title="{{issue.CreateUser.RealName}}">{{issue.CreateUser.RealName}}</span></td>
+                            <td class="text-left" title="{{issue.CreateTime}}">{{issue.CreateTime|limitTo:10}}</td>
+                            <td class="text-left"><span class="cnabs_ellipsis left" style="width:90px;" title="{{issue.AllotUser.RealName}}">{{issue.AllotUser.RealName}}</span></td>
+                            <td ng-show="blockedIssues.length>4" class="text-left" style="width:109px;" title="{{issue.UpdateTime}}">{{issue.UpdateTime|limitTo:10}}</td>
+                            <td ng-show="blockedIssues.length<=4" class="text-left" style="width:100px;" title="{{issue.UpdateTime}}">{{issue.UpdateTime|limitTo:10}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                @if (Model.TaskExtension != null)
+                {
+                    <div class="cnabs_label_v2 cnabs_v2_margin">扩展信息</div>
+                    <div class="cnabs_panel_v2 cnabs_v2_margin">
+                        @Html.Partial("_TaskExtension" + Model.TaskExtension.Name)
+
+                    </div>
+                }
+                <div>
+                    <div class="cnabs_label_v2 cnabs_v2_margin">操作日志</div>
+                    <div id="am_operation" style="height:370px; overflow:hidden">
+                        <table class="table_v2 hover cnabs_v2_margin operationLogTable" style="width:100%;">
+                            <tr>
+                                <th class="text-left">内容</th>
+                                <th class="text-left">状态</th>
+                                <th class="text-left">操作人</th>
+                                <th class="text-left">操作时间</th>
+                            </tr>
+                            <tr ng-repeat="taskStatusHistory in taskStatusHistoryLists">
+                                <td style="overflow: hidden"><span class="cnabs_ellipsis left am_comment" style="width:640px;" ng-cloak>{{taskStatusHistory.Comment}}</span></td>
+                                <td class="text-left statusColor" ng-cloak>{{taskStatusHistory.Status}}</td>
+                                <td style="overflow:hidden"><span class="cnabs_ellipsis left" style="width:148px;" ng-cloak title="{{taskStatusHistory.UserName}}">{{taskStatusHistory.UserName}}</span></td>
+                                <td style="overflow:hidden;"><abbr class="cnabs_ellipsis left timeago" style="width:80px;" ng-cloak title="{{taskStatusHistory.Time}}">{{taskStatusHistory.Time}}</abbr></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="am_more" style="cursor:pointer; width:120px;display:none; color:#ffc446;">展开查看更多日志</div>
+                    <div id="am_comment_details" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--dialog begin-->
+    <div class="module scenario" style="display:none; margin-left: 10px;">
+        <div id="am_dialog">
+            <div class="am_text" id="am_dialogText">
+                <div id="am_warning" style="display:none;">
+                    <div style="font-size:14px; margin-bottom:4px;overflow:hidden;">
+                        <div class="am_warningYellowImage" style="float:left; margin-top:5px;"></div>
+                        <div style="float:left; margin-left:5px;">温馨提示：</div>
+                    </div>
+                    <div class="np-tip" style="max-height:93px; overflow:auto;margin-bottom:15px;font-size:14px;">
+                        <div>以下工作因是其后续工作，它们的工作状态将从完成变成等待或者逾期：</div>
+                        <div id="am_warningContent" style="word-break: break-all;">
+                        </div>
+                    </div>
+                </div>
+                <textarea id="am_comment" style="width:98%;height:100px;margin:5px auto 0px;resize:none;" placeholder="此处填写操作说明"></textarea>
+                <div id="redToolTip" style="display:none;">
+                    <span style="color:#ff6666; float:left; margin-left:0; font-size:14px;">操作说明不能为空！</span>
+                </div>
+                <div id="redToolTipLengthLimitation" style="display:none;">
+                    <span style="color:#ff6666; float:left; margin-left:0; font-size:14px;">操作说明不能超过500个字符数！</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--dialog end-->
+}
+<script>
+    var ammore = document.getElementById("am_more");
+    var amoperation = document.getElementById("am_operation");
+
+    var amcomment = document.getElementById("am_comment");
+
+
+    var amNextStatus = '';
+    var body = document.getElementsByTagName("body")[0];
+    var W = document.documentElement.clientWidth;
+    var H = document.documentElement.clientHeight;
+    var taskHistoryCount = 0;
+    var maxRowCount = 10;
+    var isExpanding = false;
+
+    function GetSubsequentTasksCount() {
+        $("#am_warning").css("display", "none");
+        $("#am_warningContent").html('');
+        shortCode = '@Model.ShortCode';
+        $.ajax({
+            url: '/Task/GetSubsequentTasksRecursively',
+            type: 'Post',
+            data: { shortCode: shortCode },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data.length != 0) {
+                    var str = "";
+                    var index = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Status == "Finished") {
+                            index++
+                            str += "<div>" + index + "、" + data[i].TaskName + "[" + data[i].ShortCode + "]" + "</div>"
+                        }
+                    };
+                    if (index == 0 && str == "") {
+                        $("#am_warning").css("display", "none");
+                    } else {
+                        $("#am_warningContent").html(str);
+                        $("#am_warning").css("display", "block");
+                    }
+                } else {
+                    $("#am_warning").css("display", "none");
+                }
+            },
+            error: function () {
+                alert("获取后续工作失败");
+            }
+        });
+    }
+
+    function am_appear(nextStatus, isNotNull, isNotMatch, callback) {
+        $("#redToolTip").css("display", "none");
+        $("#redToolTipLengthLimitation").css("display", "none");
+        if (isNotNull == undefined) {
+            isNecessary = false;
+        } else {
+            isNecessary = isNotNull;
+        }
+        $("#am_comment").val("");
+
+        amNextStatus = nextStatus;
+
+        //检查任务状态是否可以被修改
+        var isPass = false;
+        var params = { shortCode: '@Model.ShortCode', newTaskStatus: amNextStatus };
+        cnabsAjaxSync('修改任务状态', '/Task/CheckChangeTaskStatus', params, function (data) {
+            isPass = true;
+        });
+        if (!isPass) {
+            return;
+        }
+
+        cnabsDlgYesNo('am_dialog', '请填写操作说明', function () {
+            if (isNecessary) {
+                if ($("#am_comment").val() == "") {
+                    $("#redToolTipLengthLimitation").css("display", "none");
+                    $("#redToolTip").css("display", "block");
+                    return false;
+                } else {
+                    $("#redToolTip").css("display", "none");
+                    var aminfor = amcomment.value;
+                    if (aminfor.length > 500) {
+                        $("#redToolTipLengthLimitation").css("display", "block");
+                        return false;
+                    }
+
+                    ChangeTaskStatus(amNextStatus, aminfor, isNotMatch, callback);
+                }
+            } else {
+                $("#redToolTip").css("display", "none");
+                var aminfor = amcomment.value;
+                if (aminfor.length > 500) {
+                    $("#redToolTipLengthLimitation").css("display", "block");
+                    return false;
+                }
+
+                ChangeTaskStatus(amNextStatus, aminfor, isNotMatch, callback);
+            }
+        }, "auto", 350);
+    }
+
+    function ChangeTaskStatus(newTaskStatus, info, isNotMatch, callback) {
+        var params = { shortCode: '@Model.ShortCode', newTaskStatus: newTaskStatus, comment: info };
+        cnabsAjax('修改任务状态', '/Task/ChangeTaskStatus', params, function (data) {
+            ControlTaskStatusColor("taskStatus", data);
+            UpdateBtnStartStopByStatus(data);
+            if (callback != null && callback != undefined && typeof callback == 'function') {
+                callback();
+            }
+            if (isNotMatch != undefined && isNotMatch == true) {
+                UpdateTaskExtensionStatus();
+            }
+        });
+    }
+
+    function UpdateTaskExtensionStatus() {
+        cnabsAjax("", "/Task/UpdateTaskExtensionStatus", { shortCode: '@Model.ShortCode' }, function () {
+            window.location.reload();
+        })
+    }
+
+    function AddTaskLog(comment) {
+        cnabsAjax("", "/Task/AddTaskLog", { shortCode: '@Model.ShortCode', comment: comment }, function () {
+        }, {})
+    }
+
+    function UpdateBtnStartStopByStatus(status) {
+        if (status == "进行中") {
+            $("#btnStartStop").val("停止工作");
+        }
+        else {
+            $("#btnStartStop").val("开始工作");
+        }
+    }
+
+    function ControlTaskStatusColor(id, value) {
+        $("#" + id).html(value);
+        $("#" + id).css("color", cnabsGetColorByTaskStatus(value));
+    }
+
+    WorkPanelApp.controller('workPanelCtrl', function ($scope) {
+        $scope.updateTaskHistoryView = function () {
+            if (isExpanding) {
+                amoperation.style.height = 32 * taskHistoryCount + 50 + "px";
+                ammore.innerHTML = "收起日志";
+                ammore.style.width = 60 + "px";
+            } else {
+                amoperation.style.height = 370 + "px";
+                ammore.innerHTML = "展开查看更多日志";
+                ammore.style.width = 120 + "px";
+            }
+            $scope.$apply();
+        }
+
+        ammore.onclick = function () {
+            isExpanding = !isExpanding;
+            $scope.updateTaskHistoryView();
+        }
+        var isNecessary = false;
+
+        document.onmouseup = function () {
+            document.onmousemove = null;
+        }
+
+        function GetCommentTextWidth(text) {
+            text = text.replace(/\n/g, '');
+            var font = "normal 14px Microsoft YaHei";
+            var currentObj = $('<pre>').hide().appendTo(document.body);
+            $(currentObj).html(text).css('font', font);
+            var width = currentObj.width();
+            currentObj.remove();
+            return width;
+        }
+
+        $scope.GetTaskStatusHistory = function () {
+            shortCode = '@Model.ShortCode';
+            cnabsAjax('获取历史操作记录', '/Task/GetTaskStatusHistory', { shortCode: shortCode, cachedRecordCount: taskHistoryCount }, function (data) {
+                if (data.length > taskHistoryCount) {
+                    $scope.taskStatusHistoryLists = data;
+                    $scope.$apply();
+
+                    for (var i = 0; i < data.length; i++) {
+                        var dataInfo = data[i];
+                        var statusColor = cnabsGetColorByTaskStatus(dataInfo.Status);
+                        $(".statusColor").eq(i).css("color", statusColor);
+                    }
+                    if (data.length >= 11) {
+                        ammore.style.display = "block";
+                    }
+                    taskHistoryCount = data.length;
+                    $scope.updateTaskHistoryView();
+
+                    $(".am_comment").mouseover(
+                        function (e) {
+                            var width = GetCommentTextWidth($(this).context.innerHTML);
+                            if (width < 500) {
+                                return;
+                            }
+                            var text = $(this).context.innerHTML.replace(/\n/g, '</br>')
+                            $("#am_comment_details").html(text);
+                            var even = e || window.event;
+                            var y = $(this)[0].offsetParent.offsetTop + $(this)[0].offsetParent.offsetHeight - 8 + $(this)[0].offsetParent.offsetParent.offsetTop;
+                            $("#am_comment_details").css({
+                                "display": "block",
+                                "top": y + "px",
+                                "word-wrap": "break-word"
+                            })
+                        }
+                    )
+                    $(".am_comment").mouseout(
+                         function () {
+                             var width = GetCommentTextWidth($(this).context.innerHTML);
+                             if (width < 500) {
+                                 return;
+                             }
+                             $("#am_comment_details").css({
+                                 "display": "none",
+                             })
+                         }
+                     )
+                    $("#am_comment_details").mouseover(
+                         function () {
+                             $("#am_comment_details").css({
+                                 "display": "block",
+                             })
+                         }
+                    )
+                    $("#am_comment_details").mouseout(
+                        function () {
+                            $("#am_comment_details").css({
+                                "display": "none",
+                            })
+                        }
+                    )
+                }
+
+                cnabsInitTimeAgo();
+
+                setTimeout($scope.GetTaskStatusHistory, 3000);
+            }, function () {
+                setTimeout($scope.GetTaskStatusHistory, 300000);
+            });
+        }
+
+        $scope.GetTaskStatus = function () {
+            shortCode = '@Model.ShortCode';
+            $.ajax({
+                url: '/Task/GetTaskStatus',
+                type: 'Post',
+                data: { shortCode: shortCode },
+                dataType: 'json',
+                success: function (data) {
+                    var displayName = "-";
+                    if (cnabsHasContent(data.TaskHandlerName)) {
+                        displayName = data.TaskHandlerName;
+
+                        if (data.TaskHandlerUserName != "") {
+                            displayName += "(" + data.TaskHandlerUserName + ")";
+                        }
+                    }
+                    $("#am_taskHandler").html(displayName);
+
+                    ControlTaskStatusColor("taskStatus", data.TaskStatus);
+                    if (data.PrevTaskStatus.length != 0) {
+                        for (var i = 0; i < data.PrevTaskStatus.length; i++) {
+                            if (data.PrevTaskStatus[i].TaskStatus != "完成") {
+                                $("#am_PrevTaskStatus").html("未完成");
+                                $("#am_PrevTaskStatus").css("color", cnabsGetColorByTaskStatus("未完成"));
+                                break;
+                            }
+                            $("#am_PrevTaskStatus").html("完成");
+                            $("#am_PrevTaskStatus").css("color", cnabsGetColorByTaskStatus("完成"));
+                        }
+                    } else {
+                        $("#am_PrevTaskStatus").html("-")
+                    }
+                    setTimeout($scope.GetTaskStatus, 3000);
+                },
+                error: function () {
+                    setTimeout($scope.GetTaskStatus, 300000);
+                }
+            });
+        }
+
+        $scope.getBlockedIssues = function () {
+            $scope.blockedIssues = [];
+            var params = {
+                shortCode: '@Model.ShortCode'
+            };
+            cnabsAjax('获取工作的受阻问题', '/Issue/GetIssueInfo', params, function (data) {
+                if (data.length) {
+                    $scope.blockedIssues = data;
+                    $.each(data, function (index, item) {
+                        if (item.issueStatus == "Preparing") {
+                            item.issueStatusCN = "待解决";
+                        }
+                        if (item.issueStatus == "Running") {
+                            item.issueStatusCN = "进行中";
+                        }
+                        if (item.issueStatus == "Finished") {
+                            item.issueStatusCN = "已解决";
+                        }
+                    })
+                }
+                cnabsInitTimeAgo();
+                $scope.$apply();
+            })
+        }
+
+        $scope.openBlockedIssue = function (issueGuid) {
+            var taskGroupGuid = '@Model.ProjectSeriesGuid';
+            window.open("/Dashboard#/Issue?taskGroupGuid=" + taskGroupGuid + "#issueGuid=" + issueGuid);
+        }
+        $scope.ctrlBlockedTable = function () {
+            var linkName = document.getElementById("ctrlIssueId");
+            if (linkName.innerHTML == "打开列表") {
+                $(".blockedIssueTable").css("display", "block");
+                linkName.innerHTML = "收起列表";
+            }
+            else {
+                linkName.innerHTML = "打开列表";
+                $(".blockedIssueTable").css("display", "none");
+            }
+        }
+
+        $(document).ready(function () {
+            ABSManagementPageTitle('@Model.TaskName');
+            if ('@Model.ProjectSeriesStage.ToString()' == '存续期') {
+                updateMenuLinkByProject('@Model.ProjectGuid');
+            }
+
+            $(".nav-item").removeClass('active');
+            $("#nav_3").addClass('active');
+
+            UpdateBtnStartStopByStatus('@Toolkit.ToCnString(Model.Status)');
+
+            $scope.GetTaskStatusHistory();
+            $scope.GetTaskStatus();
+            $scope.getBlockedIssues();
+
+            $("#btnStartStop").click(function () {
+                if ($("#btnStartStop").val() == "开始工作") {
+                    GetSubsequentTasksCount();
+                    am_appear('Running');
+                }
+                else {
+                    GetSubsequentTasksCount();
+                    am_appear('Waitting');
+                }
+            });
+
+            $("#btnFinish").click(function () {
+                $("#am_warning").css("display", "none");
+                am_appear('Finished');
+            });
+
+            $("#btnError").click(function () {
+                GetSubsequentTasksCount();
+                am_appear('Error', true);
+            });
+
+            $(".np-button").click(function () {
+                var self = $(this);
+                if (!self.hasClass("np-button-current") && !self.hasClass("np-button-disabled")) {
+                    self.siblings(".np-button-current").removeClass("np-button-current");
+                    self.addClass("np-button-current");
+                }
+            });
+            $(".dl-icon-help").hover(
+                function () {
+                    var lnk = $(this).parent("a");
+                    var explanation = lnk.siblings(".np-options-explanation");
+                    explanation.css("left", lnk.offset().left + "px");
+                    explanation.css("top", parseFloat(lnk.offset().top) + 20 + "px");
+                    explanation.show();
+                }
+                , function () {
+                    $(this).parent("a").siblings(".np-options-explanation").hide();
+                }
+            );
+            $(".divOperations").hover(
+                function () {
+                    var div = $(this).find("div.project-operations");
+                    div.css("top", 5 - div.outerHeight());
+                    div.css("left", ($(this).width() - div.width()) / 2);
+                    div.show();
+                },
+                function () {
+                    $(this).find("div.project-operations").hide();
+                }
+            );
+        });
+
+    })
+</script>

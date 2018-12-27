@@ -1,0 +1,346 @@
+﻿<style>
+    .teamMemberAddDiv {
+        display:none;
+    }
+    .selectedLeftDiv {        
+        width:138.5px;
+        height:395px;       
+    }
+    .selectedGroup_title {
+        margin:9.5px 0 0 7px;
+    }
+    .selectedRightDiv {
+        width:612px;
+        height:395px;
+    }
+    .vertical_border_div {
+        background-color:#615c54;
+        height:395px;
+        width:2.5px;
+    }
+    .horizontal_border_div {
+        height:2px;
+        width:612px;
+        background-color:#615c54;        
+    }
+    .selected_members {
+        width: 612px;
+        height: 340px;
+        overflow: hidden;
+    }
+    .authority_bottom_div {
+        width: 612px;
+        height: 32px;
+        font-size: 14px;
+        color: #ACA69D;
+    }
+
+    .confirm_error_prompt_div {
+        width: 612px;
+        height: 20px;
+    }
+    .error_msg {
+        font-size: 12px;
+        padding-left: 14px;
+        padding-top: 2px;
+    }
+    .authority_bottom {
+        margin-top:15.5px;
+    }
+    .selected_all_div {
+        margin-left:8px;
+        margin-bottom:17px;
+    }
+    .selected_all {        
+        font-size: 14px;
+        color: #ACA69D; 
+        height:19px;
+        line-height:17px;       
+    }
+    .edit_checkbox_div {
+        margin-left: 16px;
+        margin-right: 7px;
+        height:19px;
+        line-height:19px;
+    }
+    .execute_checkbox_div {
+        margin-left: 29px;
+        margin-right: 7px;
+        height:19px;
+        line-height:19px;
+    }
+    .selectedGroup {
+        font-size:14px;
+        color:#ACA69D;
+        margin-left:8px;
+        height:19px;
+        line-height:18px;
+    }
+    .group_list {
+        margin-left: 8px;
+        margin-top:8px;
+    }
+    .group_name {
+        font-size: 14px;
+        color: #fff;
+        height:19px;
+        line-height:18px;
+    }
+    .checkbox_style {
+        width:12px;
+        height:12px;
+        border-radius:2px;  
+        cursor:pointer;      
+    }
+    .select_member_ul {
+        padding:0px;
+        margin-left:15px;
+        margin-top:0px;
+        overflow-x:auto;
+    }
+    .team_member_div {
+        height: 60px;
+        width: 187px;
+        border: 1px solid #615C54;
+        margin:0 5px 10px 5px;
+    }
+        .team_member_div:hover {
+            border:1px solid #938E84;
+        }
+    .avatar_member {
+        float: left;
+        margin: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 3px;
+        background-color: #4f4a43;
+        background-size: 40px 40px;
+    }
+    .username_member {
+        margin-top:13px;
+        margin-left:11px;        
+        font-size:14px;
+        color:#FEB305;
+    }
+    .realname_member {
+        margin-top: 4px;
+        margin-left: 11px;
+        font-size: 12px;
+        color: #B5AFA6;
+    }
+    .checkbox_style_div {
+        height:60px;
+        line-height:43px;      
+        margin-right:8px;
+    }
+    .selected_members_count {
+        width: 216px;
+        height: 19px;
+        font-size: 14px;
+        color: #ACA69D;
+        line-height: 19px;        
+        margin-bottom: 12px;
+        margin-top: 10.5px;
+        margin-left:390px;
+        text-align:right;
+    }
+</style>
+<div addmembers id="teamMemberAdd" class="teamMemberAddDiv">
+    <div class="selectedLeftDiv left">
+        <div class="selectedGroup_title">
+            <div class="selected_all_div">               
+                <input id="selectedAllForAdd" checked="{{selectAllCk}}" type="checkbox" ng-change="selectAllGroupsAdd(selectAll)" ng-model="selectAll" class="checkbox_style left" />
+                <div class="selected_all"><label class="cnabs_pointer" for="selectedAllForAdd">全选</label></div>                
+            </div>
+            <div class="selectedGroup">组列表</div>
+            <div class="group_list" ng-repeat="userGroup in userAllGroupObj">
+                <input type="checkbox" id="userGroupId({{$index}})" class="left checkbox_style" ng-change="checkedGroup()" ng-model="userAllGroupObj[$index].isChecked" />
+                <div class="group_name cnabs_ellipsis" style="width:84px" title="(userGroup.name)"><label class="cnabs_pointer" for="userGroupId({{$index}})">{{userGroup.name}}</label></div>
+            </div>
+        </div>
+    </div>
+    <div class="vertical_border_div left"></div>
+    <div class="selectedRightDiv left">
+        <div class="selected_members">
+            <div class="selected_members_count">已选择：{{checkedArr.length}}个</div>
+            <ul class="select_member_ul">
+                <li class="team_member_div left" ng-repeat="teamMember in isNotTeamMemberOfUserArr" ng-click="checkedByDivAddTeamMember($index)">
+                    <div class="avatar_member" style="background-image:url({{teamMember.AvatarPath}});"></div>
+                    <div class="left">
+                        <div class="username_member cnabs_ellipsis" style="width:70px;" ng-mouseover="loadProfile(teamMember.userName)" title="{{showProfile(teamMember.userName)}}">
+                            <label class="cnabs_pointer">{{teamMember.realName}}</label>
+                        </div>
+                        <div class="realname_member"><label class="cnabs_pointer">读</label></div>
+                    </div>
+                    <div class="right checkbox_style_div">
+                        <input type="checkbox" class="checkbox_style"                               
+                               ng-change="checkedCount()"
+                               ng-model="isNotTeamMemberOfUserArr[$index].isChecked"
+                               ng-click="stopPropagation($event)" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="horizontal_border_div"></div>
+        <div class="authority_bottom_div">
+            <div class="left authority_bottom">
+                <div class="edit_checkbox_div left" ><label class="cnabs_pointer" for="editCk">编辑权限</label></div>
+                <input type="checkbox" class="checkbox_style" ng-model="edit" id="editCk" />
+            </div>
+            <div class="left authority_bottom">
+                <div class="execute_checkbox_div left"><label class="cnabs_pointer" for="executeCk">执行权限</label></div>
+                <input type="checkbox" class="checkbox_style" ng-model="execute" id="executeCk" />
+            </div>            
+        </div>
+        <div class="left confirm_error_prompt_div">
+            <div class="error_msg cnabs_red cnabs_none">* 请选择成员进行操作</div>
+        </div>
+    </div>
+</div>
+<script>
+    angular.module('DashBoard').directive('addmembers', function (avatarHelper, userHelper) {
+        return {
+            restrict: 'A',
+            link: function ($scope, element, attrs) {
+                
+                //获取勾选的组之后获取的组内信息
+                $scope.checkedUserFromCheckedGroup = function () {
+                    $.each($scope.checkedGroupArr, function (index, item) {
+                        param = {
+                            projectSeriesGuid: $scope.projectSeriesGuid,
+                            userGroupGuid: item.guid
+
+                        };
+                        cnabsAjaxSync("获取项目下的组别的详细信息", "/TeamMember/GetTeamMembersOfUserGroup", param, function (data) {
+                            //勾选的组员里面为可添加新成员
+                            $.each(data.UserGroupUsers, function (index, item) {
+                                if (item.IsTeamMemberOfUserGroup == false && item.IsCreator == false
+                                    && item.IsPersonInCharge == false && item.IsTeamAdmin == false) {
+                                    $scope.selecteGroupdUser.push(item);
+                                }
+                            })
+                        })
+                    })                    
+                }
+
+                //增加新成员
+                $scope.addTeamMember = function (projectSeriesGuid) {
+                    $scope.projectSeriesGuid = projectSeriesGuid;
+                    $scope.selectAll = false;
+                    $scope.execute = false;
+                    $scope.edit = false;
+                    $scope.checkedArr = [];
+                    var dialogWidth = 779;
+                    var allAmount;
+
+                    $scope.getUserAllGroupInfo();
+
+                    $scope.notTeamMemberPermission = userHelper.getUserToTeamMember();
+                    allAmount = $scope.notTeamMemberPermission.length;
+                    if (allAmount > 12) {
+                        $("#teamMemberAdd .select_member_ul").css("height", "278px");
+                        $("#teamMemberAdd .horizontal_border_div").css("width", "637px");
+                        $("#teamMemberAdd .selected_members").css("width", "637px");
+                        $("#teamMemberAdd .select_member_ul").addClass("cnabs_scrollbar");
+                        dialogWidth = 799;
+                    } else {
+                        $("#teamMemberAdd .select_member_ul").css("height", "auto");
+                        $("#teamMemberAdd .horizontal_border_div").css("width", "612px");
+                        $("#teamMemberAdd .selected_members").css("width", "612px");
+                        dialogWidth = 779;
+                    }
+                    $("#teamMemberAdd .error_msg").removeClass("cnabs_block");
+                    $("#teamMemberAdd .error_msg").addClass("cnabs_none");
+                    cnabsDlgYesNo('teamMemberAdd', '增加新成员', function () {
+                        var permissions = ['Read'];
+                        var addNewTeamMemberArr = [];
+                        var addNewTeamMembers = "";
+                        $.each($scope.isNotTeamMemberOfUserArr, function (index, item) {
+                            if (item.isChecked == true) {
+                                addNewTeamMemberArr.push(item.userName);
+                            }
+                        })
+                        if (addNewTeamMemberArr.length>0) {
+                            addNewTeamMembers = addNewTeamMemberArr.join(",");
+                            if ($("#editCk").is(":checked")) {
+                                permissions.push('Write');
+                            }
+                            if ($("#executeCk").is(":checked")) {
+                                permissions.push('Execute');
+                            }
+                            var param = {
+                                projectSeriesGuid: projectSeriesGuid,
+                                userNames: addNewTeamMembers,
+                                permissions: permissions.join('|')
+                            };
+                            $("#editCk").removeAttr('checked');
+                            $scope.addOneOrMoreTeamMember(param);
+                        } else {
+                            $("#teamMemberAdd .error_msg").removeClass("cnabs_none");
+                            $("#teamMemberAdd .error_msg").addClass("cnabs_block");
+                            return false;
+                        }
+                    }, '508', dialogWidth)
+                }
+
+                //勾选组之后选中新成员
+                $scope.checkedGroup = function () {                    
+                    $scope.selecteGroupdUser = [];
+                    $scope.checkedGroupArr = [];
+                    $scope.checkedArr = [];
+                    //初始化所有的可添加成员
+                    $.each($scope.isNotTeamMemberOfUserArr, function (index, item) {
+                        item.isChecked = false;
+                    })
+                    //勾选的组
+                    $.each($scope.userAllGroupObj, function (index, item) {
+                        if (item.isChecked == true) {
+                            $scope.checkedGroupArr.push(item);
+                        }                        
+                    })
+                    $scope.selectAll = $scope.checkedGroupArr.length == $scope.userAllGroupObj.length;                   
+
+                    //找到所有的勾选组可添加为新成员的组员
+                    $scope.checkedUserFromCheckedGroup();
+                    //在已显示的成员列表里勾选出勾选组的可添加新成员
+                    $.each($scope.selecteGroupdUser, function (index, item) {
+                        $.each($scope.isNotTeamMemberOfUserArr, function (index, itemArr) {
+                            if (itemArr.userName == item.UserName && !itemArr.isChecked) {
+                                itemArr.isChecked = true;
+                                $scope.checkedArr.push(itemArr);
+
+                            }
+                        })
+                    })                             
+                }
+
+                //全选组
+                $scope.selectAllGroupsAdd = function (isChecked) {                    
+                    $scope.selectAllGroups(isChecked);
+                    $scope.checkedGroup();
+                }
+
+                //复选框选取需要添加的项目成员
+                $scope.checkedCount = function () {
+                    $scope.checkedArr = [];
+                    $.each($scope.isNotTeamMemberOfUserArr, function (index, item) {
+                        if (item.isChecked) {
+                            $scope.checkedArr.push(item);
+                        }                        
+                    })
+                }
+
+                $scope.checkedByDivAddTeamMember = function (index) {
+                    var ischecked = $scope.isNotTeamMemberOfUserArr[index].isChecked;
+                    if (!ischecked) {
+                        $scope.isNotTeamMemberOfUserArr[index].isChecked = true;
+                    }
+                    else {
+                        $scope.isNotTeamMemberOfUserArr[index].isChecked = false;
+                    }
+                    $scope.checkedCount();
+                }
+            }
+        }
+    })
+</script>

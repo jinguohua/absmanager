@@ -1,0 +1,687 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DocumentManagerViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+        .group_div {
+            float: left;
+            width: 260px;
+            height: 780px;
+            background-color: #47423C;
+            overflow: hidden;
+        }
+        .group_btn_add {
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 14px;
+            background-image: url(../../Images/Common/add.png);
+            background-position: 80px 4px;
+            background-repeat: no-repeat;
+            width: 220px;
+            height: 30px;
+            margin: 10px 20px;
+            line-height: 31px;
+            text-indent: 99px;
+            background-color: #8064a2;
+        }
+
+            .group_btn_add:hover {
+                background-color: #8b6daf;
+            }
+
+        .group_dialog_input {
+            width: 229px;
+            height: 28px;
+            line-height: 28px;
+            border: 1px;
+            border-radius: 2px;
+            padding: 0px;
+            margin: 31px 7px 30px 7px;
+            font-size: 14px;
+            color: #3F3A34;           
+            padding-left: 10px;
+        }
+
+        .members_div {
+            float: right;
+            width: 790px;
+            height: 780px;
+            background-color: #37342e;
+            display: block;
+        }
+
+        .all_members_div {
+            margin: 10px 20px 10px 20px;
+            width: 136px;
+            height: 32px;
+            background-color: #524D47;
+            border: 1px solid #615C54;
+            overflow: hidden;
+            padding-left:82px;
+        }
+
+        .all_members_div_click {
+            margin: 10px 20px 10px 20px;
+            width: 176px;
+            height: 32px;
+            background-color: #37342e;
+            overflow: hidden;
+            padding-left: 82px;
+            color: #ffc446!important;
+        }
+
+        .all_members_padding {
+            padding:10px 20px;
+        }
+
+        .all_members_info_div {
+            float: left;
+            margin-left: 11px;
+            margin-top: 5px;
+        }
+
+        .all_members_info_realname {
+            color: #ffc446;
+            font-size: 14px;
+        }
+
+        .all_members_info_username {
+            color: #b7afa5;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .group_div_list {
+            margin: 10px 20px 0 20px;
+            width: 218px;
+            height: 30px;
+            background-color: #524D47;
+            border: 1px solid #615C54;
+            overflow: hidden;
+        }
+
+        .group_div_list_click {
+            margin: 10px 20px 0 20px;
+            width: 240px;
+            height: 32px;
+            background-color: #37342e;
+            border: 0px;
+            overflow: hidden;            
+        }
+
+        .group_div_list_groupname {
+            height: 30px;
+            font-size: 14px;
+            color: #fff;
+            margin-left: 20px;
+            float: left;
+            line-height: 30px;
+            cursor: pointer;
+        }
+
+        .group_div_list_edit {
+            height: 30px;
+            line-height: 30px;
+            float: right;
+            font-size: 14px;
+            cursor: pointer;
+            color: #B7AFA5;
+        }
+
+        .group_div_list_remove {
+            height: 30px;
+            line-height: 30px;
+            float: right;
+            margin: 0 20px 0 10px;
+            cursor: pointer;
+            color: #B7AFA5;
+        }
+
+        .user_detail {
+            padding: 0;
+            margin: 0 10px;            
+            overflow-x:auto;
+        }
+        .change {
+            height:280px;
+        }
+
+        .user_list {
+            width: 140px;
+            height: 40px;
+            margin-top: 10px;
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #47423C;
+            overflow: hidden;
+            float: left;
+            border: 1px solid #47423C;            
+        }
+        .user_list:hover {     
+            border:1px solid #938E84;      
+        }
+
+        .adduser_list {
+            width: 140px;
+            height: 40px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #47423C;
+            overflow: hidden;
+            float: left;
+            border: 1px solid #615C54;
+        }
+            .adduser_list:hover {
+                border: 1px solid #938E84;
+            }
+
+        .user_avatar {
+            float: left;
+            width: 40px;
+            height: 40px;
+            background-size: 40px 40px;
+        }
+
+        .btn_delete {
+            cursor: pointer;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            background-color: #8064a2;
+            border-radius: 2px;
+            font-size: 14px;
+            width: 50px;
+            margin: 0 5px;
+        }
+
+            .btn_delete:hover {
+                background-color: #8b6daf;
+            }
+    </style>
+}
+@Scripts.Render("~/bundles/angular")
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+
+<div class="tablecloth" style="padding-bottom:1px;">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/ProjectSeries">发行协作平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">人员分组</span>
+    </header>
+    <div ng-app="UserGroupApp" ng-controller="UserGroupCtrl" ng-init="initPage()" ng-cloak>
+
+        @* 创建新的分组 *@
+        <div class="group_div">
+            <div class="group_btn_add" ng-click="addNewGroup()">创建组</div>
+            <div class="all_members_div_click group_div_list_groupname" ng-click="refeshPage()">全部成员</div>
+            <div id="{{groupInfo.Id}}" class="group_div_list" group-guid="{{groupInfo.guid}}" ng-cloak ng-repeat="groupInfo in allGroupInfo">
+                <div class="group_div_list_groupname cnabs_ellipsis" style="width:106px;" ng-click="showGroupMembers(groupInfo.guid,groupInfo.name)" title="{{groupInfo.name}}">{{groupInfo.name}}</div>
+                <div class="group_div_list_remove" ng-click="removeGroup(groupInfo.guid,$event)">删除</div>
+                <div class="group_div_list_edit" ng-click="editGroup(groupInfo.guid,groupInfo.name,$event)">编辑</div>
+            </div>            
+        </div>
+
+        @* 全部成员 *@
+        <div id="allUserMembers" class="members_div">
+            <div class="all_members_padding">
+                <span style="padding-left:7px;font-size:14px;">
+                    全部人员：{{allAllAuthedUsersInfo.length}}人
+                </span>
+            </div>
+            <ul class="user_detail">
+                <li class="user_list" ng-repeat="authedUsersInfo in allAllAuthedUsersInfo">
+                    <div class="user_avatar" style="background-image:url({{authedUsersInfo.AvatarPath}});"></div>
+                    <div class="all_members_info_div">
+                        <div class="all_members_info_realname cnabs_ellipsis" style="width:70px" title="{{authedUsersInfo.realName}}">
+                            {{authedUsersInfo.realName}}
+                        </div>
+                        <div class="all_members_info_username cnabs_ellipsis" style="width:70px" title="{{authedUsersInfo.userName}}">
+                            {{authedUsersInfo.userName}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        @* 展开分组成员 *@
+        <div id="openGroup" style="float:right;width:790px;height:780px;background-color:#37342e;display:none"ng-cloak>
+            <div style="padding:10px 20px;height:24px;">
+                <div class="left" style="font-size:14px">
+                <input id="selectAllGroupMember" type="checkbox" style="margin-top:2px;" ng-change="selectUser(selectAll)" ng-model="selectAll" />
+                    <label class="cnabs_pointer" for="selectAllGroupMember">全选</label>
+                </div>                
+                <div style="padding-left:7px;font-size:14px;float:left">
+                    {{groupName}}：{{userGroupUsers.length}}人
+                </div>                
+                <div style="float:right">
+                    <div style="float:right" class="cnabs_btn_add" ng-click="addGroupMember(groupGuid,groupName)">增加成员</div>
+                    <div class="btn_delete right" ng-click="removeGroupMember(groupGuid,groupName)">删除</div>
+                    <div style="float:right;font-size:14px;height:24px;line-height:24px;">已选择{{checkedUserCount1.length}}人</div>
+                </div>
+            </div>
+            <ul class="user_detail">
+                <li class="user_list" ng-repeat="users in userGroupUsers" ng-click="checkedByDivContrlUser($index,userGroupUsers)">
+                    <div class="user_avatar" style="background-image:url({{users.AvatarPath}});"></div>
+                    <div style="float:left;margin-left:11px;margin-top:5px;width:70px;">
+                        <div class="cnabs_ellipsis" style="color:#ffc446;font-size:14px;width:70px;" title="{{users.realName}}">
+                            <label class="cnabs_pointer">{{users.realName}}</label>
+                        </div>
+                        <div class="cnabs_ellipsis" style="color:#b7afa5;font-size:12px;width:70px;margin-top:3px;" title="{{users.userName}}">
+                            <label class="cnabs_pointer">{{users.userName}}</label>
+                        </div>
+                    </div>
+                    <div class="right" style="margin-top:5px;">
+                        <input class="cnabs_pointer" type="checkbox" value="{{users}}"
+                               ng-change="checkedCount1(userGroupUsers)"
+                               ng-model="userGroupUsers[$index].ischecked"
+                               ng-click="stopPropagation($event)" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        @* 增加成员按钮 *@
+        <div id="addGroupMemeber" style="display:none;padding:0px;">
+            <div style="padding:17px 0 10px 18px">
+                <div class="left" style="font-size:14px">
+                <input id="selectAllAddGroupMember" type="checkbox" style="margin-top:2px;" ng-change="selectUserForAdd(selectAllUser)" ng-model="selectAllUser" />
+                    <label class="cnabs_pointer" for="selectAllAddGroupMember">全选</label>
+                </div>
+                <span style="padding-left:7px; font-size:14px;font-family:Microsoft YaHei">
+                    共{{usersInfoExceptGroups.length}}人，已选择{{checkedUserCount.length}}人
+                </span>
+            </div>          
+            <ul class="user_detail">
+                <li class="adduser_list" ng-repeat="usersExGroups in usersInfoExceptGroups" ng-click="checkedByDivContrlUser($index,usersInfoExceptGroups)">
+                    <div class="user_avatar" style="background-image:url({{usersExGroups.AvatarPath}});"></div>
+                    <div style="float:left;margin-left:11px;margin-top:5px;width:70px;">
+                        <div class="cnabs_ellipsis" style="color:#ffc446;font-size:14px;width:70px;" title="{{usersExGroups.realName}}">
+                            <label class="cnabs_pointer">{{usersExGroups.realName}}</label>
+                        </div>
+                        <div class="cnabs_ellipsis" style="color:#b7afa5;font-size:12px;width:70px;margin-top:3px;" title="{{usersExGroups.userName}}">
+                            <label class="cnabs_pointer">{{usersExGroups.userName}}</label>
+                        </div>
+                    </div>
+                    <div class="right" style="margin-top:5px;">
+                        <input class="cnabs_pointer" type="checkbox" value="{{usersExGroups}}"
+                               ng-change="checkedCount(usersInfoExceptGroups)"
+                               ng-model="usersInfoExceptGroups[$index].ischecked"
+                               ng-click="stopPropagation($event)" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="noAddGroupMemeber" style="display:none;padding:0px;">
+            <div style="padding:17px 0 0 18px">
+                <span style="font-size:14px;font-family:Microsoft YaHei">
+                    无成员可选择
+                </span>
+            </div>
+        </div>
+
+        @* 编辑组 *@
+        <div id="editGroup" style="display:none">
+            <input class="group_dialog_input" id="editGroupName" placeholder="请输入新建组名称" />            
+            <div style="font-size:12px;padding-left:7px;margin-top:11px; margin-bottom:13px;" class="cnabs_red cnabs_none">*组名已存在，请您重新输入！</span>
+        </div>
+    </div>
+</div>
+
+<div id="addNewGroup" style="display:none;">
+    <input class="group_dialog_input" id="addNewGroupName" placeholder="请输入新建组名称" />
+    <span style="font-size:12px;padding-left:7px;margin-top:11px; margin-bottom:13px;" class="cnabs_red cnabs_none">*组名已存在，请您重新输入！</span>
+</div>
+
+
+
+<script>
+    $(function () {
+        BindingElementActive(4, 1, 3);
+    });
+
+    var avatarCache = new Array();
+
+    var userGroupApp = angular.module('UserGroupApp', []);
+
+    userGroupApp.service('avatarHelper', function ($http) {
+        this.load = function (userInfo) {
+            var userName = userInfo.userName;
+            if (cnabsHasContent(avatarCache[userName])) {
+                userInfo.AvatarPath = avatarCache[userName];
+            } else {
+                $http.get('/DashBoard/GetUserAvatar', { params: { userName: userName } }).success(
+                    function (data, status, headers, config) {
+                        //data = data == '' ? '/Images/avatar/headerDefault.jpg' : data;
+                        //avatarCache[userName] = cnabsFormatAvatarPath(data);
+                        //userInfo.AvatarPath = avatarCache[userName];
+                        userInfo.AvatarPath = data;
+                    }
+                );
+            }
+        }
+    });
+
+    userGroupApp.controller('UserGroupCtrl', function ($scope, $http, avatarHelper) {
+        $scope.checkedUserList = [];
+        $scope.checkedUserCount = [];
+        $scope.checkedUserCount1 = [];
+
+        $scope.initPage = function () {
+
+            $scope.getAllGroupInfo();
+            $scope.getAllMembersInfo();            
+        }
+
+        $scope.refeshPage = function () {            
+            $("#openGroup").css("display", "none");
+            $("#allUserMembers").css("display", "block");         
+            $(".group_div_list_click").removeClass("group_div_list_click");
+            $(".group_div_list_remove").css("margin", "0 20px 0 10px");
+            $(".group_div_list_groupname").css("color", "#fff");
+            $(".all_members_div").addClass("all_members_div_click");
+            $(".all_members_div").removeClass("all_members_div");
+        }
+
+        $scope.getAllGroupInfo = function () {
+
+            cnabsAjax("获取组别列表", "/UserGroup/GetUserGroups", null, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    data[i].Id = cnabsRandomHtmlId("groupDiv");
+                }
+                $scope.allGroupInfo = data;
+                $scope.$apply();
+            })
+        }
+
+        $scope.isLegalGroupName = function (groupName) {
+            var isLegalGroupName = true;
+            $.each($scope.allGroupInfo, function (index, item) {
+                if (groupName == item.name) {
+                    isLegalGroupName = false;
+                    return isLegalGroupName;
+                }
+            })
+            return isLegalGroupName;
+
+        }
+
+        $scope.getAllMembersInfo = function () {
+            cnabsAjax("获取成员列表", "/EnterpriseUser/GetAllAuthedUsers", null, function (data) {
+                $.each(data, function () {
+                    avatarHelper.load(this);
+                })
+                $scope.allAllAuthedUsersInfo = data;
+                $scope.$apply();
+            })
+        }        
+
+        $scope.addNewGroup = function () {
+            $("#addNewGroup .cnabs_red").addClass("cnabs_none");
+            $("#addNewGroup .group_dialog_input").css("margin", "31px 7px 30px 7px");
+            cnabsDlgYesNo('addNewGroup', '创建组', function () {
+                var isLegalGroupName=$scope.isLegalGroupName($('#addNewGroupName').val());
+                var param = {
+                    name: $('#addNewGroupName').val()
+                };
+                
+                $('#addNewGroupName').val("");
+                if (isLegalGroupName) {                    
+                    cnabsAjax("创建组", "/UserGroup/AddUserGroup", param, function (data) {
+                        $scope.getAllGroupInfo();
+                        $(".group_div_list_click").removeClass("group_div_list_click");
+                        $(this).addClass("group_div_list_click");
+                        $("#openGroup").css("display", "block");
+                        $("#allUserMembers").css("display", "none");
+                        $scope.showGroupMembers(data.Guid, data.Name);
+                        $scope.$apply();
+                    })
+                } else {
+                    $("#addNewGroup .group_dialog_input").css("margin", "31px 7px 0px 7px");
+                    $("#addNewGroup .cnabs_red").removeClass("cnabs_none");
+                    $("#addNewGroup .cnabs_red").addClass("cnabs_block");
+                    return false;
+                }
+            }, 'auto', 'auto')
+        }
+
+        $scope.removeGroup = function (groupGuid, event) {
+            cnabsStopPropagation(event);
+            cnabsAutoDlgYesNo(null, "删除组", function () {
+                param = {
+                    userGroupGuid: groupGuid
+                };
+                cnabsAjax("移除组", "/UserGroup/RemoveUserGroup", param, function () {
+                    $scope.getAllGroupInfo();
+                    $scope.$apply();
+                    $scope.refeshPage();
+                })
+            }, "确认删除该组？");
+        }
+
+        $scope.editGroup = function (groupGuid, groupName,event) {
+            cnabsStopPropagation(event);
+            $('#editGroupName').val(groupName);
+            $("#editGroup .cnabs_red").addClass("cnabs_none");
+            $("#editGroup .cnabs_red").removeClass("cnabs_block");
+            $("#editGroup .group_dialog_input").css("margin", "31px 7px 30px 7px");
+            cnabsDlgYesNo('editGroup', '编辑组名', function () {
+                var isLegalGroupName=$scope.isLegalGroupName($('#editGroupName').val());
+                var param = {
+                    userGroupGuid:groupGuid,
+                    name: $('#editGroupName').val()
+                };
+                if (isLegalGroupName) {
+                    cnabsAjax("编辑组", "/UserGroup/ModifyUserGroup", param, function (data) {
+                        $scope.getAllGroupInfo();
+                        $scope.$apply();
+                        $scope.refeshPage();
+                    })
+                } else {
+                    $("#editGroup .cnabs_red").removeClass("cnabs_none");
+                    $("#editGroup .cnabs_red").addClass("cnabs_block");
+                    $("#editGroup .group_dialog_input").css("margin", "31px 7px 0px 7px");
+                    return false;
+                }
+            }, 'auto', 'auto')
+        }
+
+        $scope.hightlightGroup = function (element) {
+            $scope.checkedUserCount1 = [];
+            $scope.selectAll = false;
+            $(".all_members_div_click").addClass("all_members_div");
+            $(".all_members_div_click").removeClass("all_members_div_click");
+            $(".group_div_list_remove").css("margin", "0 20px 0 10px");
+            $(".group_div_list_groupname").css("color", "#fff");
+            $(".group_div_list_click").removeClass("group_div_list_click");
+            element.addClass("group_div_list_click");
+            var clickId = $(".group_div_list_click").last().attr("id");
+            $("#" + clickId).find(".group_div_list_remove").css("margin", "0 40px 0 10px");
+            $("#" + clickId).find(".group_div_list_groupname").css("color", "#ffc446");
+            $("#openGroup").css("display", "block");
+            $("#allUserMembers").css("display", "none");
+        }
+
+        $scope.showGroupMembers = function (groupGuid,groupName) {
+            //修改style
+            $(".group_div_list").click(function () {
+                $scope.hightlightGroup($(this));
+            })
+
+            var param = {
+                userGroupGuid: groupGuid
+            };
+            cnabsAjaxSync("获取组别的成员信息", "/UserGroupMap/GetUserGroupUsers", param, function (data) {
+                $.each(data, function () {
+                    avatarHelper.load(this);
+                })
+                $scope.userGroupUsers = data;
+                $scope.groupGuid = groupGuid;
+                $scope.groupName = groupName;
+                $scope.$apply();
+            })
+
+            setTimeout(function () {
+                if (cnabsHasContent(groupGuid)) {
+                    var element = $("[group-guid='" + groupGuid + "']");
+                    $scope.hightlightGroup(element);
+                }
+            }, 10);
+        }
+      
+        $scope.addGroupMember = function (groupGuid, groupName) {            
+            $scope.checkedUserCount = [];
+            $scope.selectAllUser = false;
+            var checkedUserList = [];
+            var width;
+            var userNames = "";
+            var userNamesArr = [];
+            param = {
+                userGroupGuid: groupGuid
+            };
+            cnabsAjax("获取除组员以外的所有用户", "/UserGroupMap/GetUsers", param, function (data) {
+                $.each(data, function () {
+                    avatarHelper.load(this);
+                })
+                $scope.usersInfoExceptGroups = data;
+                $scope.$apply();
+
+                $(".change").removeClass("change");
+                if ($scope.usersInfoExceptGroups.length > 16) {
+                    width = 818;
+                    $("#addGroupMemeber").find(".user_detail").addClass("change");
+                    $("#addGroupMemeber").find(".user_detail").addClass("cnabs_scrollbar");                    
+                }else{
+                    width = 798;
+                }
+
+                if ($scope.usersInfoExceptGroups.length != 0) {
+                    cnabsDlgYesNo('addGroupMemeber', groupName + ' 增加成员', function () {
+
+                        $.each($scope.usersInfoExceptGroups, function (index, item) {
+                            if (item.ischecked) {
+                                checkedUserList.push(item);
+                                userNamesArr.push(item.userName);
+                            }
+                        })
+                        userNames = userNamesArr.join(",");
+                        var param = {
+                            userGroupGuid: groupGuid,
+                            userNames: userNames
+                        };
+                        $scope.checkedUserCount = [];
+                        $scope.checkedUserCount1 = [];
+                        $scope.$apply();
+                        cnabsAjax("增加成员", "/UserGroupMap/AddUsers", param, function (data) {
+                            $scope.showGroupMembers(groupGuid, groupName);
+                        })
+                    }, 'auto', width)
+                }else {
+                    cnabsDlgYesNo('noAddGroupMemeber', '增加成员', function () {
+                    }, 'auto', 'auto')
+                }                
+            })
+        }
+       
+        $scope.removeGroupMember = function (groupGuid, groupName) {
+            $scope.checkedUserRemove = [];
+            $scope.checkedUserRemoveArr = [];
+            $scope.checkedUserRemoveName = "";
+            $scope.selectAll = false;
+            cnabsAutoDlgYesNo(null, "移除组内成员", function () {
+            param = {
+                userGroupGuid: groupGuid,
+            };
+            cnabsAjax("获取组别的成员信息", "/UserGroupMap/GetUserGroupUsers", param, function (data) {
+                $scope.selectedMembers = data;
+            })
+            $.each($scope.userGroupUsers, function (index, item) {
+                if (item.ischecked) {
+                    $scope.checkedUserRemove.push(item);
+                    $scope.checkedUserRemoveArr.push(item.userName);                    
+                }
+            })
+            $scope.checkedUserRemoveName = $scope.checkedUserRemoveArr.join(",");
+            param = {
+                userGroupGuid: groupGuid,
+                userNames: $scope.checkedUserRemoveName
+            };
+            cnabsAjax("删除成员", "/UserGroupMap/RemoveUsers", param, function (data) {                
+                $scope.showGroupMembers(groupGuid, groupName);
+                $scope.checkedUserCount1 = [];
+                $scope.$apply();                
+            })
+            },"确认移除" + $scope.checkedUserCount1.length + "个组内成员？");
+        }
+       
+        $scope.checkedCount = function (data) {
+            $scope.checkedUserCount = [];
+            $.each(data, function (index, item) {
+                if (item.ischecked) {
+                    $scope.checkedUserCount.push(item);
+                }
+            })
+            $scope.selectAllUser = $scope.checkedUserCount.length == $scope.usersInfoExceptGroups.length;
+        }
+
+        $scope.checkedCount1 = function (data) {
+            $scope.checkedUserCount1 = [];
+            $.each(data, function (index, item) {
+                if (item.ischecked) {
+                    $scope.checkedUserCount1.push(item);
+                }
+            })
+            $scope.selectAll = $scope.checkedUserCount1.length == $scope.userGroupUsers.length;
+        }
+
+        $scope.selectUser = function (ischecked) {            
+            $.each($scope.userGroupUsers, function (index, item) {
+                item.ischecked = ischecked;
+            })
+            $scope.checkedCount1($scope.userGroupUsers);
+        }
+
+        $scope.selectUserForAdd = function (ischecked) {
+            $.each($scope.usersInfoExceptGroups, function (index, item) {
+                item.ischecked = ischecked;
+            })
+            $scope.checkedCount($scope.usersInfoExceptGroups);
+        }
+
+        $scope.checkedByDivContrlUser = function (index,data) {
+            var ischecked = data[index].ischecked;                        
+            if (!ischecked) {
+                data[index].ischecked = true;
+            }
+            else {
+                data[index].ischecked = false;
+            }
+            if (data == $scope.userGroupUsers) { 
+                $scope.checkedCount1($scope.userGroupUsers);
+            }
+            if (data == $scope.usersInfoExceptGroups) {
+                $scope.checkedCount($scope.usersInfoExceptGroups);
+            }
+        }
+        
+        //阻止checkbox的默认事件（解决点击div控制checkbox的勾选）
+        $scope.stopPropagation = function (event) {
+            var event = event || window.event;
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                window.event.returnValue = false;
+            }
+        }
+    });
+
+</script>
+

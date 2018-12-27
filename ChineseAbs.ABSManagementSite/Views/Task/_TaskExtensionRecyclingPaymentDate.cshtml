@@ -1,0 +1,195 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+@using ChineseAbs.ABSManagementSite.Models;
+@using ChineseAbs.ABSManagement.Object;
+@using ChineseAbs.ABSManagementSite.Common;
+@using ChineseAbs.ABSManagement.Models;
+
+<style type="text/css">
+    .balance_highlight{
+        color:#FFC;
+    }
+    .totalElement{
+        line-height:24px;
+        text-align:left;
+    }
+    .divOperationTip{
+        position:relative;
+        cursor:pointer;
+    }
+    .confirmTip{
+        position:absolute;
+        display:none;
+        border:1px solid #666;
+        background: #47423C;
+        z-index:1000;
+        color:#B7AFA5;
+        padding:3px;
+    }    
+    .lineElement {
+        padding: 12px 0px 5px 0px;
+        overflow: hidden;
+    }
+
+        .lineElement .divAmount {
+            font-size: 24px;
+            min-width: 192px;
+            text-align: right;
+            float: left;
+        }
+
+        .lineElement .divPrompt {
+            font-size: 14px;
+            color: #b7afa5;
+            width: 192px;
+            text-align: right;
+        }
+
+    .rulePrompt {
+        margin-top: 3px;
+    }
+</style>
+<div class="cnabs_div_v2">
+    @{
+        var errorMsg = Model.TaskExtension.Info as string;
+        var recyclingPayment = new RecyclingPaymentDateViewModel();
+        if (errorMsg != null)
+        {
+            <div style="text-align:left;color:#ff6666;font-size:15px;font-weight:bold;word-wrap:break-word;">
+                @Html.Raw(Toolkit.FormatHtmlText(errorMsg))
+            </div>
+        }
+        else
+        {
+            <div style="overflow:hidden; border-bottom:2px dotted #666;">
+                <div style="padding-left:3px;padding-right:3px;">
+                    <div style="overflow:hidden;">
+                        <span class="left fixedColor">当前状态：</span>
+                        @if (Model.TaskExtension.Status == TaskExtensionStatus.Finished)
+                        {
+                            <span class="left cnabs_green" style="margin-left:5px;width:200px;"> 已核对</span>
+                        }
+                        else if (Model.TaskExtension.Status == TaskExtensionStatus.NotMatch)
+                        {
+                            <span class="left cnabs_red" style="margin-left:5px;width:200px;"> 已核对，数据不匹配</span>
+                        }
+                        else
+                        {
+                            <span class="left cnabs_blue" style="margin-left:5px;width:200px;"> 未核对</span>
+                        }
+                        @if (Model.TaskExtension.Status == TaskExtensionStatus.Finished && !string.IsNullOrEmpty(Model.TaskExtension.Handler))
+                        {
+                            <span class="left fixedColor" style="margin-left:5px;width:70px;">核对人：</span>
+                            <span class="left" style="margin-left:33px;width:200px;"> @Toolkit.ToString(Model.TaskExtension.Handler)</span>
+                        }
+                        @if (Model.TaskExtension.Status == TaskExtensionStatus.Finished && Model.TaskExtension.HandleTime != null)
+                        {
+                            <span class="left fixedColor" style="margin-left:5px;width:84px;">核对时间：</span>
+                            <span class="left" style="margin-left:5px;"> @Toolkit.DateTimeToString(Model.TaskExtension.HandleTime)</span>
+                        }
+                        <span class="fixedColor" id="ConfirmMatch" style="margin-top:1px; float:right;cursor:pointer;">是否匹配</span>
+                        <input id="checkboxConfirmMatch" style="margin-top:5px; float:right; margin-right:5px; cursor:pointer;" type="checkbox" name="name" value=" " checked="" />
+                    </div>
+                    <div class="am_button" style="float:right;margin-top:8px;">
+                        <input id="btnConfirm" type="button" value="确认核对" />
+                    </div>
+                </div>
+            </div>
+            recyclingPayment = (RecyclingPaymentDateViewModel)(Model.TaskExtension.Info);
+
+            <div>
+                <div class="lineElement">
+                    <div class="divAmount">@recyclingPayment.PaymentMoney.ToString("N2")</div>
+                    <div class="divPrompt">
+                        当期需支付金额
+                    </div>
+                </div>
+                <div class="lineElement">
+                    <div style="overflow:hidden;">
+                        @if (recyclingPayment.CompareSign == "NotCompare")
+                        {
+                            <div class="divAmount">@recyclingPayment.CurrentAccountBalance.ToString("N2")</div>
+                        } else if(recyclingPayment.CompareResult.IsPassed){
+                            <div class="divAmount cnabs_green">@recyclingPayment.CurrentAccountBalance.ToString("N2")</div>
+                            <div class="left rulePrompt cnabs_prompt" style="background-image:url(../../Images/Common/correct.png);">
+                                <span>@recyclingPayment.CurrentAccountName</span>余额<span>@Toolkit.ConvertCompareSign(recyclingPayment.CompareSign)</span>当期需支付金额
+                            </div>
+                        }else if(!recyclingPayment.CompareResult.IsPassed){
+                            <div class="divAmount cnabs_red">@recyclingPayment.CurrentAccountBalance.ToString("N2")</div>
+                            <div class="left rulePrompt cnabs_prompt" style="background-image:url(../../Images/Common/error.png);">
+                                <span>@recyclingPayment.CompareResult.ErrorMsg</span>
+                            </div>
+                        }
+                    </div>              
+                    <div style="overflow:hidden;">
+                        <div class="divPrompt left">
+                            <span>@recyclingPayment.CurrentAccountName</span>余额
+                        </div>
+                        <a class="am_link_color left" href="/BankAccount/ShowProjectAccounts?projectGuid=@Model.ProjectGuid" style=" margin-left:20px;">更新账户信息</a>
+                    </div>
+                </div>
+             @if (recyclingPayment.ConfirmedAccountBalance.HasValue){
+                <div class="lineElement">
+                    <div class="divAmount">@recyclingPayment.ConfirmedAccountBalance.Value.ToString("N2")</div>
+                    <div class="divPrompt">
+                        上次确认核对时的账户余额
+                    </div>
+                </div>
+             }
+            </div>
+        }
+}
+</div>
+
+
+<script type="text/javascript">          
+        $(document).ready(function () {
+            var max=192;
+            $.each($('.divAmount'),function(index,item){
+                if($(item).width()>max){
+                    max=$(item).width()
+                }
+            });
+            $.each($(".divPrompt"),function(index,item){
+                if($(item).width()>max){
+                    max=$(item).width()
+                }
+            });
+            $(".divAmount").width(max);
+            $(".divPrompt").width(max);
+
+            TextControlCheckbox("checkboxConfirmMatch","ConfirmMatch");
+            $("#btnConfirm").click(function () {
+                if ($("#checkboxConfirmMatch").is(":checked")) {
+                    var taskStatus = $('#taskStatus')[0].textContent;
+                    if (taskStatus == '完成') {
+                        GetSubsequentTasksCount();
+		    }
+		    if (taskStatus == '完成'&& $("#am_warning").css("display") == 'block' && $("#am_warningContent").html() != ''){
+                        am_appear('Running',false,false,ConfirmRecyclingPaymentDate);
+                    } else {
+                        ConfirmRecyclingPaymentDate();
+                    }               
+                } else {
+                    GetSubsequentTasksCount();
+                    am_appear('Error', true, true);
+                }
+            });
+
+            var currentTaskExStatus = '@Model.TaskExtension.Status';
+            if (currentTaskExStatus == "NotMatch") {
+                $("#checkboxConfirmMatch").prop("checked", false)
+            }
+
+            function ConfirmRecyclingPaymentDate() {
+                cnabsAjax('核对','/Task/ConfirmRecyclingPaymentDate',{
+                    shortCode: '@Model.ShortCode',
+                    currentAccountBalance:@recyclingPayment.CurrentAccountBalance,
+                    paymentMoney:@recyclingPayment.PaymentMoney,
+                },function(){
+                    AddTaskLog("已确认回收款");
+                    cnabsMsgSuccess("可以设置任务为【完成】", true);
+                });
+            }        
+        });
+</script>
+

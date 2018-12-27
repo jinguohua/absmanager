@@ -1,0 +1,408 @@
+﻿@using ChineseAbs.ABSManagementSite.Common
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+	<style type="text/css">
+		tr {
+			text-align: center;
+		}
+	</style>
+
+	@Scripts.Render("~/bundles/angular")
+	<script src="~/Scripts/paulkinzett-toolbar/jquery.toolbar.js"></script>
+	<script src="~/Content/cnabsUtils/semantic/components/sidebar.min.js"></script>
+	<script src="~/Scripts/cnabsUtils/cnabs.embedPanel.js"></script>
+	<link href="~/Content/paulkinzett-toolbar/jquery.toolbar.css" rel="stylesheet" />
+
+	<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+	<script src="~/Scripts/jquery.fancytree.min.js"></script>
+	<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+	<script src="~/Scripts/select2.min.js"></script>
+	<link href="~/Content/fancytree/ui.fancytree.css" rel="stylesheet" />
+	<style type="text/css">
+		.LocalDeployedManage {
+			overflow: hidden;
+			padding: 10px 20px 10px;
+		}
+		#divOperator {
+			line-height: 30px;
+			margin-top: 10px;
+
+			overflow: hidden;
+			padding: 8px 20px 8px 20px;
+			height: 24px;
+			background: #4f4a43;
+		}
+
+
+			.addCollaborativePerson div:nth-of-type(1) {
+				color: #b7afa5;
+				float: left;
+				line-height: 24px;
+			}
+		#divOperator.fixed {
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: #47423c;
+			z-index: 99999;
+		}
+
+		.ui-fancytree fancytree-container, .fancytree-lastsib {
+			background-color: #47423c !important;
+		}
+
+		#menuTree {
+			margin-top: 10px;
+			padding: 20px;
+			background-color: #47423c;
+		}
+
+		.cnabs_dialog_content_title {
+			height: 28px;
+			line-height: 28px;
+			width: 65px;
+		}
+
+		input[type='text'], input[type='password'], #role, .cnabs_dialog_input_wid {
+			padding-left: 10px;
+			border: none;
+			width: 191px;
+			height: 26px;
+			border-radius: 2px;
+		}
+
+		.select2-selection {
+			min-height: 26px !important;
+		}
+
+		.select2-dropdown, .select2-selection, .select2-results__options, .select2-search__field {
+			width: 200px !important;
+			color: black;
+			font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体","arial", "serif";
+		}
+	</style>
+}
+<div class="tablecloth">
+	<header class="am_site_map_panel">
+		<span class="am_site_map_arrow">当前位置：</span>
+		<a class="am_site_map_label" href="/">账户管理</a>
+		<span class="am_site_map_arrow">></span>
+		<span class="am_site_map_arrow">菜单设置</span>
+	</header>
+
+	<div ng-app="MenuSetting">
+		<div ng-controller="MenuSettingCtrl" class="LocalDeployedManage">
+			<div class="">
+				<div id="divOperator">
+					<a id="lnkAdd" href="#nogo" ng-click="AddMenu()">新增<i class="icon add"></i></a>
+					<a id="lnkEdit" href="#nogo" ng-click="EditMenu()">修改<i class="icon edit"></i></a>
+					<a id="lnkDelete" href="#nogo" ng-click="DeleteMenu()">删除<i class="delete icon "></i></a>
+				</div>
+				<div id="menuTree" ng-bind="GetFunctions()">
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+@section scripts{
+	<script src="~/Scripts/jquery.form.min.js"></script>
+	<script src="~/Scripts/select2.min.js"></script>
+	<script type="text/javascript">
+		var MenuSettingApp = angular.module('MenuSetting', []);
+		MenuSettingApp.controller('MenuSettingCtrl', function ($scope, $rootScope) {
+			$scope.functionData = [];
+
+			$scope.GetFunctions = function () {
+				cnabsAjax("获取Function", "/Menus/GetFunctions", {}, function (data) {
+					$scope.functionData = data;
+				})
+			};
+			$scope.AddMenu = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				var createMenuControls = [{
+					title: "名称",
+					type: "text",
+					elementId: "Name",
+					value: "",
+					placeHolder: "请填写名称",
+
+				}, {
+					title: "描述",
+					type: "text",
+					elementId: "Description",
+					value: "",
+
+				}, {
+					title: "CssClass",
+					type: "text",
+					elementId: "CssClassName",
+					value: "",
+					placeHolder: "",
+				}, {
+					title: "页面",
+					type: "select",
+					elementId: "FunctionID",
+					value: "",
+					OptionArray: $scope.functionData,
+					placeHolder: "",
+				}, {
+					title: "路径",
+					type: "text",
+					elementId: "URL",
+					value: "请选择",
+					placeHolder: "请填写路径",
+
+				}, {
+					title: "扩展(Json)",
+					type: "text",
+					elementId: "Extension",
+					value: "",
+					placeHolder: "",
+				}, {
+					title: "序号",
+					type: "text",
+					elementId: "Sequence",
+					value: user.phoneNumber,
+					placeHolder: "请填写序号",
+					limit: {
+						type: "number",
+					}
+				}]
+
+				cnabsAutoDialog(createMenuControls, "添加菜单", function (data) {
+					var node = getSelectedNode();
+					var param = {
+						Name: data.Name,
+						Description: data.Description,
+						CssClassName: data.CssClassName,
+						Sequence: data.Sequence,
+						ParentID: node.key,
+						FunctionID: data.FunctionID,
+						URL: data.URL,
+						Extension: data.Extension,
+						Sequence: data.Sequence,
+
+					};
+					cnabsAjax("添加菜单", "/Menus/AddMenu", param, function (result) {
+						$(".cnabs_dialogCloth").dialog("close");
+						$scope.RefreshMenus();
+					});
+				})
+			}
+
+			$scope.EditMenu = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				if (node.data.ParentID == null) {
+					alertify.error("不能编辑根节点")
+					return;
+				}
+
+				var editMenuControls = [{
+					title: "名称",
+					type: "text",
+					elementId: "Name",
+					value: node.title,
+					placeHolder: "请填写名称",
+
+				}, {
+					title: "描述",
+					type: "text",
+					elementId: "Description",
+					value: node.data.Description,
+
+				}, {
+					title: "CssClass",
+					type: "text",
+					elementId: "CssClassName",
+					value: node.data.CssClassName,
+					placeHolder: "",
+				}, {
+					title: "页面",
+					type: "select",
+					elementId: "FunctionID",
+					value: node.data.FunctionID,
+					OptionArray: $scope.functionData,
+					placeHolder: "请选择",
+				}, {
+					title: "路径",
+					type: "text",
+					elementId: "URL",
+					value: node.data.URL,
+					placeHolder: "请填写路径",
+
+				}, {
+					title: "扩展(Json)",
+					type: "text",
+					elementId: "Extension",
+					value: node.data.Extension,
+					placeHolder: "",
+				}, {
+					title: "序号",
+					type: "text",
+					elementId: "Sequence",
+					value: node.data.Sequence,
+					placeHolder: "请填写序号",
+					limit: {
+						type: "number",
+					}
+				}]
+
+				cnabsAutoDialog(editMenuControls, "编辑菜单", function (data) {
+					var node = getSelectedNode();
+					var param = {
+						Id: node.key,
+						Name: data.Name,
+						Description: data.Description,
+						CssClassName: data.CssClassName,
+						Sequence: data.Sequence,
+						ParentID: node.data.ParentID,
+						FunctionID: data.FunctionID,
+						URL: data.URL,
+						Extension: data.Extension,
+						Sequence: data.Sequence,
+
+					};
+
+					cnabsAjaxSync("编辑菜单", "/Menus/EditMenu", param, function (result) {
+						$(".cnabs_dialogCloth").dialog("close");
+						$scope.RefreshMenus();
+					})
+				})
+
+			}
+
+			$scope.DeleteMenu = function () {
+				var node = getSelectedNode();
+				if (node == null) {
+					return;
+				}
+				if (node.data.ParentID == null) {
+					alertify.error("不能删除根节点")
+					return;
+				}
+				cnabsAutoDlgYesNo(null, "删除菜单", function (data) {
+					cnabsAjax("删除菜单", "/Menus/DeleteMenu", { id: node.key }, function (data) {
+						$scope.RefreshMenus();
+					})
+				}, '确认删除菜单[' + node.title + ']');
+			}
+
+			$scope.RefreshMenus = function () {
+				reloadTree();
+			}
+
+
+		});
+
+		$(document).ready(function () {
+			var top = $("#divOperator").offset().top;
+			var left = $("#divOperator").offset().left;
+			window.onscroll = function () {
+				var scrollTop = $(window).scrollTop();
+				if (scrollTop > top) {
+					$("#divOperator").addClass("fixed").css("left", left);
+				}
+				else {
+					$("#divOperator").removeClass("fixed")
+				}
+			}
+			loadMenus();
+		})
+
+		$("#menuModal form input[name=FunctionType]").change(function () {
+			var show = $("#menuModal form input[name=FunctionType]:checked").val() == "Function";
+			showFunctionSelectOrNot(show)
+		})
+
+		$("#lnkFillName").click(function () {
+			var text = $("#slFunction option:checked").text() || ""
+			if (text != "") {
+				var matchs = /([^\(]+)\(([^\)]+)\)/.exec(text)
+				var name, code
+				if (matchs != null && matchs.length == 3) {
+					name = matchs[1];
+					code = matchs[2];
+					$(this).closest("form").find("input[name=Name]").val(name)
+					$(this).closest("form").find("input[name=Code]").val(code)
+				}
+				else {
+					$(this).closest("form").find("input[name=Name]").val(text)
+					$(this).closest("form").find("input[name=Code]").val(text)
+				}
+			}
+		});
+
+		function loadMenus() {
+			cnabsAjax("查询菜单", "/Menus/GetMenusList", {}, function (data) {
+				mydata = formatTreeDataFilter(new Array(data))
+				renderFancyTree(mydata);
+			})
+		}
+
+		function getSelectedNode() {
+			var node = $("#menuTree").fancytree("getActiveNode");
+			if (node) {
+				return node;
+			}
+			else {
+				alertify.error("请选择一个菜单")
+			}
+			return null;
+		}
+
+		function renderFancyTree(mydata) {
+			$("#menuTree").fancytree({
+				source: mydata,
+				activate: function (event, data) {
+					var tree = $("#menuTree").fancytree("getTree");
+					//this.node = tree.getActiveNode();
+					//$this.getConfigTable();
+				}
+				//lazyLoad: (event, data) => {
+				//	let node = data.node,
+				//		param = { industryId: data.node.key };
+				//	data.result = this.GetIssuerTreeList(param);
+				//},
+			});
+		}
+
+		function formatTreeDataFilter(data) {
+			return data.map(item => {
+				return {
+					title: item.Name,
+					tooltip: item.Name,
+					key: item.Id,
+					folder: item.Children.length == 0 ? false : true,
+					expanded: true,
+					data: {
+						Sequence: item.Sequence, Description: item.Description,
+						CssClassName: item.CssClassName, URL: item.URL,
+						ParentID: item.ParentID, FunctionID: item.FunctionID,
+						Extension: item.Extension,
+					},
+					children: item.Children && this.formatTreeDataFilter(item.Children),
+
+				}
+			})
+		}
+		function reloadTree() {
+			cnabsAjax("查询菜单", "/Menus/GetMenusList", {}, function (data) {
+				mydata = formatTreeDataFilter(new Array(data))
+				var tree = $('#menuTree').fancytree('getTree');
+				tree.reload(mydata);
+			})
+
+		}
+	</script>
+}

@@ -1,0 +1,21 @@
+@import '../../styles/theme/default.less';
+
+.abs-back-top {
+  .ant-back-top {
+    bottom: 200px;
+  }
+}
+.ant-back-top-inner {
+  width: 100%;
+  height: 100%;
+  background-color: @abs-back-top-bg;
+  color: @abs-back-top-icon-color;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s cubic-bezier(.645,.045,.355,1);
+  &:hover {
+    background-color: @abs-back-top-hover-bg;
+  }
+}

@@ -1,0 +1,69 @@
+
+.cnabs_file_picker_preview_images {
+    overflow: hidden;
+}
+
+.cnabs_file_picker_preview_files {
+    overflow: hidden;
+}
+
+.cnabs_file_picker_preview {
+    width: 464px;
+    margin-top: 20px;
+    max-height: 276px;
+    overflow-y: auto;
+}
+
+.cnabs_file_picker_each_file {
+    margin-bottom: 2px;
+    padding: 10px 10px 10px 38px;
+    overflow: hidden;
+    background-color: #4f4a43;
+    background-size: 18px 18px;
+    background-position: 10px 9px;
+    background-repeat: no-repeat;
+}
+
+.cnabs_file_picker_delete_file {
+    cursor: pointer;
+}
+
+.cnabs_file_picker_file_name {
+    width: 280px;
+}
+.cnabs_file_picker_file_last_modify_time {
+    width: 140px;
+    padding-left:60px;
+}
+
+.cnabs_file_picker_file_show_comment {
+    width: 170px;
+    padding-left: 20px;
+    color: #b0a79e;
+}
+
+.cnabs_file_picker_image_preview {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    height: 50px;
+    position: relative;
+}
+
+.cnabs_file_picker_image_preview_each {
+    height: 50px;
+}
+
+.cnabs_file_picker_delete_image {
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    height: 50px;
+    color: red;
+    font-size: 30px;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    top: 0px;
+    left: 0px;
+}
+

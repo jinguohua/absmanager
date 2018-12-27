@@ -1,0 +1,975 @@
+﻿@Scripts.Render("~/bundles/calendar")
+<link href='~/Scripts/fullcalendar/fullcalendar.css' rel='stylesheet' />
+
+<style type="text/css">
+    .panel {
+        margin: 0;
+        padding: 0px;
+        background: none !important;
+    }
+
+    .container_div {
+        padding: 10px 20px;
+    }
+
+    .div_horizon {
+        height: 50px;
+        line-height: 50px;
+        background-color: #47423c;
+    }
+
+    .colorSpecification, .div_buttonGroup {
+        position: relative;
+        top: 34px;
+        left: 1px;
+        float: left;
+        overflow: hidden;
+        width: 240px;
+    }
+
+
+    .colorSpecification span {
+        float: left;
+        margin-left: 5px;
+        font-size: 12px;
+        color: #B7AFA5;
+    }
+
+    .colorSpecification span:nth-of-type(2n+1) {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        margin-left: 10px;
+        margin-top: 3px;
+    }
+
+
+    .colorSpecification span:nth-of-type(1) {
+        margin-left: 0px;
+    }
+
+    .td_operate {
+        text-align: right;
+        width: 100px;
+    }
+
+    .td_operate a {
+        margin: 0 10px;
+    }
+
+
+    .fc-unthemed .fc-list-empty { /*覆盖fullcalendar的css   因为没有记录时listview是白底的*/
+        background: none;
+    }
+
+    .fc-list-item:hover td {
+        background-color: #403B35;
+    }
+
+    .select_project {
+        width: 213px;
+        height:28px;
+        margin-left:3px;
+    }
+
+    .span_title {
+        color: rgb(183, 175, 165);
+        font-size: 14px;
+        float: left;
+    }
+
+    .fc-state-default {
+        background-color: #847c71;
+        background-image: none;
+        border-radius: 2px !important;
+        border-color: none;
+        color: white;
+        text-shadow: none;
+        box-shadow: none;
+    }
+
+    .fc button {
+        height: 24px;
+        padding: 0 6px;
+        font-size: 0.9em;
+        white-space: nowrap;
+        cursor: pointer;
+        color: white;
+    }
+
+    .fc button:hover {
+        background-color: #847C71;
+    }
+
+
+    .fc-prev-button {
+        margin-right: 2px !important;
+    }
+
+
+    .fc-prev-button {
+        background: url('../Images/DashBoard/left.png') no-repeat center center;
+    }
+
+    .fc-prev-button:hover {
+        background: url('../Images/DashBoard/left_hover.png') no-repeat center center;
+    }
+
+    .fc-next-button {
+        background: url('../Images/DashBoard/right.png') no-repeat center center;
+    }
+
+    .fc-next-button:hover {
+        background: url('../Images/DashBoard/right_hover.png') no-repeat center center;
+    }
+
+    .fc-prev-button, .fc-next-button {
+        width: 30px;
+        padding: 0px !important;
+        background-color: #534D46;
+    }
+
+
+    .fc-icon:hover {
+        color: white;
+    }
+
+    .fc-icon {
+        color: #b7afa5;
+    }
+
+    .fc-event-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+    }
+
+    .fc-day-header {
+        height: 28px;
+        background-color: rgba(83, 77, 70, 1);
+        color: rgb(241, 240, 240);
+        vertical-align: middle !important;
+    }
+
+    .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover, .fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td {
+        border-color: #3b3831;
+    }
+
+    .fc-day-number {
+        color: #e0dedb;
+        padding-right: 10px !important;
+    }
+
+    .fc-day-grid-event {
+        padding: 0;
+    }
+
+    .fc-unthemed .fc-today {
+        background-color: #534D46;
+    }
+
+    .fc-today .fc-day-number {
+        color: #FFC446;
+    }
+
+    .fc-row .fc-content-skeleton td, .fc-row .fc-helper-skeleton td {
+        border-color: rgba(55, 52, 46, 1);
+    }
+
+    .fc-more-popover {
+        width: 200px;
+    }
+
+    .fc-header {
+        background-color: rgba(131, 124, 113, 1) !important;
+        height: 26px;
+        line-height: 26px;
+    }
+
+    .fc-more-popover .fc-event-container {
+        background: #3d3833;
+    }
+
+    .fc-more-popover .fc-day-grid-event {
+        margin: 8px 0;
+    }
+
+    .fc-icon {
+        font-size: 1.2em;
+    }
+
+    .fc .fc-toolbar > * > :first-child {
+        color: #e0dedb;
+    }
+
+    .fc-toolbar {
+        margin-bottom: 7px;
+    }
+
+    .fc-toolbar h2 {
+        font-size: 16px;
+        margin: 10px 0 0 -100px !important;
+    }
+
+    .fc-event {
+        border: none;
+        padding: 2.5px 5px;
+        font-size: 12px;
+    }
+
+    .fc-event-container {
+        padding-bottom: 3px !important;
+    }
+
+    .fc-close {
+        margin-top: 4px !important;
+        font-size: 1.0em !important;
+        line-height: 16px !important;
+    }
+
+    .agendaTooltip {
+        position: absolute;
+        z-index: 9999;
+        background-color: rgba(61, 56, 51, 1);
+    }
+
+    .agendaTooltip header {
+        background-color: rgba(131, 124, 113, 1);
+        height: 30px;
+        vertical-align: middle;
+        line-height: 30px;
+        padding: 0 5px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .agendaTooltipcontent {
+        padding: 5px 8px;
+    }
+
+    .agendaTooltipcontent span {
+        display: block;
+        padding-top: 5px;
+        color: #979797;
+        font-size: 12px;
+    }
+
+    .agendaTooltipcontent div {
+        padding-bottom: 5px;
+        color: #f1f1f1;
+    }
+
+    .fc-widget-header {
+        background-color: rgba(83, 77, 70, 1);
+    }
+
+    .fc-list-item-time {
+        /*color: #b7afa5;*/
+    }
+
+    .a_edit, .a_delete {
+        color: #B7AFA5;
+    }
+
+    .a_edit:hover, .a_delete:hover {
+        color: #FFC43D;
+    }
+
+    .DashboardExCalendar .div_buttonGroup .cnabs_btn {
+        border: 0px;
+        color: white;
+        font-family: 'Microsoft YaHei';
+        display: inline-block;
+        float: left;
+        margin-right: 10px;
+        background-color: #534d46;
+        outline: none;
+    }
+
+    .fc-day-grid-event:hover {
+        opacity: 0.9;
+    }
+
+    #calendar {
+        margin-bottom: 26px;
+        font-family: 'Microsoft YaHei' !important;
+    }
+
+
+    .fc-today-button {
+        width: 48px;
+        padding: 0px !important;
+        font-family: 'Microsoft YaHei';
+        background-color: #534D46;
+        font-size: 14px;
+    }
+
+    .text-overflow {
+        width: 271px;
+        text-overflow: ellipsis;
+        cursor: default;
+        word-break: keep-all;
+        overflow: hidden;
+        display: block;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+
+    .colorSpecification span:nth-of-type(2n+1) {
+        width: 8px;
+        height: 8px;
+        margin-top: 5px;
+    }
+
+    .fc-list-item td:nth-child(4), .fc-list-item td:nth-child(5) {
+        color: #B7AFA5;
+    }
+
+    .fc-center h2 {
+        font-size: 16px;
+        color: #D8D8D8;
+        font-weight: 100;
+    }
+
+    .fc-center {
+        position: relative;
+        top: 21px;
+    }
+
+    .fc_event_state {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+    }
+
+    .fc-day-grid-event:first-child {
+        margin-top: 0px !important;
+    }
+
+
+    .fc-widget-header {
+        /*padding-top: 5px;
+        padding-bottom: 5px;*/
+    }
+
+    .fc-widget-header span, .fc-list-item td {
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    .fc-list-item td {
+        padding: 11px 14px 10px 14px;
+    }
+
+    .fc-list-heading td {
+        padding: 5px 14px 6px 14px;
+    }
+
+    .fc-popover .fc-title {
+        padding: 4px 0px;
+    }
+
+    .fc-day-number {
+        padding-right: 10px;
+    }
+
+    .fc-day-header, .fc-widget-header {
+        font-weight: lighter !important;
+    }
+
+    .td_operate {
+        border-bottom: 1px solid #3b3831 !important;
+    }
+
+    /*.fc-day:hover, .fc-day_hover {
+        background: #403B36 !important;
+    }*/
+    .calendar_title_div {
+        overflow: hidden;
+        margin-top: 10px;
+        margin-bottom: -14px;
+        height: 24px;
+        line-height: 24px;
+        position: relative;
+    }
+
+    .calendar_title_div .calendar_title {
+        font-size: 18px;
+    }
+
+    .fc-day-grid-container {
+        overflow: hidden !important;
+    }
+</style>
+<div class="DashboardExCalendar" ng-controller="DashboardExCalendar">
+    <div class="div_horizon container_div">
+        <span class="span_title">选择项目：</span><select class="select_project" ng-change="projectSeriesChange(projectSeriesInfo.selectedItem.Guid)" ng-model="projectSeriesInfo.selectedItem" ng-options="x.Name for x in projectSeriesInfo.items"></select>
+    </div>
+    <div class="container_div">
+        <div class="calendar_title_div">
+            <div class="left calendar_title" id="calendar_title">日程日历</div>
+            <div class="cnabs_btn right" id="changeViewContentBtn" onclick="changeViewContent()">切换显示为工作</div>
+        </div>
+        <div class="panel" style="margin:0;">
+            <div class="div_buttonGroup" style="top:26px;" id="div_buttonGroup">
+                <input type="button" id="btn_switchTableOrList" value="显示为列表" class="cnabs_btn" />
+                <div class="cnabs_btn_add" style="float:left;background-color:#534d46;" onclick="CreateAgenda()">
+                    创建日程
+                </div>
+            </div>
+            <div class="colorSpecification" id="colorSpecification" style="display:none;">
+                <span class="fc-blue"></span>
+                <span>等待/进行中</span>
+                <span class="fc-green"></span>
+                <span>已经完成</span>
+                <span class="fc-red"></span>
+                <span>逾期/错误</span>
+                @*<span style='margin-top:2px;'><img style="width:10px;" src="../../Images/Common/bell_yellow_solid.png" alt="提醒"></span>
+                    <span>提醒</span>*@
+            </div>
+            <div id='calendar'></div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var viewname;
+    var eve;
+    var prjguid;
+    var calendarDate;
+    var loginUsername;
+    var startDate, endDate;
+
+    function ShowCalendar() {
+        $("#calendar").fullCalendar({
+            header: {
+                left: '',
+                center: 'title',
+                right: 'prev,next today myCustomButton'
+            },
+            eventLimit: true,
+            views: {
+                month: {
+                    eventLimit: 4,
+                    titleFormat: 'YYYY年M月'
+
+                }
+            },
+            height: 726,
+            eventLimitText: function (e, allSegsNum) {
+                return "展开全部(" + allSegsNum + "个)"
+            },
+            events: function (start, end, timezone, callback) {
+                startDate = start;
+                endDate = end;
+                var param = {
+                    projectGuid: prjguid,
+                    startDate: start.format(),
+                    endDate: end.format(),
+                };
+                if ($('#calendar_title').html() == '日程日历') {
+                    cnabsAjax("获取日历源数据", "/Agenda/GetAgendas", param, function (data) {
+                        callback(data);
+                    });
+                } else if ($('#calendar_title').html() == '工作日历') {
+                    cnabsAjax("获取日历源数据", "/Agenda/GetTasks", param, function (data) {
+                        $.each(data, function (index, item) {
+                            item.backgroundColor = cnabsGetColorByTaskStatus(item.status);
+                        })
+                        callback(data);
+                    });
+                }
+
+            },
+            eventRender: function (event, element, view) {
+                var reminderStatus = false;
+                if (event.reminderInfo.Exist) {
+                    if (event.reminderInfo.Messagestatus == "SendOk") {
+                        event.reminderInfo.reminderIconSrc = '../../Images/Common/bell_grey_solid.png';
+                    } else if (event.reminderInfo.Messagestatus == "UnSend") {
+                        event.reminderInfo.reminderIconSrc = '../../Images/Common/bell_yellow_solid.png';
+                        reminderStatus = "UnSend"
+                    }
+                } else {
+                    event.reminderInfo.reminderIconSrc = '../../Images/Common/bell_yellow_hollow.png';
+                }
+                if (view.name == "listWeek") {
+                    if ($(element).find('.fc-list-item-time').text() == '凌晨12点00 - 凌晨12点00分') {
+                        $(element).find('.fc-list-item-time').text('全天')
+                    }
+                    var defaultRemindDate = '';
+                    if (event.start != null) {
+                        defaultRemindDate = event.start._i.replace(' ','T');
+                    } else {
+                        defaultRemindDate = event.end._i.replace(' ', 'T');
+                    }
+                    var reminderLock = true;
+                    if (event.permission.length >= 2) {
+                        reminderLock = false;
+                    }
+                    var elementAppendHtml = "<td><div class='text-overflow' title='" + event.desc + "'>" + event.desc + "</div></td>";
+                    elementAppendHtml += '<td class="cnabs_pointer text-right" style="width:51px;padding-top:12px;padding-bottom:9px;" onclick=setRemindJquery("' + event.guid + '","' + defaultRemindDate + '","Agenda",refreshCalendar,' + reminderLock + ')><img src="' + event.reminderInfo.reminderIconSrc + '" alt="提醒" /></td>'
+                    if (event.createMan.toLowerCase().match(/(\w)+/g) == loginUsername.toLowerCase()) {
+                        elementAppendHtml += "<td class='td_operate'>"
+                            + "<a class='a_edit' onclick=modifyAgenda('" + event.guid + "')>编辑</a>"
+                            + "<a class='a_delete' onclick=\"DeleteAgenda('" + event.guid + "','" + event.title + "','" + reminderStatus + "')\">删除</a>"
+                            + "</td>";
+                    } else {
+                        elementAppendHtml += "<td class='td_operate'></td>";
+                    }
+                    element.append(elementAppendHtml);
+                }
+                else {
+                    var eventBackground = '';
+                    if (event.backgroundColor == '#3995cd') {
+                        eventBackground = 'rgba(57,149,205,0.5)';
+                    } else if (event.backgroundColor == '#34a753') {
+                        eventBackground = 'rgba(52,167,83,0.5)';
+                    } else {
+                        eventBackground = 'rgba(227,53,58,0.5)';
+                    }
+                    element.css("background-color", eventBackground);
+                    //if (event.reminderInfo.Exist) {
+                    //    if (event.reminderInfo.Messagestatus == "SendOk") {
+                    //        event.reminderInfo.reminderIconSrc = '../../Images/Common/bell_grey_solid.png';
+                    //    } else if (event.reminderInfo.Messagestatus == "UnSend") {
+                    //        event.reminderInfo.reminderIconSrc = '../../Images/Common/bell_yellow_solid.png';
+                    //    }
+                    //    element.find("div").prepend("<span class='fc_event_state' style='background-color:" + event.backgroundColor + "'></span><img style='margin-left:5px;width:10px;margin-bottom:-2px;margin-right:2px;' src='" + event.reminderInfo.reminderIconSrc + "' alt='提醒' />");
+                    //} else {
+                        element.find("div").prepend("<span class='fc_event_state' style='background-color:" + event.backgroundColor + "'></span>");
+                    //}
+
+                }
+            },
+            eventAfterAllRender: function (view) {
+                if (view.name == "listWeek") {
+                    $(".fc-widget-header").attr("colspan", 6)
+                    $(".fc-list-table").parent().height($(".fc-list-table").height());
+                    $(".fc-list-empty-wrap2").parent().height(659);
+                }
+                $(".fc-prev-button,.fc-next-button").find(".fc-icon").remove();
+
+            },
+            eventMouseover: function (event, jsEvent, view) {
+                if (view.name == "month") {
+                    var calTooltip = new cnabsAgendaTooltip();
+                    calTooltip.fcToolTipId = "AgendaToolTip";
+                    calTooltip.agendaDivId = "calendar";
+                    if ($('#calendar_title').html() == '日程日历') {
+                        calTooltip.tooltip_field_json = { title: "日程名称", desc: "日程描述", createMan: "创建人", createTime: "创建时间",reminderInfo:"提醒" };
+                    } else {
+                        calTooltip.tooltip_field_json = { title: "工作名称", personInCharge: "负责人", target: "工作目标", desc: "工作描述",reminderInfo:"提醒"};
+                    }
+                    calTooltip.tooltip_width = 200;
+                    calTooltip.event = event;
+                    calTooltip.EventdomElement = this;
+                    calTooltip.mouseX = jsEvent.pageX;
+                    calTooltip.mouseY = jsEvent.pageY;
+                    calTooltip.show();
+                }
+            },
+            eventMouseout: function (calEvent, jsEvent, view) {
+                if (view.name == "month") {
+                    clearTimeout(DelayTimer);
+                    $("#AgendaToolTip").hide();
+                }
+            },
+            defaultView: 'month',
+            dayClick: function (date, jsEvent, view) {
+            },
+            viewRender: function (view, ele) {
+                viewname = view.name;
+            }
+        });
+
+        $("#calendar").fullCalendar('gotoDate', calendarDate);
+
+        //日历向前
+        $("#calendar .fc-prev-button").click(function () {
+            var calendarCurentDate = $("#calendar").fullCalendar('getDate');
+            calendarDate = calendarCurentDate.format();
+        });
+        //日历向后
+        $("#calendar .fc-next-button").click(function () {
+            var calendarCurentDate = $("#calendar").fullCalendar('getDate');
+            calendarDate = calendarCurentDate.format();
+        });
+
+    }
+
+    $(function () {
+        $("#btn_switchTableOrList").click(function () {
+            if (viewname == "month") {
+                $('#calendar').fullCalendar('changeView', 'listWeek', {
+                    noEventsMessage: "没有日程",
+                });
+                $("#calendar").fullCalendar('gotoDate', calendarDate);
+                $("#btn_switchTableOrList").val("显示为日历");
+            }
+            else {
+                $('#calendar').fullCalendar('changeView', 'month');
+
+                $("#btn_switchTableOrList").val("显示为列表");
+            }
+        })
+    })
+
+    function CreateAgenda() {
+        var createAgendaDialog = [{
+            title: "名称",
+            type: "text",
+            elementId: "newAgendaName",
+            value: "",
+            placeHolder: "日程名称（最多30个字）",
+            limit: {
+                type: "rangelength",
+                min: "1",
+                max: "30"
+            }
+        }, {
+            title: "开始时间",
+            type: "datetime",
+            elementId: "newAgendaStartTime",
+            placeHolder: "请选择开始时间",
+            limit: {
+                "type": "datetimeISO",//判断日期格式必须为YYYY-MM-DD HH:mm
+
+                required: false
+            }
+        },
+        {
+            title: "结束时间",
+            type: "datetime",
+            elementId: "newAgendaEndTime",
+            placeHolder: "请选择结束时间",
+            limit: {
+                "type": "datetimeISO",//判断日期格式必须为YYYY-MM-DD HH:mm
+                required: false
+            }
+
+        },
+        {
+            title: "描述",
+            type: "textarea",
+            elementId: "newAgendaDesc",
+            value: "",
+            placeHolder: "日程具体描述",
+            limit: {
+                type: "rangelength",
+                min: "1",
+                max: "500"
+            }
+        }
+        ];
+        cnabsAutoDlgYesNo(createAgendaDialog, "创建日程", function (data) {
+            var param = {
+                projectGuid: prjguid,
+                AgendaName: data.newAgendaName,
+                description: data.newAgendaDesc,
+                starttime: data.newAgendaStartTime,
+                endtime: data.newAgendaEndTime
+
+            };
+
+            cnabsAjax("创建新日程", "/Agenda/NewAgenda", param, function (data) {
+                if (data == 1) {
+                    refreshCalendar();
+                }
+            });
+        })
+    }
+
+    function modifyAgenda(guid) {
+         var param = {
+            projectGuid: prjguid,
+            startDate: startDate.format(),
+            endDate: endDate.format()
+        };
+
+
+        cnabsAjax("获取该项目下日程", "/Agenda/GetAgendas", param, function (data) {
+            var agenda = _.find(data, function (x) { return x.guid == guid; });
+            if (agenda == null) {
+                return;
+            }
+
+            var modifyAgendaDialog = [{
+                title: "名称",
+                type: "text",
+                elementId: "AgendaName",
+                value: agenda.title,
+                placeHolder: "请填写工作组新名称",
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "30"
+                }
+            },
+            {
+                title: "开始时间",
+                type: "datetime",
+                elementId: "AgendaStartTime",
+                value: moment(agenda.start).format("YYYY-MM-DD HH:mm"),
+                placeHolder: "请选择开始时间",
+                limit: {
+                    type: "custom",
+                    callback: function () {
+                        var returnObj = { verdict: true, msg: "" };
+
+                        if ($("#AgendaStartTime").val() == "" && $("#AgendaEndTime").val() == "") {
+                            returnObj.verdict = false;
+                            returnObj.msg = '开始时间和结束时间，两个时间不能同时为空'
+                        }
+                        else if ($("#AgendaStartTime").val() != "" && $("#AgendaEndTime").val() != "") {
+                            if ($("#AgendaStartTime").val() > $("#AgendaEndTime").val()) {
+                                returnObj.verdict = false;
+                                returnObj.msg = '开始时间不能小于结束时间'
+                            }
+                        }
+                        return returnObj;
+
+                    }
+                }
+            },
+            {
+                title: "结束时间",
+                type: "datetime",
+                elementId: "AgendaEndTime",
+                value: moment(agenda.end).format("YYYY-MM-DD HH:mm"),
+                placeHolder: "请选择开始时间",
+                limit: {
+                }
+            },
+            {
+                title: "描述",
+                type: "textarea",
+                elementId: "AgendaDesc",
+                value: agenda.desc,
+                limit: {
+                    type: "rangelength",
+                    min: "1",
+                    max: "500"
+                }
+            }];
+
+            cnabsAutoDlgYesNo(modifyAgendaDialog, '修改日程', function (data) {
+                var param = {
+                    projectGuid: prjguid,
+                    guid: guid,
+                    AgendaName: data.AgendaName,
+                    description: data.AgendaDesc,
+                    starttime: data.AgendaStartTime,
+                    endtime: data.AgendaEndTime
+                }
+
+                cnabsAjax("修改日程", "/Agenda/ModifyAgenda", param, function (data) {
+                    if (data == 1) {//成功
+                        refreshCalendar();
+                    }
+                });
+            })
+        })
+    }
+
+    function DeleteAgenda(guid, title, isVaildandUnSend) {
+        var msg = "确认删除项目[" + $(".select_project option:selected").text() + "]中的日程[" + title + "]";
+        if (isVaildandUnSend == 'UnSend') {
+            msg += '并取消未发送的提醒'
+        }
+        msg += '？'
+        cnabsAutoDlgYesNo(null, "删除日程", function () {
+            var param = {
+                projectGuid: prjguid,
+                guid: guid
+            };
+            cnabsAjax("取消提醒", "/MessageReminding/DeleteMessageReminding", { uid: guid }, function (data) {
+                cnabsAjax("删除日程", "/Agenda/DeleteAgenda", param, function (data) {
+                    refreshCalendar();
+                })
+            });
+
+
+        }, msg);
+    }
+
+
+    angular.module('DashBoard').controller('DashboardExCalendar', function ($http, $scope, $rootScope, projectSeriesHelper, avatarHelper,locationURL) {
+        $rootScope.$on("UpdateDashboardExCalendar", function (event, projectSeriesGuid, issueGuid, folderGuid, MonitorGuid) {
+            $scope.ReloadPage(projectSeriesGuid);
+            //隐藏的calendar_div会首次加载不显示，所以要等他显示出来时再初始化fullCalendar；
+            $("#divDashboardExCalendar").show();
+            if (MonitorGuid != undefined && MonitorGuid.uidChain != undefined) {
+                cnabsAjaxSync('获取日程开始时间', '/Agenda/GetAgenda', { agendaGuid: MonitorGuid.uidChain.agendaGuid }, function (data) {
+                    calendarDay = data.start.split(' ')[0]
+                })
+                $('#calendar_title').html('工作日历');
+                changeViewContent()
+            } else {
+                calendarDay=undefined
+            }
+            calendarDate = calendarDay;
+            prjguid = $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid;
+            loginUsername = '@User.Identity.Name';
+            ShowCalendar();
+            refreshCalendar();
+        });
+
+        $scope.ReloadPage = function (projectSeriesGuid) {
+
+            if (projectSeriesGuid == undefined && $scope.projectSeriesInfo != null) {
+                projectSeriesGuid = $scope.projectSeriesInfo.selectedItem.Guid;
+            }
+
+            $scope.projectSeriesInfo = projectSeriesHelper.reload(projectSeriesGuid);
+        }
+
+        $scope.projectSeriesChange = function (projectSeriesGuid) {
+            $rootScope.$emit("UpdateCurrentProjectSeriesGuid", projectSeriesGuid);
+            prjguid = $scope.projectSeriesInfo.selectedItem.CurrentProjectGuid;
+            refreshCalendar();
+        };
+
+        var urlJson = locationURL.getInitURL();
+        if (urlJson.dashboardExId == "Calendar") {
+            $rootScope.$emit("ChangeLabel", urlJson);
+        }
+    });
+
+    function changeViewContent() {
+        if ($('#calendar_title').html() == '日程日历') {
+            $('#calendar_title').html('工作日历');
+            $('#div_buttonGroup').css('display', 'none');
+            $("#colorSpecification").css('display', 'block');
+            $('#changeViewContentBtn').html('切换显示为日程');
+            $("#btn_switchTableOrList").val("显示为列表");
+            $('#calendar').fullCalendar('changeView', 'month');
+            refreshCalendar();
+        } else {
+            $('#calendar_title').html('日程日历');
+            $('#div_buttonGroup').css('display', 'block');
+            $("#colorSpecification").css('display', 'none');
+            $('#changeViewContentBtn').html('切换显示为工作');
+            refreshCalendar();
+        }
+
+    }
+
+    function refreshCalendar() {
+        $('#calendar').fullCalendar('refetchEvents');
+    }
+
+
+
+    //日历悬浮框
+    function cnabsAgendaTooltip(fcToolTipId, agendaDivId, tooltip_field_json, tooltip_width, event, EventdomElement, mouseX, mouseY) {
+        this.fcToolTipId = fcToolTipId;
+        this.agendaDivId = agendaDivId;
+        this.tooltip_field_json = tooltip_field_json;
+        this.tooltip_width = tooltip_width;
+        this.event = event;
+        this.EventdomElement = EventdomElement;
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+    }
+
+    cnabsAgendaTooltip.prototype = {
+        show: function () {
+
+
+            var fcToolTipId = this.fcToolTipId;
+            var agendaDivId = this.agendaDivId;
+            var tooltip_field_json = this.tooltip_field_json;
+            var tooltip_width = this.tooltip_width;
+            var event = this.event;
+            var EventdomElement = this.EventdomElement;
+            var mouseX = this.mouseX;
+            var mouseY = this.mouseY;
+
+            var content = "";
+            $("#" + fcToolTipId).remove();
+            var agenda_tooltip = "<div id='" + fcToolTipId + "' class='agendaTooltip'><header></header><div class='agendaTooltipcontent'></div></div>";
+
+            $("#" + agendaDivId).append(agenda_tooltip);
+            var AgendaToolTip = $("#" + fcToolTipId);
+            AgendaToolTip.hide();
+            AgendaToolTip.find("header").html(event.title);
+
+
+
+            var content_html = "";
+            for (var jsEnt in tooltip_field_json) {
+                var title_span = "<span>" + tooltip_field_json[jsEnt] + "</span>";
+                var desc_div;
+                if (jsEnt == 'reminderInfo') {
+                    desc_div = "<div style='word-wrap:break-word;font-size:12px;'>" + (event.reminderInfo.Exist == false ? "关" : "开<t style='margin-left:10px;'>" + event.reminderInfo.Remindtime + "</t>") + "</div>";
+                } else {
+                    desc_div = "<div style='word-wrap:break-word;font-size:12px;'>" + (event[jsEnt] == "" ? "无" : event[jsEnt]) + "</div>";
+                }
+                content_html += title_span + desc_div;
+            }
+
+            AgendaToolTip.find(".agendaTooltipcontent").append(content_html);
+            AgendaToolTip.width(tooltip_width);
+
+            if (AgendaToolTip.height() / AgendaToolTip.width() >= 2 && AgendaToolTip.height() >= 440) {
+                var area = AgendaToolTip.width() * AgendaToolTip.height();
+                AgendaToolTip.width(Math.sqrt(area * 0.618));
+                AgendaToolTip.find("header").width(Math.sqrt(area * 0.618) - 8);
+            }
+            if (AgendaToolTip.width() >= 400) {
+                AgendaToolTip.width(400);
+                AgendaToolTip.find("header").width(392);
+            }
+
+            var AgendaToolTipTop = $(EventdomElement).offset().top;
+            var windowHeight = document.documentElement.clientHeight;
+            var pageScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (AgendaToolTipTop + AgendaToolTip.height() >= pageScrollTop + windowHeight - 12) {
+                AgendaToolTipTop = pageScrollTop + windowHeight - AgendaToolTip.height() - 12;
+            }
+
+            var agendaToolTipLeft = 0;
+
+            var left = [];
+            left.push($(".fc-day-top.fc-mon.fc-future").first().parent());
+            left.push($(".fc-day.fc-widget-content.fc-mon.fc-future").first().parent());
+            left.push($(".fc-day.fc-widget-content.fc-mon.fc-past").first().parent());
+            var parentNode = $(".fc-day-top.fc-mon.fc-future").first().parent();
+            $.each(left, function (index, item) {
+                if (item.length == 1) {
+                    parentNode = item;
+                }
+
+            });
+
+            var tableLeft = parentNode.offset().left;
+            var cellWidth = parentNode.width() / 7;
+            for (var i = 0; i < 7; i++) {
+                if (tableLeft + i * cellWidth <= mouseX && tableLeft + (i + 1) * cellWidth > mouseX) {
+                    var windowWidth = document.documentElement.clientWidth;
+                    var pageScrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+                    agendaToolTipLeft = tableLeft + (i + 1) * cellWidth + 10;
+                    if (agendaToolTipLeft + AgendaToolTip.width() >= pageScrollLeft + windowWidth - 12) {
+                        agendaToolTipLeft = tableLeft + i * cellWidth - AgendaToolTip.width() - 10;
+                    }
+                }
+
+            }
+
+            AgendaToolTip.css({
+                'top': AgendaToolTipTop + "px",
+                'left': agendaToolTipLeft + "px"
+            });
+
+            DelayTimer = setTimeout(function () {
+                AgendaToolTip.fadeIn(300);
+            }, 500);
+        }
+
+    }
+</script>

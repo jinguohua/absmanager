@@ -1,0 +1,73 @@
+@import "../../styles/theme/default.less";
+
+.abs-register-header{
+	width: 100%;
+	height: 60px;
+	z-index: 100;
+	background-color: rgba(0, 36, 59, 0.2);
+	border-bottom: 1px solid #185881;
+	display: flex;
+	background: rgba(0, 36, 59, 0.7);
+	position: fixed;
+	.abs-header-logo {
+		padding: 14px 20px;
+		img {
+			width: 107px;
+		}
+	}
+	.abs-menu {
+		margin-left: 28px;
+	}
+	.abs-header-right {
+		flex: 1;
+    min-width: 480px;
+		.abs-person,.abs-search,.abs-follow,.abs-notice,.abs-feedback {
+				float: right;
+		}
+	}
+	.abs-header-menu {
+		margin-left: 43px;
+
+		.ant-menu {
+			background: transparent;
+			color: white;
+			margin-top: 4px;
+		}
+		
+		.ant-menu-item, 
+		.ant-menu-submenu-title {
+			padding: 0;
+			margin: 0 18px;
+			font-size: @font-l;
+			line-height: 55px;
+		}
+
+		.ant-menu-horizontal {
+			border-bottom: 0;
+		}
+
+		.ant-menu-horizontal > .ant-menu-item > a {
+			color: white;
+		}
+
+		.ant-menu-horizontal > .ant-menu-item.ant-menu-item-selected > a {
+			color: #FFB146;
+		}
+		
+		.ant-menu-horizontal > .ant-menu-item > a:hover {
+			color: #FFB146;
+		}
+
+		.ant-menu-horizontal > .ant-menu-item:hover, 
+		.ant-menu-horizontal > .ant-menu-submenu:hover, 
+		.ant-menu-horizontal > .ant-menu-item-active, 
+		.ant-menu-horizontal > .ant-menu-submenu-active, 
+		.ant-menu-horizontal > .ant-menu-item-open, 
+		.ant-menu-horizontal > .ant-menu-submenu-open, 
+		.ant-menu-horizontal > .ant-menu-item-selected, 
+		.ant-menu-horizontal > .ant-menu-submenu-selected {
+			border-bottom: 2px solid #FC9023;
+			color: #FC9023;
+		}
+	}
+}

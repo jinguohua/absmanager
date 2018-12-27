@@ -1,0 +1,203 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.DocumentManagerViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+        .divSelectStaff{
+            padding-left:20px;
+            padding-right:20px;
+            background-color:#48423b;
+            height:70px;
+            line-height:70px;
+        }
+        .selectStaffTitle{
+            font-size:16px;
+            color:#b7afa5;
+        }
+        .selectStaff{
+            width:236px!important;
+            height:20px;
+        }
+        .StaffProgressContent{
+            padding:20px;
+        }
+        .projectSeriesProgress,.TaskProgress{
+            width:500px;
+            background-color:#48423b;
+        }
+        .progressListHeader{
+            background-color:#635c52;
+            height:40px;
+            line-height:40px;
+            padding:0px 20px;
+            color:#E0E0E3;
+        }
+        .divStatusStatistics{
+            margin-left:10px;
+        }
+        .statusStatisticsValue{
+            min-width:30px;
+            padding-right:10px;
+        }
+        .staffProgress .projectSeriesList,.staffProgress .tasksList{
+            padding:10px 20px 20px 20px;
+            height:578px;
+            overflow:auto;
+        }
+        .staffProgress .eachProjectSeries,.staffProgress .eachTask{
+            background-color:#544d45;
+            border:1px solid #645e53;
+            margin-top:10px;
+            padding:10px 20px;
+        }
+        .divEachProjectSeriesProgress{
+            width: 100px;
+            position: relative;
+            background: #403930;
+            height: 4px;
+            margin-top: 7px;
+        }
+        .eachProjectSeriesProgress{
+            position:absolute;
+            height:4px;
+            top:0px;
+            left:0px;
+            background:rgb(38, 189, 88);
+        }
+        .percentage{
+            margin-left:5px;
+            color:#9b9389;
+            font-size:12px;
+            min-width:50px;
+            text-align:right;
+        }
+    </style>
+}
+@Scripts.Render("~/bundles/angular")
+@Styles.Render("~/Content/cnabsDatepick")
+@Scripts.Render("~/bundles/cnabsDatepick")
+
+<div class="tablecloth" style="padding-bottom:1px;">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/ProjectSeries">发行协作平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">人员进度</span>
+    </header>
+    <div ng-app="StaffProgress" ng-controller="StaffProgressCtrl" class="staffProgress" ng-cloak>
+        <div class="divSelectStaff">
+            <span class="selectStaffTitle fixedColor">人员：</span>
+            <select class="selectStaff" ng-change="ChangeStaff()" ng-model="currentSelectedStaff" ng-options="x.name for x in relatedStaff" style="width:159px;"></select>
+        </div>
+        <div class="cnabs_overhide StaffProgressContent">
+            <div class="left projectSeriesProgress" style="margin-right:10px;">
+                <div class="progressListHeader cnabs_overhide">
+                    <span class="left">负责项目：</span>
+                    <span class="left">{{projectSeriesStatisticInfo.FinishedProjectSeriesCount}}</span>
+                    <span class="left">/</span>
+                    <span class="left">{{projectSeriesStatisticInfo.TotalProjectSeriesCount}}</span>
+                </div>
+                <div class="projectSeriesList cnabs_scrollbar">
+                    <div class="eachProjectSeries cnabs_overhide cnabs_pointer" ng-repeat="x in projectSeriesList" ng-click="OpenProjectSeriesLink(x.Guid)">
+                        <span class="left cnabs_yellow cnabs_ellipsis" style="width:230px;" title="{{x.Name}}">{{x.Name}}</span>
+                        <span class="right percentage">{{x.TaskPercentCompleted}}</span>
+                        <span class="right divEachProjectSeriesProgress">
+                            <span class="eachProjectSeriesProgress" ng-style="x.progressBar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="left TaskProgress cnabs_scrollbar">
+                <div class="progressListHeader cnabs_overhide">
+                    <span class="left">负责工作：</span>
+                    <span class="left">{{tasksStatisticInfo.FinishedTasksCount}}</span>
+                    <span class="left">/</span>
+                    <span class="left">{{tasksStatisticInfo.TotalTasksCount}}</span>
+                    <div class="cnabs_overhide divStatusStatistics right">
+                        <span class="left">等待：</span>
+                        <span class="left statusStatisticsValue">{{tasksStatisticInfo.WaittingTasksCount}}</span>
+                        <span class="left">进行中：</span>
+                        <span class="left statusStatisticsValue">{{tasksStatisticInfo.RunningTasksCount}}</span>
+                        <span class="left">逾期：</span>
+                        <span class="left statusStatisticsValue">{{tasksStatisticInfo.OverdueTasksCount}}</span>
+                        <span class="left">错误：</span>
+                        <span class="left">{{tasksStatisticInfo.ErrorTasksCount}}</span>
+                    </div>
+                </div>
+                <div class="tasksList cnabs_scrollbar">
+                    <div class="eachTask cnabs_overhide cnabs_pointer" ng-repeat="x in taskList" ng-click="OpenTaskLink(x.ShortCode)">
+                        <span class="left cnabs_yellow cnabs_overhide">
+                            <span class="left">【</span>
+                            <span class="cnabs_ellipsis left" style="max-width:120px;" title="{{x.ProjectSeriesName}}">{{x.ProjectSeriesName}}</span>
+                            <span class="left">】</span>
+                        </span>
+                        <span class="left cnabs_yellow cnabs_ellipsis" style="width:190px;" title="{{x.Name}}">{{x.Name}}</span>
+                        <span class="right text-right" ng-style="x.taskStatusColor">{{x.TaskStatusInChinese}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        BindingElementActive(4, 1, 2);
+    });
+    var userapp = angular.module('StaffProgress', []);
+
+    userapp.controller('StaffProgressCtrl', function ($scope, $http) {
+        cnabsAjax("获取人员", "/StaffProgress/GetRelatedUsers", null, function (data) {
+            $.each(data, function (index,item) {
+                item.name = item.realName + '（' + item.userName + '）';
+            })
+            $scope.relatedStaff = data;
+            $scope.currentSelectedStaff = data[0];
+            $scope.GetCurrentStaffProgress()
+            $scope.$apply();
+        })
+        $scope.GetCurrentStaffTasksProgress = function () {
+            cnabsAjax('获取人员工作进度', '/StaffProgress/GetTasksProcessInfo', { username: $scope.currentSelectedStaff.userName }, function (data) {
+                $.each(data.SingleTaskInfoList, function (index, item) {
+                    item.TaskStatusInChinese = cnabsGetChineseStatusByTaskStatus(item.TaskStatus)
+                    if (item.TaskStatus == 'Overdue') {
+                        item.TaskStatusInChinese += item.OverdueDaysCount + '天'
+                    }
+                    item.taskStatusColor = { color: cnabsGetColorByTaskStatus(item.TaskStatus) }
+                })
+                $scope.taskList = data.SingleTaskInfoList;
+                $scope.tasksStatisticInfo = data.TasksStatisticInfo;
+                $scope.$apply()
+            })
+        }
+        $scope.GetCurrentStaffProjectSeriesProgress = function () {
+            cnabsAjax('获取人员项目进度', '/StaffProgress/GetProjectSeriesProcessInfo', { username: $scope.currentSelectedStaff.userName }, function (data) {
+                $.each(data.SingleProjectSeriesProcessInfoList, function (index, item) {
+                    item.progressBar = { width: item.TaskPercentCompleted }
+                })
+                $scope.projectSeriesList = data.SingleProjectSeriesProcessInfoList;
+                $scope.projectSeriesStatisticInfo = data.ProjectSeriesStatisticInfo;
+                $scope.$apply()
+            })
+        }
+        $scope.GetCurrentStaffProgress = function () {
+            $scope.GetCurrentStaffProjectSeriesProgress();
+            $scope.GetCurrentStaffTasksProgress();
+        }
+        $scope.ChangeStaff = function () {
+            $scope.GetCurrentStaffProgress()
+        }
+        $scope.OpenProjectSeriesLink = function (Guid) {
+            var url = "/DashBoard?projectSeriesGuid=" + Guid;
+            window.open(url);
+        }
+        $scope.OpenTaskLink = function (ShortCode) {
+            var url = "/Task?shortCode=" + ShortCode;
+            window.open(url);
+        }
+    })   
+</script>

@@ -1,0 +1,1350 @@
+﻿body {
+    background-color: #6A6562;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+
+hr {
+    border-color: grey;
+}
+
+a {
+    color: #B7AFA5;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #ffc446;
+    }
+
+table {
+    font-size: 13px;
+}
+
+    table td {
+        vertical-align: central;
+    }
+
+    table th {
+        color: #E0E0E3;
+    }
+
+    table select {
+        width: 170px;
+    }
+
+    table input[type="text"] {
+        width: 165px;
+    }
+.left {
+    float: left;
+}
+.right{
+    float:right;
+}
+.align-center {
+    text-align: center;
+}
+
+.numeric {
+    text-align: right;
+}
+
+.hCell {
+    color: #f45b5b;
+}
+
+.field-validation-error, .error,
+.validation-summary-errors, .alert {
+    color: #FF8888;
+}
+
+.fixedColor {
+    color: #B7AFA5;
+}
+
+.title {
+    line-height: 25px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.panel {
+    background-color: #47423c;
+    height: 99%;
+    margin: 10px;
+    padding: 5px;
+}
+
+.width-limited {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dl-icon-help {
+    line-height: 28px;
+}
+
+    .dl-icon-help:hover {
+        color: #ebb062;
+        cursor: pointer;
+    }
+
+.module {
+    width: 642px;
+    margin: 0 auto 15px;
+    position: relative;
+}
+
+.module-title {
+    font-size: 16px;
+    text-align: left;
+    color: #ffc466;
+}
+
+
+.tablecloth {
+    background-color: #37342e;
+    min-height: 780px;
+    width: 1050px;
+    padding-top: 1px;
+}
+
+.panel {
+    background-color: #47423C;
+    width: auto;
+    margin: 5px 10px;
+    padding-bottom: 10px;
+}
+
+.content-wrapper {
+    padding: 0px 40px 0px 40px;
+}
+
+ol, ul {
+    list-style: outside none none;
+}
+
+.pagewidth {
+    margin: 0px auto;
+    width: 1050px;
+    padding: 0px 40px 0px 40px;
+}
+
+#footer {
+    text-align: center;
+    height: 30px;
+}
+
+#divMenuName {
+    width: 300px;
+    background-image: url("../Images/productnamebg.png");
+    height: 63px;
+    margin-left: -50px;
+}
+
+/* login */
+#login {
+    float: right;
+    font-size: 14px;
+    margin: 5px 5px 5px 0;
+}
+
+    #login a {
+        color: #ebb062;
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #login ul {
+        margin: 0;
+    }
+
+    #login li {
+        display: inline;
+        list-style: none;
+    }
+/*ManagementConfig*/
+
+
+/* Pager */
+.divPager {
+    margin: 15px 5px 0 0;
+    text-align: right;
+    height: 30px;
+}
+
+    .divPager a {
+        border: #fff 1px solid;
+        padding: 1px 4px;
+        margin: 2px;
+        text-decoration: underline;
+    }
+
+    .divPager span.current {
+        border: #fff 1px solid;
+        padding: 1px 3px;
+        font-weight: bold;
+        margin: 2px;
+        color: #000;
+        background-color: #fff;
+    }
+
+    .divPager a:hover {
+        border: #777 1px solid;
+        color: #000;
+    }
+
+/* Table */
+.table_head {
+    color: #E0E0E3;
+    font-size: 13px;
+}
+
+    .table_head td {
+        vertical-align: bottom;
+    }
+
+.table_head_center {
+    color: #E0E0E3;
+    font-size: 13px;
+    text-align: center;
+}
+
+.table_head_grey {
+    font-size: 13px;
+    color: #E0E0E3;
+    font-size: 13px;
+    background-color: #514C44;
+}
+
+.table_row_grey {
+    color: #fff;
+    background-color: #3B3831;
+}
+
+.table_row_thin {
+    color: #000;
+    background-color: #F7F6F3;
+}
+
+    .table_row_thin td {
+        white-space: nowrap;
+    }
+
+.table_row_thin_alt {
+    color: #000;
+    font-size: 14px;
+    background-color: #FAEBD7;
+}
+
+    .table_row_thin_alt td {
+        white-space: nowrap;
+    }
+
+.table_row_thin_task {
+    color: #000;
+    font-size: 14px;
+    background-color: #F7F6F3;
+}
+
+    .table_row_thin_task td {
+        white-space: nowrap;
+    }
+
+.table_row_thin_task_alt {
+    color: #000;
+    font-size: 14px;
+    background-color: #FAEBD7;
+}
+
+    .table_row_thin_task_alt td {
+        white-space: nowrap;
+    }
+
+
+.table_row_mid {
+    color: #fff;
+    font-size: 13px;
+    background-color: Green;
+}
+
+.table_row_grey td {
+    white-space: nowrap;
+}
+
+.table_row_grey_fix_height td {
+    white-space: nowrap;
+    height: 22px;
+}
+
+.table_row_grey_alt td {
+    white-space: nowrap;
+}
+
+.table_row_grey_alt {
+    color: #fff;
+    background-color: #47423C;
+}
+
+.table_row_grey a:hover {
+    color: #ffc446;
+}
+
+.table_row_grey_alt a:hover {
+    color: #ffc446;
+}
+
+
+
+/*unbordered table*/
+
+
+/*bordered table*/
+table.bordered, table.inner {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-collapse: collapse;
+    background-color: #47423C;
+    width: 100%;
+}
+
+table.inner-noborder td {
+    border: none;
+}
+
+.bordered tfoot td {
+    text-align: right;
+}
+
+.bordered th {
+    border: 1px solid #666;
+    text-align: center;
+    padding: 10px;
+}
+
+.bordered .module-title {
+    text-align: left;
+}
+
+.bordered td {
+    border: 1px solid #666;
+    padding: 3px 8px;
+}
+
+.bordered.result td {
+    text-align: right;
+}
+
+/* navstrip*/
+.nav-strip {
+    left: 90px;
+    z-index: 700;
+}
+
+#subNavStrip {
+    z-index: 700;
+}
+
+    #subNavStrip div.nav-strip {
+        display: none;
+        position: absolute;
+    }
+
+.nav-strip ul {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+
+    .nav-strip ul li.nav-item {
+        display: inline;
+        float: left;
+        height: 36px;
+        position: relative;
+    }
+
+    .nav-strip ul li.nav-seperator {
+        padding-top: 10px;
+    }
+
+    .nav-strip ul li.nav-item:hover a, .nav-strip ul li.nav-item.hover a {
+        color: #ebb062;
+    }
+
+#mainNavStrip.nav-strip ul li.nav-item.active a {
+    background-color: #3b3732;
+}
+
+.nav-strip ul li.nav-item.active a, .nav-strip ul li.nav-item.active span {
+    color: #ebb062;
+}
+
+.nav-strip ul li a {
+    color: #b7afa5;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    outline: medium none;
+    padding: 7px 20px;
+}
+
+#subNavStrip .nav-strip ul li span {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    outline: medium none;
+    padding: 10px;
+}
+
+.nav-strip ul li a .primary-link {
+    background-attachment: fixed;
+    background-position: 100% -10px;
+}
+
+.nav-strip ul li.active a .primary-link {
+    background-attachment: fixed;
+    background-position: 100% -56px;
+}
+
+.nav-strip ul li.no-subnav a .primary-link {
+    background: transparent none repeat scroll 0 0;
+    padding-right: 0;
+}
+
+.nav-strip ul li.no-subnav a .primary-link {
+    background: transparent none repeat scroll 0 0;
+}
+
+/*home page*/
+.info {
+    top: 150px;
+    left: 200px;
+    text-align: left;
+}
+
+.welcome {
+    color: white;
+    margin: 80px 80px;
+}
+
+    .welcome p {
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+.intro {
+    margin-top: 50px;
+    color: black;
+}
+
+.column-item {
+    width: 80%;
+    height: 190px;
+    border: 2px solid grey;
+    border-radius: 4px;
+    color: black;
+    background-color: white;
+}
+
+.column-item-title {
+    font-size: 18px;
+    color: white;
+    background-color: grey;
+    padding: 2px 0;
+}
+
+.column-item-content ul {
+    margin: 0;
+    padding: 5px;
+}
+
+.column {
+    width: 350px;
+    margin-top: 50px;
+    margin-left: 80px;
+}
+
+.column-item-content ul li {
+    font-size: 14px;
+    color: black;
+    text-align: left;
+    padding-top: 5px;
+    padding-right: 2px;
+    border-bottom: 1px dashed grey;
+}
+
+    .column-item-content ul li a:link {
+        color: black;
+    }
+
+    .column-item-content ul li a:hover {
+        color: grey;
+    }
+
+.more {
+    text-align: right;
+    padding-right: 5px;
+}
+
+/* Walk through*/
+#walkthrough-content {
+    display: none;
+}
+
+    #walkthrough-content p {
+        line-height: 30px;
+    }
+
+/*new project*/
+.new-project dl {
+    margin: 10px 5px;
+}
+
+.np-title {
+    padding-top: 5px;
+    color: #B7AFA5;
+}
+
+    .np-title span {
+        display: block;
+        position: absolute;
+    }
+
+.np-detail {
+    margin-left: 60px;
+    margin-top: -5px;
+}
+
+.np-hr {
+    clear: both;
+    overflow: hidden;
+    border-top: 1px solid #dedede;
+    margin-top: 6px;
+    padding-top: 6px;
+}
+
+div.np-option {
+    display: inline;
+    font-size: 14px;
+}
+
+.np-options-explanation {
+    padding: 5px;
+    width: auto;
+    max-width: 400px;
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    color: white;
+    background-color: grey;
+    border: 5px solid #B7AFA5;
+}
+
+.np-button {
+    color: black;
+    height: auto;
+    width: 100px;
+    padding: 4px;
+    text-align: center;
+    display: inline-block;
+    background: #eee;
+    cursor: pointer;
+}
+
+    .np-button:hover {
+        color: #666;
+    }
+
+.np-button-current, .np-button-current:hover {
+    background: #b7afa5;
+    color: #fff;
+    cursor: default;
+}
+
+.np-button-disabled, .np-button-disabled:hover {
+    color: #bbb;
+    cursor: not-allowed;
+}
+
+.np-tip {
+    line-height: 18px;
+    color: #999;
+    cursor: text;
+}
+
+.table-my-projects {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table-my-projects tbody tr:hover {
+        background-color: #666;
+    }
+
+    .table-my-projects th, .table-my-projects td {
+        padding: 4px 2px;
+    }
+
+.table-mine {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table-mine tbody tr:hover {
+        background-color: #c0c0c0;
+    }
+
+    .table-mineth, .table-mine td {
+        padding: 4px 2px;
+    }
+
+
+/* Project operation */
+.divOperations:hover input {
+    color: white;
+    background-color: grey;
+}
+
+.project-operations {
+    text-align: center;
+    display: none;
+    position: absolute;
+}
+
+    .project-operations ul {
+        margin: 0 0;
+        padding: 2px;
+        background-color: #514C44;
+        border: 2px solid rgba(255,255,255,0.4);
+    }
+
+        .project-operations ul li {
+            margin: 2px;
+            border-bottom: 1px solid rgba(255,255,255,0.4);
+        }
+
+.templateTask-operations {
+    text-align: center;
+    display: none;
+    position: absolute;
+}
+
+.templateTask-operations ul {
+    margin: 0 0;
+    padding: 2px;
+    background-color: #514C44;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+
+.templateTask-operations ul li {
+    margin: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+}
+
+.border-arrow {
+    position: relative;
+    left: 35px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgba(255,255,255,0.4);
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+
+.border-arrow2 {
+    position: relative;
+    left: 43px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px;
+    border-color: rgba(249,205,173,1);
+    border-right-color: transparent;
+    border-top-color: transparent;
+    border-left-color: transparent;
+}
+
+/*详情页*/
+.project-detail {
+    padding: 5px 10px;
+}
+
+/*进度条*/
+.steps {
+    width: 640px;
+    margin: 0px auto;
+    height: 50px;
+    padding: 20px 0 0 0;
+    position: relative;
+    display: none;
+}
+
+.step {
+    float: left;
+    width: 25%;
+    height: 7px;
+    background: #ccc;
+}
+
+.step-texts {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 10px;
+}
+
+    .step-texts .step-text {
+        font-size: 15px;
+        font-weight: bold;
+        float: left;
+        width: 25%;
+        text-align: center;
+    }
+
+        .step-texts .step-text em {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            -moz-border-radius: 24px;
+            -webkit-border-radius: 24px;
+            border-radius: 24px;
+            background: #ccc;
+            text-align: center;
+            font-size: 14px;
+            line-height: 24px;
+            font-style: normal;
+            font-weight: bold;
+            color: #fff;
+        }
+
+            .step-texts .step-text span:hover, .step-texts .step-text em:hover {
+                cursor: default;
+            }
+
+    .step.step-done, .step-texts .step-done em {
+        background: #77b852;
+    }
+
+    .step-texts .step-current span a {
+        color: #77b852;
+    }
+
+/* Collateral */
+.margin1 {
+    margin-left: 115px;
+}
+
+.margin2 {
+    margin-left: 231px;
+}
+
+p#back-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 40px;
+    border: 1px solid #fff;
+}
+
+    p#back-to-top a {
+        text-align: center;
+        text-decoration: none;
+        color: #d1d1d1;
+        display: block;
+        width: 18px;
+    }
+
+        p#back-to-top a:hover {
+            color: #979797;
+        }
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+
+.btnStart {
+    background-color: #89BEB2;
+    border-style: none;
+}
+
+    .btnStart:hover {
+        background-color: #69B4B2;
+    }
+
+.btnSkip {
+    background-color: #C9BA83;
+    border-style: none;
+}
+
+    .btnSkip:hover {
+        background-color: #A9B083;
+    }
+
+.btnFinish {
+    background-color: #57993C;
+    border-style: none;
+}
+
+    .btnFinish:hover {
+        background-color: #378f3C;
+    }
+
+.btnError {
+    background-color: #ffa1a1;
+    border-style: none;
+}
+
+    .btnError:hover {
+        background-color: #ff7777;
+    }
+
+#divNextStep .sc-option {
+    display: inline;
+}
+
+#divNextStep .sceContent {
+    margin: 20px 15px 0px 7px;
+}
+
+#divNextStep .sc-button {
+    color: #000;
+    height: auto;
+    width: 180px;
+    padding: 5px;
+    margin: 7px 20px 7px 7px;
+    text-align: center;
+    display: inline;
+    background: #eee;
+    cursor: pointer;
+}
+
+    #divNextStep .sc-button:hover {
+        background: #666;
+        color: #fff;
+    }
+
+#divNextStep .sc-button-current, .sc-button-current:hover {
+    background: #4682B4;
+    color: #fff;
+    cursor: default;
+}
+
+.skip {
+    background-color: rgba(255,255,255,0.2);
+    font-size: 16px;
+    padding: 5px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+    .skip a {
+        color: #ebb062;
+    }
+
+#divSetCollateral {
+    height: 220px;
+    background-color: #47423c;
+    margin: 25px 10px 0 10px;
+    padding: 10px;
+}
+
+    #divSetCollateral a {
+        color: #ebb062;
+    }
+
+#formCollateral {
+    margin-left: 50px;
+    /*float:left;*/
+}
+
+#divBtns {
+    /*text-align: center;*/
+    height: 80px;
+}
+
+    #divBtns .TaskStatusChoose {
+        margin: 20px 12px 0px 0px;
+        width: 60px;
+        height: 40px;
+        outline: none;
+        font-size: 20px;
+        cursor: pointer;
+        border: 1px solid white;
+    }
+
+    #divBtns .ModualChoose {
+        margin: 50px 12px 0px 0px;
+        width: 100px;
+        height: 80px;
+        outline: none;
+        font-size: 20px;
+        cursor: pointer;
+        border: 1px solid white;
+    }
+
+    #divBtns .ShowChoose {
+        width: 100px;
+        height: 10px;
+        outline: none;
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #F9CDAD;
+    }
+
+    #divBtns .imgCss {
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 660px;
+    }
+
+#divUseExample {
+    /*float:left;*/
+    margin-left: 50px;
+}
+
+
+.collateral-steps {
+    font-size: 16px;
+    padding-left: 10px;
+    counter-reset: xxx 0;
+}
+
+    .collateral-steps li {
+        list-style: none;
+        margin-top: 10px;
+    }
+
+ol.collateral-steps li::before {
+    content: counter(xxx,decimal) ".";
+    counter-increment: xxx 1;
+}
+
+/*Modeling*/
+.custom, .complexDeterminationRule, .simpleDeterminationRule, .hasUnpaidInterest, .fixedRate, .feeFixedRate,
+.fee-full, .note-full, .hasReinvestment, .OtherReinvestmentRule, .hasRiskReserve, .hasAmortizationSchedule {
+    display: none;
+}
+
+.modeling-field-error {
+    border: 2px solid red;
+    transition: all 0.5s;
+}
+
+.modeling-item-error {
+    border-left: 5px solid red;
+}
+
+.fee-full, .note-full {
+    border-bottom: 2px solid white;
+}
+
+.modeling label {
+    /*color: white;*/
+}
+
+.data-checked, .data-failed, .scenario-data-checked, .scenario-data-failed {
+    float: right;
+    display: none;
+}
+
+.modeling-guide {
+    width: 190px;
+    position: relative;
+    float: left;
+    padding-left: 20px;
+}
+
+    .modeling-guide ul {
+        padding: 5px;
+        margin: 10px 0;
+    }
+
+    .modeling-guide input {
+        width: 80%;
+        line-height: 25px;
+        margin-top: 10px;
+        text-align: center;
+        color: #000;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .modeling-guide input:hover {
+            cursor: pointer;
+        }
+
+ul.tips {
+    list-style: circle outside;
+    color: #B7AFA5;
+}
+
+    ul.tips li {
+        padding: 8px 0;
+    }
+
+#divCalculationSetting table select {
+    width: auto;
+}
+
+#divTaskSetting input[type=text] {
+    width: 80px;
+    text-align: right;
+}
+
+#divTaskSetting .sc-option {
+    display: inline;
+}
+
+#divTaskSetting .sceContent {
+    margin: 20px 15px 0px 7px;
+}
+
+#divTaskSetting .sc-button {
+    color: #000;
+    height: auto;
+    width: 100px;
+    padding: 5px;
+    margin: 7px 0 7px 7px;
+    text-align: center;
+    display: inline;
+    background: #eee;
+    cursor: pointer;
+}
+
+    #divTaskSetting .sc-button:hover {
+        background: #666;
+        color: #fff;
+    }
+
+#divTaskSetting .sc-button-current, .sc-button-current:hover {
+    background: #4682B4;
+    color: #fff;
+    cursor: default;
+}
+
+#divRateSchedule {
+    display: none;
+    max-height: 400px;
+    overflow: auto;
+    margin: 5px 0;
+    border: 1px grey solid;
+}
+
+    #divRateSchedule table {
+        width: 100%;
+        text-align: center;
+    }
+
+/* results */
+.results > table {
+    border-spacing: 8px;
+}
+
+    .results > table table {
+        width: 490px;
+    }
+
+.results td {
+    text-align: center;
+}
+
+/*Waterfall*/
+#divWaterfallItem {
+    position: absolute;
+    margin: auto;
+    right: 0;
+    left: 0;
+}
+
+.generalNode {
+    position: absolute;
+    cursor: pointer;
+    width: 150px;
+    text-align: center;
+    padding: 10px;
+    background-color: #D3D3D3;
+    color: Black;
+}
+
+    .generalNode:hover {
+        background-color: #4682B4;
+        color: White;
+    }
+
+#noteStructure {
+    width: 200px;
+    height: 270px;
+    text-align: center;
+}
+
+.note-structure-table table td {
+    padding: 0;
+    vertical-align: middle;
+    background-color: #B7AFA5;
+}
+
+    .note-structure-table table td:hover {
+        cursor: default;
+    }
+
+/* tooltip */
+.tooltip {
+    font-size: 12px;
+    width: 200px;
+    border: 1px solid #B7AFA5;
+    background-color: #47423C;
+    background-position: left top;
+}
+
+    .tooltip div {
+        padding: 5px 10px;
+        background-position: -216px bottom;
+        line-height: 22px;
+    }
+/*Index.cshtml*/
+.am_panel {
+    background-color: #47423C;
+    height: 99%;
+    margin: 10px;
+    padding: 5px;
+}
+
+.am_site_map_panel {
+    background-color: #2c2c2c;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 27px;
+    line-height:27px;
+}
+
+.am_site_map_label {
+    color: #ffc446;
+}
+
+.am_site_map_arrow {
+    color: white;
+}
+.am_header {
+    height: 32px;
+}
+.am_section {
+    background: #47423c;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    padding-right: 10px;
+    margin-bottom: 5px;
+}
+
+.am_h {
+    margin-bottom:10px;
+}
+
+.am_button input {
+    height: 30px;
+    width: 125px;
+    font-size: 14px;
+    border-radius: 5px;
+    outline: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.am_buttonstop {
+    background: #ffffff;
+}
+
+.am_buttonfinish {
+    background: #77ff77;
+    margin-left: 10px;
+}
+
+.am_buttonerror {
+    background: #ff4a4a;
+    float: right;
+    color:#fff;
+}
+.am_operationlog {
+    overflow: hidden;
+}
+
+    .am_operationlog span {
+        float: left;
+        height: 22px;
+        padding:4px;
+    }
+
+        .am_operationlog span:nth-of-type(1), .am_operation span:nth-of-type(4n+1) {
+            width: 580px;
+        }
+
+        .am_operationlog span:nth-of-type(2), .am_operation span:nth-of-type(4n+2) {
+            width: 123px;
+            padding-left:20px;
+        }
+
+        .am_operationlog span:nth-of-type(3), .am_operation span:nth-of-type(4n+3) {
+            width: 165px;
+        }
+        
+        .am_operationlog span:nth-of-type(4), .am_operation span:nth-of-type(4n+4) {
+            width: 100px;
+        }
+.am_operation {
+    overflow: hidden;
+}
+
+    .am_operation span {
+        float: left;
+        height: 22px;
+        padding:4px;
+    }
+
+
+        .cf_cell_highlight_alt {
+            background-color: #55514B;
+        }
+
+        .cf_cell_highlight {
+            background-color: #5F5A53;
+        }
+
+        .am_link_color {
+            color: #ffc446;
+            margin-left: 10px;
+        }
+
+        .cf_container {
+            width: 1013px;
+            max-height: 1800px;
+            overflow-x: scroll;
+            overflow-y: auto;
+            clear: both;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .am_twoline {
+            overflow: hidden;
+        }
+
+        .am_lineone, .am_linetwo {
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+            .am_lineone span, .am_linetwo span {
+                float: left;
+            }
+    .am_warningYellowImage{ 
+        width:12px;
+        height:11px; 
+        background:url(../../Content/themes/base/images/ui-icons_ef8c08_256x240.png) -2px -146px no-repeat;
+
+    }
+    .am_warningRedImage{ 
+        width:12px;
+        height:11px; 
+        background-image:url(../../Content/themes/base/images/warningRedImage.png);
+        background-size:cover; 
+    }
+    /**************当前产品提示样式开始;**********************/
+        .projectNamePrompt{
+            overflow:hidden; 
+            height:40px;
+            line-height:40px;
+        }
+        .currentProject{
+            float:left;
+            color:#B7AFA5;
+        }
+        .smallImageSize{
+            width:21px;
+            height:20px;
+            font-size:20px;
+        }
+        .largeImageSize{
+            width:86px;
+            height: 86px;
+            font-size:86px;
+        }
+        .currentProjectName{
+            float:left; 
+            margin-left:5px;
+        }
+ /**************当前产品提示样式结束;**********************/     
+/**************表格题目以及新增按钮样式开始;***************/  
+        .tableTitleBox{     
+            overflow:hidden;
+            margin-bottom:5px;
+        }
+        .tableTitle{
+            font-size:17px; 
+            height:45px;
+            line-height:45px;
+            font-weight:bold;
+        }
+        .addButton{
+            line-height:45px;
+            height:45px; 
+            overflow:hidden;
+        }
+        .floatRight{
+            float:right;
+        }
+        .buttonImage{
+            margin-right:5px;
+            margin-top:12.5px;
+        }
+        .buttonText{
+            color: #ffc446;
+            cursor: pointer;
+        }
+        .disabledColor{
+            color: #c8c8c8;
+        }
+/**************表格题目以及新增按钮样式结束;***************/  
+/**************表格样式开始;**********************/
+        .ModelTableHeader {
+            overflow: hidden;
+            border-bottom: 1px grey solid;
+            color: #E0E0E3;
+            font-weight: bold;
+        }
+            .ModelTableHeader span,.ModelTableTr span,.ModelTableTr_sameBackground span{
+                float: left;
+                padding: 3px 5px 3px;
+            }
+            
+        .ModelTableTr,.ModelTableTr_sameBackground{
+            overflow: hidden;
+        }
+            .ModelTableTr:nth-of-type(2n+1) {
+                background: #3B3831;
+            }
+
+            .ModelTableTr:hover,.ModelTableTr_sameBackground:hover{
+                background: #666;
+            }
+        .cursorPointer{
+            cursor: pointer;
+        }
+
+/**************表格样式结束;**********************/    

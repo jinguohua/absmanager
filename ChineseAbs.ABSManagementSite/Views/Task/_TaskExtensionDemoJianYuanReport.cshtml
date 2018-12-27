@@ -1,0 +1,147 @@
+@model ChineseAbs.ABSManagementSite.Models.TaskViewModel
+@using ChineseAbs.ABSManagementSite.Models;
+@using ChineseAbs.ABSManagement.Object;
+@using ChineseAbs.ABSManagementSite.Common;
+@using ChineseAbs.ABSManagement.Models;
+
+<style type="text/css">
+    .panelTitleIcon {
+        width: 6px;
+        height: 6px;
+        background-color: #fff;
+        margin-top: 6px;
+        margin-right: 10px;
+    }
+
+    .uploadDownStep {
+        float: left;
+        min-width: 80px;
+        text-align: center;
+        color: #847C71;
+        margin-left:15px;
+        margin-right:15px;
+    }
+
+    .uploadDownStepLine {
+        float: left;
+        width: 220px;
+        height: 4px;
+        background-color: #534D46;
+        margin-top: 6px;
+        border-radius: 2px;
+    }
+
+    .currentStep {
+        color: #fff;
+    }
+
+    .statusDescription {
+        margin-top: 3px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 12px;
+        color: #fff;
+        padding-left: 19px;
+        background-position: 0px 5px;
+        background-repeat: no-repeat;
+        margin-left: 15px;
+        width: 323px;
+        word-wrap: break-word;
+        display: none;
+    }
+</style>
+<div class="cnabs_div_v2" style="min-height:22px;overflow:hidden;" id="uploadDown" ng-cloak>
+    <div style="overflow:hidden;margin-bottom:30px;">
+        <span class="left panelTitleIcon"></span>
+        <span class="left">受托机构报告</span>
+    </div>
+    <div style="overflow:hidden;margin-left:77px;margin-bottom:30px;">
+        <div class="uploadDownStep currentStep" style="margin-left:0px;">1.导入服务商报告</div>
+        <div class="uploadDownStepLine"></div>
+        <div class="uploadDownStep">2.数据导入与提取</div>
+        <div class="uploadDownStepLine"></div>
+        <div class="uploadDownStep" style="margin-right:0px;">3.生成受托机构报告</div>
+    </div>
+    <div style="overflow:hidden;margin-left:77px;">
+        <div class="statusDescription left cnabs_ellipsis" style="background-image:url(../../Images/Common/correct.png);width:335px;margin-left:0px;"></div>
+        <div class="statusDescription left cnabs_ellipsis"></div>
+        <div class="statusDescription left cnabs_ellipsis" style="background-image:url(../../Images/Common/correct.png);width:100px;">服务商报告</div>
+    </div>
+    <div id="cnabs_btn_div" style="overflow:hidden;margin-left:77px; margin-top:30px;margin-bottom:30px;">
+        <div class="cnabs_btn_purple uploadbtn" style="margin:0px;" onclick="triggerUploadInput()">上传服务商报告</div>
+    </div>
+    <input id="uploadInput" type="file" name="name" value=" " ng-hide="true" onchange="uploadFile()" />
+</div>
+<script type="text/javascript">       
+        function documentConversion(name) {
+            $("#cnabs_btn_div").css('visibility', 'hidden');
+            $($(".statusDescription")[0]).text(name)
+            $($(".statusDescription")[0]).css('display', 'block');
+            $($('.uploadDownStepLine')[0]).css('backgroundColor', '#fff')
+            $($(".uploadDownStep")[1]).css('color', '#fff');
+            $($(".statusDescription")[1]).html('<img style="margin-left:-10px;" src="../../Images/Common/running.gif">')
+            $($(".statusDescription")[1]).css('backgroundImage', 'url()');
+            $($(".statusDescription")[1]).css('display', 'block');
+        }
+        function documentConversionSuccess() {
+            $($(".statusDescription")[1]).html('转换成功')
+            $($(".statusDescription")[1]).css('backgroundImage', 'url(../../Images/Common/correct.png)');
+            $($(".statusDescription")[1]).css('display', 'block');
+            $($('.uploadDownStepLine')[1]).css('backgroundColor', '#fff')
+        }
+        function downLoadSuccess() {
+            $("#cnabs_btn_div").css('visibility', 'visible');
+            $($(".statusDescription")[2]).text('下载成功')
+            $($(".statusDescription")[2]).css('backgroundImage', 'url(../../Images/Common/correct.png)');
+            $($(".statusDescription")[2]).css('display', 'block');
+            $($(".uploadDownStep")[2]).css('color', '#fff');
+        }
+        function clearUpload() {
+            $('.uploadDownStepLine').css('backgroundColor', '#534D46')
+            $(".uploadDownStep").css('color', '#847C71');
+            $($(".uploadDownStep")[0]).css('color', '#fff');
+            $(".statusDescription").css('display', 'none');
+        }
+        function documentConversionError() {
+            $("#cnabs_btn_div").css('visibility', 'visible');
+            $($(".statusDescription")[1]).html('转换失败')
+            $($(".statusDescription")[1]).css('backgroundImage', 'url(../../Images/Common/incorrect.png)');
+            $($(".statusDescription")[1]).css('display', 'block');
+        }
+        function uploadFile() {
+            clearUpload();
+            var formData = new FormData();
+            var inputUpload = document.getElementById("uploadInput");
+            var totalFiles = inputUpload.files.length;
+            if (totalFiles > 0) {
+                documentConversion(inputUpload.files[0].name);
+                for (var i = 0; i < totalFiles; ++i) {
+                    var file = inputUpload.files[i];
+                    var fileSizeMB = file.size / 1024 / 1024;
+                    if (fileSizeMB > 10) {
+                        cnabsMsgError("上传文件不能超过10MB, 所选文件" + file.name + "(" + fileSizeMB.toFixed(2) + "MB)");
+                        return false;
+                    }
+
+                    formData.append("file", file);
+                    formData.append("shortCode", '@Model.ShortCode');
+                }
+
+                cnabsAjaxUploadFile('上传服务商报告', '/TaskEx/UploadDemoJianYuanReport', formData, function (fileGuid) {
+                    documentConversionSuccess();
+                    //下载文件
+                    window.location.href = '/Download?guid=' + fileGuid;
+                    downLoadSuccess();
+                }, function (data) {                    
+                    documentConversionError();
+                    cnabsAlertMore('上传失败：' + data.Value.Message, data.Value.StackTrace);
+                });
+            }
+
+        }
+
+        function triggerUploadInput() {
+            $("#uploadInput").val('');
+            $("#uploadInput").click();
+        }    
+</script>

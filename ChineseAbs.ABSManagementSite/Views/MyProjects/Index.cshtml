@@ -1,0 +1,203 @@
+﻿@model ChineseAbs.ABSManagementSite.Models.ProjectManagerViewModel
+@using ChineseAbs.ABSManagementSite.Common
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style type="text/css">
+        .myProjects_table_style tr {
+            text-align: center;
+        }
+        .productListTable td:nth-of-type(1),.productListTable th:nth-of-type(1) {
+            width:285px;
+            min-width:285px;
+            max-width:285px;
+        }
+        .productListTable td:nth-of-type(2),.productListTable th:nth-of-type(2) {
+            width:134px;
+            min-width:134px;
+            max-width:134px;
+            padding-left:10px;
+        }
+        .productListTable td:nth-of-type(3),.productListTable th:nth-of-type(3) {
+            width:134px;
+            min-width:134px;
+            max-width:134px;
+        }
+        .productListTable td:nth-of-type(4),.productListTable th:nth-of-type(4) {
+            width:126px;
+            min-width:126px;
+            max-width:126px;
+        }
+        .productListTable td:nth-of-type(5),.productListTable th:nth-of-type(5) {
+            width:91px;
+            min-width:91px;
+            max-width:91px;
+        }
+        .productListTable td:nth-of-type(6),.productListTable th:nth-of-type(6) {
+            width:117px;
+            min-width:117px;
+            max-width:117px;
+        }
+        .productListTable td:nth-of-type(7),.productListTable th:nth-of-type(7) {
+            width:51px;
+            min-width:51px;
+            max-width:51px;
+            padding-left:10px;
+        }        
+    </style>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            BindingElementActive(4, 2, 0);
+
+            var pageSize = cnabsGetUrlParam('pageSize');
+            pageSize = pageSize == null ? 10 : pageSize;
+            $("#pageSize").val(pageSize);
+
+            $("#pageSize").change(function () {
+                setPageSize($("#pageSize").val());
+            });
+        });
+
+        function setPageSize(pageSize) {
+            var totalItems = $("#totalItems").text();
+            var page = $("#currentPage").text();
+            page = (page > 1) ? ((page - 1) * pageSize >= totalItems ? page - 1 : page) : page;
+            var url = location.protocol + "//" + location.host + location.pathname;
+            location.href = url + "?page=" + page + "&pageSize=" + pageSize;
+        }
+        function filterTaskByPage(page) {
+            var pageSize = $("#pageSize").val();
+            var url = location.protocol + "//" + location.host + location.pathname;
+            location.href = url + "?page=" + page + "&pageSize=" + pageSize;
+        }
+        function JumpFilterTaskByPage() {
+            var pagenum = parseInt($("#paging-number").val());
+            var totalPage = parseInt($("#totalPage").html());
+            if (!isNaN(pagenum)) {
+                if (pagenum <= totalPage && pagenum >= 1) {
+                    filterTaskByPage(pagenum);
+                } else if (pagenum > totalPage) {
+                    filterTaskByPage(totalPage);
+                } else {
+                    filterTaskByPage(1);
+                }
+            } else {
+                filterTaskByPage(1);
+            }
+        }
+    </script>
+}
+<div class="tablecloth">
+    <header class="am_site_map_panel">
+        <span class="am_site_map_arrow">当前位置：</span>
+        <a class="am_site_map_label" href="/">解决方案</a>
+        <span class="am_site_map_arrow">></span>
+        <a class="am_site_map_label" href="/">存续期管理平台</a>
+        <span class="am_site_map_arrow">></span>
+        <span class="am_site_map_arrow">产品列表</span>
+    </header>
+    <div class="cnabs_div_v2 myProjects_table_style">
+        <span class="cnabs_label_v2">产品列表</span>
+        <div style="float:right;display:block; margin-top:6px;">
+            @if (Model.HasEditProjectAuthority || Model.HasEditModelAuthority || Model.HasCreateProjectAuthority || Model.IsSuperUser)
+            {
+                <a href="/Design">
+                    <span class="ui-icon ui-icon-pencil smallImageSize right"></span>
+                </a>
+            }
+        </div>
+        <table class="table_v2 alone hover cnabs_v2_margin productListTable" id="projects" style="width:100%;margin:0px;">
+            <tbody>
+                <tr>
+                    <th class="text-left">产品名称</th>
+                    <th class="text-left">基础资产类型</th>
+                    <th class="text-left">原始权益人</th>
+                    <th class="text-left">下一偿付日</th>
+                    <th class="text-left">当前状态</th>
+                    <th class="text-left">当前工作</th>
+                    <th class="text-right">信息</th>
+                </tr>
+                @if (Model == null || Model.Projects == null || Model.Projects.Count == 0)
+                {
+                    <tr><td class="text-center" colspan="7" style="font-size:18px">暂无产品</td></tr>
+                }
+                else
+                {
+                    for (int i = 0; i < Model.Projects.Count; ++i)
+                    {
+                        var project = Model.Projects[i];
+                        <tr>
+                            <td class="ProjectName text-left" style="overflow:hidden;">
+                                <a class="cnabs_yellow cnabs_ellipsis left" title=@project.ProjectName style=" width:285px;"
+                                   href="/ProductDashboard#/Info?projectGuid=@project.Guid">
+                                    @project.ProjectName
+                                </a>
+                            </td>
+                            <td class="text-left">@Toolkit.ToString(project.ProjectType)</td>
+                            <td class="text-left">@Toolkit.ToString(project.Originator)</td>
+                            <td class="text-left">@project.NextPaymentDate</td>
+                            @if (project.ProjectStatus == ChineseAbs.ABSManagementSite.Models.ProjectStatus.Normal)
+                            {
+                                <td class="text-left">@Toolkit.ToCnString(project.ProjectStatus)</td>
+                            }
+                            else
+                            {
+                                <td class="text-left" style="color:#ff3535;">@Toolkit.ToCnString(project.ProjectStatus)</td>
+                            }
+                            @if (project.CurrentTask == null)
+                            {
+                                <td class="text-left">-</td>
+                            }
+                            else
+                            {
+                                <td class="text-left" style="overflow:hidden;">
+                                    <a class="cnabs_ellipsis left cnabs_yellow" title=@project.CurrentTask.TaskName style="width:117px;" href="/Task?shortCode=@project.CurrentTask.ShortCode">
+                                        @project.CurrentTask.TaskName
+                                    </a>
+                                </td>
+                            }
+                            <td class="text-right"><a class="cnabs_yellow" href="../Monitor/?projectGuid=@project.Guid">@project.Message</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="convenientPaging" style="height:24px;padding:4px;text-align:center;margin-top:10px;">
+            <span>第</span>&nbsp;&nbsp;<span id="currentPage">@Model.PageInfo.CurrentPage</span><span>/</span><span id="totalPage">@Model.PageInfo.TotalPages</span>&nbsp;&nbsp;页&nbsp;&nbsp;
+            <a onclick="filterTaskByPage(1)" class="a-state">首页</a>
+            @if (Model.PageInfo != null && Model.PageInfo.TotalPages >= 1)
+            {
+                if (Model.PageInfo.CurrentPage >= 2)
+                {
+                    <a onclick="filterTaskByPage(@Model.PageInfo.CurrentPage-1)" class="a-state">上一页</a>
+                }
+                else
+                {
+                    <a class="a-state">上一页</a>
+                }
+                if (Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages)
+                {
+                    <a class="a-state">下一页</a>
+                }
+                else
+                {
+                    <a onclick="filterTaskByPage(@Model.PageInfo.CurrentPage+1)" class="a-state">下一页</a>
+                }
+            }
+            <a onclick="filterTaskByPage(@Model.PageInfo.TotalPages)" class="a-state">尾页</a>&nbsp;&nbsp;
+            <span>单页显示数目</span>
+            <select id="pageSize" name="pageSize" style="width:52px;">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>&nbsp;&nbsp;
+            <span>跳转到：</span><input type="text" name="page" id="paging-number">&nbsp;&nbsp;<a onclick="JumpFilterTaskByPage()" class="a-state">跳转</a>
+        </div>
+    </div>
+</div>

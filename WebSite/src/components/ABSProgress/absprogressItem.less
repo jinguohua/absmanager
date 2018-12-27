@@ -1,0 +1,120 @@
+@import "../../styles/theme/default.less";
+
+.progress-item {
+  display: flex;
+
+  &-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 6px;
+  
+    &-line {
+      display: flex;
+      width: 2px;
+      flex-grow: 1;
+      background: @orange-4;
+      flex-direction: column;
+    
+      &-inactive {
+        background: @grey-7;
+      }
+    
+      &-transparent {
+        background: transparent;
+      }
+    }
+
+    &-dot {
+      @radius: 5px;
+      width: @radius * 2;
+      height: @radius * 2;
+      -moz-border-radius: @radius;
+      -webkit-border-radius: @radius;
+      border-radius: @radius;
+  
+      &-inactive {
+        background: @grey-7;
+      }
+  
+      &-active {
+        background: @orange-1;
+      }
+    }
+  }
+
+  &-middle {
+    display: flex;
+    align-items: center;
+
+    &-triangle-left {
+      @border: 8px;
+      width: 0;
+      height: 0;
+      border-top: @border solid transparent;
+      border-right: @border solid;
+      border-bottom: @border solid transparent;
+    
+      &-inactive {
+        border-right-color: @grey-7;
+      }
+    
+      &-active {
+        border-right-color: @orange-4;
+      }
+    }
+  }
+
+  &-right {
+    &-bubble {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      display: flex;
+      padding-top: 16px;
+      padding-bottom: 18px;
+      padding-left: 19px;
+      padding-right: 10px;
+      border-radius: 3px;
+      width: 214px;
+      background-size: 100px 40px;
+      background-repeat: no-repeat;
+      background-position: bottom right;
+      &-content {
+        flex-direction: column;
+      }
+
+      &-inactive {
+        background-color: @grey-7;
+        background-image: url('../../assets/images/progress-gray.png');
+      }
+  
+      &-active {
+        background-color: @orange-4;
+        background-image: url('../../assets/images/progress-orange.png');
+      }
+  
+      &-date {
+        font-size: @font-s;
+        letter-spacing: 0.46px;
+        font-weight: bold;
+        line-height: 1;
+  
+        &-inactive {
+          color: @grey-2;
+        }
+  
+        &-active {
+          color: @black-1;
+        }
+      }
+  
+      &-title {
+        color: @white-1;
+        font-size: @font-m;
+        margin-top: 8px;
+        letter-spacing: 0.54px;
+        line-height: 1;
+      }
+    }
+  }
+}

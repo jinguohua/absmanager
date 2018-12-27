@@ -1,0 +1,48 @@
+@import '../../styles/theme/default.less';
+
+.all-view {
+  margin-left: 20px;
+  margin-right: 20px;
+  .hearder-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 28px;
+    .hearder-text-left {
+      color: @abs-file-header-title-color;
+      margin-bottom: 6px;
+      font-size: @abs-file-header-title-font;
+      font-weight: bold;
+    }
+    .hearder-text-right {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 6px;
+      margin-right: 38px;
+      .action-button-line {
+        width: 1px;
+        height: 12px;
+        margin-top: 2px;
+        margin-left: 12px;
+        margin-right: 12px;
+        background-color: @abs-file-header-button-line;  
+      }
+    }
+  }
+  .adress-time {
+    color: @abs-file-header-time-color;
+    font-size: @abs-file-header-time-font;
+    margin-top: 6px;
+    margin-bottom: 32px;
+    .header-avatar {
+      float: left;
+      margin-right: 11px;
+    }
+  }
+  .download-box {
+    margin-top: 20px;
+    .abs-ant-icon-text {
+      display: inline-block;
+    }
+  }
+}
